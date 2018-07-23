@@ -1,0 +1,95 @@
+[debug] [2018-07-23T15:17:49.751Z] ----------------------------------------------------------------------
+[debug] [2018-07-23T15:17:49.753Z] Command:       /usr/local/Cellar/node/10.0.0/bin/node /usr/local/bin/firebase init
+[debug] [2018-07-23T15:17:49.753Z] CLI Version:   3.18.6
+[debug] [2018-07-23T15:17:49.753Z] Platform:      darwin
+[debug] [2018-07-23T15:17:49.753Z] Node Version:  v10.0.0
+[debug] [2018-07-23T15:17:49.754Z] Time:          Mon Jul 23 2018 18:17:49 GMT+0300 (EAT)
+[debug] [2018-07-23T15:17:49.754Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-07-23T15:17:49.763Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase"]
+[debug] [2018-07-23T15:17:49.763Z] > authorizing via signed-in user
+[info] 
+     🔥🔥🔥🔥🔥🔥🔥🔥 🔥🔥🔥🔥 🔥🔥🔥🔥🔥🔥🔥🔥  🔥🔥🔥🔥🔥🔥🔥🔥 🔥🔥🔥🔥🔥🔥🔥🔥     🔥🔥🔥     🔥🔥🔥🔥🔥🔥  🔥🔥🔥🔥🔥🔥🔥🔥
+     🔥🔥        🔥🔥  🔥🔥     🔥🔥 🔥🔥       🔥🔥     🔥🔥  🔥🔥   🔥🔥  🔥🔥       🔥🔥
+     🔥🔥🔥🔥🔥🔥    🔥🔥  🔥🔥🔥🔥🔥🔥🔥🔥  🔥🔥🔥🔥🔥🔥   🔥🔥🔥🔥🔥🔥🔥🔥  🔥🔥🔥🔥🔥🔥🔥🔥🔥  🔥🔥🔥🔥🔥🔥  🔥🔥🔥🔥🔥🔥
+     🔥🔥        🔥🔥  🔥🔥    🔥🔥  🔥🔥       🔥🔥     🔥🔥 🔥🔥     🔥🔥       🔥🔥 🔥🔥
+     🔥🔥       🔥🔥🔥🔥 🔥🔥     🔥🔥 🔥🔥🔥🔥🔥🔥🔥🔥 🔥🔥🔥🔥🔥🔥🔥🔥  🔥🔥     🔥🔥  🔥🔥🔥🔥🔥🔥  🔥🔥🔥🔥🔥🔥🔥🔥
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/ldaly/developer/vessels/tz/phone-book
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2018-07-23T15:17:54.614Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects  
+  
+ Mon Jul 23 2018 18:17:54 GMT+0300 (EAT)
+[debug] [2018-07-23T15:17:56.209Z] <<< HTTP RESPONSE 200
+[info] 
+=== Database Setup
+[info] 
+[info] Firebase Realtime Database Rules allow you to define how your data should be
+[info] structured and when your data can be read from and written to.
+[info] 
+[debug] [2018-07-23T15:18:00.509Z] >>> HTTP REQUEST GET https://tz-phone-book.firebaseio.com/.settings/rules.json  
+  
+ Mon Jul 23 2018 18:18:00 GMT+0300 (EAT)
+[debug] [2018-07-23T15:18:02.328Z] <<< HTTP RESPONSE 200
+[info] ✔  Database Rules for tz-phone-book have been downloaded to database.rules.json.
+[info] Future modifications to database.rules.json will update Database Rules when you run
+[info] firebase deploy.
+[info] 
+=== Firestore Setup
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[info] 
+[info] Firestore indexes allow you to perform complex queries while
+[info] maintaining performance that scales with the size of the result
+[info] set. You can keep index definitions in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[info] 
+=== Functions Setup
+[info] 
+[info] A functions directory will be created in your project with a Node.js
+[info] package pre-configured. Functions can be deployed with firebase deploy.
+[info] 
+[debug] [2018-07-23T15:18:04.012Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-07-23T15:18:04.013Z] > authorizing via signed-in user
+[debug] [2018-07-23T15:18:04.013Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-07-23T15:18:04.013Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/KXFYwvSfSkMbnUkzpwdPWHb1GMSJbOBiuTHk6zHiYoA',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Mon Jul 23 2018 18:18:04 GMT+0300 (EAT)
+[debug] [2018-07-23T15:18:04.707Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-23T15:18:04.727Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/tz-phone-book  
+  
+ Mon Jul 23 2018 18:18:04 GMT+0300 (EAT)
+[debug] [2018-07-23T15:18:05.808Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-23T15:18:05.809Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/tz-phone-book/tokens  
+  
+ Mon Jul 23 2018 18:18:05 GMT+0300 (EAT)
+[debug] [2018-07-23T15:18:07.043Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-23T15:18:07.046Z] >>> HTTP REQUEST PATCH https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/tz-phone-book?updateMask=usageSettings  
+ { usageSettings: { consumerEnableStatus: 'ENABLED' } } 
+ Mon Jul 23 2018 18:18:07 GMT+0300 (EAT)
+[debug] [2018-07-23T15:18:07.047Z] >>> HTTP REQUEST PATCH https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/tz-phone-book?updateMask=usageSettings  
+ { usageSettings: { consumerEnableStatus: 'ENABLED' } } 
+ Mon Jul 23 2018 18:18:07 GMT+0300 (EAT)
+[debug] [2018-07-23T15:18:09.656Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-23T15:18:10.389Z] <<< HTTP RESPONSE 200
+[info] ✔  Wrote functions/package.json
+[info] ✔  Wrote functions/tslint.json
+[info] ✔  Wrote functions/tsconfig.json
+[info] ✔  Wrote functions/src/index.ts
