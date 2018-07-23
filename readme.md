@@ -44,14 +44,26 @@ Response:
 }
 ```
 
+For example:
+
+```bash
+curl -X POST \
+  http://localhost:5000/tz-phone-book/us-central1/message \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "audioUrl": "12345",
+  "phone":"12345"
+}'
+```
+
 
 ### 2.0 `GET /recents`
 
 Gets the 5 most recent messages, in descending date order
 
 Request:
-```js
-```
+
+params:
 
 Response:
 
