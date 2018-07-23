@@ -12,6 +12,15 @@ A demo application for an IVR based social network.
 4. Calls http request, saves voicemail url to firebase cloudstore
 
 
+
+## Running Locally:
+
+
+```bash
+curl -X POST  https://lwilld.localtunnel.me/tz-phone-book/us-central1/message
+```
+
+
 ----
 ## FB Api:
 

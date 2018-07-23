@@ -19,11 +19,26 @@ module.exports = (functions, admin) => {
         }
         return res.status(500).json({ status: 500, message: err.message });
     });
-    app.post('/message', (req, res, next) => {
+    // app.get('/*', (req, res, next) => {
+    //   console.log("GET messages")
+    //   const audioUrl = "https://api.twilio.com/2010-04-01/Accounts/ACc628835716a7f404b36a44114e05719b/Recordings/RE933f0591c47390f7fa4092e6c3e945d9.mp3";
+    //   res.json({audioUrl});
+    // });
+    app.get('/latest', (req, res, next) => {
+        //Get the latest n recordings from firebase
+        const limit = 2;
+        fs.collection('messages').orderBy('createdAt', 'desc').limit(limit).get()
+            .then(doc => {
+            const data = doc.data();
+            console.log('data', data);
+        });
+    });
+    app.post('/*', (req, res, next) => {
         const { params, body, query } = req;
         console.log("params", params);
         console.log("body", body);
         console.log("query", query);
+        //TODO: Add createdAt field
         res.json(true);
     });
     return functions.https.onRequest(app);
