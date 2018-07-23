@@ -6,12 +6,12 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
 
-# nvm use v6.11.5
+nvm use v6.11.5
 
 
 ## start the local firebase server
 node --version
-cd "$DIR"/ow_firebase/functions/
+cd "$DIR"/functions/
 export NODE_ENV=local
 yarn watch &
 firebase serve --only functions

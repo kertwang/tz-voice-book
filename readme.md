@@ -23,7 +23,6 @@ Request:
 ```js
 {
   "audioUrl": "string",       //the url to the twilio recording
-  "transcription": "string",  //twilio's transcription
   "phone": "string"           //international format
 }
 ```
