@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const cors = require("cors");
 const moment = require("moment");
+const morgan = require("morgan");
+const morganBody = require("morgan-body");
 const bodyParser = require('body-parser');
 const Joi = require('joi');
 const fb = require('firebase-admin');
@@ -10,6 +12,14 @@ module.exports = (functions, admin) => {
     const app = express();
     app.use(bodyParser.json());
     const fs = admin.firestore();
+    if (process.env.VERBOSE_LOG === 'false') {
+        console.log('Using simple log');
+        app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+    }
+    else {
+        console.log('Using verbose log');
+        morganBody(app);
+    }
     /* CORS Configuration */
     const openCors = cors({ origin: '*' });
     app.use(openCors);
@@ -22,7 +32,8 @@ module.exports = (functions, admin) => {
     });
     //Get the latest n recordings from firebase
     app.get('/*', (req, res, next) => {
-        const limit = 1;
+        const limit = 5;
+        const { stringFormat } = req.query;
         return fs.collection('messages').orderBy('createdAt', 'desc').limit(limit).get()
             .then(sn => {
             const messages = [];
@@ -32,7 +43,18 @@ module.exports = (functions, admin) => {
                 data.id = doc.id;
                 messages.push(data);
             });
-            res.json(messages);
+            if (stringFormat !== 'true') {
+                return res.json({ messages });
+            }
+            //make a comma separated string of urls
+            // const urlString = "\"url1,url2,url3\"";
+            const urlString = messages.reduce((acc, curr, idx) => {
+                if (idx === messages.length - 1) {
+                    return acc + curr.audioUrl + "\"";
+                }
+                return acc + curr.audioUrl + ',';
+            }, '\"');
+            return res.json({ messages: urlString });
         });
     });
     app.post('/*', (req, res, next) => {

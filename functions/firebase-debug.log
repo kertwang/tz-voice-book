@@ -1,34 +1,34 @@
-[debug] [2018-07-23T17:15:25.203Z] ----------------------------------------------------------------------
-[debug] [2018-07-23T17:15:25.205Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase serve --only functions
-[debug] [2018-07-23T17:15:25.205Z] CLI Version:   3.18.4
-[debug] [2018-07-23T17:15:25.205Z] Platform:      darwin
-[debug] [2018-07-23T17:15:25.205Z] Node Version:  v8.11.1
-[debug] [2018-07-23T17:15:25.206Z] Time:          Mon Jul 23 2018 20:15:25 GMT+0300 (EAT)
-[debug] [2018-07-23T17:15:25.206Z] ----------------------------------------------------------------------
+[debug] [2018-07-24T08:21:40.685Z] ----------------------------------------------------------------------
+[debug] [2018-07-24T08:21:40.687Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase serve --only functions
+[debug] [2018-07-24T08:21:40.688Z] CLI Version:   3.18.4
+[debug] [2018-07-24T08:21:40.688Z] Platform:      darwin
+[debug] [2018-07-24T08:21:40.688Z] Node Version:  v8.11.1
+[debug] [2018-07-24T08:21:40.689Z] Time:          Tue Jul 24 2018 11:21:40 GMT+0300 (EAT)
+[debug] [2018-07-24T08:21:40.689Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2018-07-23T17:15:25.214Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2018-07-23T17:15:25.215Z] > authorizing via signed-in user
-[debug] [2018-07-23T17:15:25.216Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/tz-phone-book  
+[debug] [2018-07-24T08:21:40.697Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-07-24T08:21:40.698Z] > authorizing via signed-in user
+[debug] [2018-07-24T08:21:40.699Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/tz-phone-book  
   
- Mon Jul 23 2018 20:15:25 GMT+0300 (EAT)
-[debug] [2018-07-23T17:15:27.789Z] <<< HTTP RESPONSE 200
-[debug] [2018-07-23T17:15:27.790Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/tz-phone-book/tokens  
+ Tue Jul 24 2018 11:21:40 GMT+0300 (EAT)
+[debug] [2018-07-24T08:21:42.039Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-24T08:21:42.040Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/tz-phone-book/tokens  
   
- Mon Jul 23 2018 20:15:27 GMT+0300 (EAT)
-[debug] [2018-07-23T17:15:28.957Z] <<< HTTP RESPONSE 200
-[debug] [2018-07-23T17:15:28.958Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book  
+ Tue Jul 24 2018 11:21:42 GMT+0300 (EAT)
+[debug] [2018-07-24T08:21:43.109Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-24T08:21:43.110Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book  
   
- Mon Jul 23 2018 20:15:28 GMT+0300 (EAT)
-[debug] [2018-07-23T17:15:30.994Z] <<< HTTP RESPONSE 200
+ Tue Jul 24 2018 11:21:43 GMT+0300 (EAT)
+[debug] [2018-07-24T08:21:44.986Z] <<< HTTP RESPONSE 200
 [info] 
 [info] === Serving from '/Users/ldaly/developer/vessels/tz/phone-book'...
 [info] 
 [info] i  functions: Preparing to emulate functions.
-[debug] [2018-07-23T17:15:31.751Z] Fetching environment
-[debug] [2018-07-23T17:15:31.752Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/896622929267:getServerAppConfig  
+[debug] [2018-07-24T08:21:45.474Z] Fetching environment
+[debug] [2018-07-24T08:21:45.475Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/896622929267:getServerAppConfig  
   
- Mon Jul 23 2018 20:15:31 GMT+0300 (EAT)
-[debug] [2018-07-23T17:15:34.543Z] <<< HTTP RESPONSE 200
-[debug] [2018-07-23T17:15:34.544Z] Starting @google-cloud/functions-emulator
-[debug] [2018-07-23T17:15:36.112Z] Parsing function triggers
+ Tue Jul 24 2018 11:21:45 GMT+0300 (EAT)
+[debug] [2018-07-24T08:21:46.215Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-24T08:21:46.216Z] Starting @google-cloud/functions-emulator
+[debug] [2018-07-24T08:21:47.774Z] Parsing function triggers
 [info] ✔  functions: message: http://localhost:5000/tz-phone-book/us-central1/message

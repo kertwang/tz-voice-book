@@ -51,7 +51,7 @@ curl -X POST \
   http://localhost:5000/tz-phone-book/us-central1/message \
   -H 'Content-Type: application/json' \
   -d '{
-  "audioUrl": "12345",
+  "audioUrl": "https://api.twilio.com/2010-04-01/Accounts/ACc628835716a7f404b36a44114e05719b/Recordings/RE33899fd6eaaf8506f41b3a586599253d.mp3",
   "phone":"12345"
 }'
 ```
@@ -67,14 +67,31 @@ params:
 
 Response:
 
+**note: the root json object must be a JSON dict in order for twilio to parse it correctly**
+
 ```js
-[
- {
-   "id":"string",
-   "createdAt": "string", //ISO Format date
-   "audioUrl": "string", 
- } 
- //...
-]
+{
+  "messages":
+  [
+    {
+      "id":"string",
+      "createdAt": "string", //ISO Format date
+      "audioUrl": "string", 
+    } 
+    //...
+  ]
+}
 ```
 
+
+
+For example:
+
+```bash
+curl http://localhost:5000/tz-phone-book/us-central1/message \
+  -H 'Content-Type: application/json'
+```
+
+
+
+http://localhost:5000/tz-phone-book/us-central1/message?stringFormat=true
