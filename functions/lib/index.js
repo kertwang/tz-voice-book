@@ -10,4 +10,5 @@ admin.initializeApp();
 //  response.send("Hello from Firebase!");
 // });
 exports.message = require('./fn_message')(functions, admin);
+exports.reset_pin = require('./fn_reset_pin')(functions, admin);
 //# sourceMappingURL=index.js.map

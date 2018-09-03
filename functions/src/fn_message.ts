@@ -37,10 +37,14 @@ module.exports = (functions, admin) => {
   });
 
 
+
   //Get the latest n recordings from firebase
   app.get('/*', (req, res, next) => {
-    const limit = 5;
+    let limit = 1;
     const {stringFormat} = req.query;
+    if (req.query.limit) {
+      limit = req.query.limit;
+    }
 
   
     return fs.collection('messages').orderBy('createdAt', 'desc').limit(limit).get()
@@ -58,14 +62,15 @@ module.exports = (functions, admin) => {
       } 
 
       //make a comma separated string of urls
-      // const urlString = "\"url1,url2,url3\"";
-      const urlString = messages.reduce((acc, curr, idx) => {
-        if (idx === messages.length - 1) {
-          return acc + curr.audioUrl + "\"";
-        }
+      const urlString = messages[0].audioUrl;
+      //TODO: undo this hacky lazyness
+      // const urlString = messages.reduce((acc, curr, idx) => {
+      //   if (idx === messages.length - 1) {
+      //     return acc + curr.audioUrl + "\"";
+      //   }
 
-        return acc + curr.audioUrl + ','
-      }, '\"');
+      //   return acc + curr.audioUrl + ','
+      // }, '\"');
       return res.json({messages: urlString});
     });
   });

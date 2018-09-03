@@ -13,3 +13,4 @@ admin.initializeApp();
 
 
 export const message = require('./fn_message')(functions, admin);
+export const reset_pin = require('./fn_reset_pin')(functions, admin);

@@ -21,6 +21,17 @@ curl -X POST  https://lwilld.localtunnel.me/tz-phone-book/us-central1/message
 ```
 
 
+curl -X POST \
+  https://us-central1-tz-phone-book.cloudfunctions.net/message/1 \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json' \
+  -H 'Postman-Token: 2f45420c-65f8-4c37-9fbd-d89e7e17ca59' \
+  -d '{
+  "audioUrl": "string",
+  "phone": "string"
+}'
+
+
 ----
 ## FB Api:
 
