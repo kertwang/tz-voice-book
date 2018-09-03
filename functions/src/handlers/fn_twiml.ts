@@ -12,6 +12,19 @@ const bodyParser = require('body-parser');
 const Joi = require('joi');
 const fb = require('firebase-admin');
 
+/**
+ * Flows is a graph based data structure, with the key being the valid
+ * entrypoint, and the value a dict containing possible next points based
+ * on if the block is successful or errors
+ */
+const flows = {
+  entrypoint: {success: 'intro_0'},
+  intro_0: {success: 'menu_0', error: 'error_0'},
+  error_0: {success: 'intro_0', error: 'error_0'}
+
+}
+
+
 module.exports = (functions, admin, twilioClient) => {
 
   const app = express();
@@ -33,7 +46,8 @@ module.exports = (functions, admin, twilioClient) => {
   });
 
 
-  app.post('/hello', (req, res, next) => {
+  app.post('/*', (req, res, next) => {
+    console.log('originalUrl', req.originalUrl);
 
     // Create TwiML response
     const twiml = new VoiceResponse();
