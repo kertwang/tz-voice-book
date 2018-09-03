@@ -1,0 +1,1 @@
+{"version":3,"file":"TwilioApi.js","sourceRoot":"","sources":["../../src/apis/TwilioApi.ts"],"names":[],"mappings":";;AACA,iCAAiC;AACjC,sCAAiE;AAEjE;IAGE;QACE,IAAI,CAAC,MAAM,GAAG,MAAM,CAAC,sBAAgB,EAAE,qBAAe,CAAC,CAAC;IAC1D,CAAC;IAED,SAAS;QACP,OAAO,IAAI,CAAC,MAAM,CAAC;IACrB,CAAC;CACF;AAVD,8BAUC"}

@@ -12,7 +12,7 @@ source "$DIR/env/env.sh"
 source "$DIR/env/.env.sh"
 
 ## Get any remote firebase config
-firebase functions:config:get > .runtimeconfig.json
+firebase functions:config:get > "$DIR"/functions/.runtimeconfig.json
 
 
 ## start the local firebase server

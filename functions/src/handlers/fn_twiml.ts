@@ -12,7 +12,8 @@ const bodyParser = require('body-parser');
 const Joi = require('joi');
 const fb = require('firebase-admin');
 
-export default function(functions: any, admin: any, twilioClient: any) {
+module.exports = (functions, admin, twilioClient) => {
+
   const app = express();
   app.use(bodyParser.json());
   const fs = admin.firestore();
@@ -32,10 +33,10 @@ export default function(functions: any, admin: any, twilioClient: any) {
   });
 
 
-  app.get('/hello', (req, res, next) => {
+  app.post('/hello', (req, res, next) => {
 
     // Create TwiML response
-    const twiml = VoiceResponse();
+    const twiml = new VoiceResponse();
     twiml.say('Hello from your pals at Twilio! Have fun.');
 
     res.writeHead(200, { 'Content-Type': 'text/xml' });
@@ -43,4 +44,5 @@ export default function(functions: any, admin: any, twilioClient: any) {
   });
 
 
+  return functions.https.onRequest(app);
 }
