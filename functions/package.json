@@ -29,7 +29,8 @@
     "papaparse": "^4.4.0",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.5",
+    "twilio": "^3.19.2"
   },
   "devDependencies": {
     "tslint": "^5.8.0",

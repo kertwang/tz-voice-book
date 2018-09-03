@@ -11,6 +11,9 @@ export NVM_DIR="$HOME/.nvm"
 source "$DIR/env/env.sh"
 source "$DIR/env/.env.sh"
 
+## Get any remote firebase config
+firebase functions:config:get > .runtimeconfig.json
+
 
 ## start the local firebase server
 node --version
