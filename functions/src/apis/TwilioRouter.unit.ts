@@ -36,7 +36,7 @@ describe('TwilioRouter', function() {
     
 
   describe('gather intro_0', function() {
-    it('handles error case', () => {
+    it.only('handles error case', () => {
       //Arrange
       const gatherResult: GatherResult = {
         speechResult:'the',

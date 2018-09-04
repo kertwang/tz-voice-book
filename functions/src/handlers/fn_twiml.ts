@@ -7,7 +7,7 @@ import * as morganBody from 'morgan-body';
 import TwilioRouter, { GatherResult } from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
-import { pathToBlock } from '../utils';
+import { pathToBlock, logGatherBlock } from '../utils';
 
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
@@ -33,16 +33,26 @@ module.exports = (functions, admin, twilioClient) => {
   app.use(openCors);
 
   /**
+   * Collect partial results for debugging purposes.
+   */
+  app.post('/recognitionResults', (req, res) => {
+
+    res.json(true);
+  });
+
+  /**
      * Action callback handlers.
      * For some reason, it makes sense to me to separate these out
      * just a hunch though
      */
   app.post('/gather/*', (req, res) => {
     const blockName = pathToBlock(req.path);
+    
     const gatherResult: GatherResult = {
       speechResult: req.body.SpeechResult,
       confidence: req.body.Confidence,
     };
+    logGatherBlock(blockName, gatherResult);
     const result = TwilioRouter.gatherNextMessage(blockName, gatherResult);
 
     res.writeHead(200, { 'Content-Type': 'text/xml' });
@@ -55,7 +65,7 @@ module.exports = (functions, admin, twilioClient) => {
    */
   app.post('/*', (req, res) => {
     const blockName = pathToBlock(req.path);
-    
+
     const result = TwilioRouter.nextMessage(blockName);
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(result);

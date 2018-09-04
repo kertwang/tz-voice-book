@@ -27,6 +27,12 @@ module.exports = (functions, admin, twilioClient) => {
     const openCors = cors({ origin: '*' });
     app.use(openCors);
     /**
+     * Collect partial results for debugging purposes.
+     */
+    app.post('/recognitionResults', (req, res) => {
+        res.json(true);
+    });
+    /**
        * Action callback handlers.
        * For some reason, it makes sense to me to separate these out
        * just a hunch though
@@ -37,6 +43,7 @@ module.exports = (functions, admin, twilioClient) => {
             speechResult: req.body.SpeechResult,
             confidence: req.body.Confidence,
         };
+        utils_1.logGatherBlock(blockName, gatherResult);
         const result = TwilioRouter_1.default.gatherNextMessage(blockName, gatherResult);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);

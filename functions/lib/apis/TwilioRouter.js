@@ -82,16 +82,16 @@ class TwilioRouter {
         }
     }
     static getBlock(blockName) {
+        const path = exports.flows[blockName];
         switch (blockName) {
             case 'entrypoint': {
-                const path = exports.flows[blockName];
                 const nextUrl = `./${path.success}`;
                 const response = new VoiceResponse();
                 response.say({}, 'Hello, and welcome to voicebook');
                 response.redirect({ method: 'POST' }, nextUrl);
                 return response;
             }
-            case 'intro_0': {
+            case Block.intro_0: {
                 const response = new VoiceResponse();
                 //@ts-ignore
                 const gather = response.gather({
@@ -100,20 +100,37 @@ class TwilioRouter {
                     // API doesn't have this for some reason
                     language: 'sw-TZ',
                     input: 'speech',
-                    hints: 'sikiliza,tuma,msaada,kurudia'
+                    hints: 'sikiliza,tuma,msaada,kurudia',
+                    partialResultCallbackMethod: 'POST',
+                    //TODO: env var this shit!
+                    partialResultCallback: 'https://lwilld3.localtunnel.me/tz-phone-book/us-central1/twiml/recognitionResults'
                 });
                 gather.say({}, 'To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.');
                 response.say({}, 'We didn\'t receive any input. Hrrmm.');
                 return response;
             }
-            case 'error_0':
-                {
-                    const response = new VoiceResponse();
-                    response.say({}, 'Sorry, something went wrong');
-                    //TODO: add redirect..
-                    return response;
-                }
-                break;
+            case Block.error_0: {
+                const response = new VoiceResponse();
+                //@ts-ignore
+                const gather = response.gather({
+                    action: `./${path.success}`,
+                    method: 'POST',
+                    // API doesn't have this for some reason
+                    language: 'sw-TZ',
+                    input: 'speech',
+                    hints: 'sikiliza, tuma, msaada, kurudia',
+                    partialResultCallbackMethod: 'POST',
+                    //TODO: env var this shit!
+                    partialResultCallback: 'https://lwilld3.localtunnel.me/tz-phone-book/us-central1/twiml/recognitionResults'
+                });
+                gather.say({}, 'Sorry, I didn\'t catch that. Please try again.');
+                return response;
+            }
+            case Block.listen_0: {
+                const response = new VoiceResponse();
+                response.say({}, 'Here are the latest messages for Bagamoyo.');
+                return response;
+            }
             default:
                 throw new AppError_1.default(404, `tried to getBlock for unknown block: ${blockName}`);
         }
