@@ -19,7 +19,11 @@ var Block;
  * on if the block is successful or errors
  */
 exports.flows = {
-    'entrypoint': { success: Block.intro_0, error: null, matches: null },
+    'entrypoint': {
+        success: Block.intro_0,
+        error: null,
+        matches: null
+    },
     'intro_0': {
         success: Block.menu_0,
         error: Block.error_0,
@@ -30,7 +34,11 @@ exports.flows = {
             { term: 'kurudia', nextBlock: Block.listen_0 }
         ]
     },
-    'error_0': { success: Block.intro_0, error: Block.error_0, matches: null }
+    'error_0': {
+        success: Block.intro_0,
+        error: Block.error_0,
+        matches: null
+    }
 };
 // export const blocks = {
 //   entrypoint: {}
@@ -59,7 +67,7 @@ class TwilioRouter {
                 const stringMatches = path.matches.map(m => m.term);
                 const idx = stringMatches.indexOf(gatherResult.speechResult);
                 if (idx === -1) {
-                    return TwilioRouter.getBlock(path.error);
+                    return TwilioRouter.getBlock(path.error).toString();
                 }
                 const nextBlock = path.matches[idx].nextBlock;
                 const response = new VoiceResponse();
@@ -99,6 +107,12 @@ class TwilioRouter {
                 return response;
             }
             case 'error_0':
+                {
+                    const response = new VoiceResponse();
+                    response.say({}, 'Sorry, something went wrong');
+                    //TODO: add redirect..
+                    return response;
+                }
                 break;
             default:
                 throw new AppError_1.default(404, `tried to getBlock for unknown block: ${blockName}`);

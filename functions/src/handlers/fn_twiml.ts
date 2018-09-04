@@ -53,16 +53,12 @@ module.exports = (functions, admin, twilioClient) => {
   /**
    * Handle all normal routes
    */
-  app.post('/*', (req, res, next) => {
+  app.post('/*', (req, res) => {
     const blockName = pathToBlock(req.path);
-    try {
-      const result = TwilioRouter.nextMessage(blockName);
-      res.writeHead(200, { 'Content-Type': 'text/xml' });
-      res.end(result);
-    } catch (err) {
-      console.log("WTF??")
-      return next(err);
-    }
+    
+    const result = TwilioRouter.nextMessage(blockName);
+    res.writeHead(200, { 'Content-Type': 'text/xml' });
+    res.end(result);
   });
 
 

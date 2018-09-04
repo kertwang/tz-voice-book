@@ -44,17 +44,11 @@ module.exports = (functions, admin, twilioClient) => {
     /**
      * Handle all normal routes
      */
-    app.post('/*', (req, res, next) => {
+    app.post('/*', (req, res) => {
         const blockName = utils_1.pathToBlock(req.path);
-        try {
-            const result = TwilioRouter_1.default.nextMessage(blockName);
-            res.writeHead(200, { 'Content-Type': 'text/xml' });
-            res.end(result);
-        }
-        catch (err) {
-            console.log("WTF??");
-            return next(err);
-        }
+        const result = TwilioRouter_1.default.nextMessage(blockName);
+        res.writeHead(200, { 'Content-Type': 'text/xml' });
+        res.end(result);
     });
     /*Error Handling - must be at bottom!*/
     app.use(ErrorHandler_1.default);

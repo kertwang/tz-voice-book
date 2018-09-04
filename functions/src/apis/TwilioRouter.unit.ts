@@ -15,7 +15,7 @@ describe('TwilioRouter', function() {
       const result = TwilioRouter.nextMessage(Block.entrypoint);
 
       //Assert
-      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Say>Hello from your pals at Twilio! Have fun.</Say></Response>'
+      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Say>Hello, and welcome to voicebook</Say><Redirect method="POST">./intro_0</Redirect></Response>'
       assert.equal(expected, result);
     });
   });
@@ -28,7 +28,7 @@ describe('TwilioRouter', function() {
       const result = TwilioRouter.nextMessage(Block.intro_0);
 
       //Assert
-      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="/gather/intro_0" method="POST"/><Say>To learn what is new in your community say SIKILIZA. To record a message that people in your community can hear, say TUMA. To learn more about this service say MSAADA. To hear these options again say KURUDIA.</Say></Response>'
+      const expected = `<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="./gather/intro_0" method="POST" language="sw-TZ" input="speech" hints="sikiliza,tuma,msaada,kurudia"><Say>To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.</Say></Gather><Say>We didn't receive any input. Hrrmm.</Say></Response>`;
       assert.equal(expected, result);
     });
 
@@ -36,7 +36,7 @@ describe('TwilioRouter', function() {
     
 
   describe('gather intro_0', function() {
-    it.only('handles error case', () => {
+    it('handles error case', () => {
       //Arrange
       const gatherResult: GatherResult = {
         speechResult:'the',
@@ -45,13 +45,26 @@ describe('TwilioRouter', function() {
 
       //Act
       const result = TwilioRouter.gatherNextMessage(Block.intro_0, gatherResult);
-      console.log(format(result));
 
       //Assert
-      const expected = "123";
+      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Say>Sorry, something went wrong</Say></Response>';
       assert.equal(expected, result);
+    });
+
+    it('handles a success case', () => {
+      //Arrange
+      const gatherResult: GatherResult = {
+        speechResult:'sikiliza',
+        confidence: 40.23,
+      };
+
+      //Act
+      const result = TwilioRouter.gatherNextMessage(Block.intro_0, gatherResult);
 
 
+      //Assert
+      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect method="POST">../listen_0</Redirect></Response>';
+      assert.equal(expected, result);
     });
   });
 });
