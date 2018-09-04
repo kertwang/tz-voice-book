@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-lt --subdomain lwilld3 --port 5000
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source "$DIR"/env/env.sh
+
+lt --subdomain "$LT_SUBDOMAIN" --port 5000
 
 
 #eg: curl -X POST  https://lwilld.localtunnel.me/tz-phone-book/us-central1/message

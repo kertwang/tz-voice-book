@@ -4,10 +4,11 @@ import * as cors from 'cors';
 import * as moment from 'moment';
 import * as morgan from 'morgan';
 import * as morganBody from 'morgan-body';
-import TwilioRouter, { GatherResult } from '../apis/TwilioRouter';
+import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
 import { pathToBlock, logGatherBlock, logTwilioResponse } from '../utils';
+import { GatherResult } from '../Types/TwilioRouter';
 
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
@@ -45,8 +46,9 @@ module.exports = (functions, admin, twilioClient) => {
   /**
    * Callback triggered once feedback recording is finished
    */
-  app.post('/feedbackResults', (req, res) => {
+  app.post('/recordingCallback', (req, res) => {
     console.log(`SAVED FEEDBACK to: ${req.body.RecordingUrl}`);
+    //TODO: save to proper place based on req params
     res.json(true);
   });
 

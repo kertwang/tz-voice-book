@@ -2,3 +2,5 @@
 
 export VERBOSE_LOG=true
 export LOG_TWILIO_RESPONSE=true
+export LT_SUBDOMAIN="lwilld3"
+export BASE_URL="https://$LT_SUBDOMAIN.localtunnel.me/tz-phone-book/us-central1"

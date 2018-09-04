@@ -36,8 +36,9 @@ module.exports = (functions, admin, twilioClient) => {
     /**
      * Callback triggered once feedback recording is finished
      */
-    app.post('/feedbackResults', (req, res) => {
+    app.post('/recordingCallback', (req, res) => {
         console.log(`SAVED FEEDBACK to: ${req.body.RecordingUrl}`);
+        //TODO: save to proper place based on req params
         res.json(true);
     });
     /**
