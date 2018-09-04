@@ -2,17 +2,41 @@
 // const VoiceResponse = require('twilio').twiml.VoiceResponse;
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
+import { lang } from 'moment';
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
+/*Types. TODO: move elsewhere */
+
+export enum Block {
+  entrypoint = 'entrypoint',
+  intro_0 = 'intro_0',
+  menu_0 = 'menu_0',
+  listen_0 = 'listen_0',
+  error_0 = 'error_0',
+
+}
 
 export type FlowMap = {
   [others: string]: FlowPath;
 }
 
 export type FlowPath = {
-  success: string,
-  error: string | null,
+  success: Block,
+  error: Block | null,
+  matches: FlowMatch[]
 }
+
+export type FlowMatch = {
+  term: string,
+  nextBlock: Block,
+}
+
+export type GatherResult = {
+  speechResult: string,
+  confidence: number,
+}
+
+
 
 /**
  * Flows is a graph based data structure, with the key being the valid
@@ -20,9 +44,18 @@ export type FlowPath = {
  * on if the block is successful or errors
  */
 export const flows: FlowMap = {
-  'entrypoint': { success: 'intro_0', error: null },
-  'intro_0': { success: 'menu_0', error: 'error_0' },
-  'error_0': { success: 'intro_0', error: 'error_0' }
+  'entrypoint': { success: Block.intro_0, error: null, matches: null },
+  'intro_0': { 
+    success: Block.menu_0, 
+    error: Block.error_0, 
+    matches: [
+      { term: 'sikiliza', nextBlock: Block.listen_0},
+      { term: 'tuma', nextBlock: Block.listen_0 },
+      { term: 'msaada', nextBlock: Block.listen_0 },
+      { term: 'kurudia', nextBlock: Block.listen_0 }
+    ]
+  },
+  'error_0': { success: Block.intro_0, error: Block.error_0, matches: null }
 
 }
 
@@ -37,7 +70,7 @@ export const flows: FlowMap = {
  */
 export default class TwilioRouter {
 
-  public static nextMessage(currentBlock: string): string {
+  public static nextMessage(currentBlock: Block): string {
     //Not sure if this will work, we may need to nest stuff
     const response = TwilioRouter.getBlock(currentBlock);
 
@@ -48,18 +81,41 @@ export default class TwilioRouter {
    * Handle the output of a gather endpoint, and redirect back
    * into the flow of things
    */
-  public static gatherNextMessage(currentBlock: string): string {
+  public static gatherNextMessage(
+    currentBlock: Block, 
+    gatherResult: GatherResult): string {
     //TODO: parse out the twilio response, and redirect to the appropriate block
+    const path = flows[currentBlock];
 
-    return '12345';
+    //TODO: we will need to reformat this nicely soon.
+    switch(currentBlock) {
+      case 'intro_0': {
+        const stringMatches = path.matches.map(m => m.term);
+        const idx = stringMatches.indexOf(gatherResult.speechResult);
+        
+        if (idx === -1) {
+          return TwilioRouter.getBlock(path.error);
+        } 
+        
+        const nextBlock = path.matches[idx].nextBlock;
+        const response = new VoiceResponse();
+        response.redirect({method: 'POST'}, `../${nextBlock}`);
+
+        return response.toString();
+      }
+      default: {
+        const response = new VoiceResponse();
+        response.say({}, 'Sorry. Something went wrong. Please try again.');
+        return response.toString();
+      }
+    }
   }
 
-
-  public static getBlock(blockName: string): any {
+  public static getBlock(blockName: Block): any {
     switch(blockName) {
       case 'entrypoint': {
         const path = flows[blockName];
-        const nextUrl = `../${path.success}`
+        const nextUrl = `./${path.success}`
 
         const response = new VoiceResponse();
         response.say({}, 'Hello, and welcome to voicebook');
@@ -70,9 +126,17 @@ export default class TwilioRouter {
 
       case 'intro_0': {
         const response = new VoiceResponse();
-        //Is this right? Do we route to a gather handler first?
-        response.gather({action: `/gather/${blockName}`, method: 'POST'});
-        response.say({}, 'To learn what is new in your community say SIKILIZA. To record a message that people in your community can hear, say TUMA. To learn more about this service say MSAADA. To hear these options again say KURUDIA.')
+        //@ts-ignore
+        const gather = response.gather({
+          action: `./gather/${blockName}`, 
+          method: 'POST',
+          // API doesn't have this for some reason
+          language: 'sw-TZ',
+          input: 'speech',
+          hints: 'sikiliza,tuma,msaada,kurudia'
+        });
+        gather.say({}, 'To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.');
+        response.say({}, 'We didn\'t receive any input. Hrrmm.');
 
         return response;
       }

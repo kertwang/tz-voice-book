@@ -4,9 +4,10 @@ import * as cors from 'cors';
 import * as moment from 'moment';
 import * as morgan from 'morgan';
 import * as morganBody from 'morgan-body';
-import TwilioRouter from '../apis/TwilioRouter';
+import TwilioRouter, { GatherResult } from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
+import { pathToBlock } from '../utils';
 
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
@@ -37,10 +38,12 @@ module.exports = (functions, admin, twilioClient) => {
      * just a hunch though
      */
   app.post('/gather/*', (req, res) => {
-    console.log('originalUrl', req.originalUrl);
-    const blockName = req.originalUrl.replace('/gather/', '');
-
-    const result = TwilioRouter.gatherNextMessage(blockName);
+    const blockName = pathToBlock(req.path);
+    const gatherResult: GatherResult = {
+      speechResult: req.body.SpeechResult,
+      confidence: req.body.Confidence,
+    };
+    const result = TwilioRouter.gatherNextMessage(blockName, gatherResult);
 
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(result);
@@ -51,9 +54,7 @@ module.exports = (functions, admin, twilioClient) => {
    * Handle all normal routes
    */
   app.post('/*', (req, res, next) => {
-    console.log('originalUrl', req.originalUrl);
-    const blockName = req.originalUrl.replace('/', '');
-
+    const blockName = pathToBlock(req.path);
     try {
       const result = TwilioRouter.nextMessage(blockName);
       res.writeHead(200, { 'Content-Type': 'text/xml' });
