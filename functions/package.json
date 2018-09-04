@@ -15,6 +15,7 @@
   "dependencies": {
     "@firebase/app-types": "0.x",
     "@google-cloud/firestore": "^0.13.1",
+    "@types/mocha": "^5.2.5",
     "@types/request-promise-native": "^1.0.14",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
@@ -24,6 +25,7 @@
     "firebase-app": "^0.0.1",
     "firebase-functions": "^1.0.3",
     "joi": "^13.2.0",
+    "mocha": "^5.2.0",
     "moment": "^2.22.1",
     "morgan": "^1.9.0",
     "morgan-body": "^2.4.5",
@@ -34,10 +36,9 @@
     "twilio": "^3.19.2"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.5",
     "assert": "^1.4.1",
     "chai": "^4.1.2",
-    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1",
     "tslint": "^5.8.0",
     "typescript": "^2.5.3"
   },

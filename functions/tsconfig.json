@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "lib": ["es6"],
+    "lib": [
+      "es6"
+    ],
     "module": "commonjs",
     "noImplicitReturns": true,
     "outDir": "lib",
@@ -10,5 +12,10 @@
   "compileOnSave": true,
   "include": [
     "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.unit.ts",
+    "**/*.service.ts"
   ]
 }
