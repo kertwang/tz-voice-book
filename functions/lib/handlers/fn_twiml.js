@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-const morganBody = require("morgan-body");
 const TwilioRouter_1 = require("../apis/TwilioRouter");
 const ErrorHandler_1 = require("../utils/ErrorHandler");
 const utils_1 = require("../utils");
@@ -21,7 +20,8 @@ module.exports = (functions, admin, twilioClient) => {
     }
     else {
         console.log('Using verbose log');
-        morganBody(app);
+        // morganBody(app);
+        app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
     }
     /* CORS Configuration */
     const openCors = cors({ origin: '*' });
@@ -30,13 +30,21 @@ module.exports = (functions, admin, twilioClient) => {
      * Collect partial results for debugging purposes.
      */
     app.post('/recognitionResults', (req, res) => {
+        console.log(`stable: '${req.body.StableSpeechResult}' unstable: '${req.body.UnstableSpeechResult}'`);
         res.json(true);
     });
     /**
-       * Action callback handlers.
-       * For some reason, it makes sense to me to separate these out
-       * just a hunch though
-       */
+     * Callback triggered once feedback recording is finished
+     */
+    app.post('/feedbackResults', (req, res) => {
+        console.log(`SAVED FEEDBACK to: ${req.body.RecordingUrl}`);
+        res.json(true);
+    });
+    /**
+     * Action callback handlers.
+     * For some reason, it makes sense to me to separate these out
+     * just a hunch though
+     */
     app.post('/gather/*', (req, res) => {
         const blockName = utils_1.pathToBlock(req.path);
         const gatherResult = {
@@ -45,6 +53,7 @@ module.exports = (functions, admin, twilioClient) => {
         };
         utils_1.logGatherBlock(blockName, gatherResult);
         const result = TwilioRouter_1.default.gatherNextMessage(blockName, gatherResult);
+        utils_1.logTwilioResponse(result);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);
     });

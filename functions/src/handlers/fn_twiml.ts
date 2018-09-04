@@ -7,7 +7,7 @@ import * as morganBody from 'morgan-body';
 import TwilioRouter, { GatherResult } from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
-import { pathToBlock, logGatherBlock } from '../utils';
+import { pathToBlock, logGatherBlock, logTwilioResponse } from '../utils';
 
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
@@ -25,7 +25,9 @@ module.exports = (functions, admin, twilioClient) => {
     app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
   } else {
     console.log('Using verbose log');
-    morganBody(app);
+    // morganBody(app);
+    app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+
   }
 
   /* CORS Configuration */
@@ -36,15 +38,23 @@ module.exports = (functions, admin, twilioClient) => {
    * Collect partial results for debugging purposes.
    */
   app.post('/recognitionResults', (req, res) => {
-
+    console.log(`stable: '${req.body.StableSpeechResult}' unstable: '${req.body.UnstableSpeechResult}'`)
     res.json(true);
   });
 
   /**
-     * Action callback handlers.
-     * For some reason, it makes sense to me to separate these out
-     * just a hunch though
-     */
+   * Callback triggered once feedback recording is finished
+   */
+  app.post('/feedbackResults', (req, res) => {
+    console.log(`SAVED FEEDBACK to: ${req.body.RecordingUrl}`);
+    res.json(true);
+  });
+
+  /**
+   * Action callback handlers.
+   * For some reason, it makes sense to me to separate these out
+   * just a hunch though
+   */
   app.post('/gather/*', (req, res) => {
     const blockName = pathToBlock(req.path);
     
@@ -54,11 +64,11 @@ module.exports = (functions, admin, twilioClient) => {
     };
     logGatherBlock(blockName, gatherResult);
     const result = TwilioRouter.gatherNextMessage(blockName, gatherResult);
+    logTwilioResponse(result);
 
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(result);
   });
-
 
   /**
    * Handle all normal routes
