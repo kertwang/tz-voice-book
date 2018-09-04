@@ -1,6 +1,7 @@
 
 // const VoiceResponse = require('twilio').twiml.VoiceResponse;
 import * as twilio from 'twilio';
+import AppError from '../utils/AppError';
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
 
@@ -36,35 +37,51 @@ export const flows: FlowMap = {
  */
 export default class TwilioRouter {
 
-  public static nextMessage(baseUrl: string, currentMessage: string): string {
-    const path = flows[currentMessage];
-    const nextUrl = `${baseUrl}/${path.success}`
-
+  public static nextMessage(currentBlock: string): string {
     //Not sure if this will work, we may need to nest stuff
-    const response = TwilioRouter.getBlock('entrypoint');
-    response.redirect({method: 'POST'}, nextUrl);
+    const response = TwilioRouter.getBlock(currentBlock);
 
     return response.toString();
+  }
+
+  /**
+   * Handle the output of a gather endpoint, and redirect back
+   * into the flow of things
+   */
+  public static gatherNextMessage(currentBlock: string): string {
+    //TODO: parse out the twilio response, and redirect to the appropriate block
+
+    return '12345';
   }
 
 
   public static getBlock(blockName: string): any {
     switch(blockName) {
-      case 'entrypoint': 
+      case 'entrypoint': {
+        const path = flows[blockName];
+        const nextUrl = `../${path.success}`
+
         const response = new VoiceResponse();
         response.say({}, 'Hello, and welcome to voicebook');
+        response.redirect({ method: 'POST' }, nextUrl);
+
         return response;
-      break;
-      case 'intro_0':
+      }
 
+      case 'intro_0': {
+        const response = new VoiceResponse();
+        //Is this right? Do we route to a gather handler first?
+        response.gather({action: `/gather/${blockName}`, method: 'POST'});
+        response.say({}, 'To learn what is new in your community say SIKILIZA. To record a message that people in your community can hear, say TUMA. To learn more about this service say MSAADA. To hear these options again say KURUDIA.')
 
-      break;
+        return response;
+      }
       case 'error_0':
 
 
       break;
       default: 
-        throw new Error(`tried to getBlock for unknown block: ${blockName}`);
+        throw new AppError(404, `tried to getBlock for unknown block: ${blockName}`);
     }
   }
 

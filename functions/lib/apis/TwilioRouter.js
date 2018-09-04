@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const twilio = require("twilio");
+const AppError_1 = require("../utils/AppError");
 const VoiceResponse = twilio.twiml.VoiceResponse;
 /**
  * Flows is a graph based data structure, with the key being the valid
@@ -22,27 +23,40 @@ exports.flows = {
  * twilio response
  */
 class TwilioRouter {
-    static nextMessage(baseUrl, currentMessage) {
-        const path = exports.flows[currentMessage];
-        const nextUrl = `${baseUrl}/${path.success}`;
+    static nextMessage(currentBlock) {
         //Not sure if this will work, we may need to nest stuff
-        const response = TwilioRouter.getBlock('entrypoint');
-        response.redirect({ method: 'POST' }, nextUrl);
+        const response = TwilioRouter.getBlock(currentBlock);
         return response.toString();
+    }
+    /**
+     * Handle the output of a gather endpoint, and redirect back
+     * into the flow of things
+     */
+    static gatherNextMessage(currentBlock) {
+        //TODO: parse out the twilio response, and redirect to the appropriate block
+        return '12345';
     }
     static getBlock(blockName) {
         switch (blockName) {
-            case 'entrypoint':
+            case 'entrypoint': {
+                const path = exports.flows[blockName];
+                const nextUrl = `../${path.success}`;
                 const response = new VoiceResponse();
                 response.say({}, 'Hello, and welcome to voicebook');
+                response.redirect({ method: 'POST' }, nextUrl);
                 return response;
-                break;
-            case 'intro_0':
-                break;
+            }
+            case 'intro_0': {
+                const response = new VoiceResponse();
+                //Is this right? Do we route to a gather handler first?
+                response.gather({ action: `/gather/${blockName}`, method: 'POST' });
+                response.say({}, 'To learn what is new in your community say SIKILIZA. To record a message that people in your community can hear, say TUMA. To learn more about this service say MSAADA. To hear these options again say KURUDIA.');
+                return response;
+            }
             case 'error_0':
                 break;
             default:
-                throw new Error(`tried to getBlock for unknown block: ${blockName}`);
+                throw new AppError_1.default(404, `tried to getBlock for unknown block: ${blockName}`);
         }
     }
 }
