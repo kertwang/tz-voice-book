@@ -59,9 +59,13 @@ class FirebaseApi {
     }
     /**
      * get all of the pending recordings for the user
+     * Deprecated: This won't work as we expect
      */
-    getPendingRecordingsForUser(userId) {
-        return this.fs.collection('users').doc(userId).collection('pendingReadings').orderBy('createdAt', 'desc').get()
+    dep_getPendingRecordingsForUser(userId, limit) {
+        return this.fs.collection('users').doc(userId)
+            .collection('pendingReadings').orderBy('createdAt', 'desc')
+            .limit(limit)
+            .get()
             .then((sn) => {
             const recordings = [];
             sn.forEach(doc => {
@@ -74,10 +78,41 @@ class FirebaseApi {
         });
     }
     /**
+     * Save a reading to the pending collection
+     *
+     * Returns the id of the pending reading
+     */
+    savePendingRecording(recording) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.fs.collection('pendingReadings').add(recording)
+                .then(ref => ref.id);
+        });
+    }
+    /**
+     * Get all pending recordings for a given callSid, newest first
+     */
+    getPendingRecordings(callSid, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.fs.collection('pendingReadings').where('callSid', '==', callSid).limit(limit).get()
+                .then((sn) => {
+                const recordings = [];
+                sn.forEach(doc => {
+                    //Get each document, put in the id
+                    const data = doc.data();
+                    data.id = doc.id;
+                    recordings.push(data);
+                });
+                return recordings;
+            });
+        });
+    }
+    /**
      * Save a recording to the user's pending reading collection
      * returns an id to refer to the reading later on
+     *
+     * Deprecated: This won't work as we expect. Pending readings don't have a mobile number attached
      */
-    savePendingRecording(userId, recording) {
+    dep_savePendingRecording(userId, recording) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.fs.collection('users').doc(userId).collection('pendingReadings').add(recording)
                 .then(ref => ref.id);
@@ -86,7 +121,7 @@ class FirebaseApi {
     /**
      * Get a reading from a user's pendingRecording collection
      */
-    getPendingRecording(userId, pendingId) {
+    dep_getPendingRecording(userId, pendingId) {
         //No need to deserialize just yet, no methods on the Recording type...
         return this.fs.collection('users').doc(userId).collection('pendingReadings').doc(pendingId).get();
     }

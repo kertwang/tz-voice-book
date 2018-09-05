@@ -10,12 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const cors = require("cors");
+const moment = require("moment");
 const morgan = require("morgan");
 const morganBody = require("morgan-body");
 const TwilioRouter_1 = require("../apis/TwilioRouter");
 const ErrorHandler_1 = require("../utils/ErrorHandler");
 const utils_1 = require("../utils");
-const AppApi_1 = require("../apis/AppApi");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
@@ -39,6 +39,12 @@ module.exports = (functions, admin, twilioClient) => {
     /* CORS Configuration */
     const openCors = cors({ origin: '*' });
     app.use(openCors);
+    app.use((req, res, next) => {
+        if (!req.body.From) {
+            console.log("WARNING: No FROM found in request body");
+        }
+        return next();
+    });
     /**
      * Collect partial results for debugging purposes.
      */
@@ -58,36 +64,48 @@ module.exports = (functions, admin, twilioClient) => {
      * Handle Twilio Callback to save the recording for pending submission.
      */
     app.post('/recordingCallback/message', (req, res) => __awaiter(this, void 0, void 0, function* () {
-        const appApi = yield AppApi_1.default.fromMobileNumber(firebaseApi, req.body.From);
-        const pendingId = appApi.savePendingRecording(req.body.RecordingUrl);
+        const recording = {
+            url: req.body.RecordingUrl,
+            createdAt: moment().toISOString(),
+            callSid: req.body.CallSid,
+        };
+        const pendingId = yield firebaseApi.savePendingRecording(recording);
         res.json(pendingId);
     }));
     /**
      * Action callback handlers.
      */
-    app.post('/gather/*', (req, res) => {
-        const appApi = AppApi_1.default.fromMobileNumber(firebaseApi, req.body.From);
+    app.post('/gather/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const ctx = {
+            callSid: req.body.CallSid,
+            mobile: req.body.From,
+            firebaseApi,
+        };
         const blockName = utils_1.pathToBlock(req.path);
         const gatherResult = {
             speechResult: req.body.SpeechResult,
             confidence: req.body.Confidence,
         };
         utils_1.logGatherBlock(blockName, gatherResult);
-        const result = TwilioRouter_1.default.gatherNextMessage(blockName, gatherResult);
+        const result = yield TwilioRouter_1.default.gatherNextMessage(ctx, blockName, gatherResult);
         utils_1.logTwilioResponse(result);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);
-    });
+    }));
     /**
      * Handle all normal routes
      */
-    app.post('/*', (req, res) => {
-        const appApi = AppApi_1.default.fromMobileNumber(firebaseApi, req.body.From);
+    app.post('/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const ctx = {
+            callSid: req.body.CallSid,
+            mobile: req.body.From,
+            firebaseApi,
+        };
         const blockName = utils_1.pathToBlock(req.path);
-        const result = TwilioRouter_1.default.nextMessage(blockName);
+        const result = yield TwilioRouter_1.default.nextMessage(ctx, blockName);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);
-    });
+    }));
     /*Error Handling - must be at bottom!*/
     app.use(ErrorHandler_1.default);
     return functions.https.onRequest(app);

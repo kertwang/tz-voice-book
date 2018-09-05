@@ -35,6 +35,15 @@ class AppApi {
         return this.fb.savePendingRecording(this.user.id, recording);
     }
     /**
+     * Get the pending recordings from the user, newest first
+     */
+    getPendingRecordings(limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const recordings = yield this.fb.getPendingRecordingsForUser(this.user.id, 5);
+            return recordings;
+        });
+    }
+    /**
      * Publish a recording from ther user's pending list, and remove it
      */
     publishRecordingFromPendingList(pendingId) {

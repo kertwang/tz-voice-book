@@ -8,8 +8,8 @@ import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
 import { pathToBlock, logGatherBlock, logTwilioResponse } from '../utils';
-import { GatherResult } from '../Types/TwilioRouter';
-import AppApi from '../apis/AppApi';
+import { GatherResult, CallContext } from '../Types/TwilioRouter';
+import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
 
 //TODO: make newer import format
@@ -40,6 +40,14 @@ module.exports = (functions, admin, twilioClient) => {
   const openCors = cors({ origin: '*' });
   app.use(openCors);
 
+  app.use((req, res, next) => {
+    if(!req.body.From) {
+      console.log("WARNING: No FROM found in request body");
+    }
+
+    return next();
+  });
+
   /**
    * Collect partial results for debugging purposes.
    */
@@ -62,8 +70,12 @@ module.exports = (functions, admin, twilioClient) => {
    * Handle Twilio Callback to save the recording for pending submission.
    */
   app.post('/recordingCallback/message', async (req, res) => {
-    const appApi = await AppApi.fromMobileNumber(firebaseApi, req.body.From);
-    const pendingId = appApi.savePendingRecording(req.body.RecordingUrl);
+    const recording: Recording = {
+      url: req.body.RecordingUrl,
+      createdAt: moment().toISOString(),
+      callSid: req.body.CallSid,
+    };
+    const pendingId = await firebaseApi.savePendingRecording(recording);
 
     res.json(pendingId);
   });
@@ -71,8 +83,12 @@ module.exports = (functions, admin, twilioClient) => {
   /**
    * Action callback handlers.
    */
-  app.post('/gather/*', (req, res) => {
-    const appApi = AppApi.fromMobileNumber(firebaseApi, req.body.From);
+  app.post('/gather/*', async (req, res) => {
+    const ctx: CallContext = {
+      callSid: req.body.CallSid,
+      mobile: req.body.From,
+      firebaseApi,
+    }
     const blockName = pathToBlock(req.path);
     
     const gatherResult: GatherResult = {
@@ -80,7 +96,7 @@ module.exports = (functions, admin, twilioClient) => {
       confidence: req.body.Confidence,
     };
     logGatherBlock(blockName, gatherResult);
-    const result = TwilioRouter.gatherNextMessage(blockName, gatherResult);
+    const result = await TwilioRouter.gatherNextMessage(ctx, blockName, gatherResult);
     logTwilioResponse(result);
 
     res.writeHead(200, { 'Content-Type': 'text/xml' });
@@ -90,11 +106,15 @@ module.exports = (functions, admin, twilioClient) => {
   /**
    * Handle all normal routes
    */
-  app.post('/*', (req, res) => {
-    const appApi = AppApi.fromMobileNumber(firebaseApi, req.body.From);
+  app.post('/*', async (req, res) => {
+    const ctx: CallContext = {
+      callSid: req.body.CallSid,
+      mobile: req.body.From,
+      firebaseApi,
+    }
     const blockName = pathToBlock(req.path);
 
-    const result = TwilioRouter.nextMessage(blockName);
+    const result = await TwilioRouter.nextMessage(ctx, blockName);
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(result);
   });

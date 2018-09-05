@@ -1,3 +1,4 @@
+import FirebaseApi from "../apis/FirebaseApi";
 
 /**
  * A block is a request for twiml that we respond to.
@@ -46,4 +47,11 @@ export type FlowMatch = {
 export type GatherResult = {
   speechResult: string,
   confidence: number,
+}
+
+export type CallContext = {
+  callSid: string,
+  mobile: string,
+  firebaseApi: FirebaseApi,
+  //We could put the appApi in here, but I'm not too sure thats the best idea...
 }

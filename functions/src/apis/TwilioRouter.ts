@@ -4,9 +4,10 @@ import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { lang } from 'moment';
 import { logTwilioResponse } from '../utils';
-import { Block, FlowMap, GatherResult } from '../Types/TwilioRouter';
+import { Block, FlowMap, GatherResult, CallContext } from '../Types/TwilioRouter';
 import { baseUrl } from '../utils/Env';
 import TwilioFlows from './TwilioFlows';
+import UserApi, { Recording } from './UserApi';
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
 /**
@@ -16,15 +17,15 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
  */
 export default class TwilioRouter {
 
-  public static async nextMessage(currentBlock: Block): Promise<string> {
+  public static async nextMessage(ctx: CallContext, currentBlock: Block): Promise<string> {
     //Not sure if this will work, we may need to nest stuff
-    const response = TwilioRouter.getBlock(currentBlock);
+    const response = await TwilioRouter.getBlock(ctx, currentBlock);
     logTwilioResponse(response.toString());
 
     return response.toString();
   }
 
-  public static getBlock(blockName: Block): any {
+  public static async getBlock(ctx: CallContext, blockName: Block): Promise<any> {
     const path = TwilioFlows[blockName];
     const response = new VoiceResponse();
     
@@ -73,7 +74,7 @@ export default class TwilioRouter {
       }
       case Block.listen_0: {
 
-        //TODO:
+        //TODO: get messages from appApi
         response.say({}, 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.');
         response.say({}, 'Message 1: Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.');
         response.say({}, 'Message 2: Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.');
@@ -92,7 +93,6 @@ export default class TwilioRouter {
           input: 'speech',
           hints: 'maoni,sikiliza',
           partialResultCallbackMethod: 'POST',
-          //TODO: env var this shit!
           partialResultCallback: `${baseUrl}/twiml/recognitionResults`
         });
         gather.say({}, 'There are no other recent messages for your community. You can hang up now. Or, to leave a message say sikiliza. To tell us how we can improve this service say, maoni.');
@@ -136,7 +136,6 @@ export default class TwilioRouter {
       case Block.record_0: {
         response.say({}, 'Your message will be heard by people who call this number FOR ONE WEEK, so say things that you want other people in your community to hear. This is a great way to let people know about news, business, and social events.');
         response.say({}, 'To record a short message for COMMUNITY, start speaking after you hear a beep. When you are finished, stop talking or press any number on your phone. You will have the opportunity to review your message before we post it.');
-        //TODO: we need to get this message back somehow!
         response.record({
           action: `${baseUrl}/twiml/${path.success}`,
           maxLength: 10,
@@ -147,9 +146,14 @@ export default class TwilioRouter {
         return response;
       }
       case Block.record_playback: {
+        const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordings(ctx.callSid, 1);
+        if (recordings.length === 0) {
+          response.say({}, 'There was a problem saving your recording. Please try again.');
+        }
+        const recording = recordings[0];
+        
         response.say({}, 'You said:');
-        //TODO: actually get the message from the database!!!
-        response.say({}, 'Lewis you are the best');
+        response.play({}, recording.url);
         response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${path.success}`);
         return response;
       }
@@ -210,9 +214,10 @@ export default class TwilioRouter {
    * Handle the output of a gather endpoint, and redirect back
    * into the flow of things
    */
-  public static gatherNextMessage(
+  public static async gatherNextMessage(
+    ctx: CallContext,
     currentBlock: Block,
-    gatherResult: GatherResult): string {
+    gatherResult: GatherResult): Promise<string> {
     //TODO: parse out the twilio response, and redirect to the appropriate block
 
     //TODO: we will need to reformat this nicely soon.
@@ -228,8 +233,11 @@ export default class TwilioRouter {
           const stringMatches = path.matches.map(m => m.term);
           const idx = stringMatches.indexOf(gatherResult.speechResult.trim());
 
+          //No match found :(
           if (idx === -1) {
-            return TwilioRouter.getBlock(path.error).toString();
+            const errorResponse = await TwilioRouter.getBlock(ctx, path.error);
+            console.log("got errorResponse", errorResponse);
+            return errorResponse.toString();
           }
 
           const nextBlock = path.matches[idx].nextBlock;
