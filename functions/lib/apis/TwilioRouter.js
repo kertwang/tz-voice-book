@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const twilio = require("twilio");
@@ -15,10 +23,12 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
  */
 class TwilioRouter {
     static nextMessage(currentBlock) {
-        //Not sure if this will work, we may need to nest stuff
-        const response = TwilioRouter.getBlock(currentBlock);
-        utils_1.logTwilioResponse(response.toString());
-        return response.toString();
+        return __awaiter(this, void 0, void 0, function* () {
+            //Not sure if this will work, we may need to nest stuff
+            const response = TwilioRouter.getBlock(currentBlock);
+            utils_1.logTwilioResponse(response.toString());
+            return response.toString();
+        });
     }
     static getBlock(blockName) {
         const path = TwilioFlows_1.default[blockName];
@@ -109,7 +119,7 @@ class TwilioRouter {
                     action: `${Env_1.baseUrl}/twiml/${path.success}`,
                     maxLength: 10,
                     transcribe: false,
-                    recordingStatusCallback: `${Env_1.baseUrl}/twiml/recordingCallback?${blockName}`
+                    recordingStatusCallback: `${Env_1.baseUrl}/twiml/recordingCallback/feedback`
                 });
                 return response;
             }
@@ -125,7 +135,7 @@ class TwilioRouter {
                     action: `${Env_1.baseUrl}/twiml/${path.success}`,
                     maxLength: 10,
                     transcribe: false,
-                    recordingStatusCallback: `${Env_1.baseUrl}/twiml/recordingCallback?${blockName}`
+                    recordingStatusCallback: `${Env_1.baseUrl}/twiml/recordingCallback/message`
                 });
                 return response;
             }

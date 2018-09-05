@@ -16,7 +16,7 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
  */
 export default class TwilioRouter {
 
-  public static nextMessage(currentBlock: Block): string {
+  public static async nextMessage(currentBlock: Block): Promise<string> {
     //Not sure if this will work, we may need to nest stuff
     const response = TwilioRouter.getBlock(currentBlock);
     logTwilioResponse(response.toString());
@@ -123,7 +123,7 @@ export default class TwilioRouter {
           action: `${baseUrl}/twiml/${path.success}`,
           maxLength: 10,
           transcribe: false,
-          recordingStatusCallback: `${baseUrl}/twiml/recordingCallback?${blockName}`
+          recordingStatusCallback: `${baseUrl}/twiml/recordingCallback/feedback`
         });
 
         return response;
@@ -141,7 +141,7 @@ export default class TwilioRouter {
           action: `${baseUrl}/twiml/${path.success}`,
           maxLength: 10,
           transcribe: false,
-          recordingStatusCallback: `${baseUrl}/twiml/recordingCallback?${blockName}`
+          recordingStatusCallback: `${baseUrl}/twiml/recordingCallback/message`
         });
 
         return response;
