@@ -38,7 +38,7 @@ class TwilioRouter {
                     // API doesn't have this for some reason
                     language: 'sw-TZ',
                     input: 'speech',
-                    hints: 'sikiliza, tuma, msaada, kurudia',
+                    hints: 'sikiliza,tuma,msaada,kurudia',
                     partialResultCallbackMethod: 'POST',
                     partialResultCallback: `${Env_1.baseUrl}/twiml/recognitionResults`
                 });
@@ -54,7 +54,7 @@ class TwilioRouter {
                     // API doesn't have this for some reason
                     language: 'sw-TZ',
                     input: 'speech',
-                    hints: 'sikiliza, tuma, msaada, kurudia',
+                    hints: 'sikiliza,tuma,msaada,kurudia',
                     partialResultCallbackMethod: 'POST',
                     partialResultCallback: `${Env_1.baseUrl}/twiml/recognitionResults`
                 });
@@ -78,7 +78,7 @@ class TwilioRouter {
                     // API doesn't have this for some reason
                     language: 'sw-TZ',
                     input: 'speech',
-                    hints: 'maoni, sikiliza',
+                    hints: 'maoni,sikiliza',
                     partialResultCallbackMethod: 'POST',
                     //TODO: env var this shit!
                     partialResultCallback: `${Env_1.baseUrl}/twiml/recognitionResults`
@@ -90,12 +90,12 @@ class TwilioRouter {
             case TwilioRouter_1.Block.listen_end_error: {
                 //@ts-ignore
                 const gather = response.gather({
-                    action: `${Env_1.baseUrl}/twiml/gather/${blockName}`,
+                    action: `${Env_1.baseUrl}/twiml/gather/${path.success}`,
                     method: 'POST',
                     // API doesn't have this for some reason
                     language: 'sw-TZ',
                     input: 'speech',
-                    hints: 'maoni, sikiliza',
+                    hints: 'maoni,sikiliza',
                     partialResultCallbackMethod: 'POST',
                     partialResultCallback: `${Env_1.baseUrl}/twiml/recognitionResults`
                 });
@@ -129,10 +129,11 @@ class TwilioRouter {
                 });
                 return response;
             }
-            case TwilioRouter_1.Block.record_1: {
+            case TwilioRouter_1.Block.record_playback: {
                 response.say({}, 'You said:');
                 //TODO: actually get the message from the database!!!
                 response.say({}, 'Lewis you are the best');
+                response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${path.success}`);
                 return response;
             }
             case TwilioRouter_1.Block.record_post_or_delete: {
@@ -143,7 +144,7 @@ class TwilioRouter {
                     // API doesn't have this for some reason
                     language: 'sw-TZ',
                     input: 'speech',
-                    hints: 'tuma, anza tena, anza, tena',
+                    hints: 'tuma,anza tena,anza,tena',
                     partialResultCallbackMethod: 'POST',
                     //TODO: env var this shit!
                     partialResultCallback: `${Env_1.baseUrl}/twiml/recognitionResults`
@@ -155,12 +156,12 @@ class TwilioRouter {
             case TwilioRouter_1.Block.record_post_or_delete_error: {
                 //@ts-ignore
                 const gather = response.gather({
-                    action: `${Env_1.baseUrl}/twiml/gather/${blockName}`,
+                    action: `${Env_1.baseUrl}/twiml/gather/${path.success}`,
                     method: 'POST',
                     // API doesn't have this for some reason
                     language: 'sw-TZ',
                     input: 'speech',
-                    hints: 'tuma, anza tena, anza, tena',
+                    hints: 'tuma,anza tena,anza,tena',
                     partialResultCallbackMethod: 'POST',
                     //TODO: env var this shit!
                     partialResultCallback: `${Env_1.baseUrl}/twiml/recognitionResults`
@@ -201,7 +202,7 @@ class TwilioRouter {
                     //TODO: implement string search better
                     //TODO: handle extra spaces??
                     const stringMatches = path.matches.map(m => m.term);
-                    const idx = stringMatches.indexOf(gatherResult.speechResult);
+                    const idx = stringMatches.indexOf(gatherResult.speechResult.trim());
                     if (idx === -1) {
                         return TwilioRouter.getBlock(path.error).toString();
                     }
