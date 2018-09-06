@@ -17,16 +17,15 @@ const TwilioRouter_1 = require("../apis/TwilioRouter");
 const ErrorHandler_1 = require("../utils/ErrorHandler");
 const utils_1 = require("../utils");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
+const Firestore_1 = require("../apis/Firestore");
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const bodyParser = require('body-parser');
 const Joi = require('joi');
-const fb = require('firebase-admin');
-module.exports = (functions, admin, twilioClient) => {
+module.exports = (functions) => {
     const app = express();
     app.use(bodyParser.json());
-    const fs = admin.firestore();
-    const firebaseApi = new FirebaseApi_1.default(fs);
+    const firebaseApi = new FirebaseApi_1.default(Firestore_1.default);
     if (process.env.VERBOSE_LOG === 'false') {
         console.log('Using simple log');
         app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));

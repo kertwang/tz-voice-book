@@ -41,7 +41,7 @@ describe('FirebaseApi', function() {
       pendingId = await firebaseApi.savePendingRecording(recording);
     });
 
-    it.only('gets the pending recordings', async () => {
+    it('gets the pending recordings', async () => {
       //Arrange
       const callSid = "12345";
 

@@ -11,18 +11,18 @@ import { pathToBlock, logGatherBlock, logTwilioResponse } from '../utils';
 import { GatherResult, CallContext } from '../Types/TwilioRouter';
 import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
+import fs from '../apis/Firestore';
+
 
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 const bodyParser = require('body-parser');
 const Joi = require('joi');
-const fb = require('firebase-admin');
 
-module.exports = (functions, admin, twilioClient) => {
+module.exports = (functions) => {
   const app = express();
   app.use(bodyParser.json());
-  const fs = admin.firestore();
   const firebaseApi = new FirebaseApi(fs);
 
 
