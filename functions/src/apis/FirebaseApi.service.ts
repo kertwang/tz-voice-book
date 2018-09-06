@@ -27,6 +27,7 @@ describe('FirebaseApi', function() {
   //   firebaseApi: new FirebaseApi(fs)
   // };
 
+  //TODO:this still saves to the wrong firebase account o
   describe('getPendingRecordings', () => {
     let pendingId: string;
 
@@ -58,6 +59,18 @@ describe('FirebaseApi', function() {
     });
 
     //TODO: cleanup
+  });
+
+  describe('getPendingRecordingsWithRetries', () => {
+    it.only('tries all the times', async () => {
+      //Arrange
+
+      //Act
+      const result = await firebaseApi.getPendingRecordingsWithRetries('not_a_real_call', 1, 5);
+
+      //Assert
+      console.log("result", result);
+    });
   });
 
 });

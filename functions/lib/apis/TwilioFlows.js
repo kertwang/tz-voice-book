@@ -9,8 +9,8 @@ const TwilioRouter_1 = require("../Types/TwilioRouter");
 const TwilioFlows = {
     'entrypoint': {
         // TODO: change back for debugging only.
-        // success: Block.intro_0,
-        success: TwilioRouter_1.Block.record_0,
+        success: TwilioRouter_1.Block.intro_0,
+        // success: Block.record_0,
         error: null,
         matches: null
     },

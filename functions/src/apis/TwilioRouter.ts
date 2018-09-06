@@ -136,6 +136,8 @@ export default class TwilioRouter {
       case Block.record_0: {
         response.say({}, 'Your message will be heard by people who call this number FOR ONE WEEK, so say things that you want other people in your community to hear. This is a great way to let people know about news, business, and social events.');
         response.say({}, 'To record a short message for COMMUNITY, start speaking after you hear a beep. When you are finished, stop talking or press any number on your phone. You will have the opportunity to review your message before we post it.');
+        //TODO: debug only
+        // response.say({}, 'In the words of JT, say something.');
         response.record({
           action: `${baseUrl}/twiml/${path.success}`,
           maxLength: 10,
@@ -146,7 +148,8 @@ export default class TwilioRouter {
         return response;
       }
       case Block.record_playback: {
-        const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordings(ctx.callSid, 1);
+        console.log("context is:", ctx);
+        const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
         if (recordings.length === 0) {
           response.say({}, 'There was a problem saving your recording. Please try again.');
           return response;
@@ -195,12 +198,21 @@ export default class TwilioRouter {
         return response;
       }
       case Block.record_save: {
-        //TODO: save the message to public
-        response.say({}, 'Thanks! Your message will be posted');
+        const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
+        if (recordings.length === 0) {
+          response.say({}, 'There was a problem saving your recording. Please try again.');
+          return response;
+        }
+        const recording = recordings[0];
+        await ctx.firebaseApi.postRecording(recording);
+
+        response.say({}, 'Thanks! Your message will be posted.');
         response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${path.success}`);
         return response;
       }
       case Block.record_delete: {
+        await ctx.firebaseApi.deletePendingRecordingsForCall(ctx.callSid);
+
         response.say({}, 'Your message was erased and will not be posted.');
         response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${path.success}`);
         return response;
@@ -237,7 +249,6 @@ export default class TwilioRouter {
           //No match found :(
           if (idx === -1) {
             const errorResponse = await TwilioRouter.getBlock(ctx, path.error);
-            console.log("got errorResponse", errorResponse);
             return errorResponse.toString();
           }
 
@@ -255,6 +266,4 @@ export default class TwilioRouter {
       }
     }
   }
-
-
 }

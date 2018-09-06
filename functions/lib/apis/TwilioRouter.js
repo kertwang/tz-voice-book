@@ -130,6 +130,8 @@ class TwilioRouter {
                 case TwilioRouter_1.Block.record_0: {
                     response.say({}, 'Your message will be heard by people who call this number FOR ONE WEEK, so say things that you want other people in your community to hear. This is a great way to let people know about news, business, and social events.');
                     response.say({}, 'To record a short message for COMMUNITY, start speaking after you hear a beep. When you are finished, stop talking or press any number on your phone. You will have the opportunity to review your message before we post it.');
+                    //TODO: debug only
+                    // response.say({}, 'In the words of JT, say something.');
                     response.record({
                         action: `${Env_1.baseUrl}/twiml/${path.success}`,
                         maxLength: 10,
@@ -139,7 +141,8 @@ class TwilioRouter {
                     return response;
                 }
                 case TwilioRouter_1.Block.record_playback: {
-                    const recordings = yield ctx.firebaseApi.getPendingRecordings(ctx.callSid, 1);
+                    console.log("context is:", ctx);
+                    const recordings = yield ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
                     if (recordings.length === 0) {
                         response.say({}, 'There was a problem saving your recording. Please try again.');
                         return response;
@@ -185,12 +188,19 @@ class TwilioRouter {
                     return response;
                 }
                 case TwilioRouter_1.Block.record_save: {
-                    //TODO: save the message to public
-                    response.say({}, 'Thanks! Your message will be posted');
+                    const recordings = yield ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
+                    if (recordings.length === 0) {
+                        response.say({}, 'There was a problem saving your recording. Please try again.');
+                        return response;
+                    }
+                    const recording = recordings[0];
+                    yield ctx.firebaseApi.postRecording(recording);
+                    response.say({}, 'Thanks! Your message will be posted.');
                     response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${path.success}`);
                     return response;
                 }
                 case TwilioRouter_1.Block.record_delete: {
+                    yield ctx.firebaseApi.deletePendingRecordingsForCall(ctx.callSid);
                     response.say({}, 'Your message was erased and will not be posted.');
                     response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${path.success}`);
                     return response;
@@ -222,7 +232,6 @@ class TwilioRouter {
                         //No match found :(
                         if (idx === -1) {
                             const errorResponse = yield TwilioRouter.getBlock(ctx, path.error);
-                            console.log("got errorResponse", errorResponse);
                             return errorResponse.toString();
                         }
                         const nextBlock = path.matches[idx].nextBlock;

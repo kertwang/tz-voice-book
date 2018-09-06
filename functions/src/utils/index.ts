@@ -26,3 +26,7 @@ export function logTwilioResponse(xmlString: string) {
 
   console.log(`TWILIO Response: \n ${format(xmlString)}`);
 }
+
+export function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils");
 class FirebaseApi {
     constructor(fs) {
         this.fs = fs;
@@ -58,26 +59,6 @@ class FirebaseApi {
         });
     }
     /**
-     * get all of the pending recordings for the user
-     * Deprecated: This won't work as we expect
-     */
-    dep_getPendingRecordingsForUser(userId, limit) {
-        return this.fs.collection('users').doc(userId)
-            .collection('pendingReadings').orderBy('createdAt', 'desc')
-            .limit(limit)
-            .get()
-            .then((sn) => {
-            const recordings = [];
-            sn.forEach(doc => {
-                //Get each document, put in the id
-                const data = doc.data();
-                data.id = doc.id;
-                recordings.push(data);
-            });
-            return recordings;
-        });
-    }
-    /**
      * Save a reading to the pending collection
      *
      * Returns the id of the pending reading
@@ -85,7 +66,11 @@ class FirebaseApi {
     savePendingRecording(recording) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.fs.collection('pendingRecordings').add(recording)
-                .then(ref => ref.id);
+                .then(ref => ref.id)
+                .catch(err => {
+                console.log("Error in savePendingRecording", err);
+                return Promise.reject(err);
+            });
         });
     }
     /**
@@ -107,23 +92,30 @@ class FirebaseApi {
         });
     }
     /**
-     * Save a recording to the user's pending reading collection
-     * returns an id to refer to the reading later on
-     *
-     * Deprecated: This won't work as we expect. Pending readings don't have a mobile number attached
+     * call getPendingRecordings with a number of retries.
+     * This is because the callback to save the pending recording sometimes takes
+     * too long, and causes the call to die
      */
-    dep_savePendingRecording(userId, recording) {
+    getPendingRecordingsWithRetries(callSid, limit, retries, timeoutMs = 10) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fs.collection('users').doc(userId).collection('pendingReadings').add(recording)
-                .then(ref => ref.id);
+            const result = yield this.getPendingRecordings(callSid, limit);
+            // console.log("retries, ", retries, "sleeping for:", timeoutMs);
+            if (result.length > 0) {
+                return result;
+            }
+            if (retries === 0) {
+                console.log('Out of retries. Returning a bad result.');
+                return result;
+            }
+            yield utils_1.sleep(timeoutMs);
+            return this.getPendingRecordingsWithRetries(callSid, limit, retries - 1, timeoutMs * 2);
         });
     }
-    /**
-     * Get a reading from a user's pendingRecording collection
-     */
-    dep_getPendingRecording(userId, pendingId) {
-        //No need to deserialize just yet, no methods on the Recording type...
-        return this.fs.collection('users').doc(userId).collection('pendingReadings').doc(pendingId).get();
+    deletePendingRecordingsForCall(callSid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //TODO: implement this
+            return Promise.resolve(true);
+        });
     }
     /**
      * Publish a recording for everyone else to listen to.

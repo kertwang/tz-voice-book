@@ -8,8 +8,8 @@ import { FlowMap, Block } from "../Types/TwilioRouter";
 const TwilioFlows: FlowMap = {
   'entrypoint': {
     // TODO: change back for debugging only.
-    // success: Block.intro_0,
-    success: Block.record_0,
+    success: Block.intro_0,
+    // success: Block.record_0,
     error: null,
     matches: null
   },

@@ -1,4 +1,5 @@
 import { User, Recording } from "./UserApi";
+import { sleep } from "../utils";
 
 
 export default class FirebaseApi {
@@ -62,35 +63,17 @@ export default class FirebaseApi {
   }
 
   /**
-   * get all of the pending recordings for the user
-   * Deprecated: This won't work as we expect
-   */
-  public dep_getPendingRecordingsForUser(userId: string, limit: number): Promise<Recording[]> {
-    return this.fs.collection('users').doc(userId)
-      .collection('pendingReadings').orderBy('createdAt', 'desc')
-      .limit(limit)
-      .get()
-    .then((sn: any) => {
-      const recordings: Recording[] = [];
-      sn.forEach(doc => {
-        //Get each document, put in the id
-        const data = doc.data();
-        data.id = doc.id;
-        recordings.push(data);
-      });
-
-      return recordings;
-    });
-  }
-
-  /**
    * Save a reading to the pending collection
    * 
    * Returns the id of the pending reading
    */
   public async savePendingRecording(recording: Recording): Promise<string> {
     return this.fs.collection('pendingRecordings').add(recording)
-    .then(ref => ref.id);
+    .then(ref => ref.id)
+    .catch(err => {
+      console.log("Error in savePendingRecording", err);
+      return Promise.reject(err);
+    })
   }
 
 
@@ -113,22 +96,30 @@ export default class FirebaseApi {
   }
 
   /**
-   * Save a recording to the user's pending reading collection
-   * returns an id to refer to the reading later on
-   * 
-   * Deprecated: This won't work as we expect. Pending readings don't have a mobile number attached
+   * call getPendingRecordings with a number of retries.
+   * This is because the callback to save the pending recording sometimes takes
+   * too long, and causes the call to die
    */
-  public async dep_savePendingRecording(userId: string, recording: Recording): Promise<string> {
-    return this.fs.collection('users').doc(userId).collection('pendingReadings').add(recording)
-    .then(ref => ref.id)
+  public async getPendingRecordingsWithRetries(callSid: string, limit: number, retries: number, timeoutMs: number = 10): Promise<Recording[]> {
+    const result = await this.getPendingRecordings(callSid, limit);
+    // console.log("retries, ", retries, "sleeping for:", timeoutMs);
+
+    if (result.length > 0) {
+      return result;
+    }
+
+    if (retries === 0) {
+      console.log('Out of retries. Returning a bad result.');
+      return result;
+    }
+
+    await sleep(timeoutMs);
+    return this.getPendingRecordingsWithRetries(callSid, limit, retries - 1, timeoutMs * 2);
   }
 
-  /**
-   * Get a reading from a user's pendingRecording collection
-   */
-  public dep_getPendingRecording(userId: string, pendingId: string): Promise<Recording> {
-    //No need to deserialize just yet, no methods on the Recording type...
-    return this.fs.collection('users').doc(userId).collection('pendingReadings').doc(pendingId).get();
+  public async deletePendingRecordingsForCall(callSid: string): Promise<any> {
+    //TODO: implement this
+    return Promise.resolve(true);
   }
 
   /**

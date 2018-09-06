@@ -111,7 +111,7 @@ module.exports = (functions) => {
       callSid: req.body.CallSid,
       mobile: req.body.From,
       firebaseApi,
-    }
+    };
     const blockName = pathToBlock(req.path);
 
     const result = await TwilioRouter.nextMessage(ctx, blockName);
