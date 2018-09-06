@@ -6,7 +6,7 @@ function pathToBlock(path) {
     const sanitized = path
         .replace('/gather/', '')
         .replace('/', '');
-    return TwilioRouter_1.Block[sanitized];
+    return TwilioRouter_1.BlockId[sanitized];
 }
 exports.pathToBlock = pathToBlock;
 function logGatherBlock(block, result) {

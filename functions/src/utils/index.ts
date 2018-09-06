@@ -1,17 +1,17 @@
-import { Block, GatherResult } from "../types/TwilioRouter";
+import { BlockId, GatherResult } from "../types/TwilioRouter";
 import * as format from 'xml-formatter';
 
 
-export function pathToBlock(path: string): Block {
+export function pathToBlock(path: string): BlockId {
 
   const sanitized = path
     .replace('/gather/', '')
     .replace('/', '');
   
-  return Block[sanitized];
+  return BlockId[sanitized];
 }
 
-export function logGatherBlock(block: Block, result: GatherResult) {
+export function logGatherBlock(block: BlockId, result: GatherResult) {
   if (process.env.VERBOSE_LOG !== 'true') {
     return;
   }

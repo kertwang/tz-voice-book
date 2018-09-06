@@ -4,9 +4,9 @@ import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { lang } from 'moment';
 import { logTwilioResponse } from '../utils';
-import { Block, FlowMap, GatherResult, CallContext } from '../Types/TwilioRouter';
+import { BlockId, FlowMap, GatherResult, CallContext } from '../Types/TwilioRouter';
 import { baseUrl } from '../utils/Env';
-import TwilioFlows from './TwilioFlows';
+import TwilioFlows from '../content/TwilioFlows';
 import UserApi, { Recording } from './UserApi';
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
@@ -17,7 +17,7 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
  */
 export default class TwilioRouter {
 
-  public static async nextMessage(ctx: CallContext, currentBlock: Block): Promise<string> {
+  public static async nextMessage(ctx: CallContext, currentBlock: BlockId): Promise<string> {
     //Not sure if this will work, we may need to nest stuff
     const response = await TwilioRouter.getBlock(ctx, currentBlock);
     logTwilioResponse(response.toString());
@@ -25,7 +25,7 @@ export default class TwilioRouter {
     return response.toString();
   }
 
-  public static async getBlock(ctx: CallContext, blockName: Block): Promise<any> {
+  public static async getBlock(ctx: CallContext, blockName: BlockId): Promise<any> {
     const path = TwilioFlows[blockName];
     const response = new VoiceResponse();
     
@@ -39,7 +39,7 @@ export default class TwilioRouter {
         return response;
       }
 
-      case Block.intro_0: {
+      case BlockId.intro_0: {
         //@ts-ignore
         const gather = response.gather({
           action: `${baseUrl}/twiml/gather/${blockName}`, 
@@ -56,7 +56,7 @@ export default class TwilioRouter {
 
         return response;
       }
-      case Block.error_0: {
+      case BlockId.error_0: {
         //@ts-ignore
         const gather = response.gather({
           action: `${baseUrl}/twiml/gather/${path.success}`,
@@ -72,7 +72,7 @@ export default class TwilioRouter {
 
         return response;
       }
-      case Block.listen_0: {
+      case BlockId.listen_0: {
 
         //TODO: get messages from appApi
         response.say({}, 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.');
@@ -83,7 +83,7 @@ export default class TwilioRouter {
 
         return response;
       }
-      case Block.listen_end: {
+      case BlockId.listen_end: {
         //@ts-ignore
         const gather = response.gather({
           action: `${baseUrl}/twiml/gather/${blockName}`,
@@ -95,12 +95,13 @@ export default class TwilioRouter {
           partialResultCallbackMethod: 'POST',
           partialResultCallback: `${baseUrl}/twiml/recognitionResults`
         });
-        gather.say({}, 'There are no other recent messages for your community. You can hang up now. Or, to leave a message say sikiliza. To tell us how we can improve this service say, maoni.');
+        gather.say({}, 'There are no other recent messages for your community.');
+        gather.say({}, 'You can hang up now. Or, to leave a message say sikiliza. To tell us how we can improve this service say, maoni.');
         response.say({}, 'We didn\'t receive any input. Hrrmm.');
 
         return response;
       }
-      case Block.listen_end_error: {
+      case BlockId.listen_end_error: {
         //@ts-ignore
         const gather = response.gather({
           action: `${baseUrl}/twiml/gather/${path.success}`,
@@ -117,7 +118,7 @@ export default class TwilioRouter {
 
         return response;
       }
-      case Block.listen_feedback: {
+      case BlockId.listen_feedback: {
         response.say({}, 'We do our best to serve you.If you have any feedback for us, please leave us a message.If you would like us to return your call, please let us know what number to reach you.');
         response.record({
           action: `${baseUrl}/twiml/${path.success}`,
@@ -128,12 +129,12 @@ export default class TwilioRouter {
 
         return response;
       }
-      case Block.listen_feedback_complete: {
+      case BlockId.listen_feedback_complete: {
         response.say({}, 'Thanks! Your feedback has been recorded.');
 
         return response;
       }
-      case Block.record_0: {
+      case BlockId.record_0: {
         response.say({}, 'Your message will be heard by people who call this number FOR ONE WEEK, so say things that you want other people in your community to hear. This is a great way to let people know about news, business, and social events.');
         response.say({}, 'To record a short message for COMMUNITY, start speaking after you hear a beep. When you are finished, stop talking or press any number on your phone. You will have the opportunity to review your message before we post it.');
         //TODO: debug only
@@ -147,7 +148,7 @@ export default class TwilioRouter {
 
         return response;
       }
-      case Block.record_playback: {
+      case BlockId.record_playback: {
         console.log("context is:", ctx);
         const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
         if (recordings.length === 0) {
@@ -161,7 +162,7 @@ export default class TwilioRouter {
         response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${path.success}`);
         return response;
       }
-      case Block.record_post_or_delete: {
+      case BlockId.record_post_or_delete: {
         //@ts-ignore
         const gather = response.gather({
           action: `${baseUrl}/twiml/gather/${blockName}`,
@@ -179,7 +180,7 @@ export default class TwilioRouter {
 
         return response;
       }
-      case Block.record_post_or_delete_error: {
+      case BlockId.record_post_or_delete_error: {
         //@ts-ignore
         const gather = response.gather({
           action: `${baseUrl}/twiml/gather/${path.success}`,
@@ -197,8 +198,9 @@ export default class TwilioRouter {
 
         return response;
       }
-      case Block.record_save: {
+      case BlockId.record_save: {
         const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
+        //TODO: this case should redirect to Block.record_save_err
         if (recordings.length === 0) {
           response.say({}, 'There was a problem saving your recording. Please try again.');
           return response;
@@ -210,7 +212,7 @@ export default class TwilioRouter {
         response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${path.success}`);
         return response;
       }
-      case Block.record_delete: {
+      case BlockId.record_delete: {
         await ctx.firebaseApi.deletePendingRecordingsForCall(ctx.callSid);
 
         response.say({}, 'Your message was erased and will not be posted.');
@@ -229,16 +231,16 @@ export default class TwilioRouter {
    */
   public static async gatherNextMessage(
     ctx: CallContext,
-    currentBlock: Block,
+    currentBlock: BlockId,
     gatherResult: GatherResult): Promise<string> {
     //TODO: parse out the twilio response, and redirect to the appropriate block
 
     //TODO: we will need to reformat this nicely soon.
     switch (currentBlock) {
       // Default implementation
-      case Block.intro_0:
-      case Block.listen_end:
-      case Block.record_post_or_delete:
+      case BlockId.intro_0:
+      case BlockId.listen_end:
+      case BlockId.record_post_or_delete:
         {
           const path = TwilioFlows[currentBlock];
           //TODO: implement string search better

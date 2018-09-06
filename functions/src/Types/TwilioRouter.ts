@@ -4,7 +4,7 @@ import FirebaseApi from "../apis/FirebaseApi";
  * A block is a request for twiml that we respond to.
  * Similar to the idea of blocks in Twilio Studio
  */
-export enum Block {
+export enum BlockId {
   entrypoint = 'entrypoint',
   intro_0 = 'intro_0',
   menu_0 = 'menu_0',
@@ -33,15 +33,23 @@ export type FlowMap = {
   [others: string]: FlowPath;
 }
 
+export type BlockMap = {
+  [others: string]: TwilioBlock;
+}
+
 export type FlowPath = {
-  success: Block,
-  error: Block | null,
+  success: BlockId,
+  error: BlockId | null,
   matches: FlowMatch[]
+}
+
+export type TwilioBlock = {
+
 }
 
 export type FlowMatch = {
   term: string,
-  nextBlock: Block,
+  nextBlock: BlockId,
 }
 
 export type GatherResult = {

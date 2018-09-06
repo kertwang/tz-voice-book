@@ -14,7 +14,7 @@ const AppError_1 = require("../utils/AppError");
 const utils_1 = require("../utils");
 const TwilioRouter_1 = require("../Types/TwilioRouter");
 const Env_1 = require("../utils/Env");
-const TwilioFlows_1 = require("./TwilioFlows");
+const TwilioFlows_1 = require("../content/TwilioFlows");
 const VoiceResponse = twilio.twiml.VoiceResponse;
 /**
  * TwilioRouter is a stateless router for twilio requests.
@@ -41,7 +41,7 @@ class TwilioRouter {
                     response.redirect({ method: 'POST' }, nextUrl);
                     return response;
                 }
-                case TwilioRouter_1.Block.intro_0: {
+                case TwilioRouter_1.BlockId.intro_0: {
                     //@ts-ignore
                     const gather = response.gather({
                         action: `${Env_1.baseUrl}/twiml/gather/${blockName}`,
@@ -57,7 +57,7 @@ class TwilioRouter {
                     response.say({}, 'We didn\'t receive any input. Hrrmm.');
                     return response;
                 }
-                case TwilioRouter_1.Block.error_0: {
+                case TwilioRouter_1.BlockId.error_0: {
                     //@ts-ignore
                     const gather = response.gather({
                         action: `${Env_1.baseUrl}/twiml/gather/${path.success}`,
@@ -72,7 +72,7 @@ class TwilioRouter {
                     gather.say({}, 'Sorry, I didn\'t catch that. Please try again.');
                     return response;
                 }
-                case TwilioRouter_1.Block.listen_0: {
+                case TwilioRouter_1.BlockId.listen_0: {
                     //TODO: get messages from appApi
                     response.say({}, 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.');
                     response.say({}, 'Message 1: Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.');
@@ -81,7 +81,7 @@ class TwilioRouter {
                     response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${path.success}`);
                     return response;
                 }
-                case TwilioRouter_1.Block.listen_end: {
+                case TwilioRouter_1.BlockId.listen_end: {
                     //@ts-ignore
                     const gather = response.gather({
                         action: `${Env_1.baseUrl}/twiml/gather/${blockName}`,
@@ -93,11 +93,12 @@ class TwilioRouter {
                         partialResultCallbackMethod: 'POST',
                         partialResultCallback: `${Env_1.baseUrl}/twiml/recognitionResults`
                     });
-                    gather.say({}, 'There are no other recent messages for your community. You can hang up now. Or, to leave a message say sikiliza. To tell us how we can improve this service say, maoni.');
+                    gather.say({}, 'There are no other recent messages for your community.');
+                    gather.say({}, 'You can hang up now. Or, to leave a message say sikiliza. To tell us how we can improve this service say, maoni.');
                     response.say({}, 'We didn\'t receive any input. Hrrmm.');
                     return response;
                 }
-                case TwilioRouter_1.Block.listen_end_error: {
+                case TwilioRouter_1.BlockId.listen_end_error: {
                     //@ts-ignore
                     const gather = response.gather({
                         action: `${Env_1.baseUrl}/twiml/gather/${path.success}`,
@@ -113,7 +114,7 @@ class TwilioRouter {
                     response.say({}, 'We didn\'t receive any input. Hrrmm.');
                     return response;
                 }
-                case TwilioRouter_1.Block.listen_feedback: {
+                case TwilioRouter_1.BlockId.listen_feedback: {
                     response.say({}, 'We do our best to serve you.If you have any feedback for us, please leave us a message.If you would like us to return your call, please let us know what number to reach you.');
                     response.record({
                         action: `${Env_1.baseUrl}/twiml/${path.success}`,
@@ -123,11 +124,11 @@ class TwilioRouter {
                     });
                     return response;
                 }
-                case TwilioRouter_1.Block.listen_feedback_complete: {
+                case TwilioRouter_1.BlockId.listen_feedback_complete: {
                     response.say({}, 'Thanks! Your feedback has been recorded.');
                     return response;
                 }
-                case TwilioRouter_1.Block.record_0: {
+                case TwilioRouter_1.BlockId.record_0: {
                     response.say({}, 'Your message will be heard by people who call this number FOR ONE WEEK, so say things that you want other people in your community to hear. This is a great way to let people know about news, business, and social events.');
                     response.say({}, 'To record a short message for COMMUNITY, start speaking after you hear a beep. When you are finished, stop talking or press any number on your phone. You will have the opportunity to review your message before we post it.');
                     //TODO: debug only
@@ -140,7 +141,7 @@ class TwilioRouter {
                     });
                     return response;
                 }
-                case TwilioRouter_1.Block.record_playback: {
+                case TwilioRouter_1.BlockId.record_playback: {
                     console.log("context is:", ctx);
                     const recordings = yield ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
                     if (recordings.length === 0) {
@@ -153,7 +154,7 @@ class TwilioRouter {
                     response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${path.success}`);
                     return response;
                 }
-                case TwilioRouter_1.Block.record_post_or_delete: {
+                case TwilioRouter_1.BlockId.record_post_or_delete: {
                     //@ts-ignore
                     const gather = response.gather({
                         action: `${Env_1.baseUrl}/twiml/gather/${blockName}`,
@@ -170,7 +171,7 @@ class TwilioRouter {
                     response.say({}, 'We didn\'t receive any input. Hrrmm.');
                     return response;
                 }
-                case TwilioRouter_1.Block.record_post_or_delete_error: {
+                case TwilioRouter_1.BlockId.record_post_or_delete_error: {
                     //@ts-ignore
                     const gather = response.gather({
                         action: `${Env_1.baseUrl}/twiml/gather/${path.success}`,
@@ -187,8 +188,9 @@ class TwilioRouter {
                     response.say({}, 'We didn\'t receive any input. Hrrmm.');
                     return response;
                 }
-                case TwilioRouter_1.Block.record_save: {
+                case TwilioRouter_1.BlockId.record_save: {
                     const recordings = yield ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
+                    //TODO: this case should redirect to Block.record_save_err
                     if (recordings.length === 0) {
                         response.say({}, 'There was a problem saving your recording. Please try again.');
                         return response;
@@ -199,7 +201,7 @@ class TwilioRouter {
                     response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${path.success}`);
                     return response;
                 }
-                case TwilioRouter_1.Block.record_delete: {
+                case TwilioRouter_1.BlockId.record_delete: {
                     yield ctx.firebaseApi.deletePendingRecordingsForCall(ctx.callSid);
                     response.say({}, 'Your message was erased and will not be posted.');
                     response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${path.success}`);
@@ -220,9 +222,9 @@ class TwilioRouter {
             //TODO: we will need to reformat this nicely soon.
             switch (currentBlock) {
                 // Default implementation
-                case TwilioRouter_1.Block.intro_0:
-                case TwilioRouter_1.Block.listen_end:
-                case TwilioRouter_1.Block.record_post_or_delete:
+                case TwilioRouter_1.BlockId.intro_0:
+                case TwilioRouter_1.BlockId.listen_end:
+                case TwilioRouter_1.BlockId.record_post_or_delete:
                     {
                         const path = TwilioFlows_1.default[currentBlock];
                         //TODO: implement string search better
