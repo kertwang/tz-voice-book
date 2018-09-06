@@ -130,4 +130,26 @@ export default class FirebaseApi {
     return this.fs.collection('recordings').add(recording)
     .then(ref => ref.id);
   }
+
+  /**
+   * Get the block content for the given call id and user.
+   * 
+   * This will be stored in firebase, parsed, and filled into the context object
+   */
+  public getBlockContent(callSid: string, userId: string): any {
+    //TODO: implement configurable stuff.
+
+    const condition = this.getConditionForCallAndUserId(callSid, userId);
+
+    return this.fs.collection('content').doc(condition)
+    .then(doc => {
+      console.log('Got config:',  doc.data());
+      return doc.data();
+    });
+  }
+
+  public getConditionForCallAndUserId(callSid: string, userId: string): string {
+    //TODO: implement based on a bunch of settings.
+    return 'default';
+  }
 }

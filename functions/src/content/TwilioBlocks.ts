@@ -1,3 +1,4 @@
+import { BlockMap } from "../Types/TwilioRouter";
 
 /**
  * Twilioblocks contain the individual messages to be played 
@@ -8,7 +9,7 @@
  * 
  * Id is the blockId, each containing an array of message ids to be played
  */
-const TwilioBlocks: any = {
+const TwilioBlocks: BlockMap = {
   'entrypoint': ['001'],
   'intro_0': ['001', '002', '003', '004'],
   'error_0': ['001'],

@@ -34,7 +34,7 @@ export type FlowMap = {
 }
 
 export type BlockMap = {
-  [others: string]: TwilioBlock;
+  [others: string]: string[];
 }
 
 export type FlowPath = {
@@ -43,13 +43,16 @@ export type FlowPath = {
   matches: FlowMatch[]
 }
 
-export type TwilioBlock = {
-
-}
-
 export type FlowMatch = {
   term: string,
   nextBlock: BlockId,
+}
+
+export type BlockSetting = {
+  verb: 'play', 'say',
+  url: string,
+  text: string,
+  language: string,
 }
 
 export type GatherResult = {

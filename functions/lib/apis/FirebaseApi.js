@@ -125,6 +125,24 @@ class FirebaseApi {
         return this.fs.collection('recordings').add(recording)
             .then(ref => ref.id);
     }
+    /**
+     * Get the block content for the given call id and user.
+     *
+     * This will be stored in firebase, parsed, and filled into the context object
+     */
+    getBlockContent(callSid, userId) {
+        //TODO: implement configurable stuff.
+        const condition = this.getConditionForCallAndUserId(callSid, userId);
+        return this.fs.collection('content').doc(condition)
+            .then(doc => {
+            console.log('Got config:', doc.data());
+            return doc.data();
+        });
+    }
+    getConditionForCallAndUserId(callSid, userId) {
+        //TODO: implement based on a bunch of settings.
+        return 'default';
+    }
 }
 exports.default = FirebaseApi;
 //# sourceMappingURL=FirebaseApi.js.map

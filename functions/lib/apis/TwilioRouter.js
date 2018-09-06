@@ -54,6 +54,9 @@ class TwilioRouter {
                         partialResultCallback: `${Env_1.baseUrl}/twiml/recognitionResults`
                     });
                     gather.say({}, 'To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.');
+                    gather.say({}, 'To record a message that people in your community can hear, say tuma. ');
+                    gather.say({}, 'To learn more about this service say msaada.');
+                    gather.say({}, 'To hear these options again say kurudia.');
                     response.say({}, 'We didn\'t receive any input. Hrrmm.');
                     return response;
                 }
