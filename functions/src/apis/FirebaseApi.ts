@@ -1,11 +1,13 @@
 import { User, Recording } from "./UserApi";
+import fs from './Firestore';
+
 
 
 export default class FirebaseApi {
   fs: any;
 
-  constructor(fs: any) {
-    this.fs = fs;
+  constructor() {
+
   }
 
   public getUser(userId: string): Promise<User> {

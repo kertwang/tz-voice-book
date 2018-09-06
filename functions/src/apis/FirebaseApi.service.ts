@@ -31,7 +31,6 @@ describe('FirebaseApi', function() {
     let pendingId: string;
 
     //Save a new recording
-    //TODO: WTF?? Why is this pointing to our water?
     this.beforeAll(async() => {
       const recording: Recording = {
         url: 'example.com',
@@ -55,7 +54,7 @@ describe('FirebaseApi', function() {
     })
 
     this.afterAll(async() => {
-      await fs.collection('')
+      await fs.collection('pendingRecordings').doc(pendingId).delete();
     });
 
     //TODO: cleanup
