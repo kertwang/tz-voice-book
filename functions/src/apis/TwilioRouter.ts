@@ -149,6 +149,7 @@ export default class TwilioRouter {
         const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordings(ctx.callSid, 1);
         if (recordings.length === 0) {
           response.say({}, 'There was a problem saving your recording. Please try again.');
+          return response;
         }
         const recording = recordings[0];
         

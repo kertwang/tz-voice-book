@@ -84,7 +84,7 @@ class FirebaseApi {
      */
     savePendingRecording(recording) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fs.collection('pendingReadings').add(recording)
+            return this.fs.collection('pendingRecordings').add(recording)
                 .then(ref => ref.id);
         });
     }
@@ -93,7 +93,7 @@ class FirebaseApi {
      */
     getPendingRecordings(callSid, limit) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fs.collection('pendingReadings').where('callSid', '==', callSid).limit(limit).get()
+            return this.fs.collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
                 .then((sn) => {
                 const recordings = [];
                 sn.forEach(doc => {

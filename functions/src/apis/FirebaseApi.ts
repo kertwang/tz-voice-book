@@ -88,8 +88,8 @@ export default class FirebaseApi {
    * 
    * Returns the id of the pending reading
    */
-  public async savePendingRecording(recording: Recording): Promise<boolean> {
-    return this.fs.collection('pendingReadings').add(recording)
+  public async savePendingRecording(recording: Recording): Promise<string> {
+    return this.fs.collection('pendingRecordings').add(recording)
     .then(ref => ref.id);
   }
 
@@ -98,7 +98,7 @@ export default class FirebaseApi {
    * Get all pending recordings for a given callSid, newest first
    */
   public async getPendingRecordings(callSid: string, limit: number): Promise<Recording[]> {
-    return this.fs.collection('pendingReadings').where('callSid', '==', callSid).limit(limit).get()
+    return this.fs.collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
     .then((sn: any) => {
       const recordings: Recording[] = [];
       sn.forEach(doc => {
