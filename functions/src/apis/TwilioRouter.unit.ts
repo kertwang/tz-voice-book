@@ -4,7 +4,7 @@ import TwilioRouter from './TwilioRouter';
 import {describe} from 'mocha';
 import { CallContext, GatherResult } from '../types/TwilioRouter';
 import FirebaseApi from './FirebaseApi';
-import { Block } from '../../lib/types/TwilioRouter';
+import { BlockId } from '../../lib/types/TwilioRouter';
 
 const admin = require('firebase-admin');
 admin.initializeApp();
@@ -23,7 +23,7 @@ describe('TwilioRouter', function() {
     it('gets the default next message', () => {
       //Arrange
       //Act 
-      const result = TwilioRouter.nextMessage(ctx, Block.entrypoint);
+      const result = TwilioRouter.nextMessage(ctx, BlockId.entrypoint);
 
       //Assert
       const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Say>Hello, and welcome to voicebook</Say><Redirect method="POST">./intro_0</Redirect></Response>'
@@ -36,7 +36,7 @@ describe('TwilioRouter', function() {
     it('gets the default next message', () => {
       //Arrange
       //Act 
-      const result = TwilioRouter.nextMessage(ctx, Block.intro_0);
+      const result = TwilioRouter.nextMessage(ctx, BlockId.intro_0);
 
       //Assert
       const expected = `<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="./gather/intro_0" method="POST" language="sw-TZ" input="speech" hints="sikiliza,tuma,msaada,kurudia"><Say>To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.</Say></Gather><Say>We didn't receive any input. Hrrmm.</Say></Response>`;
@@ -55,7 +55,7 @@ describe('TwilioRouter', function() {
       };
 
       //Act
-      const result = TwilioRouter.gatherNextMessage(ctx, Block.intro_0, gatherResult);
+      const result = TwilioRouter.gatherNextMessage(ctx, BlockId.intro_0, gatherResult);
 
       //Assert
       const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Say>Sorry, something went wrong</Say></Response>';
@@ -70,7 +70,7 @@ describe('TwilioRouter', function() {
       };
 
       //Act
-      const result = TwilioRouter.gatherNextMessage(ctx, Block.intro_0, gatherResult);
+      const result = TwilioRouter.gatherNextMessage(ctx, BlockId.intro_0, gatherResult);
 
 
       //Assert
