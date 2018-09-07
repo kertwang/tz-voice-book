@@ -82,7 +82,9 @@ class BenchmarkRouter {
                         partialResultCallbackMethod: 'POST',
                         partialResultCallback: `${Env_1.baseUrl}/benchmark/recognitionResults`
                     });
-                    gather.say({}, 'Test 2- Interruption test. Please interrupt this message by saying msaada. This message will continue to play but please try to interrupt it. This message will continue to play but please try to interrupt it. I am still playing. Looks like you couldn\'t interrupt me.Herm...');
+                    gather.say({}, 'Test 2- Interruption test.');
+                    //Please interrupt this message by saying msaada. This message will continue to play but please try to interrupt it. This message will continue to play but please try to interrupt it. I am still playing. Looks like you couldn\'t interrupt me.Herm...');
+                    gather.play({}, 'https://firebasestorage.googleapis.com/v0/b/tz-phone-book.appspot.com/o/benchmark_test_2.mp3?alt=media&token=7112ffe3-e4b0-4ee1-81f5-6e08d9bccf52');
                     response.say({}, 'We didn\'t receive any input. Hrrmm.');
                     return response;
                 }
@@ -113,7 +115,9 @@ class BenchmarkRouter {
                         partialResultCallbackMethod: 'POST',
                         partialResultCallback: `${Env_1.baseUrl}/benchmark/recognitionResults`
                     });
-                    gather.say({}, 'Test 3 - Prefix Test. Please say asante moja for option 1. Say asante mbili for option 2. Say asante tatu for option 3.');
+                    gather.say({}, 'Test 3 - Prefix Test.');
+                    // Please say asante moja for option 1. Say asante mbili for option 2. Say asante tatu for option 3.');
+                    gather.play({}, 'https://firebasestorage.googleapis.com/v0/b/tz-phone-book.appspot.com/o/benchmark_test_3.mp3?alt=media&token=5265298b-0af8-4f82-ada5-c202691046da');
                     response.say({}, 'We didn\'t receive any input. Hrrmm.');
                     return response;
                 }
@@ -164,15 +168,22 @@ class BenchmarkRouter {
                         //TODO: implement string search better
                         //TODO: handle extra spaces??
                         const stringMatches = path.matches.map(m => m.term);
-                        const idx = stringMatches.indexOf(gatherResult.speechResult.trim());
+                        // const idx = stringMatches.indexOf(gatherResult.speechResult.trim());
+                        let idx = -1;
+                        const responseText = gatherResult.speechResult.trim();
+                        stringMatches.forEach((phrase, i) => {
+                            if (phrase.indexOf(responseText) > -1) {
+                                idx = i;
+                            }
+                        });
                         //No match found :(
                         if (idx === -1) {
-                            const errorResponse = yield this.getBlock(ctx, path.error);
+                            const errorResponse = yield this.getBlock(ctx, path.error, responseText);
                             return errorResponse.toString();
                         }
                         const nextBlock = path.matches[idx].nextBlock;
                         const response = new VoiceResponse();
-                        response.say({}, `You said: ${gatherResult.speechResult.trim()}`);
+                        response.say({}, `You said: ${responseText}`);
                         response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/benchmark/${nextBlock}`);
                         return response.toString();
                     }

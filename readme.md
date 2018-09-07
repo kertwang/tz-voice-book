@@ -113,3 +113,9 @@ http://localhost:5000/tz-phone-book/us-central1/message?stringFormat=true
 
 Example url for ngrok:
 `http://4e27e9ad.ngrok.io/tz-phone-book/us-central1/benchmark/entrypoint`
+
+
+## Ffmpeg is awesome!
+```bash
+ffmpeg benchmark_test_3.mp3 -i benchmark_test_3.m4a -codec:a libmp3lame -qscale:a 1
+```
