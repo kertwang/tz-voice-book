@@ -10,7 +10,6 @@ import UserApi, { Recording } from './UserApi';
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
 
-
 export default class BenchmarkRouter {
   
   public static async nextMessage(ctx: CallContext, currentBlock: BlockId): Promise<string> {
@@ -21,13 +20,14 @@ export default class BenchmarkRouter {
     return response.toString();
   }
 
-  public static async getBlock(ctx: CallContext, blockName: BlockId): Promise<any> {
+  //This is hacky :(
+  public static async getBlock(ctx: CallContext, blockName: BlockId, extraText: string = ''): Promise<any> {
     const path = BenchmarkFlows[blockName];
     const response = new VoiceResponse();
 
     switch (blockName) {
       case 'entrypoint': {
-        const nextUrl = `${baseUrl}/twiml/${path.success}`;
+        const nextUrl = `${baseUrl}/benchmark/${path.success}`;
         response.say({}, 'This is the Swahili Voice test for Voicebook. Please go through each step and make a note of if it was successful or failed');
         response.redirect({ method: 'POST' }, nextUrl);
 
@@ -51,7 +51,7 @@ export default class BenchmarkRouter {
         return response;
       }
       case 'test_1_fail': {
-        response.say({}, 'Test Failed.');
+        response.say({}, `Test Failed. You said: ${extraText}`);
         response.redirect({ method: 'POST' }, `${baseUrl}/benchmark/${path.success}`);
         return response;
       }
@@ -83,7 +83,7 @@ export default class BenchmarkRouter {
         return response;
       }
       case 'test_2_fail': {
-        response.say({}, 'Test Failed.');
+        response.say({}, `Test Failed. You said: ${extraText}`);
         response.redirect({ method: 'POST' }, `${baseUrl}/benchmark/${path.success}`);
 
         return response;
@@ -118,7 +118,7 @@ export default class BenchmarkRouter {
         return response;
       }
       case 'test_3_fail': {
-        response.say({}, 'Test Failed.');
+        response.say({}, `Test Failed. You said: ${extraText}`);
         response.redirect({ method: 'POST' }, `${baseUrl}/benchmark/${path.success}`);
         
         return response;
@@ -182,7 +182,8 @@ export default class BenchmarkRouter {
 
           const nextBlock = path.matches[idx].nextBlock;
           const response = new VoiceResponse();
-          response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${nextBlock}`);
+          response.say({}, `You said: ${gatherResult.speechResult.trim()}`);
+          response.redirect({ method: 'POST' }, `${baseUrl}/benchmark/${nextBlock}`);
 
           return response.toString();
         }

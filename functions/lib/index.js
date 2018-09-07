@@ -8,5 +8,5 @@ const twilioApi = new TwilioApi_1.TwilioApi();
 exports.message = require('./handlers/fn_message')(functions, admin);
 exports.reset_pin = require('./handlers/fn_reset_pin')(functions, admin);
 exports.twiml = require('./handlers/fn_twiml')(functions);
-exports.benchmark = require('./handlers/benchmark')(functions);
+exports.benchmark = require('./handlers/fn_benchmark')(functions);
 //# sourceMappingURL=index.js.map

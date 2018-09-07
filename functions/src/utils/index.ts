@@ -11,7 +11,7 @@ export function pathToBlock(path: string): BlockId {
   return BlockId[sanitized];
 }
 
-export function logGatherBlock(block: BlockId, result: GatherResult) {
+export function logGatherBlock(block: any, result: GatherResult) {
   if (process.env.VERBOSE_LOG !== 'true') {
     return;
   }

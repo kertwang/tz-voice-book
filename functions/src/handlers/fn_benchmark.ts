@@ -9,21 +9,29 @@ import * as cors from 'cors';
 import * as moment from 'moment';
 import * as morgan from 'morgan';
 import * as morganBody from 'morgan-body';
-import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
-import { pathToBlock, logGatherBlock, logTwilioResponse } from '../utils';
-import { GatherResult, CallContext } from '../Types/TwilioRouter';
+import { logGatherBlock, logTwilioResponse } from '../utils';
+import { BlockId, GatherResult, CallContext } from '../Types/BenchmarkRouter';
 import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
 import fs from '../apis/Firestore';
+import BenchmarkRouter from '../apis/BenchmarkRouter';
 
 
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
-
 const bodyParser = require('body-parser');
 const Joi = require('joi');
+
+export function pathToBlock(path: string): BlockId {
+
+  const sanitized = path
+    .replace('/gather/', '')
+    .replace('/', '');
+
+  return BlockId[sanitized];
+}
 
 module.exports = (functions) => {
   const app = express();
@@ -103,7 +111,7 @@ module.exports = (functions) => {
       confidence: req.body.Confidence,
     };
     logGatherBlock(blockName, gatherResult);
-    const result = await TwilioRouter.gatherNextMessage(ctx, blockName, gatherResult);
+    const result = await BenchmarkRouter.gatherNextMessage(ctx, blockName, gatherResult);
     logTwilioResponse(result);
 
     res.writeHead(200, { 'Content-Type': 'text/xml' });
@@ -121,7 +129,7 @@ module.exports = (functions) => {
     };
     const blockName = pathToBlock(req.path);
 
-    const result = await TwilioRouter.nextMessage(ctx, blockName);
+    const result = await BenchmarkRouter.nextMessage(ctx, blockName);
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(result);
   });

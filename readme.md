@@ -106,3 +106,10 @@ curl http://localhost:5000/tz-phone-book/us-central1/message \
 
 
 http://localhost:5000/tz-phone-book/us-central1/message?stringFormat=true
+
+
+
+## Configuring twilio url:
+
+Example url for ngrok:
+`http://4e27e9ad.ngrok.io/tz-phone-book/us-central1/benchmark/entrypoint`
