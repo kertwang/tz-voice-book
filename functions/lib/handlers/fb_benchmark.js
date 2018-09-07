@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Benchmark is a series of functions for testing and debugging issues with twilio.
+ *
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -111,4 +115,4 @@ module.exports = (functions) => {
     app.use(ErrorHandler_1.default);
     return functions.https.onRequest(app);
 };
-//# sourceMappingURL=fn_twiml.js.map
+//# sourceMappingURL=fb_benchmark.js.map

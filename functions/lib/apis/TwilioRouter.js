@@ -53,6 +53,7 @@ class TwilioRouter {
                         partialResultCallbackMethod: 'POST',
                         partialResultCallback: `${Env_1.baseUrl}/twiml/recognitionResults`
                     });
+                    // gather.play({}, 'https://s3.amazonaws.com/tzchatbot/000_1abcd_Combined_Voicebook_Swahili.mp3');
                     gather.say({}, 'To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.');
                     gather.say({}, 'To record a message that people in your community can hear, say tuma. ');
                     gather.say({}, 'To learn more about this service say msaada.');
