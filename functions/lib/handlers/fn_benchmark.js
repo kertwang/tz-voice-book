@@ -19,7 +19,7 @@ const morgan = require("morgan");
 const morganBody = require("morgan-body");
 const ErrorHandler_1 = require("../utils/ErrorHandler");
 const utils_1 = require("../utils");
-const BenchmarkRouter_1 = require("../Types/BenchmarkRouter");
+const BenchmarkRouter_1 = require("../types_rn/BenchmarkRouter");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 const Firestore_1 = require("../apis/Firestore");
 const BenchmarkRouter_2 = require("../apis/BenchmarkRouter");
@@ -50,12 +50,6 @@ module.exports = (functions) => {
     /* CORS Configuration */
     const openCors = cors({ origin: '*' });
     app.use(openCors);
-    app.use((req, res, next) => {
-        if (!req.body.From) {
-            console.log("WARNING: No FROM found in request body");
-        }
-        return next();
-    });
     /**
      * Collect partial results for debugging purposes.
      */

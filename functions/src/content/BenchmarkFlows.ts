@@ -1,4 +1,4 @@
-import { BlockId, FlowMap } from "../Types/BenchmarkRouter";
+import { BlockId, FlowMap } from "../types_rn/BenchmarkRouter";
 
 
 const BenchmarkFlows: FlowMap = {

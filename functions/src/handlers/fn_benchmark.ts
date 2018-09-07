@@ -12,7 +12,7 @@ import * as morganBody from 'morgan-body';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
 import { logGatherBlock, logTwilioResponse } from '../utils';
-import { BlockId, GatherResult, CallContext } from '../Types/BenchmarkRouter';
+import { BlockId, GatherResult, CallContext } from '../types_rn/BenchmarkRouter';
 import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
 import fs from '../apis/Firestore';
@@ -52,14 +52,6 @@ module.exports = (functions) => {
   /* CORS Configuration */
   const openCors = cors({ origin: '*' });
   app.use(openCors);
-
-  app.use((req, res, next) => {
-    if (!req.body.From) {
-      console.log("WARNING: No FROM found in request body");
-    }
-
-    return next();
-  });
 
   /**
    * Collect partial results for debugging purposes.

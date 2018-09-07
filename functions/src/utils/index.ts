@@ -1,4 +1,4 @@
-import { BlockId, GatherResult } from "../types/TwilioRouter";
+import { BlockId, GatherResult } from "../types_rn/TwilioRouter";
 import * as format from 'xml-formatter';
 
 

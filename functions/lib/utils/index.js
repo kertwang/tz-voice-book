@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioRouter_1 = require("../types/TwilioRouter");
+const TwilioRouter_1 = require("../types_rn/TwilioRouter");
 const format = require("xml-formatter");
 function pathToBlock(path) {
     const sanitized = path

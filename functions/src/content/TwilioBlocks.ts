@@ -1,4 +1,4 @@
-import { BlockMap } from "../Types/TwilioRouter";
+import { BlockMap } from "../types_rn/TwilioRouter";
 
 /**
  * Twilioblocks contain the individual messages to be played 

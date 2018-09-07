@@ -3,7 +3,7 @@ import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { lang } from 'moment';
 import { logTwilioResponse } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext } from '../Types/BenchmarkRouter';
+import { BlockId, FlowMap, GatherResult, CallContext } from '../types_rn/BenchmarkRouter';
 import { baseUrl } from '../utils/Env';
 import BenchmarkFlows from '../content/BenchmarkFlows';
 import UserApi, { Recording } from './UserApi';
@@ -45,7 +45,9 @@ export default class BenchmarkRouter {
           partialResultCallbackMethod: 'POST',
           partialResultCallback: `${baseUrl}/benchmark/recognitionResults`
         });
-        gather.say({}, 'Test 1. To learn what is new in your community say sikiliza.To record a message that people in your community can hear, say tuma.To learn more about this service say msaada.To hear these options again say kurudia.');
+        // gather.say({}, 'Test 1. To learn what is new in your community say sikiliza.To record a message that people in your community can hear, say tuma.To learn more about this service say msaada.To hear these options again say kurudia.');
+        gather.say({}, 'Test 1');
+        gather.play({}, 'https://s3.amazonaws.com/tzchatbot/000_1abcd_Combined_Voicebook_Swahili.mp3');
         response.say({}, 'We didn\'t receive any input. Hrrmm.');
 
         return response;
@@ -77,7 +79,7 @@ export default class BenchmarkRouter {
           partialResultCallbackMethod: 'POST',
           partialResultCallback: `${baseUrl}/benchmark/recognitionResults`
         });
-        gather.say({}, 'Test 2- Interruption test. Please interrupt this message by saying the word msaada. This message will continue to play but please try to interrupt it. This message will continue to play but please try to interrupt it. I am still playing. Looks like you couldn\'t interrupt me.Herm...');
+        gather.say({}, 'Test 2- Interruption test. Please interrupt this message by saying msaada. This message will continue to play but please try to interrupt it. This message will continue to play but please try to interrupt it. I am still playing. Looks like you couldn\'t interrupt me.Herm...');
         response.say({}, 'We didn\'t receive any input. Hrrmm.');
 
         return response;

@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const twilio = require("twilio");
 const AppError_1 = require("../utils/AppError");
 const utils_1 = require("../utils");
-const TwilioRouter_1 = require("../Types/TwilioRouter");
+const TwilioRouter_1 = require("../types_rn/TwilioRouter");
 const Env_1 = require("../utils/Env");
 const TwilioFlows_1 = require("../content/TwilioFlows");
 const VoiceResponse = twilio.twiml.VoiceResponse;

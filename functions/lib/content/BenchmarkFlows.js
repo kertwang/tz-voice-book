@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const BenchmarkRouter_1 = require("../Types/BenchmarkRouter");
+const BenchmarkRouter_1 = require("../types_rn/BenchmarkRouter");
 const BenchmarkFlows = {
     'entrypoint': {
         // TODO: change back for debugging only.

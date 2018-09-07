@@ -38,12 +38,6 @@ module.exports = (functions) => {
     /* CORS Configuration */
     const openCors = cors({ origin: '*' });
     app.use(openCors);
-    app.use((req, res, next) => {
-        if (!req.body.From) {
-            console.log("WARNING: No FROM found in request body");
-        }
-        return next();
-    });
     /**
      * Collect partial results for debugging purposes.
      */

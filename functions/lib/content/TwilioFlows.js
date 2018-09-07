@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioRouter_1 = require("../Types/TwilioRouter");
+const TwilioRouter_1 = require("../types_rn/TwilioRouter");
 /**
  * Flows is a graph based data structure, with the key being the valid
  * entrypoint, and the value a dict containing possible next points based

@@ -8,7 +8,7 @@ import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
 import { pathToBlock, logGatherBlock, logTwilioResponse } from '../utils';
-import { GatherResult, CallContext } from '../Types/TwilioRouter';
+import { GatherResult, CallContext } from '../types_rn/TwilioRouter';
 import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
 import fs from '../apis/Firestore';
@@ -39,14 +39,6 @@ module.exports = (functions) => {
   /* CORS Configuration */
   const openCors = cors({ origin: '*' });
   app.use(openCors);
-
-  app.use((req, res, next) => {
-    if(!req.body.From) {
-      console.log("WARNING: No FROM found in request body");
-    }
-
-    return next();
-  });
 
   /**
    * Collect partial results for debugging purposes.

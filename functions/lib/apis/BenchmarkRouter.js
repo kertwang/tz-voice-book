@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const twilio = require("twilio");
 const AppError_1 = require("../utils/AppError");
 const utils_1 = require("../utils");
-const BenchmarkRouter_1 = require("../Types/BenchmarkRouter");
+const BenchmarkRouter_1 = require("../types_rn/BenchmarkRouter");
 const Env_1 = require("../utils/Env");
 const BenchmarkFlows_1 = require("../content/BenchmarkFlows");
 const VoiceResponse = twilio.twiml.VoiceResponse;
@@ -49,7 +49,9 @@ class BenchmarkRouter {
                         partialResultCallbackMethod: 'POST',
                         partialResultCallback: `${Env_1.baseUrl}/benchmark/recognitionResults`
                     });
-                    gather.say({}, 'Test 1. To learn what is new in your community say sikiliza.To record a message that people in your community can hear, say tuma.To learn more about this service say msaada.To hear these options again say kurudia.');
+                    // gather.say({}, 'Test 1. To learn what is new in your community say sikiliza.To record a message that people in your community can hear, say tuma.To learn more about this service say msaada.To hear these options again say kurudia.');
+                    gather.say({}, 'Test 1');
+                    gather.play({}, 'https://s3.amazonaws.com/tzchatbot/000_1abcd_Combined_Voicebook_Swahili.mp3');
                     response.say({}, 'We didn\'t receive any input. Hrrmm.');
                     return response;
                 }
@@ -80,7 +82,7 @@ class BenchmarkRouter {
                         partialResultCallbackMethod: 'POST',
                         partialResultCallback: `${Env_1.baseUrl}/benchmark/recognitionResults`
                     });
-                    gather.say({}, 'Test 2- Interruption test. Please interrupt this message by saying the word msaada. This message will continue to play but please try to interrupt it. This message will continue to play but please try to interrupt it. I am still playing. Looks like you couldn\'t interrupt me.Herm...');
+                    gather.say({}, 'Test 2- Interruption test. Please interrupt this message by saying msaada. This message will continue to play but please try to interrupt it. This message will continue to play but please try to interrupt it. I am still playing. Looks like you couldn\'t interrupt me.Herm...');
                     response.say({}, 'We didn\'t receive any input. Hrrmm.');
                     return response;
                 }
