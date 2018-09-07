@@ -133,11 +133,8 @@ class FirebaseApi {
     getBlockContent(callSid, userId) {
         //TODO: implement configurable stuff.
         const condition = this.getConditionForCallAndUserId(callSid, userId);
-        return this.fs.collection('content').doc(condition)
-            .then(doc => {
-            console.log('Got config:', doc.data());
-            return doc.data();
-        });
+        return this.fs.collection('content').doc(condition).get()
+            .then(doc => doc.data());
     }
     getConditionForCallAndUserId(callSid, userId) {
         //TODO: implement based on a bunch of settings.

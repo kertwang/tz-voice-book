@@ -74,15 +74,15 @@ describe('FirebaseApi', function() {
   });
 
   describe('getContent', function() {
-    it('gets the content', async () => {
+    it.only('gets the content', async () => {
       //Arrange
 
       //Act 
       const content = await firebaseApi.getBlockContent('123', '123');
-      console.log("content is:", content);
 
       //Assert
-
+      //We can at least make sure the content is the right size.
+      assert.equal(16, Object.keys(content).length);
     });
 
 
@@ -91,7 +91,9 @@ describe('FirebaseApi', function() {
   //TODO: this really should be in a shell script...
   describe('saveBlockConfigToFirebase', function() {
 
-    it.only('saves the block config', async () => {
+    it('saves the block config', async () => {
+      //BlockConfig tells us how to navigate through the content.
+      //It feels mostly redundant however.
       const blockConfig = {
         'entrypoint': ['001'],
         'intro_0': ['001', '002', '003', '004'],

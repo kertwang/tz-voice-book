@@ -141,11 +141,8 @@ export default class FirebaseApi {
 
     const condition = this.getConditionForCallAndUserId(callSid, userId);
 
-    return this.fs.collection('content').doc(condition)
-    .then(doc => {
-      console.log('Got config:',  doc.data());
-      return doc.data();
-    });
+    return this.fs.collection('content').doc(condition).get()
+    .then(doc => doc.data());
   }
 
   public getConditionForCallAndUserId(callSid: string, userId: string): string {

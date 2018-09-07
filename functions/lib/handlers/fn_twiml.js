@@ -75,6 +75,8 @@ module.exports = (functions) => {
      * Action callback handlers.
      */
     app.post('/gather/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const callSid = ;
+        const content = yield firebaseApi.getBlockContent();
         const ctx = {
             callSid: req.body.CallSid,
             mobile: req.body.From,
