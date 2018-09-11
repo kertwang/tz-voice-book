@@ -127,3 +127,17 @@ export type CallContext = {
 export type DigitResult = {
   digits: string,
 }
+
+export enum BotId {
+  voicebook = 'voicebook',
+}
+
+export enum VersionId {
+  en_us = 'en_us'
+}
+
+export type BotConfig = {
+  blocks: BlockMap,
+  flows: FlowMap,
+  messages: MessageMap
+}

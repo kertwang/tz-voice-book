@@ -39,4 +39,12 @@ var MessageType;
     MessageType[MessageType["PLAY"] = 1] = "PLAY";
 })(MessageType = exports.MessageType || (exports.MessageType = {}));
 ;
+var BotId;
+(function (BotId) {
+    BotId["voicebook"] = "voicebook";
+})(BotId = exports.BotId || (exports.BotId = {}));
+var VersionId;
+(function (VersionId) {
+    VersionId["en_us"] = "en_us";
+})(VersionId = exports.VersionId || (exports.VersionId = {}));
 //# sourceMappingURL=TwilioTypes.js.map

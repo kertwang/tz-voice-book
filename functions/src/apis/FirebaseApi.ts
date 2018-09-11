@@ -1,7 +1,9 @@
 import { User, Recording } from "./UserApi";
 import { sleep } from "../utils";
-import { MessageMap } from "../types_rn/TwilioTypes";
+import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig } from "../types_rn/TwilioTypes";
 import TwilioMessages from "../content/TwilioMessages";
+import { DataSnapshot } from "firebase-functions/lib/providers/database";
+import { DocumentSnapshot } from "firebase-functions/lib/providers/firestore";
 
 
 export default class FirebaseApi {
@@ -40,9 +42,9 @@ export default class FirebaseApi {
    */
   public getUserFromMobile(mobile: string): Promise<User> {
     return this.fs.collection('users').where('mobile', '==', mobile).limit(1).get()
-    .then(sn => {
+    .then((sn: any) => {
       const users: User[] = [];
-      sn.forEach(doc => {
+      sn.forEach((doc: any)=> {
         const data = doc.data();
         data.id = doc.id;
         users.push(data);
@@ -85,9 +87,8 @@ export default class FirebaseApi {
     .catch(err => {
       console.log("Error in savePendingRecording", err);
       return Promise.reject(err);
-    })
+    });
   }
-
 
   /**
    * Get all pending recordings for a given callSid, newest first
@@ -160,5 +161,15 @@ export default class FirebaseApi {
   public getConditionForCallAndUserId(callSid: string, userId: string): string {
     //TODO: implement based on a bunch of settings.
     return 'default';
+  }
+
+
+
+  //
+  // Admin Functions
+  // ----------------------------
+
+  public async deployConfigForBotAndVersion(botId: BotId, versionId: VersionId, config: BotConfig) {
+    return this.fs.collection('bot').doc(botId).collection('version').doc(versionId).set(config);
   }
 }

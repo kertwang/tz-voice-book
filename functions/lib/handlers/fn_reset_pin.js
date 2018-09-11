@@ -22,7 +22,7 @@ module.exports = (functions, admin) => {
     /* CORS Configuration */
     const openCors = cors({ origin: '*' });
     app.use(openCors);
-    app.use(function (err, req, res, next) {
+    app.use((err, req, res, next) => {
         console.log("error", err);
         if (err.status) {
             return res.status(err.status).json(err);

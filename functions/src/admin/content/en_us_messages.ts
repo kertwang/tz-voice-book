@@ -1,4 +1,4 @@
-import {  MessageType, MessageMap } from "../types_rn/TwilioTypes";
+import {  MessageType, MessageMap } from "../../types_rn/TwilioTypes";
 
 
 /* Define each translation/variaton here */
@@ -58,8 +58,7 @@ const en_text: MessageMap = {
   'record_delete': [
     { type: MessageType.SAY, text: 'Your message was erased and will not be posted.', language: 'en_AU' },
   ],
+
 }
 
-export default {
-  en_text,
-};
+export default en_text;

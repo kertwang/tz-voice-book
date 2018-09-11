@@ -1,8 +1,10 @@
-import * as validate from 'express-validation';
+
 import * as express from 'express';
 import * as cors from 'cors';
 import * as moment from 'moment';
+//@ts-ignore
 import * as morgan from 'morgan';
+//@ts-ignore
 import * as morganBody from 'morgan-body';
 import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
@@ -20,7 +22,7 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const bodyParser = require('body-parser');
 const Joi = require('joi');
 
-module.exports = (functions) => {
+module.exports = (functions: any) => {
   const app = express();
   app.use(bodyParser.json());
   const firebaseApi = new FirebaseApi(fs);

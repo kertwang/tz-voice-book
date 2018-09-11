@@ -38,9 +38,9 @@ class FirebaseApi {
      */
     getUserFromMobile(mobile) {
         return this.fs.collection('users').where('mobile', '==', mobile).limit(1).get()
-            .then(sn => {
+            .then((sn) => {
             const users = [];
-            sn.forEach(doc => {
+            sn.forEach((doc) => {
                 const data = doc.data();
                 data.id = doc.id;
                 users.push(data);
@@ -148,6 +148,14 @@ class FirebaseApi {
     getConditionForCallAndUserId(callSid, userId) {
         //TODO: implement based on a bunch of settings.
         return 'default';
+    }
+    //
+    // Admin Functions
+    // ----------------------------
+    deployConfigForBotAndVersion(botId, versionId, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.fs.collection('bot').doc(botId).collection('version').doc(versionId).set(config);
+        });
     }
 }
 exports.default = FirebaseApi;

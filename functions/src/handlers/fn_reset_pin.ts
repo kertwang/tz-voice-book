@@ -1,7 +1,6 @@
 import * as validate from 'express-validation';
 import * as express from 'express';
 import * as cors from 'cors';
-import * as moment from 'moment';
 import * as morgan from 'morgan';
 import * as morganBody from 'morgan-body';
 
@@ -9,7 +8,7 @@ const bodyParser = require('body-parser');
 const Joi = require('joi');
 const fb = require('firebase-admin');
 
-module.exports = (functions, admin) => {
+module.exports = (functions: any, admin: any) => {
   const app = express();
   app.use(bodyParser.json());
   const fs = admin.firestore();
@@ -26,7 +25,7 @@ module.exports = (functions, admin) => {
   const openCors = cors({ origin: '*' });
   app.use(openCors);
 
-  app.use(function (err, req, res, next) {
+  app.use((err, req, res, next) => {
     console.log("error", err);
 
     if (err.status) {
