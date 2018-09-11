@@ -8,6 +8,7 @@ Prerequisites:
 - firebase cli tools `npm install -g firebase-tools`
 - localtunnel `npm install -g lt`
 
+Steps:  
 ```bash
 #Login to your firebase account
 firebase login
@@ -65,14 +66,14 @@ This script sets the environment variables we set up earlier, and then deploys t
 
 3. Now we just need to point our Twilio number to our deployment.   
 Log into Twilio > Programmable Voice > Numbers > Manage Numbers > Select a Number >
-Under 'Voice & Fax' > 'A Call Comes In', set to the entrypoint url for the firebase function, eg:
-`https://us-central1-tz-phone-book.cloudfunctions.net/benchmark/entrypoint`
+Under 'Voice & Fax' > 'A Call Comes In', set to the entrypoint url for the firebase function  
+eg:`https://us-central1-tz-phone-book.cloudfunctions.net/benchmark/entrypoint`
 
 ![deployment_number](./docs/deployment_number.png)
 
 
 ----
-## Firebase Api:
+## Firebase Api: [DEPRECTATED]
 
 ### 1.0 `POST /message`
 
@@ -154,8 +155,10 @@ Example url for ngrok: `http://4e27e9ad.ngrok.io/tz-phone-book/us-central1/bench
 Benchmark url for Firebase deployment `https://us-central1-tz-phone-book.cloudfunctions.net/benchmark/entrypoint`
 
 
+## Handy Snippets
 
-## Ffmpeg is awesome!
+### Convert audio with ffmpeg
+
 ```bash
 ffmpeg benchmark_test_3.mp3 -i benchmark_test_3.m4a -codec:a libmp3lame -qscale:a 1
 ```
