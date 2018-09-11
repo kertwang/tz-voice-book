@@ -32,8 +32,8 @@ export type FlowMap = {
 }
 
 export enum FlowType {
-  DEFAULT,
-  GATHER,
+  DEFAULT = 'DEFAULT',
+  GATHER = 'GATHER',
 }
 
 /* Describes a normal flow which transitions without action */
@@ -70,9 +70,9 @@ export type BlockMap = {
 }
 
 export enum BlockType {
-  DEFAULT,  //Just a playback block
-  PLAYBACK, //Plays back non-static messages
-  RECORD,   //Records a user's input
+  DEFAULT = 'DEFAULT',  //Just a playback block
+  PLAYBACK = 'PLAYBACK', //Plays back non-static messages
+  RECORD = 'RECORD',   //Records a user's input
 }
 
 export interface DefaultBlock {
@@ -97,8 +97,8 @@ export type MessageMap = {
 }
 
 export enum MessageType {
-  SAY,
-  PLAY,
+  SAY = 'SAY',
+  PLAY = 'PLAY',
 }
 
 export interface SayMessage {
@@ -121,6 +121,7 @@ export type CallContext = {
   callSid: string,
   mobile: string,
   firebaseApi: FirebaseApi,
+  userId: string,
   //We could put the appApi in here, but I'm not too sure thats the best idea...
 }
 

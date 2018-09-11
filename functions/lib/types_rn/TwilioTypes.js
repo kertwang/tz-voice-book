@@ -24,19 +24,19 @@ var BlockId;
 })(BlockId = exports.BlockId || (exports.BlockId = {}));
 var FlowType;
 (function (FlowType) {
-    FlowType[FlowType["DEFAULT"] = 0] = "DEFAULT";
-    FlowType[FlowType["GATHER"] = 1] = "GATHER";
+    FlowType["DEFAULT"] = "DEFAULT";
+    FlowType["GATHER"] = "GATHER";
 })(FlowType = exports.FlowType || (exports.FlowType = {}));
 var BlockType;
 (function (BlockType) {
-    BlockType[BlockType["DEFAULT"] = 0] = "DEFAULT";
-    BlockType[BlockType["PLAYBACK"] = 1] = "PLAYBACK";
-    BlockType[BlockType["RECORD"] = 2] = "RECORD";
+    BlockType["DEFAULT"] = "DEFAULT";
+    BlockType["PLAYBACK"] = "PLAYBACK";
+    BlockType["RECORD"] = "RECORD";
 })(BlockType = exports.BlockType || (exports.BlockType = {}));
 var MessageType;
 (function (MessageType) {
-    MessageType[MessageType["SAY"] = 0] = "SAY";
-    MessageType[MessageType["PLAY"] = 1] = "PLAY";
+    MessageType["SAY"] = "SAY";
+    MessageType["PLAY"] = "PLAY";
 })(MessageType = exports.MessageType || (exports.MessageType = {}));
 ;
 var BotId;

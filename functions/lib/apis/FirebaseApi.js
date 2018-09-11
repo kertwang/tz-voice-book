@@ -154,6 +154,7 @@ class FirebaseApi {
     // ----------------------------
     deployConfigForBotAndVersion(botId, versionId, config) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log(`Saving config to bot/${botId}/version/${versionId}/`);
             return this.fs.collection('bot').doc(botId).collection('version').doc(versionId).set(config);
         });
     }

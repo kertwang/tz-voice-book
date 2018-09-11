@@ -78,14 +78,16 @@ module.exports = (functions: any) => {
    * Action callback handlers.
    */
   app.post('/gather/*', async (req, res) => {
-    // const callSid = 
-    // const content = await firebaseApi.getBlockContent(
+    const blockName = pathToBlock(req.path);
+
+    const user = await firebaseApi.getUserFromMobile(req.body.From);
+    const botConfig = await firebaseApi.getBotConfig(req.body.CallSid, user.id);
     const ctx: CallContext = {
       callSid: req.body.CallSid,
       mobile: req.body.From,
+      userId: user.id,
       firebaseApi,
-    }
-    const blockName = pathToBlock(req.path);
+    };
     
     // const gatherResult: GatherResult = {
     //   speechResult: req.body.SpeechResult,
@@ -96,7 +98,7 @@ module.exports = (functions: any) => {
     const gatherResult: DigitResult = {
       digits: req.body.Digits,
     }
-    const result = await TwilioRouter.gatherNextMessage(ctx, blockName, gatherResult);
+    const result = await TwilioRouter.gatherNextMessage(ctx, botConfig, blockName, gatherResult);
     logTwilioResponse(result);
 
     res.writeHead(200, { 'Content-Type': 'text/xml' });
@@ -107,14 +109,18 @@ module.exports = (functions: any) => {
    * Handle all normal routes
    */
   app.post('/*', async (req, res) => {
+    const blockName = pathToBlock(req.path);
+
+    const user = await firebaseApi.getUserFromMobile(req.body.From);
+    const botConfig = await firebaseApi.getBotConfig(req.body.CallSid, user.id);
     const ctx: CallContext = {
       callSid: req.body.CallSid,
       mobile: req.body.From,
+      userId: user.id,
       firebaseApi,
     };
-    const blockName = pathToBlock(req.path);
 
-    const result = await TwilioRouter.nextMessage(ctx, blockName);
+    const result = await TwilioRouter.nextMessage(ctx, botConfig, blockName);
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(result);
   });

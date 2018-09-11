@@ -3,7 +3,7 @@
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { logTwilioResponse } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult } from '../types_rn/TwilioTypes';
+import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig } from '../types_rn/TwilioTypes';
 import { baseUrl } from '../utils/Env';
 import TwilioFlows from '../content/TwilioFlows';
 import UserApi, { Recording } from './UserApi';
@@ -18,9 +18,9 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
  */
 export default class TwilioRouter {
 
-  public static async nextMessage(ctx: CallContext, currentBlock: BlockId): Promise<string> {
+  public static async nextMessage(ctx: CallContext, config: BotConfig, currentBlock: BlockId): Promise<string> {
     //Not sure if this will work, we may need to nest stuff
-    const response = await TwilioRouter.getBlock(ctx, currentBlock);
+    const response = await TwilioRouter.getBlock(ctx,config, currentBlock);
     logTwilioResponse(response.toString());
 
     return response.toString();
@@ -30,11 +30,11 @@ export default class TwilioRouter {
    * Given a blockId, find the Flow, Block and Messages, and build a 
    * twilio response
    */
-  public static async getBlock(ctx: CallContext, blockName: BlockId): Promise<any> {
+  public static async getBlock(ctx: CallContext, config: BotConfig, blockName: BlockId): Promise<any> {
     //TODO: load based on context etc.
-    const messageBlocks = await ctx.firebaseApi.messagesForMobile(ctx.mobile);
-    const flow = TwilioFlows[blockName];
-    const block = TwilioBlocks[blockName];
+    const messageBlocks = config.messages;
+    const flow = config.flows[blockName];
+    const block = config.blocks[blockName];
     const messages = messageBlocks[blockName]; //TODO: make type safe?
 
     let response = new VoiceResponse();
@@ -154,11 +154,12 @@ export default class TwilioRouter {
    */
   public static async gatherNextMessage(
     ctx: CallContext,
+    config: BotConfig,
     currentBlock: BlockId,
     gatherResult: DigitResult): Promise<string> {
     //TODO: parse out the twilio response, and redirect to the appropriate block
 
-    const flow = TwilioFlows[currentBlock];
+    const flow = config.flows[currentBlock];
     if (flow.type !== FlowType.GATHER) {
       console.error(`gatherNextMessage tried to handle flow with type: ${flow.type}`);
       const response = new VoiceResponse();
@@ -180,7 +181,7 @@ export default class TwilioRouter {
           //No match found :(
           if (idx === -1) {
             //TODO: should this redirect instead?
-            const errorResponse = await TwilioRouter.getBlock(ctx, flow.error);
+            const errorResponse = await TwilioRouter.getBlock(ctx, config, flow.error);
             return errorResponse.toString();
           }
 

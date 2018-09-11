@@ -5,6 +5,7 @@ import TwilioMessages from "../content/TwilioMessages";
 import { DataSnapshot } from "firebase-functions/lib/providers/database";
 import { DocumentSnapshot } from "firebase-functions/lib/providers/firestore";
 
+const botId = 'voicebook'; //This is temporary, todo: change this later on.
 
 export default class FirebaseApi {
   fs: any;
@@ -14,16 +15,18 @@ export default class FirebaseApi {
   }
 
   public getUser(userId: string): Promise<User> {
-    return this.fs.collection('users').doc(userId).get();
+    return this.fs.collection('bot').doc(botId).collection('users').doc(userId).get();
   }
 
 
   public createUserForMobile(mobile: string): Promise<User> {
     const user = {
       mobile,
+      //This is the version that new users will use by default.
+      version: VersionId.en_us, //This is the only one for now
     };
     //TODO: should we add the id in here?
-    return this.fs.collection('users').add(user);
+    return this.fs.collection('bot').doc(botId).collection('users').add(user);
   }
 
   /**
@@ -32,7 +35,7 @@ export default class FirebaseApi {
    */
   public messagesForMobile(mobile: string): Promise<MessageMap> {
 
-    //TODO: implement me!
+    //TODO: delete me! use getBlockcontent or some variation etc.
     return Promise.resolve(TwilioMessages.en_text);
   } 
 
@@ -41,7 +44,7 @@ export default class FirebaseApi {
    * If we don't already have a user for this number, lazy create one
    */
   public getUserFromMobile(mobile: string): Promise<User> {
-    return this.fs.collection('users').where('mobile', '==', mobile).limit(1).get()
+    return this.fs.collection('bot').doc(botId).collection('users').where('mobile', '==', mobile).limit(1).get()
     .then((sn: any) => {
       const users: User[] = [];
       sn.forEach((doc: any)=> {
@@ -62,7 +65,7 @@ export default class FirebaseApi {
   }
 
   public getMessages(limit: number): Promise<any> {
-    return this.fs.collection('messages').orderBy('createdAt', 'desc').limit(limit).get()
+    return this.fs.collection('bot').doc(botId).collection('messages').orderBy('createdAt', 'desc').limit(limit).get()
     .then(sn => {
       const messages: any = [];
       sn.forEach(doc => {
@@ -82,7 +85,7 @@ export default class FirebaseApi {
    * Returns the id of the pending reading
    */
   public async savePendingRecording(recording: Recording): Promise<string> {
-    return this.fs.collection('pendingRecordings').add(recording)
+    return this.fs.collection('bot').doc(botId).collection('pendingRecordings').add(recording)
     .then(ref => ref.id)
     .catch(err => {
       console.log("Error in savePendingRecording", err);
@@ -94,7 +97,7 @@ export default class FirebaseApi {
    * Get all pending recordings for a given callSid, newest first
    */
   public async getPendingRecordings(callSid: string, limit: number): Promise<Recording[]> {
-    return this.fs.collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
+    return this.fs.collection('bot').doc(botId).collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
     .then((sn: any) => {
       const recordings: Recording[] = [];
       sn.forEach(doc => {
@@ -140,7 +143,7 @@ export default class FirebaseApi {
    * Returns the id of the recording
    */
   public postRecording(recording: Recording): Promise<string> {
-    return this.fs.collection('recordings').add(recording)
+    return this.fs.collection('bot').doc(botId).collection('recordings').add(recording)
     .then(ref => ref.id);
   }
 
@@ -149,18 +152,18 @@ export default class FirebaseApi {
    * 
    * This will be stored in firebase, parsed, and filled into the context object
    */
-  public getBlockContent(callSid: string, userId: string): any {
+  public async getBotConfig(callSid: string, userId: string): Promise<BotConfig> {
     //TODO: implement configurable stuff.
 
-    const condition = this.getConditionForCallAndUserId(callSid, userId);
+    const condition = this.getVerionForUser(userId);
 
-    return this.fs.collection('content').doc(condition).get()
+    return this.fs.collection('bot').doc(botId).collection('version').doc(condition).get()
     .then(doc => doc.data());
   }
 
-  public getConditionForCallAndUserId(callSid: string, userId: string): string {
-    //TODO: implement based on a bunch of settings.
-    return 'default';
+  public async getVerionForUser( userId: string): Promise<VersionId> {
+    //TODO: lookup in user's object, if not found default to tz_audio
+    return Promise.resolve(VersionId.en_us);
   }
 
 
@@ -169,8 +172,8 @@ export default class FirebaseApi {
   // Admin Functions
   // ----------------------------
 
-  public async deployConfigForBotAndVersion(botId: BotId, versionId: VersionId, config: BotConfig) {
-    console.log(`Saving config to bot/${botId}/version/${versionId}/`);
-    return this.fs.collection('bot').doc(botId).collection('version').doc(versionId).set(config);
+  public async deployConfigForBotAndVersion(new_botId: BotId, versionId: VersionId, config: BotConfig) {
+    console.log(`Saving config to bot/${new_botId}/version/${versionId}/`);
+    return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(config);
   }
 }
