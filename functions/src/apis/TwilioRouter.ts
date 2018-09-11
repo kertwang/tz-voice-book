@@ -2,9 +2,8 @@
 // const VoiceResponse = require('twilio').twiml.VoiceResponse;
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
-import { lang } from 'moment';
 import { logTwilioResponse } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext } from '../Types/TwilioRouter';
+import { BlockId, FlowMap, GatherResult, CallContext } from '../types_rn/TwilioRouter';
 import { baseUrl } from '../utils/Env';
 import TwilioFlows from '../content/TwilioFlows';
 import UserApi, { Recording } from './UserApi';
@@ -51,11 +50,11 @@ export default class TwilioRouter {
           partialResultCallbackMethod: 'POST',
           partialResultCallback: `${baseUrl}/twiml/recognitionResults`
         });
-        gather.play({}, 'https://s3.amazonaws.com/tzchatbot/000_1abcd_Combined_Voicebook_Swahili.mp3');
-        // gather.say({}, 'To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.');
-        // gather.say({}, 'To record a message that people in your community can hear, say tuma. ');
-        // gather.say({}, 'To learn more about this service say msaada.');
-        // gather.say({}, 'To hear these options again say kurudia.');
+        // gather.play({}, 'https://s3.amazonaws.com/tzchatbot/000_1abcd_Combined_Voicebook_Swahili.mp3');
+        gather.say({}, 'To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.');
+        gather.say({}, 'To record a message that people in your community can hear, say tuma. ');
+        gather.say({}, 'To learn more about this service say msaada.');
+        gather.say({}, 'To hear these options again say kurudia.');
         response.say({}, 'We didn\'t receive any input. Hrrmm.');
 
         return response;

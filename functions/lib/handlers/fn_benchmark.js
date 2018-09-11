@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Benchmark is a series of functions for testing and debugging issues with twilio.
+ *
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -13,15 +17,23 @@ const cors = require("cors");
 const moment = require("moment");
 const morgan = require("morgan");
 const morganBody = require("morgan-body");
-const TwilioRouter_1 = require("../apis/TwilioRouter");
 const ErrorHandler_1 = require("../utils/ErrorHandler");
 const utils_1 = require("../utils");
+const BenchmarkRouter_1 = require("../types_rn/BenchmarkRouter");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 const Firestore_1 = require("../apis/Firestore");
+const BenchmarkRouter_2 = require("../apis/BenchmarkRouter");
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const bodyParser = require('body-parser');
 const Joi = require('joi');
+function pathToBlock(path) {
+    const sanitized = path
+        .replace('/gather/', '')
+        .replace('/', '');
+    return BenchmarkRouter_1.BlockId[sanitized];
+}
+exports.pathToBlock = pathToBlock;
 module.exports = (functions) => {
     const app = express();
     app.use(bodyParser.json());
@@ -76,13 +88,13 @@ module.exports = (functions) => {
             mobile: req.body.From,
             firebaseApi,
         };
-        const blockName = utils_1.pathToBlock(req.path);
+        const blockName = pathToBlock(req.path);
         const gatherResult = {
             speechResult: req.body.SpeechResult,
             confidence: req.body.Confidence,
         };
         utils_1.logGatherBlock(blockName, gatherResult);
-        const result = yield TwilioRouter_1.default.gatherNextMessage(ctx, blockName, gatherResult);
+        const result = yield BenchmarkRouter_2.default.gatherNextMessage(ctx, blockName, gatherResult);
         utils_1.logTwilioResponse(result);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);
@@ -96,8 +108,8 @@ module.exports = (functions) => {
             mobile: req.body.From,
             firebaseApi,
         };
-        const blockName = utils_1.pathToBlock(req.path);
-        const result = yield TwilioRouter_1.default.nextMessage(ctx, blockName);
+        const blockName = pathToBlock(req.path);
+        const result = yield BenchmarkRouter_2.default.nextMessage(ctx, blockName);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);
     }));
@@ -105,4 +117,4 @@ module.exports = (functions) => {
     app.use(ErrorHandler_1.default);
     return functions.https.onRequest(app);
 };
-//# sourceMappingURL=fn_twiml.js.map
+//# sourceMappingURL=fn_benchmark.js.map

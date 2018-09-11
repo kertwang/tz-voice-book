@@ -4,7 +4,7 @@ import TwilioRouter from './TwilioRouter';
 import fs from './Firestore';
 
 import { describe } from 'mocha';
-import { CallContext, GatherResult } from '../types/TwilioRouter';
+import { CallContext, GatherResult } from '../types_rn/TwilioRouter';
 import FirebaseApi from './FirebaseApi';
 import { Block } from '../../lib/types/TwilioRouter';
 import { Recording } from './UserApi';

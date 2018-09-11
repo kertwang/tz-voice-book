@@ -2,38 +2,78 @@
 
 A demo application for an IVR based social network.
 
+## Installation
+
+Prerequisites:
+- firebase cli tools `npm install -g firebase-tools`
+- localtunnel `npm install -g lt`
+
+Steps:  
+```bash
+#Login to your firebase account
+firebase login
+
+#List your projects, and check for a the tz-phone-book project:
+#If you can't see an entry called 'tz-phone-book', contact Lewis to get you access
+firebase list
 
 
-## Client Side API:
-
-1. user calls in, selects option 1
-2. says message, presses hash/timeout
-3. twilio saves as voicemail
-4. Calls http request, saves voicemail url to firebase cloudstore
-
-
+#Install node modules
+cd functions 
+yarn
+```
 
 ## Running Locally:
 
-
 ```bash
-curl -X POST  https://lwilld.localtunnel.me/tz-phone-book/us-central1/message
+#First, we run localtunnel to expose our local webserver publicly:
+./_run_lt.sh
+
+#then, in a separate terminal session, run:
+./run_local.sh
+
+#This runs the firebase functions in a firebase emulation mode.
 ```
 
+[todo: talk about node version issues]
+[todo: talk about base url stuff]
 
-curl -X POST \
-  https://us-central1-tz-phone-book.cloudfunctions.net/message/1 \
-  -H 'Cache-Control: no-cache' \
-  -H 'Content-Type: application/json' \
-  -H 'Postman-Token: 2f45420c-65f8-4c37-9fbd-d89e7e17ca59' \
-  -d '{
-  "audioUrl": "string",
-  "phone": "string"
-}'
+
+## Deployment
+
+1. Start by ensuring you have the correct environment variables setup:
+
+You need a `.env.sh` file in `./env`, which contains the following:
+```bash
+#Put private env vars here.
+export TWILIO_ACCOUNT_SID='<insert_me>'
+export TWILIO_AUTH_TOKEN='<insert_me>'
+```
+
+and the BASE_URL entry in `env.sh` should point to the firebase endpoint:
+```bash
+export BASE_URL="https://us-central1-tz-phone-book.cloudfunctions.net"
+```
+
+2. Run the deployment script.
+
+```bash
+./_deploy.sh
+```
+This script sets the environment variables we set up earlier, and then deploys the firebase functions
+
+
+
+3. Now we just need to point our Twilio number to our deployment.   
+Log into Twilio > Programmable Voice > Numbers > Manage Numbers > Select a Number >
+Under 'Voice & Fax' > 'A Call Comes In', set to the entrypoint url for the firebase function  
+eg:`https://us-central1-tz-phone-book.cloudfunctions.net/benchmark/entrypoint`
+
+![deployment_number](./docs/deployment_number.png)
 
 
 ----
-## FB Api:
+## Firebase Api: [DEPRECTATED]
 
 ### 1.0 `POST /message`
 
@@ -106,3 +146,19 @@ curl http://localhost:5000/tz-phone-book/us-central1/message \
 
 
 http://localhost:5000/tz-phone-book/us-central1/message?stringFormat=true
+
+
+
+## Configuring twilio url:
+
+Example url for ngrok: `http://4e27e9ad.ngrok.io/tz-phone-book/us-central1/benchmark/entrypoint`
+Benchmark url for Firebase deployment `https://us-central1-tz-phone-book.cloudfunctions.net/benchmark/entrypoint`
+
+
+## Handy Snippets
+
+### Convert audio with ffmpeg
+
+```bash
+ffmpeg benchmark_test_3.mp3 -i benchmark_test_3.m4a -codec:a libmp3lame -qscale:a 1
+```

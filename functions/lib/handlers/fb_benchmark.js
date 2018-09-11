@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Benchmark is a series of functions for testing and debugging issues with twilio.
+ *
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -38,6 +42,12 @@ module.exports = (functions) => {
     /* CORS Configuration */
     const openCors = cors({ origin: '*' });
     app.use(openCors);
+    app.use((req, res, next) => {
+        if (!req.body.From) {
+            console.log("WARNING: No FROM found in request body");
+        }
+        return next();
+    });
     /**
      * Collect partial results for debugging purposes.
      */
@@ -105,4 +115,4 @@ module.exports = (functions) => {
     app.use(ErrorHandler_1.default);
     return functions.https.onRequest(app);
 };
-//# sourceMappingURL=fn_twiml.js.map
+//# sourceMappingURL=fb_benchmark.js.map
