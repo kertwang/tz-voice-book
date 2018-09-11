@@ -2,38 +2,47 @@
 
 A demo application for an IVR based social network.
 
+## Installation
 
+Prerequisites:
+- firebase `npm install -g firebase-tools`
+- localtunnel `npm install -g lt`
 
-## Client Side API:
+```bash
+#Login to your firebase account
+firebase login
 
-1. user calls in, selects option 1
-2. says message, presses hash/timeout
-3. twilio saves as voicemail
-4. Calls http request, saves voicemail url to firebase cloudstore
+#List your projects, and check for a the tz-phone-book project:
+#If you can't see an entry called 'tz-phone-book', contact Lewis to get you access
+firebase list
 
-
+```
 
 ## Running Locally:
 
+[insert instructions]
 
+
+## Deployment
+
+1. Start by ensuring you have the correct environment variables setup:
+
+You need a `.env.sh` file in `./env`, which contains the following:
 ```bash
-curl -X POST  https://lwilld.localtunnel.me/tz-phone-book/us-central1/message
+#Put private env vars here.
+export TWILIO_ACCOUNT_SID='<insert_me>'
+export TWILIO_AUTH_TOKEN='<insert_me>'
+```
+
+and the BASE_URL entry in `env.sh` should point to the firebase endpoint:
+```bash
+export BASE_URL="https://us-central1-tz-phone-book.cloudfunctions.net"
 ```
 
 
-curl -X POST \
-  https://us-central1-tz-phone-book.cloudfunctions.net/message/1 \
-  -H 'Cache-Control: no-cache' \
-  -H 'Content-Type: application/json' \
-  -H 'Postman-Token: 2f45420c-65f8-4c37-9fbd-d89e7e17ca59' \
-  -d '{
-  "audioUrl": "string",
-  "phone": "string"
-}'
-
 
 ----
-## FB Api:
+## Firebase Api:
 
 ### 1.0 `POST /message`
 
@@ -111,8 +120,9 @@ http://localhost:5000/tz-phone-book/us-central1/message?stringFormat=true
 
 ## Configuring twilio url:
 
-Example url for ngrok:
-`http://4e27e9ad.ngrok.io/tz-phone-book/us-central1/benchmark/entrypoint`
+Example url for ngrok: `http://4e27e9ad.ngrok.io/tz-phone-book/us-central1/benchmark/entrypoint`
+Benchmark url for Firebase deployment `https://us-central1-tz-phone-book.cloudfunctions.net/benchmark/entrypoint`
+
 
 
 ## Ffmpeg is awesome!

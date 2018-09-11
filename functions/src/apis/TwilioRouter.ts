@@ -2,7 +2,6 @@
 // const VoiceResponse = require('twilio').twiml.VoiceResponse;
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
-import { lang } from 'moment';
 import { logTwilioResponse } from '../utils';
 import { BlockId, FlowMap, GatherResult, CallContext } from '../types_rn/TwilioRouter';
 import { baseUrl } from '../utils/Env';

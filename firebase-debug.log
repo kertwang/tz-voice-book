@@ -1,0 +1,22 @@
+[debug] [2018-09-11T01:49:26.968Z] ----------------------------------------------------------------------
+[debug] [2018-09-11T01:49:26.970Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase
+[debug] [2018-09-11T01:49:26.970Z] CLI Version:   4.0.3
+[debug] [2018-09-11T01:49:26.970Z] Platform:      darwin
+[debug] [2018-09-11T01:49:26.970Z] Node Version:  v8.11.1
+[debug] [2018-09-11T01:49:26.971Z] Time:          Tue Sep 11 2018 11:19:26 GMT+0930 (ACST)
+[debug] [2018-09-11T01:49:26.971Z] ----------------------------------------------------------------------
+[debug] 
+[error] Error: [object Object] is not a Firebase command
+[debug] [2018-09-11T01:49:26.980Z] TypeError: str.toLowerCase is not a function
+    at didYouMean (/Users/ldaly/.nvm/versions/node/v8.11.1/lib/node_modules/firebase-tools/node_modules/didyoumean/didYouMean-1.2.1.js:147:48)
+    at Command.<anonymous> (/Users/ldaly/.nvm/versions/node/v8.11.1/lib/node_modules/firebase-tools/index.js:66:22)
+    at Command.listener (/Users/ldaly/.nvm/versions/node/v8.11.1/lib/node_modules/firebase-tools/node_modules/commander/index.js:315:8)
+    at emitNone (events.js:106:13)
+    at Command.emit (events.js:208:7)
+    at Command.parseArgs (/Users/ldaly/.nvm/versions/node/v8.11.1/lib/node_modules/firebase-tools/node_modules/commander/index.js:664:12)
+    at Command.parse (/Users/ldaly/.nvm/versions/node/v8.11.1/lib/node_modules/firebase-tools/node_modules/commander/index.js:474:21)
+    at Object.<anonymous> (/Users/ldaly/.nvm/versions/node/v8.11.1/lib/node_modules/firebase-tools/bin/firebase:95:20)
+    at Module._compile (module.js:652:30)
+    at Object.Module._extensions..js (module.js:663:10)
+[error] 
+[error] Error: An unexpected error has occurred.
