@@ -137,7 +137,7 @@ export default class TwilioRouter {
       switch (m.type) {
         case (MessageType.SAY):
           //TODO: add language in here.
-          response.say({}, m.text);
+          response.say({language: m.language}, m.text);
           break;
         case (MessageType.PLAY):
           response.play({}, m.url);

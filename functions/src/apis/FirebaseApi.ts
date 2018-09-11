@@ -15,9 +15,9 @@ export default class FirebaseApi {
   }
 
   public getUser(userId: string): Promise<User> {
-    return this.fs.collection('bot').doc(botId).collection('users').doc(userId).get();
+    return this.fs.collection('bot').doc(botId).collection('users').doc(userId).get()
+      .then((doc: any) => doc.data());
   }
-
 
   public createUserForMobile(mobile: string): Promise<User> {
     const user = {
@@ -155,18 +155,22 @@ export default class FirebaseApi {
   public async getBotConfig(callSid: string, userId: string): Promise<BotConfig> {
     //TODO: implement configurable stuff.
 
-    const condition = this.getVerionForUser(userId);
+    const version = await this.getVerionForUser(userId);
 
-    return this.fs.collection('bot').doc(botId).collection('version').doc(condition).get()
+    return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
     .then(doc => doc.data());
   }
 
   public async getVerionForUser( userId: string): Promise<VersionId> {
-    //TODO: lookup in user's object, if not found default to tz_audio
+    const user = await this.getUser(userId);
+    if (user.version) {
+
+      //TODO: should also make sure the version code is correct
+      return user.version;
+    } 
+    //TODO: default to tz_audio version!
     return Promise.resolve(VersionId.en_us);
   }
-
-
 
   //
   // Admin Functions

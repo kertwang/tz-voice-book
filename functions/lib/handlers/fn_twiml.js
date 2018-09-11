@@ -71,14 +71,15 @@ module.exports = (functions) => {
      * Action callback handlers.
      */
     app.post('/gather/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
-        // const callSid = 
-        // const content = await firebaseApi.getBlockContent(
+        const blockName = utils_1.pathToBlock(req.path);
+        const user = yield firebaseApi.getUserFromMobile(req.body.From);
+        const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
         const ctx = {
             callSid: req.body.CallSid,
             mobile: req.body.From,
+            userId: user.id,
             firebaseApi,
         };
-        const blockName = utils_1.pathToBlock(req.path);
         // const gatherResult: GatherResult = {
         //   speechResult: req.body.SpeechResult,
         //   confidence: req.body.Confidence,
@@ -87,7 +88,7 @@ module.exports = (functions) => {
         const gatherResult = {
             digits: req.body.Digits,
         };
-        const result = yield TwilioRouter_1.default.gatherNextMessage(ctx, blockName, gatherResult);
+        const result = yield TwilioRouter_1.default.gatherNextMessage(ctx, botConfig, blockName, gatherResult);
         utils_1.logTwilioResponse(result);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);
@@ -96,13 +97,16 @@ module.exports = (functions) => {
      * Handle all normal routes
      */
     app.post('/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const blockName = utils_1.pathToBlock(req.path);
+        const user = yield firebaseApi.getUserFromMobile(req.body.From);
+        const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
         const ctx = {
             callSid: req.body.CallSid,
             mobile: req.body.From,
+            userId: user.id,
             firebaseApi,
         };
-        const blockName = utils_1.pathToBlock(req.path);
-        const result = yield TwilioRouter_1.default.nextMessage(ctx, blockName);
+        const result = yield TwilioRouter_1.default.nextMessage(ctx, botConfig, blockName);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);
     }));

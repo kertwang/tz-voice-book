@@ -46,5 +46,6 @@ var BotId;
 var VersionId;
 (function (VersionId) {
     VersionId["en_us"] = "en_us";
+    VersionId["en_au"] = "en_au";
 })(VersionId = exports.VersionId || (exports.VersionId = {}));
 //# sourceMappingURL=TwilioTypes.js.map

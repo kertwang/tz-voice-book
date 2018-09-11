@@ -13,8 +13,6 @@ const twilio = require("twilio");
 const utils_1 = require("../utils");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const Env_1 = require("../utils/Env");
-const TwilioFlows_1 = require("../content/TwilioFlows");
-const TwilioBlocks_1 = require("../content/TwilioBlocks");
 const VoiceResponse = twilio.twiml.VoiceResponse;
 /**
  * TwilioRouter is a stateless router for twilio requests.
@@ -22,10 +20,10 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
  * twilio response
  */
 class TwilioRouter {
-    static nextMessage(ctx, currentBlock) {
+    static nextMessage(ctx, config, currentBlock) {
         return __awaiter(this, void 0, void 0, function* () {
             //Not sure if this will work, we may need to nest stuff
-            const response = yield TwilioRouter.getBlock(ctx, currentBlock);
+            const response = yield TwilioRouter.getBlock(ctx, config, currentBlock);
             utils_1.logTwilioResponse(response.toString());
             return response.toString();
         });
@@ -34,12 +32,12 @@ class TwilioRouter {
      * Given a blockId, find the Flow, Block and Messages, and build a
      * twilio response
      */
-    static getBlock(ctx, blockName) {
+    static getBlock(ctx, config, blockName) {
         return __awaiter(this, void 0, void 0, function* () {
             //TODO: load based on context etc.
-            const messageBlocks = yield ctx.firebaseApi.messagesForMobile(ctx.mobile);
-            const flow = TwilioFlows_1.default[blockName];
-            const block = TwilioBlocks_1.default[blockName];
+            const messageBlocks = config.messages;
+            const flow = config.flows[blockName];
+            const block = config.blocks[blockName];
             const messages = messageBlocks[blockName]; //TODO: make type safe?
             let response = new VoiceResponse();
             switch (flow.type) {
@@ -130,7 +128,7 @@ class TwilioRouter {
             switch (m.type) {
                 case (TwilioTypes_1.MessageType.SAY):
                     //TODO: add language in here.
-                    response.say({}, m.text);
+                    response.say({ language: m.language }, m.text);
                     break;
                 case (TwilioTypes_1.MessageType.PLAY):
                     response.play({}, m.url);
@@ -143,10 +141,10 @@ class TwilioRouter {
      * Handle the output of a gather endpoint, and redirect back
      * into the flow of things
      */
-    static gatherNextMessage(ctx, currentBlock, gatherResult) {
+    static gatherNextMessage(ctx, config, currentBlock, gatherResult) {
         return __awaiter(this, void 0, void 0, function* () {
             //TODO: parse out the twilio response, and redirect to the appropriate block
-            const flow = TwilioFlows_1.default[currentBlock];
+            const flow = config.flows[currentBlock];
             if (flow.type !== TwilioTypes_1.FlowType.GATHER) {
                 console.error(`gatherNextMessage tried to handle flow with type: ${flow.type}`);
                 const response = new VoiceResponse();
@@ -166,7 +164,7 @@ class TwilioRouter {
                         //No match found :(
                         if (idx === -1) {
                             //TODO: should this redirect instead?
-                            const errorResponse = yield TwilioRouter.getBlock(ctx, flow.error);
+                            const errorResponse = yield TwilioRouter.getBlock(ctx, config, flow.error);
                             return errorResponse.toString();
                         }
                         const nextBlock = flow.matches[idx].nextBlock;

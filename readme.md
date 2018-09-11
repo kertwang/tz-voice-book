@@ -175,3 +175,15 @@ Benchmark url for Firebase deployment `https://us-central1-tz-phone-book.cloudfu
 ```bash
 ffmpeg benchmark_test_3.mp3 -i benchmark_test_3.m4a -codec:a libmp3lame -qscale:a 1
 ```
+
+
+### Testing locally with curl:
+
+```bash
+curl -X POST \
+  https://lwilld3.localtunnel.me/tz-phone-book/us-central1/twiml/intro_0 \
+  -H 'Postman-Token: d1ec563e-975d-4860-bc54-a4cdf8c5a45c' \
+  -d '{
+	"From":"+61410237238"
+}'
+```

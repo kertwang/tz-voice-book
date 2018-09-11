@@ -9,27 +9,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
+const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const TwilioMessages_1 = require("../content/TwilioMessages");
+const botId = 'voicebook'; //This is temporary, todo: change this later on.
 class FirebaseApi {
     constructor(fs) {
         this.fs = fs;
     }
     getUser(userId) {
-        return this.fs.collection('users').doc(userId).get();
+        return this.fs.collection('bot').doc(botId).collection('users').doc(userId).get()
+            .then((doc) => doc.data());
     }
     createUserForMobile(mobile) {
         const user = {
             mobile,
+            //This is the version that new users will use by default.
+            version: TwilioTypes_1.VersionId.en_us,
         };
         //TODO: should we add the id in here?
-        return this.fs.collection('users').add(user);
+        return this.fs.collection('bot').doc(botId).collection('users').add(user);
     }
     /**
      * Load the messages based on the user's config + messages stored
      * in firebase
      */
     messagesForMobile(mobile) {
-        //TODO: implement me!
+        //TODO: delete me! use getBlockcontent or some variation etc.
         return Promise.resolve(TwilioMessages_1.default.en_text);
     }
     /**
@@ -37,7 +42,7 @@ class FirebaseApi {
      * If we don't already have a user for this number, lazy create one
      */
     getUserFromMobile(mobile) {
-        return this.fs.collection('users').where('mobile', '==', mobile).limit(1).get()
+        return this.fs.collection('bot').doc(botId).collection('users').where('mobile', '==', mobile).limit(1).get()
             .then((sn) => {
             const users = [];
             sn.forEach((doc) => {
@@ -55,7 +60,7 @@ class FirebaseApi {
         });
     }
     getMessages(limit) {
-        return this.fs.collection('messages').orderBy('createdAt', 'desc').limit(limit).get()
+        return this.fs.collection('bot').doc(botId).collection('messages').orderBy('createdAt', 'desc').limit(limit).get()
             .then(sn => {
             const messages = [];
             sn.forEach(doc => {
@@ -74,7 +79,7 @@ class FirebaseApi {
      */
     savePendingRecording(recording) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fs.collection('pendingRecordings').add(recording)
+            return this.fs.collection('bot').doc(botId).collection('pendingRecordings').add(recording)
                 .then(ref => ref.id)
                 .catch(err => {
                 console.log("Error in savePendingRecording", err);
@@ -87,7 +92,7 @@ class FirebaseApi {
      */
     getPendingRecordings(callSid, limit) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.fs.collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
+            return this.fs.collection('bot').doc(botId).collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
                 .then((sn) => {
                 const recordings = [];
                 sn.forEach(doc => {
@@ -131,7 +136,7 @@ class FirebaseApi {
      * Returns the id of the recording
      */
     postRecording(recording) {
-        return this.fs.collection('recordings').add(recording)
+        return this.fs.collection('bot').doc(botId).collection('recordings').add(recording)
             .then(ref => ref.id);
     }
     /**
@@ -139,23 +144,32 @@ class FirebaseApi {
      *
      * This will be stored in firebase, parsed, and filled into the context object
      */
-    getBlockContent(callSid, userId) {
-        //TODO: implement configurable stuff.
-        const condition = this.getConditionForCallAndUserId(callSid, userId);
-        return this.fs.collection('content').doc(condition).get()
-            .then(doc => doc.data());
+    getBotConfig(callSid, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //TODO: implement configurable stuff.
+            const version = yield this.getVerionForUser(userId);
+            return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
+                .then(doc => doc.data());
+        });
     }
-    getConditionForCallAndUserId(callSid, userId) {
-        //TODO: implement based on a bunch of settings.
-        return 'default';
+    getVerionForUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.getUser(userId);
+            if (user.version) {
+                //TODO: should also make sure the version code is correct
+                return user.version;
+            }
+            //TODO: default to tz_audio version!
+            return Promise.resolve(TwilioTypes_1.VersionId.en_us);
+        });
     }
     //
     // Admin Functions
     // ----------------------------
-    deployConfigForBotAndVersion(botId, versionId, config) {
+    deployConfigForBotAndVersion(new_botId, versionId, config) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(`Saving config to bot/${botId}/version/${versionId}/`);
-            return this.fs.collection('bot').doc(botId).collection('version').doc(versionId).set(config);
+            console.log(`Saving config to bot/${new_botId}/version/${versionId}/`);
+            return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(config);
         });
     }
 }

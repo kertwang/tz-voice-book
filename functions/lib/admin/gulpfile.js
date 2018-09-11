@@ -13,16 +13,16 @@ const Firestore_1 = require("../apis/Firestore");
 const en_us_flows_1 = require("./content/en_us_flows");
 const en_us_blocks_1 = require("./content/en_us_blocks");
 const en_us_messages_1 = require("./content/en_us_messages");
+const en_au_flows_1 = require("./content/en_au_flows");
+const en_au_blocks_1 = require("./content/en_au_blocks");
+const en_au_messages_1 = require("./content/en_au_messages");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const fbApi = new FirebaseApi_1.default(Firestore_1.default);
 gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     console.log("deploying conversation config for /twiml");
-    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_us, {
-        messages: en_us_messages_1.default,
-        blocks: en_us_blocks_1.default,
-        flows: en_us_flows_1.default,
-    });
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_us, { messages: en_us_messages_1.default, blocks: en_us_blocks_1.default, flows: en_us_flows_1.default, });
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_au, { messages: en_au_messages_1.default, blocks: en_au_blocks_1.default, flows: en_au_flows_1.default, });
     console.log("deployed config.");
 }));
 //# sourceMappingURL=gulpfile.js.map
