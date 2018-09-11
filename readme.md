@@ -1,4 +1,4 @@
-# Phone Book
+# VoiceBook
 
 A demo application for an IVR based social network.
 
@@ -147,6 +147,14 @@ curl http://localhost:5000/tz-phone-book/us-central1/message \
 
 http://localhost:5000/tz-phone-book/us-central1/message?stringFormat=true
 
+
+## Development:
+
+### Terms:
+
+- __Block__: A block is a collection of commands which get converted to TwiML
+- __Message__: A message is a 'say' or 'play' containing either text to be said, or a url pointing to an audio file to be played
+- __Flow__: A flow describes the relationship between different blocks
 
 
 ## Configuring twilio url:

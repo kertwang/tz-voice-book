@@ -1,4 +1,4 @@
-import { FlowMap, BlockId } from "../types_rn/TwilioRouter";
+import { FlowMap, BlockId, FlowType } from "../types_rn/TwilioTypes";
 
 /**
  * Flows is a graph based data structure, with the key being the valid
@@ -7,87 +7,98 @@ import { FlowMap, BlockId } from "../types_rn/TwilioRouter";
  */
 const TwilioFlows: FlowMap = {
   'entrypoint': {
-    // TODO: change back for debugging only.
-    success: BlockId.intro_0,
-    // success: Block.record_0,
-    error: null,
-    matches: null
+    type: FlowType.DEFAULT,
+    next: BlockId.intro_0,
   },
   'intro_0': {
-    success: null,
+    type: FlowType.GATHER,
     error: BlockId.error_0,
     matches: [
       { term: 'sikiliza', nextBlock: BlockId.listen_0 },
       { term: 'tuma', nextBlock: BlockId.record_0 },
       { term: 'msaada', nextBlock: BlockId.info_0 },
       { term: 'kurudia', nextBlock: BlockId.intro_0 }
-    ]
+    ],
+    digitMatches: [],
   },
   'error_0': {
-    success: BlockId.intro_0,
+    type: FlowType.GATHER,
     error: BlockId.error_0,
-    matches: null
+    matches: [
+      { term: 'sikiliza', nextBlock: BlockId.listen_0 },
+      { term: 'tuma', nextBlock: BlockId.record_0 },
+      { term: 'msaada', nextBlock: BlockId.info_0 },
+      { term: 'kurudia', nextBlock: BlockId.intro_0 }
+    ],
+    digitMatches: [],
   },
   'listen_0': {
-    success: BlockId.listen_end,
-    error: null,
-    matches: null,
+    type: FlowType.DEFAULT,
+    next: BlockId.listen_end,
   },
   'listen_end': {
-    success: null,
+    type: FlowType.GATHER,
     error: BlockId.listen_end_error,
     matches: [
       { term: 'sikiliza', nextBlock: BlockId.record_0 },
       { term: 'maoni', nextBlock: BlockId.listen_feedback },
     ],
+    digitMatches: [],
+  },
+  'listen_end_error': {
+    type: FlowType.GATHER,
+    error: BlockId.listen_end_error,
+    matches: [
+      { term: 'sikiliza', nextBlock: BlockId.record_0 },
+      { term: 'maoni', nextBlock: BlockId.listen_feedback },
+    ],
+    digitMatches: [],
   },
   'listen_feedback': {
-    success: BlockId.listen_feedback_complete,
-    error: null,
-    matches: null,
+    type: FlowType.DEFAULT,
+    next: BlockId.listen_feedback_complete,
   },
   'listen_feedback_complete': {
-    success: null,
-    error: null,
-    matches: null,
+    type: FlowType.DEFAULT,
+    next: null,
   },
   'record_0': {
-    success: BlockId.record_playback,
-    error: null,
-    matches: null,
+    type: FlowType.DEFAULT,
+    next: BlockId.record_playback,
   },
   'record_playback': {
-    success: BlockId.record_post_or_delete,
-    error: null,
-    matches: null,
+    type: FlowType.DEFAULT,
+    next: BlockId.record_post_or_delete,
   },
   'record_post_or_delete': {
-    success: null,
+    type: FlowType.GATHER,
     error: BlockId.record_post_or_delete_error,
     matches: [
       { term: 'tuma', nextBlock: BlockId.record_save },
       { term: 'anza tena', nextBlock: BlockId.record_delete }
-    ]
+    ],
+    digitMatches: [],
   },
   'record_post_or_delete_error': {
-    success: BlockId.record_post_or_delete,
-    error: null,
-    matches: null,
+    type: FlowType.GATHER,
+    error: BlockId.record_post_or_delete_error,
+    matches: [
+      { term: 'tuma', nextBlock: BlockId.record_save },
+      { term: 'anza tena', nextBlock: BlockId.record_delete }
+    ],
+    digitMatches: [],
   },
   'record_save': {
-    success: BlockId.intro_0,
-    error: null,
-    matches: null,
+    type: FlowType.DEFAULT,
+    next: BlockId.intro_0,
   },
   'record_delete': {
-    success: BlockId.intro_0,
-    error: null,
-    matches: null,
+    type: FlowType.DEFAULT,
+    next: BlockId.intro_0,
   },
   'info_0': {
-    success: BlockId.intro_0,
-    error: null,
-    matches: null,
+    type: FlowType.DEFAULT,
+    next: BlockId.intro_0,
   }
 }
 

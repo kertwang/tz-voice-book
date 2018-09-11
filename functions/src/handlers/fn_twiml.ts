@@ -8,7 +8,7 @@ import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
 import { pathToBlock, logGatherBlock, logTwilioResponse } from '../utils';
-import { GatherResult, CallContext } from '../types_rn/TwilioRouter';
+import { GatherResult, CallContext } from '../types_rn/TwilioTypes';
 import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
 import fs from '../apis/Firestore';

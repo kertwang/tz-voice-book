@@ -1,31 +1,21 @@
-import { BlockMap } from "../types_rn/TwilioRouter";
+import { BlockMap, BlockType } from "../types_rn/TwilioTypes";
 
-/**
- * Twilioblocks contain the individual messages to be played 
- * inside each block.
- * 
- * When getting a block, TwilioRouter will iterate through each of the messages
- * and play/say it.
- * 
- * Id is the blockId, each containing an array of message ids to be played
- */
 const TwilioBlocks: BlockMap = {
-  'entrypoint': ['001'],
-  'intro_0': ['001', '002', '003', '004'],
-  'error_0': ['001'],
-  'record_0': ['001', '002'],
-  'record_playback': ['001'],
-  'record_playback_err': ['001'],
-  'record_post_or_delete': ['001'],
-  'record_post_or_delete_err': ['001'],
-  'record_save': ['001'],
-  'record_save_err': ['001'],
-  'record_delete': ['001'],
-  'listen_0': ['001', '002', '003', '004'],
-  'listen_end': ['001', '002'],
-  'listen_end_error': ['001'],
-  'listen_feedback': ['001'],
-  'listen_feedback_complete': ['001'],
+  'entrypoint': { type: BlockType.DEFAULT }, 
+  'intro_0': { type: BlockType.DEFAULT }, 
+  'listen_0': { type: BlockType.PLAYBACK }, 
+  'listen_end': { type: BlockType.DEFAULT }, 
+  'listen_end_error': { type: BlockType.DEFAULT }, 
+  'listen_feedback': { type: BlockType.RECORD, recordingCallback: '/twiml/recordingCallback/feedback'}, 
+  'listen_feedback_complete': { type: BlockType.DEFAULT }, 
+  'error_0': { type: BlockType.DEFAULT }, 
+  'info_0': { type: BlockType.DEFAULT }, 
+  'record_0': { type: BlockType.RECORD, recordingCallback: '/twiml/recordingCallback/message' },
+  'record_playback': {type: BlockType.PLAYBACK },
+  'record_post_or_delete': { type: BlockType.DEFAULT }, 
+  'record_save': { type: BlockType.DEFAULT }, 
+  'record_delete': { type: BlockType.DEFAULT }, 
+  'record_post_or_delete_error': { type: BlockType.DEFAULT }, 
 }
 
 export default TwilioBlocks;

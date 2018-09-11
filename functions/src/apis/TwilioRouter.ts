@@ -3,10 +3,12 @@
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { logTwilioResponse } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext } from '../types_rn/TwilioRouter';
+import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType } from '../types_rn/TwilioTypes';
 import { baseUrl } from '../utils/Env';
 import TwilioFlows from '../content/TwilioFlows';
 import UserApi, { Recording } from './UserApi';
+import TwilioMessages from '../content/TwilioMessages';
+import TwilioBlocks from '../content/TwilioBlocks';
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
 /**
@@ -24,69 +26,49 @@ export default class TwilioRouter {
     return response.toString();
   }
 
+  /**
+   * Given a blockId, find the Flow, Block and Messages, and build a 
+   * twilio response
+   */
   public static async getBlock(ctx: CallContext, blockName: BlockId): Promise<any> {
-    const path = TwilioFlows[blockName];
-    const response = new VoiceResponse();
-    
-    switch(blockName) {
-      case 'entrypoint': {
-        
-        const nextUrl = `${baseUrl}/twiml/${path.success}`;
-        response.say({}, 'Hello, and welcome to voicebook');
-        response.redirect({ method: 'POST' }, nextUrl);
+    //TODO: load based on context etc.
+    const messageBlocks = TwilioMessages.en_text;
+    const flow = TwilioFlows[blockName];
+    const block = TwilioBlocks[blockName];
+    const messages = messageBlocks[blockName]; //TODO: make type safe?
+
+    let response = new VoiceResponse();
+
+    switch (flow.type) {
+      case FlowType.DEFAULT: {
+        switch (block.type) {
+          case BlockType.PLAYBACK: {
+            //TODO: abstract this eventually
+            response = await this.handlePlaybackBlock(blockName, response, ctx, flow);
+            break;
+          }
+          case BlockType.RECORD: {
+            response = this.appendMessagesToResponse(response, messages);
+            response.record({
+              action: `${baseUrl}/twiml/${flow.next}`,
+              maxLength: 10,
+              transcribe: false,
+              recordingStatusCallback: `${baseUrl}${block.recordingCallback}`
+            });
+            break;
+          }
+          case BlockType.DEFAULT:
+          default: {
+            const nextUrl = `${baseUrl}/twiml/${flow.next}`;
+            this.appendMessagesToResponse(response, messages);
+            response.redirect({ method: 'POST' }, nextUrl);
+          }
+        }
 
         return response;
       }
-
-      case BlockId.intro_0: {
-        //@ts-ignore
-        const gather = response.gather({
-          action: `${baseUrl}/twiml/gather/${blockName}`, 
-          method: 'POST',
-          // API doesn't have this for some reason
-          language: 'sw-TZ',
-          input: 'speech',
-          hints: 'sikiliza,tuma,msaada,kurudia',
-          partialResultCallbackMethod: 'POST',
-          partialResultCallback: `${baseUrl}/twiml/recognitionResults`
-        });
-        // gather.play({}, 'https://s3.amazonaws.com/tzchatbot/000_1abcd_Combined_Voicebook_Swahili.mp3');
-        gather.say({}, 'To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.');
-        gather.say({}, 'To record a message that people in your community can hear, say tuma. ');
-        gather.say({}, 'To learn more about this service say msaada.');
-        gather.say({}, 'To hear these options again say kurudia.');
-        response.say({}, 'We didn\'t receive any input. Hrrmm.');
-
-        return response;
-      }
-      case BlockId.error_0: {
-        //@ts-ignore
-        const gather = response.gather({
-          action: `${baseUrl}/twiml/gather/${path.success}`,
-          method: 'POST',
-          // API doesn't have this for some reason
-          language: 'sw-TZ',
-          input: 'speech',
-          hints: 'sikiliza,tuma,msaada,kurudia',
-          partialResultCallbackMethod: 'POST',
-          partialResultCallback: `${baseUrl}/twiml/recognitionResults`
-        });
-        gather.say({}, 'Sorry, I didn\'t catch that. Please try again.');
-
-        return response;
-      }
-      case BlockId.listen_0: {
-
-        //TODO: get messages from appApi
-        response.say({}, 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.');
-        response.say({}, 'Message 1: Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.');
-        response.say({}, 'Message 2: Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.');
-        response.say({}, 'Message 3: Hi this is a message from ORGANIZATION. We want to inform you that we are expecting WEATHER this week. Please be advised and take precautions. If you have a question, you can ask a local representative.');
-        response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${path.success}`);
-
-        return response;
-      }
-      case BlockId.listen_end: {
+      case FlowType.GATHER: {
+        //TODO: modify this for digits only
         //@ts-ignore
         const gather = response.gather({
           action: `${baseUrl}/twiml/gather/${blockName}`,
@@ -94,138 +76,75 @@ export default class TwilioRouter {
           // API doesn't have this for some reason
           language: 'sw-TZ',
           input: 'speech',
-          hints: 'maoni,sikiliza',
+          //TODO: find
           partialResultCallbackMethod: 'POST',
           partialResultCallback: `${baseUrl}/twiml/recognitionResults`
         });
-        gather.say({}, 'There are no other recent messages for your community.');
-        gather.say({}, 'You can hang up now. Or, to leave a message say sikiliza. To tell us how we can improve this service say, maoni.');
+        this.appendMessagesToResponse(gather, messages);
+        //This is a backup TODO: remove
         response.say({}, 'We didn\'t receive any input. Hrrmm.');
 
         return response;
       }
-      case BlockId.listen_end_error: {
-        //@ts-ignore
-        const gather = response.gather({
-          action: `${baseUrl}/twiml/gather/${path.success}`,
-          method: 'POST',
-          // API doesn't have this for some reason
-          language: 'sw-TZ',
-          input: 'speech',
-          hints: 'maoni,sikiliza',
-          partialResultCallbackMethod: 'POST',
-          partialResultCallback: `${baseUrl}/twiml/recognitionResults`
-        });
-        gather.say({}, 'Sorry. I didn\'t understand you. Please try again.');
-        response.say({}, 'We didn\'t receive any input. Hrrmm.');
-
-        return response;
+      default: {
+        const _exhaustiveMatch: never = flow;
+        throw new Error(`Non-exhausive match for path: ${_exhaustiveMatch}`);
       }
-      case BlockId.listen_feedback: {
-        response.say({}, 'We do our best to serve you.If you have any feedback for us, please leave us a message.If you would like us to return your call, please let us know what number to reach you.');
-        response.record({
-          action: `${baseUrl}/twiml/${path.success}`,
-          maxLength: 10,
-          transcribe: false,
-          recordingStatusCallback: `${baseUrl}/twiml/recordingCallback/feedback`
-        });
+    }
+  }
 
-        return response;
-      }
-      case BlockId.listen_feedback_complete: {
-        response.say({}, 'Thanks! Your feedback has been recorded.');
+  private static async handlePlaybackBlock(blockName: BlockId, response: any, ctx: CallContext, flow: DefaultFlow) {
 
-        return response;
-      }
-      case BlockId.record_0: {
-        response.say({}, 'Your message will be heard by people who call this number FOR ONE WEEK, so say things that you want other people in your community to hear. This is a great way to let people know about news, business, and social events.');
-        response.say({}, 'To record a short message for COMMUNITY, start speaking after you hear a beep. When you are finished, stop talking or press any number on your phone. You will have the opportunity to review your message before we post it.');
-        //TODO: debug only
-        // response.say({}, 'In the words of JT, say something.');
-        response.record({
-          action: `${baseUrl}/twiml/${path.success}`,
-          maxLength: 10,
-          transcribe: false,
-          recordingStatusCallback: `${baseUrl}/twiml/recordingCallback/message`
-        });
+    //TODO: figure out how to make more type safe
+    switch(blockName) {
+      case(BlockId.listen_0): {
+        //TODO: load these messages async
+        response.say({ }, 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.');
+        response.say({ }, 'Message 1: Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.');
+        response.say({ }, 'Message 2: Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.');
+        response.say({ }, 'Message 3: Hi this is a message from ORGANIZATION. We want to inform you that we are expecting WEATHER this week. Please be advised and take precautions. If you have a question, you can ask a local representative.');
+        response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${flow.next}`);
 
-        return response;
+        break;
       }
-      case BlockId.record_playback: {
-        console.log("context is:", ctx);
+      case (BlockId.record_playback): {
+        // const recordings: Recording[] = [];
         const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
         if (recordings.length === 0) {
+          //TODO: handle somehow
           response.say({}, 'There was a problem saving your recording. Please try again.');
           return response;
         }
         const recording = recordings[0];
-        
+      
         response.say({}, 'You said:');
         response.play({}, recording.url);
-        response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${path.success}`);
-        return response;
+        response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${flow.next}`);
+      
+        break;
       }
-      case BlockId.record_post_or_delete: {
-        //@ts-ignore
-        const gather = response.gather({
-          action: `${baseUrl}/twiml/gather/${blockName}`,
-          method: 'POST',
-          // API doesn't have this for some reason
-          language: 'sw-TZ',
-          input: 'speech',
-          hints: 'tuma,anza tena,anza,tena',
-          partialResultCallbackMethod: 'POST',
-          //TODO: env var this shit!
-          partialResultCallback: `${baseUrl}/twiml/recognitionResults`
-        });
-        gather.say({}, 'To post your message, say tuma. To cancel and start over, say anza tena');
-        response.say({}, 'We didn\'t receive any input. Hrrmm.');
-
-        return response;
-      }
-      case BlockId.record_post_or_delete_error: {
-        //@ts-ignore
-        const gather = response.gather({
-          action: `${baseUrl}/twiml/gather/${path.success}`,
-          method: 'POST',
-          // API doesn't have this for some reason
-          language: 'sw-TZ',
-          input: 'speech',
-          hints: 'tuma,anza tena,anza,tena',
-          partialResultCallbackMethod: 'POST',
-          //TODO: env var this shit!
-          partialResultCallback: `${baseUrl}/twiml/recognitionResults`
-        });
-        gather.say({}, 'Sorry. I didn\'t get that. Please try again.');
-        response.say({}, 'We didn\'t receive any input. Hrrmm.');
-
-        return response;
-      }
-      case BlockId.record_save: {
-        const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
-        //TODO: this case should redirect to Block.record_save_err
-        if (recordings.length === 0) {
-          response.say({}, 'There was a problem saving your recording. Please try again.');
-          return response;
-        }
-        const recording = recordings[0];
-        await ctx.firebaseApi.postRecording(recording);
-
-        response.say({}, 'Thanks! Your message will be posted.');
-        response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${path.success}`);
-        return response;
-      }
-      case BlockId.record_delete: {
-        await ctx.firebaseApi.deletePendingRecordingsForCall(ctx.callSid);
-
-        response.say({}, 'Your message was erased and will not be posted.');
-        response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${path.success}`);
-        return response;
-      }
-
-      default: 
-        throw new AppError(404, `called getBlock for unknown block: ${blockName}`);
+      default:
+        throw new Error(`Incorrectly handled Playback block: ${blockName}`);
     }
+
+    return response;
+  }
+
+
+  private static appendMessagesToResponse(response, messages): any {
+    messages.forEach((m: SayMessage | PlayMessage) => {
+      switch (m.type) {
+        case (MessageType.SAY):
+          //TODO: add language in here.
+          response.say({}, m.text);
+          break;
+        case (MessageType.PLAY):
+          response.play({}, m.url);
+          break;
+      }
+    });
+
+    return response;
   }
 
   /**
@@ -238,26 +157,34 @@ export default class TwilioRouter {
     gatherResult: GatherResult): Promise<string> {
     //TODO: parse out the twilio response, and redirect to the appropriate block
 
+    const flow = TwilioFlows[currentBlock];
+    if (flow.type !== FlowType.GATHER) {
+      console.error(`gatherNextMessage tried to handle flow with type: ${flow.type}`);
+      const response = new VoiceResponse();
+      response.say({}, 'Sorry. Something went wrong. Please try again.');
+      return response.toString();
+    }
+
     //TODO: we will need to reformat this nicely soon.
     switch (currentBlock) {
       // Default implementation
       case BlockId.intro_0:
       case BlockId.listen_end:
       case BlockId.record_post_or_delete:
+      //TODO: handle the digits as well!
         {
-          const path = TwilioFlows[currentBlock];
           //TODO: implement string search better
           //TODO: handle extra spaces??
-          const stringMatches = path.matches.map(m => m.term);
+          const stringMatches = flow.matches.map(m => m.term);
           const idx = stringMatches.indexOf(gatherResult.speechResult.trim());
 
           //No match found :(
           if (idx === -1) {
-            const errorResponse = await TwilioRouter.getBlock(ctx, path.error);
+            const errorResponse = await TwilioRouter.getBlock(ctx, flow.error);
             return errorResponse.toString();
           }
 
-          const nextBlock = path.matches[idx].nextBlock;
+          const nextBlock = flow.matches[idx].nextBlock;
           const response = new VoiceResponse();
           response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${nextBlock}`);
 
