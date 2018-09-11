@@ -5,7 +5,7 @@ A demo application for an IVR based social network.
 ## Installation
 
 Prerequisites:
-- firebase `npm install -g firebase-tools`
+- firebase cli tools `npm install -g firebase-tools`
 - localtunnel `npm install -g lt`
 
 ```bash
@@ -16,11 +16,26 @@ firebase login
 #If you can't see an entry called 'tz-phone-book', contact Lewis to get you access
 firebase list
 
+
+#Install node modules
+cd functions 
+yarn
 ```
 
 ## Running Locally:
 
-[insert instructions]
+```bash
+#First, we run localtunnel to expose our local webserver publicly:
+./_run_lt.sh
+
+#then, in a separate terminal session, run:
+./run_local.sh
+
+#This runs the firebase functions in a firebase emulation mode.
+```
+
+[todo: talk about node version issues]
+[todo: talk about base url stuff]
 
 
 ## Deployment
@@ -39,6 +54,21 @@ and the BASE_URL entry in `env.sh` should point to the firebase endpoint:
 export BASE_URL="https://us-central1-tz-phone-book.cloudfunctions.net"
 ```
 
+2. Run the deployment script.
+
+```bash
+./_deploy.sh
+```
+This script sets the environment variables we set up earlier, and then deploys the firebase functions
+
+
+
+3. Now we just need to point our Twilio number to our deployment.   
+Log into Twilio > Programmable Voice > Numbers > Manage Numbers > Select a Number >
+Under 'Voice & Fax' > 'A Call Comes In', set to the entrypoint url for the firebase function, eg:
+`https://us-central1-tz-phone-book.cloudfunctions.net/benchmark/entrypoint`
+
+![deployment_number](./docs/deployment_number.png)
 
 
 ----
