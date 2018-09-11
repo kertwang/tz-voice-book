@@ -6,7 +6,8 @@ const serviceAccount = require('../../.serviceAccountKey.json');
 if (admin.apps.length === 0) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://our-water.firebaseio.com"
+    databaseURL: "https://tz-phone-book.firebaseio.com",
+    storageBucket: "tz-phone-book.appspot.com"
   });
 }
 
@@ -15,3 +16,10 @@ const settings = {/* your settings... */ timestampsInSnapshots: true };
 firestore.settings(settings);
 
 export default firestore;
+
+console.log("admin is", admin);
+const storage = admin.storage().bucket();
+
+export {
+  storage,
+}

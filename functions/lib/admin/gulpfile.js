@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const gulp = require("gulp");
 const Firestore_1 = require("../apis/Firestore");
+const fs = require("async-file");
 const en_us_flows_1 = require("./content/en_us_flows");
 const en_us_blocks_1 = require("./content/en_us_blocks");
 const en_us_messages_1 = require("./content/en_us_messages");
@@ -24,5 +25,21 @@ gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_us, { messages: en_us_messages_1.default, blocks: en_us_blocks_1.default, flows: en_us_flows_1.default, });
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_au, { messages: en_au_messages_1.default, blocks: en_au_blocks_1.default, flows: en_au_flows_1.default, });
     console.log("deployed config.");
+}));
+gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {
+    //Iterate through each /version/filename in ./content/audio, and upload
+    const versionDirs = yield fs.readdir('./content/audio/');
+    const audioFiles = yield Promise.all(versionDirs.map(dir => {
+        return fs.readdir(`./content/audio/${dir}/`)
+            .then(childs => childs.map(child => `${dir}/${child}`));
+    }));
+    const flatAudioFiles = [];
+    audioFiles.forEach(fileList => fileList.forEach(file => flatAudioFiles.push(file)));
+    yield Promise.all(flatAudioFiles.map(file => {
+        return Firestore_1.storage.upload(`./content/audio/${file}`, {
+            destination: file,
+            public: true,
+        });
+    }));
 }));
 //# sourceMappingURL=gulpfile.js.map

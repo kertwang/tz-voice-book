@@ -14,10 +14,11 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "@google-cloud/firestore": "^0.13.1",
     "@firebase/app-types": "0.x",
+    "@google-cloud/firestore": "^0.13.1",
     "@types/mocha": "^5.2.5",
     "@types/request-promise-native": "^1.0.14",
+    "async-file": "^2.0.2",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.3",
