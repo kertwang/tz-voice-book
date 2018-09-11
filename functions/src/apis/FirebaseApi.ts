@@ -170,6 +170,7 @@ export default class FirebaseApi {
   // ----------------------------
 
   public async deployConfigForBotAndVersion(botId: BotId, versionId: VersionId, config: BotConfig) {
+    console.log(`Saving config to bot/${botId}/version/${versionId}/`);
     return this.fs.collection('bot').doc(botId).collection('version').doc(versionId).set(config);
   }
 }

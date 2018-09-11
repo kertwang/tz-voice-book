@@ -14,6 +14,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@google-cloud/firestore": "^0.13.1",
     "@firebase/app-types": "0.x",
     "@types/mocha": "^5.2.5",
     "@types/request-promise-native": "^1.0.14",
