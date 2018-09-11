@@ -136,6 +136,7 @@ export enum BotId {
 export enum VersionId {
   en_us = 'en_us',
   en_au = 'en_au', //Australian accent version mate.
+  tz_audio = 'tz_audio',
 }
 
 export type BotConfig = {

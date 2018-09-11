@@ -16,8 +16,6 @@ const settings = {/* your settings... */ timestampsInSnapshots: true };
 firestore.settings(settings);
 
 export default firestore;
-
-console.log("admin is", admin);
 const storage = admin.storage().bucket();
 
 export {

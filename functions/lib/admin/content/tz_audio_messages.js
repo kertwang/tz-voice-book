@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const TwilioTypes_1 = require("../../types_rn/TwilioTypes");
+const urlPrefix = 'https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/';
 /* Define each translation/variaton here */
 /* TODO: we will move these to firebase datastore eventually */
 const en_text = {
     'entrypoint': [
-        { type: TwilioTypes_1.MessageType.SAY, text: "Hello, and welcome to voicebook", language: 'en-US' },
+        { type: TwilioTypes_1.MessageType.PLAY, url: `${urlPrefix}tz_audio%2F1.mp3?generation=1536672248850944&alt=media` },
     ],
     'intro_0': [
         { type: TwilioTypes_1.MessageType.SAY, text: "To learn what is new in your community say sikiliza.", language: 'en-US' },
@@ -60,4 +61,4 @@ const en_text = {
     ],
 };
 exports.default = en_text;
-//# sourceMappingURL=en_us_messages.1.js.map
+//# sourceMappingURL=tz_audio_messages.js.map

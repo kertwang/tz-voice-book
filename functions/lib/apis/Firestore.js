@@ -14,7 +14,6 @@ const firestore = admin.firestore();
 const settings = { /* your settings... */ timestampsInSnapshots: true };
 firestore.settings(settings);
 exports.default = firestore;
-console.log("admin is", admin);
 const storage = admin.storage().bucket();
 exports.storage = storage;
 //# sourceMappingURL=Firestore.js.map
