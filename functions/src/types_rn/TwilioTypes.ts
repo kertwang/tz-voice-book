@@ -123,3 +123,7 @@ export type CallContext = {
   firebaseApi: FirebaseApi,
   //We could put the appApi in here, but I'm not too sure thats the best idea...
 }
+
+export type DigitResult = {
+  digits: string,
+}

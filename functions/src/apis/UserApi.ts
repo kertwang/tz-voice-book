@@ -12,6 +12,7 @@ export type User = {
   mobile: string,
   name: string,
   id: string,
+  messageType: 'en_text' | 'default'
 }
 
 export type Recording = {

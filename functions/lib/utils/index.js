@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioRouter_1 = require("../types_rn/TwilioRouter");
+const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const format = require("xml-formatter");
 function pathToBlock(path) {
     const sanitized = path
         .replace('/gather/', '')
         .replace('/', '');
-    return TwilioRouter_1.BlockId[sanitized];
+    return TwilioTypes_1.BlockId[sanitized];
 }
 exports.pathToBlock = pathToBlock;
 function logGatherBlock(block, result) {

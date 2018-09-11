@@ -1,0 +1,37 @@
+[debug] [2018-09-11T04:25:13.833Z] ----------------------------------------------------------------------
+[debug] [2018-09-11T04:25:13.836Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase serve --only functions
+[debug] [2018-09-11T04:25:13.836Z] CLI Version:   4.0.3
+[debug] [2018-09-11T04:25:13.836Z] Platform:      darwin
+[debug] [2018-09-11T04:25:13.836Z] Node Version:  v8.11.1
+[debug] [2018-09-11T04:25:13.837Z] Time:          Tue Sep 11 2018 13:55:13 GMT+0930 (ACST)
+[debug] [2018-09-11T04:25:13.837Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-09-11T04:25:13.846Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-09-11T04:25:13.847Z] > authorizing via signed-in user
+[debug] [2018-09-11T04:25:13.849Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/tz-phone-book  
+  
+ Tue Sep 11 2018 13:55:13 GMT+0930 (ACST)
+[debug] [2018-09-11T04:25:14.845Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-11T04:25:14.845Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/tz-phone-book/tokens  
+  
+ Tue Sep 11 2018 13:55:14 GMT+0930 (ACST)
+[debug] [2018-09-11T04:25:15.853Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-11T04:25:15.854Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book  
+  
+ Tue Sep 11 2018 13:55:15 GMT+0930 (ACST)
+[debug] [2018-09-11T04:25:17.476Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/ldaly/developer/vessels/tz/phone-book'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-09-11T04:25:18.268Z] Fetching environment
+[debug] [2018-09-11T04:25:18.270Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/896622929267:getServerAppConfig  
+  
+ Tue Sep 11 2018 13:55:18 GMT+0930 (ACST)
+[debug] [2018-09-11T04:25:18.975Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-11T04:25:18.976Z] Starting @google-cloud/functions-emulator
+[debug] [2018-09-11T04:25:20.550Z] Parsing function triggers
+[info] ✔  functions: message: http://localhost:5000/tz-phone-book/us-central1/message
+[info] ✔  functions: twiml: http://localhost:5000/tz-phone-book/us-central1/twiml
+[info] ✔  functions: benchmark: http://localhost:5000/tz-phone-book/us-central1/benchmark
+[info] ✔  functions: reset_pin: http://localhost:5000/tz-phone-book/us-central1/reset_pin

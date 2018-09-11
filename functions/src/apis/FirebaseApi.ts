@@ -1,5 +1,7 @@
 import { User, Recording } from "./UserApi";
 import { sleep } from "../utils";
+import { MessageMap } from "../types_rn/TwilioTypes";
+import TwilioMessages from "../content/TwilioMessages";
 
 
 export default class FirebaseApi {
@@ -21,6 +23,16 @@ export default class FirebaseApi {
     //TODO: should we add the id in here?
     return this.fs.collection('users').add(user);
   }
+
+  /**
+   * Load the messages based on the user's config + messages stored
+   * in firebase
+   */
+  public messagesForMobile(mobile: string): Promise<MessageMap> {
+
+    //TODO: implement me!
+    return Promise.resolve(TwilioMessages.en_text);
+  } 
 
   /**
    * Get the user from their mobile number. 

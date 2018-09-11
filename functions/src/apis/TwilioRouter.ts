@@ -3,7 +3,7 @@
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { logTwilioResponse } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType } from '../types_rn/TwilioTypes';
+import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult } from '../types_rn/TwilioTypes';
 import { baseUrl } from '../utils/Env';
 import TwilioFlows from '../content/TwilioFlows';
 import UserApi, { Recording } from './UserApi';
@@ -32,7 +32,7 @@ export default class TwilioRouter {
    */
   public static async getBlock(ctx: CallContext, blockName: BlockId): Promise<any> {
     //TODO: load based on context etc.
-    const messageBlocks = TwilioMessages.en_text;
+    const messageBlocks = await ctx.firebaseApi.messagesForMobile(ctx.mobile);
     const flow = TwilioFlows[blockName];
     const block = TwilioBlocks[blockName];
     const messages = messageBlocks[blockName]; //TODO: make type safe?
@@ -74,11 +74,12 @@ export default class TwilioRouter {
           action: `${baseUrl}/twiml/gather/${blockName}`,
           method: 'POST',
           // API doesn't have this for some reason
-          language: 'sw-TZ',
-          input: 'speech',
+          // language: 'sw-TZ',
+          input: 'dtmf',
+          numDigits: 1,
           //TODO: find
-          partialResultCallbackMethod: 'POST',
-          partialResultCallback: `${baseUrl}/twiml/recognitionResults`
+          // partialResultCallbackMethod: 'POST',
+          // partialResultCallback: `${baseUrl}/twiml/recognitionResults`
         });
         this.appendMessagesToResponse(gather, messages);
         //This is a backup TODO: remove
@@ -154,7 +155,7 @@ export default class TwilioRouter {
   public static async gatherNextMessage(
     ctx: CallContext,
     currentBlock: BlockId,
-    gatherResult: GatherResult): Promise<string> {
+    gatherResult: DigitResult): Promise<string> {
     //TODO: parse out the twilio response, and redirect to the appropriate block
 
     const flow = TwilioFlows[currentBlock];
@@ -173,13 +174,12 @@ export default class TwilioRouter {
       case BlockId.record_post_or_delete:
       //TODO: handle the digits as well!
         {
-          //TODO: implement string search better
-          //TODO: handle extra spaces??
-          const stringMatches = flow.matches.map(m => m.term);
-          const idx = stringMatches.indexOf(gatherResult.speechResult.trim());
+          const validDigits = flow.digitMatches.map(d => d.digits);
+          const idx = validDigits.indexOf(gatherResult.digits.trim());
 
           //No match found :(
           if (idx === -1) {
+            //TODO: should this redirect instead?
             const errorResponse = await TwilioRouter.getBlock(ctx, flow.error);
             return errorResponse.toString();
           }

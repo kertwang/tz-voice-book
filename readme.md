@@ -159,7 +159,12 @@ http://localhost:5000/tz-phone-book/us-central1/message?stringFormat=true
 
 ## Configuring twilio url:
 
-Example url for ngrok: `http://4e27e9ad.ngrok.io/tz-phone-book/us-central1/benchmark/entrypoint`
+Example url for ngrok: `http://4e27e9ad.ngrok.io/tz-phone-book/us-central1/benchmark/entrypoint
+`
+
+Example request for localtunnel:
+`curl -X POST "https://lwilld3.localtunnel.me/tz-phone-book/us-central1/twiml/entrypoint"`
+
 Benchmark url for Firebase deployment `https://us-central1-tz-phone-book.cloudfunctions.net/benchmark/entrypoint`
 
 

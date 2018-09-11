@@ -19,7 +19,12 @@ const TwilioFlows: FlowMap = {
       { term: 'msaada', nextBlock: BlockId.info_0 },
       { term: 'kurudia', nextBlock: BlockId.intro_0 }
     ],
-    digitMatches: [],
+    digitMatches: [
+      { digits:'1', nextBlock: BlockId.listen_0 },
+      { digits:'2', nextBlock: BlockId.record_0 },
+      { digits:'3', nextBlock: BlockId.info_0 },
+      { digits:'4', nextBlock: BlockId.intro_0 }
+    ],
   },
   'error_0': {
     type: FlowType.GATHER,

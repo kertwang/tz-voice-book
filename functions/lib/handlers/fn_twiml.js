@@ -77,11 +77,14 @@ module.exports = (functions) => {
             firebaseApi,
         };
         const blockName = utils_1.pathToBlock(req.path);
+        // const gatherResult: GatherResult = {
+        //   speechResult: req.body.SpeechResult,
+        //   confidence: req.body.Confidence,
+        // };
+        // logGatherBlock(blockName, gatherResult);
         const gatherResult = {
-            speechResult: req.body.SpeechResult,
-            confidence: req.body.Confidence,
+            digits: req.body.Digits,
         };
-        utils_1.logGatherBlock(blockName, gatherResult);
         const result = yield TwilioRouter_1.default.gatherNextMessage(ctx, blockName, gatherResult);
         utils_1.logTwilioResponse(result);
         res.writeHead(200, { 'Content-Type': 'text/xml' });

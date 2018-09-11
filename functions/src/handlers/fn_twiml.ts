@@ -8,7 +8,7 @@ import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
 import { pathToBlock, logGatherBlock, logTwilioResponse } from '../utils';
-import { GatherResult, CallContext } from '../types_rn/TwilioTypes';
+import { GatherResult, CallContext, DigitResult } from '../types_rn/TwilioTypes';
 import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
 import fs from '../apis/Firestore';
@@ -85,11 +85,15 @@ module.exports = (functions) => {
     }
     const blockName = pathToBlock(req.path);
     
-    const gatherResult: GatherResult = {
-      speechResult: req.body.SpeechResult,
-      confidence: req.body.Confidence,
-    };
-    logGatherBlock(blockName, gatherResult);
+    // const gatherResult: GatherResult = {
+    //   speechResult: req.body.SpeechResult,
+    //   confidence: req.body.Confidence,
+    // };
+    // logGatherBlock(blockName, gatherResult);
+
+    const gatherResult: DigitResult = {
+      digits: req.body.Digits,
+    }
     const result = await TwilioRouter.gatherNextMessage(ctx, blockName, gatherResult);
     logTwilioResponse(result);
 

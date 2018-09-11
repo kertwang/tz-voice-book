@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
+const TwilioMessages_1 = require("../content/TwilioMessages");
 class FirebaseApi {
     constructor(fs) {
         this.fs = fs;
@@ -22,6 +23,14 @@ class FirebaseApi {
         };
         //TODO: should we add the id in here?
         return this.fs.collection('users').add(user);
+    }
+    /**
+     * Load the messages based on the user's config + messages stored
+     * in firebase
+     */
+    messagesForMobile(mobile) {
+        //TODO: implement me!
+        return Promise.resolve(TwilioMessages_1.default.en_text);
     }
     /**
      * Get the user from their mobile number.
