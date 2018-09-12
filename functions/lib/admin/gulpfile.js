@@ -45,12 +45,15 @@ gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {
         return Firestore_1.storage.upload(`./content/audio/${file}`, {
             destination: file,
             public: true,
+            metadata: {
+                metadata: {
+                    firebaseStorageDownloadTokens: '1536715274666696'
+                }
+            }
         })
             //Get the public url:
             .then(([thing1, thing2]) => {
             //TODO: fix this crazyness
-            // console.log("thing1: ", thing1);
-            // console.log("thing2: ", thing2);
             console.log(`  ${file} => ${thing2.mediaLink.replace('https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/', '')}`);
         });
     }));

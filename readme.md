@@ -5,8 +5,10 @@ A demo application for an IVR based social network.
 ## Installation
 
 Prerequisites:
+- yarn `it's nicer than npm`
 - firebase cli tools `npm install -g firebase-tools`
 - localtunnel `npm install -g lt`
+- gulp (for admin tools) `npm install -g gulp`
 
 Steps:  
 ```bash

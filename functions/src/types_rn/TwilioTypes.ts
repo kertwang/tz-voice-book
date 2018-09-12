@@ -46,7 +46,7 @@ export interface DefaultFlow {
 export interface GatherFlow {
   type: FlowType.GATHER,
   error: BlockId,
-  matches: FlowMatch[], //TODO: change
+  // matches: FlowMatch[], //TODO: change
   digitMatches: DigitMatch[],
 }
 

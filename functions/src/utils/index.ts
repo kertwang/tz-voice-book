@@ -30,3 +30,8 @@ export function logTwilioResponse(xmlString: string) {
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+export const generateUrl = (urlPrefix: string, path: string, firebaseToken: string) => {
+  //eg: https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/tz_audio%2F015a_Voicebook_Swahili.mp3?alt=media&token=1536715274666696
+  return `${urlPrefix}${encodeURIComponent(path)}?alt=media&token=${firebaseToken}`;
+} 

@@ -1,9 +1,6 @@
 import { User, Recording } from "./UserApi";
 import { sleep } from "../utils";
 import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig } from "../types_rn/TwilioTypes";
-import TwilioMessages from "../content/TwilioMessages";
-import { DataSnapshot } from "firebase-functions/lib/providers/database";
-import { DocumentSnapshot } from "firebase-functions/lib/providers/firestore";
 
 const botId = 'voicebook'; //This is temporary, todo: change this later on.
 
@@ -28,16 +25,6 @@ export default class FirebaseApi {
     //TODO: should we add the id in here?
     return this.fs.collection('bot').doc(botId).collection('users').add(user);
   }
-
-  /**
-   * Load the messages based on the user's config + messages stored
-   * in firebase
-   */
-  public messagesForMobile(mobile: string): Promise<MessageMap> {
-
-    //TODO: delete me! use getBlockcontent or some variation etc.
-    return Promise.resolve(TwilioMessages.en_text);
-  } 
 
   /**
    * Get the user from their mobile number. 

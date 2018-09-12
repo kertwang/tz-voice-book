@@ -1,62 +1,87 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const TwilioTypes_1 = require("../../types_rn/TwilioTypes");
-/* Define each translation/variaton here */
-/* TODO: we will move these to firebase datastore eventually */
+const generateText = (text) => {
+    return {
+        type: TwilioTypes_1.MessageType.SAY,
+        text,
+        language: 'en-US'
+    };
+};
+/* the deploy script will automatically fill in the urls for us */
 const en_text = {
     'entrypoint': [
-        { type: TwilioTypes_1.MessageType.SAY, text: "Hello, and welcome to voicebook", language: 'en-AU' },
+        generateText('Hello and welcome to voicebook.'),
     ],
     'intro_0': [
-        { type: TwilioTypes_1.MessageType.SAY, text: "To learn what is new in your community say sikiliza.", language: 'en-AU' },
-        { type: TwilioTypes_1.MessageType.SAY, text: "To record a message that people in your community can hear, say tuma.", language: 'en-AU' },
-        { type: TwilioTypes_1.MessageType.SAY, text: "To learn more about this service say msaada.", language: 'en-AU' },
-        { type: TwilioTypes_1.MessageType.SAY, text: "To hear these options again say kurudia.", language: 'en-AU' },
+        //'tz_audio/001a_Voicebook_Swahili_v2.mp3'
+        //'tz_audio/001b_Voicebook_Swahili_v2.mp3'
+        //'tz_audio/001c_Voicebook_Swahili_v2.mp3'
+        //'tz_audio/001d_Voicebook_Swahili_v2.mp3'
+        generateText('To learn what is new in your community press 1 on your phone keypad'),
+        generateText('To record a message that people in your community can hear, press 2 on your phone keypad'),
+        generateText('To learn more about this service, press 3 on your phone keypad'),
+        generateText('To hear these options again, press 4 on your phone keypad'),
     ],
     'info_0': [
-        { type: TwilioTypes_1.MessageType.SAY, text: "This is a free service to share messages and news in your communtiy.", language: 'en-AU' },
+        //'tz_audio/030_Voicebook_Swahili.mp3'
+        generateText('This is a free service for people in Tanzania to stay connected with their community. Messages are free to post and free to listen to.'),
     ],
     'error_0': [
-        { type: TwilioTypes_1.MessageType.SAY, text: 'Sorry, I didn\'t catch that. Please try again.', language: 'en-AU' },
+        //'tz_audio/051_Voicebook_Swahili.mp3'
+        generateText('I didn\'t quite get that. Please try again.'),
     ],
     'listen_0': [
-        { type: TwilioTypes_1.MessageType.SAY, language: 'en-AU', text: 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.' },
-        { type: TwilioTypes_1.MessageType.SAY, language: 'en-AU', text: 'Message 1: Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.' },
-        { type: TwilioTypes_1.MessageType.SAY, language: 'en-AU', text: 'Message 2: Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.' },
-        { type: TwilioTypes_1.MessageType.SAY, language: 'en-AU', text: 'Message 3: Hi this is a message from ORGANIZATION. We want to inform you that we are expecting WEATHER this week. Please be advised and take precautions. If you have a question, you can ask a local representative.' },
+        //'tz_audio/020_Voicebook_Swahili.mp3'
+        //'tz_audio/041_Voicebook_Swahili.mp3'
+        //'tz_audio/042_Voicebook_Swahili.mp3'
+        //'tz_audio/043_Voicebook_Swahili.mp3'
+        generateText('Here are messages posted to VOICEBOOK in your COMMUNITY. You can press 1 on your phone keypad at any time to skip a message. You can press 2 at any time to play a message again. Or, you can hang up at any time.'),
+        generateText('Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.'),
+        generateText('Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.'),
+        generateText('Hi this is a message from ORGANIZATION. We want to inform you that we are expecting WEATHER this week. Please be advised and take precautions. If you have a question, you can ask a local representative.')
     ],
     'listen_end': [
-        { type: TwilioTypes_1.MessageType.SAY, language: 'en-AU', text: 'There are no other recent messages for your community.' },
-        { type: TwilioTypes_1.MessageType.SAY, language: 'en-AU', text: 'You can hang up now. Or, to leave a message say sikiliza. To tell us how we can improve this service say, maoni.' },
+        //'tz_audio/021_Voicebook_Swahili_v2.mp3'
+        generateText('There are no other recent messages for your community. You can hang up now. Or, to leave a message press 1 on your phone keypad. To tell us how we can improve this service press 2 on your phone keypad.'),
     ],
     'listen_end_error': [
-        { type: TwilioTypes_1.MessageType.SAY, text: 'Sorry, I didn\'t catch that. Please try again.', language: 'en-AU' },
+        //'tz_audio/021a_Voicebook_Swahili_v2.mp3'
+        generateText('You can hang up now. Or, to leave a message press 1 on your phone keypad. To tell us how we can improve this service, press 2 on your phone keypad.'),
     ],
     'listen_feedback': [
-        { type: TwilioTypes_1.MessageType.SAY, text: 'We do our best to serve you.If you have any feedback for us, please leave us a message.If you would like us to return your call, please let us know what number to reach you.', language: 'en-AU' },
+        //'tz_audio/060_Voicebook_Swahili.mp3'
+        generateText('We do our best to serve you. If you have any feedback for us, please leave us a message. If you would like us to return your call, please let us know what number to reach you.'),
     ],
     'listen_feedback_complete': [
-        { type: TwilioTypes_1.MessageType.SAY, text: 'Thanks! Your feedback has been recorded.', language: 'en-AU' },
+        //No audio yet!
+        generateText('Thanks! Your feedback has been recorded.'),
     ],
     'record_0': [
-        { type: TwilioTypes_1.MessageType.SAY, text: 'Your message will be heard by people who call this number FOR ONE WEEK, so say things that you want other people in your community to hear. This is a great way to let people know about news, business, and social events.', language: 'en-AU' },
-        { type: TwilioTypes_1.MessageType.SAY, text: 'To record a short message for COMMUNITY, start speaking after you hear a beep. When you are finished, stop talking or press any number on your phone. You will have the opportunity to review your message before we post it.', language: 'en-AU' },
+        //'tz_audio/012a_Voicebook_Swahili.mp3'
+        generateText("Your message will be heard by people who call this number FOR ONE WEEK, so say things that you want other people in your community to hear. This is a great way to let people know about news, business, and social events."),
+        //'tz_audio/012b_Voicebook_Swahili.mp3'
+        generateText("To record a short message for COMMUNITY, start speaking after you hear a beep.When you are finished, stop talking or press any number on your phone. You will have the opportunity to review your message before we post it."),
     ],
     'record_playback': [
-        { type: TwilioTypes_1.MessageType.SAY, text: 'You said.', language: 'en-AU' },
-        { type: TwilioTypes_1.MessageType.SAY, text: 'TODO: Playback message', language: 'en-AU' },
+        //'tz_audio/013a_Voicebook_Swahili.mp3'
+        generateText("Here is your message."),
     ],
     'record_post_or_delete': [
-        { type: TwilioTypes_1.MessageType.SAY, text: 'To post your message, say tuma.To cancel and start over, say anza tena', language: 'en-AU' },
+        //'tz_audio/013b_Voicebook_Swahili_v2.mp3'
+        generateText('To post your message, press 1 on your phone keypad'),
     ],
     'record_post_or_delete_error': [
-        { type: TwilioTypes_1.MessageType.SAY, text: 'Sorry, I didn\'t catch that. Please try again.', language: 'en-AU' },
+        //'tz_audio/051_Voicebook_Swahili.mp3'
+        generateText('I didn\'t quite get that.Please try again.'),
     ],
     'record_save': [
-        { type: TwilioTypes_1.MessageType.SAY, text: 'Thanks! Your message will be posted.', language: 'en-AU' },
+        //'tz_audio/014_Voicebook_Swahili.mp3'
+        generateText('Thank you, your message will be posted soon. Goodbye'),
     ],
     'record_delete': [
-        { type: TwilioTypes_1.MessageType.SAY, text: 'Your message was erased and will not be posted.', language: 'en-AU' },
+        //'tz_audio/015a_Voicebook_Swahili.mp3'
+        generateText('Your message was erased.'),
     ],
 };
 exports.default = en_text;

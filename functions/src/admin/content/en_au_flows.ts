@@ -13,12 +13,6 @@ const TwilioFlows: FlowMap = {
   'intro_0': {
     type: FlowType.GATHER,
     error: BlockId.error_0,
-    matches: [
-      { term: 'sikiliza', nextBlock: BlockId.listen_0 },
-      { term: 'tuma', nextBlock: BlockId.record_0 },
-      { term: 'msaada', nextBlock: BlockId.info_0 },
-      { term: 'kurudia', nextBlock: BlockId.intro_0 }
-    ],
     digitMatches: [
       { digits:'1', nextBlock: BlockId.listen_0 },
       { digits:'2', nextBlock: BlockId.record_0 },
@@ -29,12 +23,6 @@ const TwilioFlows: FlowMap = {
   'error_0': {
     type: FlowType.GATHER,
     error: BlockId.error_0,
-    matches: [
-      { term: 'sikiliza', nextBlock: BlockId.listen_0 },
-      { term: 'tuma', nextBlock: BlockId.record_0 },
-      { term: 'msaada', nextBlock: BlockId.info_0 },
-      { term: 'kurudia', nextBlock: BlockId.intro_0 }
-    ],
     digitMatches: [],
   },
   'listen_0': {
@@ -44,20 +32,18 @@ const TwilioFlows: FlowMap = {
   'listen_end': {
     type: FlowType.GATHER,
     error: BlockId.listen_end_error,
-    matches: [
-      { term: 'sikiliza', nextBlock: BlockId.record_0 },
-      { term: 'maoni', nextBlock: BlockId.listen_feedback },
+    digitMatches: [
+      { digits: '1', nextBlock: BlockId.record_0 },
+      { digits: '2', nextBlock: BlockId.listen_feedback },
     ],
-    digitMatches: [],
   },
   'listen_end_error': {
     type: FlowType.GATHER,
     error: BlockId.listen_end_error,
-    matches: [
-      { term: 'sikiliza', nextBlock: BlockId.record_0 },
-      { term: 'maoni', nextBlock: BlockId.listen_feedback },
+    digitMatches: [
+      { digits: '1', nextBlock: BlockId.record_0 },
+      { digits: '2', nextBlock: BlockId.listen_feedback },
     ],
-    digitMatches: [],
   },
   'listen_feedback': {
     type: FlowType.DEFAULT,
@@ -78,20 +64,18 @@ const TwilioFlows: FlowMap = {
   'record_post_or_delete': {
     type: FlowType.GATHER,
     error: BlockId.record_post_or_delete_error,
-    matches: [
-      { term: 'tuma', nextBlock: BlockId.record_save },
-      { term: 'anza tena', nextBlock: BlockId.record_delete }
+    digitMatches: [
+      { digits: '1', nextBlock: BlockId.record_save },
+      { digits: '2', nextBlock: BlockId.record_delete }
     ],
-    digitMatches: [],
   },
   'record_post_or_delete_error': {
     type: FlowType.GATHER,
     error: BlockId.record_post_or_delete_error,
-    matches: [
-      { term: 'tuma', nextBlock: BlockId.record_save },
-      { term: 'anza tena', nextBlock: BlockId.record_delete }
+    digitMatches: [
+      { digits: '1', nextBlock: BlockId.record_save },
+      { digits: '2', nextBlock: BlockId.record_delete }
     ],
-    digitMatches: [],
   },
   'record_save': {
     type: FlowType.DEFAULT,

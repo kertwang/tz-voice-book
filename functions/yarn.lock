@@ -2835,6 +2835,10 @@ lru-cache@^4.1.3:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
+lt@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/lt/-/lt-0.3.3.tgz#99a632a35de9c9d7c340b1cb33f222b5a63aba3c"
+
 make-dir@^1.0.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-1.3.0.tgz#79c1033b80515bd6d24ec9933e860ca75ee27f0c"

@@ -96,6 +96,7 @@ class TwilioRouter {
             switch (blockName) {
                 case (TwilioTypes_1.BlockId.listen_0): {
                     //TODO: load these messages async
+                    //TODO: fix this - 
                     response.say({}, 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.');
                     response.say({}, 'Message 1: Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.');
                     response.say({}, 'Message 2: Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.');
@@ -167,7 +168,7 @@ class TwilioRouter {
                             const errorResponse = yield TwilioRouter.getBlock(ctx, config, flow.error);
                             return errorResponse.toString();
                         }
-                        const nextBlock = flow.matches[idx].nextBlock;
+                        const nextBlock = flow.digitMatches[idx].nextBlock;
                         const response = new VoiceResponse();
                         response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${nextBlock}`);
                         return response.toString();

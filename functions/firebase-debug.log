@@ -1,45 +1,36 @@
-[debug] [2018-09-11T08:42:25.635Z] ----------------------------------------------------------------------
-[debug] [2018-09-11T08:42:25.638Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase serve --only functions
-[debug] [2018-09-11T08:42:25.638Z] CLI Version:   4.0.3
-[debug] [2018-09-11T08:42:25.638Z] Platform:      darwin
-[debug] [2018-09-11T08:42:25.638Z] Node Version:  v8.11.1
-[debug] [2018-09-11T08:42:25.639Z] Time:          Tue Sep 11 2018 18:12:25 GMT+0930 (ACST)
-[debug] [2018-09-11T08:42:25.639Z] ----------------------------------------------------------------------
+[debug] [2018-09-12T02:30:16.201Z] ----------------------------------------------------------------------
+[debug] [2018-09-12T02:30:16.203Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase serve --only functions
+[debug] [2018-09-12T02:30:16.203Z] CLI Version:   4.0.3
+[debug] [2018-09-12T02:30:16.203Z] Platform:      darwin
+[debug] [2018-09-12T02:30:16.203Z] Node Version:  v8.11.1
+[debug] [2018-09-12T02:30:16.204Z] Time:          Wed Sep 12 2018 12:00:16 GMT+0930 (ACST)
+[debug] [2018-09-12T02:30:16.204Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2018-09-11T08:42:25.650Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2018-09-11T08:42:25.650Z] > authorizing via signed-in user
-[debug] [2018-09-11T08:42:25.652Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
-[debug] [2018-09-11T08:42:25.652Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
- { refresh_token: '1/KXFYwvSfSkMbnUkzpwdPWHb1GMSJbOBiuTHk6zHiYoA',
-  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
-  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
-  grant_type: 'refresh_token',
-  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
- Tue Sep 11 2018 18:12:25 GMT+0930 (ACST)
-[debug] [2018-09-11T08:42:26.292Z] <<< HTTP RESPONSE 200
-[debug] [2018-09-11T08:42:26.307Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/tz-phone-book  
+[debug] [2018-09-12T02:30:16.215Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-09-12T02:30:16.215Z] > authorizing via signed-in user
+[debug] [2018-09-12T02:30:16.218Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/tz-phone-book  
   
- Tue Sep 11 2018 18:12:26 GMT+0930 (ACST)
-[debug] [2018-09-11T08:42:27.704Z] <<< HTTP RESPONSE 200
-[debug] [2018-09-11T08:42:27.704Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/tz-phone-book/tokens  
+ Wed Sep 12 2018 12:00:16 GMT+0930 (ACST)
+[debug] [2018-09-12T02:30:17.476Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-12T02:30:17.477Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/tz-phone-book/tokens  
   
- Tue Sep 11 2018 18:12:27 GMT+0930 (ACST)
-[debug] [2018-09-11T08:42:28.458Z] <<< HTTP RESPONSE 200
-[debug] [2018-09-11T08:42:28.458Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book  
+ Wed Sep 12 2018 12:00:17 GMT+0930 (ACST)
+[debug] [2018-09-12T02:30:18.294Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-12T02:30:18.294Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book  
   
- Tue Sep 11 2018 18:12:28 GMT+0930 (ACST)
-[debug] [2018-09-11T08:42:30.000Z] <<< HTTP RESPONSE 200
+ Wed Sep 12 2018 12:00:18 GMT+0930 (ACST)
+[debug] [2018-09-12T02:30:19.763Z] <<< HTTP RESPONSE 200
 [info] 
 [info] === Serving from '/Users/ldaly/developer/vessels/tz/phone-book'...
 [info] 
 [info] i  functions: Preparing to emulate functions.
-[debug] [2018-09-11T08:42:30.779Z] Fetching environment
-[debug] [2018-09-11T08:42:30.781Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/896622929267:getServerAppConfig  
+[debug] [2018-09-12T02:30:20.474Z] Fetching environment
+[debug] [2018-09-12T02:30:20.476Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/896622929267:getServerAppConfig  
   
- Tue Sep 11 2018 18:12:30 GMT+0930 (ACST)
-[debug] [2018-09-11T08:42:31.287Z] <<< HTTP RESPONSE 200
-[debug] [2018-09-11T08:42:31.287Z] Starting @google-cloud/functions-emulator
-[debug] [2018-09-11T08:42:32.867Z] Parsing function triggers
+ Wed Sep 12 2018 12:00:20 GMT+0930 (ACST)
+[debug] [2018-09-12T02:30:21.151Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-12T02:30:21.152Z] Starting @google-cloud/functions-emulator
+[debug] [2018-09-12T02:30:22.716Z] Parsing function triggers
 [info] ✔  functions: message: http://localhost:5000/tz-phone-book/us-central1/message
 [info] ✔  functions: reset_pin: http://localhost:5000/tz-phone-book/us-central1/reset_pin
 [info] ✔  functions: twiml: http://localhost:5000/tz-phone-book/us-central1/twiml
