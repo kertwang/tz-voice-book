@@ -9,8 +9,7 @@ const TwilioTypes_1 = require("../../types_rn/TwilioTypes");
 const TwilioFlows = {
     'entrypoint': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        //todo change back to intro_0
-        next: TwilioTypes_1.BlockId.listen_0,
+        next: TwilioTypes_1.BlockId.intro_0,
     },
     'intro_0': {
         type: TwilioTypes_1.FlowType.GATHER,

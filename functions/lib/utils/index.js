@@ -53,4 +53,10 @@ exports.saftelyGetPageParamsOrDefaults = (params) => {
         maxMessages,
     };
 };
+/**
+ * Make a magical paginated url
+ */
+exports.buildPaginatedUrl = (baseUrl, blockName, nextPageNo, pageSize, maxMessages) => {
+    return `${baseUrl}/twiml/${blockName}?page=${nextPageNo}\&pageSize=${pageSize}\&maxMessages=${maxMessages}`;
+};
 //# sourceMappingURL=index.js.map

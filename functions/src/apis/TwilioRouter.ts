@@ -2,7 +2,7 @@
 // const VoiceResponse = require('twilio').twiml.VoiceResponse;
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
-import { logTwilioResponse } from '../utils';
+import { logTwilioResponse, buildPaginatedUrl } from '../utils';
 import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig } from '../types_rn/TwilioTypes';
 import { baseUrl } from '../utils/Env';
 import UserApi, { Recording } from './UserApi';
@@ -120,7 +120,7 @@ export default class TwilioRouter {
           console.log("ERROR in handlePlaybackBlock, bad message:", message);
         });
 
-        let redirectUrl = `${baseUrl}/twiml/${blockName}?page=${page + 1}\&pageSize=${pageSize}\&maxMessages=${ctx.maxMessages}`;
+        let redirectUrl = buildPaginatedUrl(baseUrl, blockName, page + 1, pageSize, ctx.maxMessages);
         if ((page * pageSize) > totalCount) {
           //We are out of messages, redirect to next block
           redirectUrl = `${baseUrl}/twiml/${flow.next}`;
@@ -189,8 +189,31 @@ export default class TwilioRouter {
       return response.toString();
     }
 
-    //TODO: we will need to reformat this nicely soon.
+    //TODO: we will need to reformat this nicely soon. maybe have custom action handlers or something
+
     switch (currentBlock) {
+
+      //TODO: make more generic - this isn't technically a GATHER block, so we shouldn't do this really.
+      case BlockId.listen_playback: {
+        const response = new VoiceResponse();
+        let redirectUrl;
+
+        switch (gatherResult.digits.trim()) {
+          case '1': {
+            //Skip
+            redirectUrl = buildPaginatedUrl(baseUrl, BlockId.listen_playback, ctx.page + 1, ctx.pageSize, ctx.maxMessages);
+          }
+          case '2': {
+            //Repeat
+            redirectUrl = buildPaginatedUrl(baseUrl, BlockId.listen_playback, ctx.page, ctx.pageSize, ctx.maxMessages);
+          }
+          default: {
+            response.redirect({ method: 'POST' }, redirectUrl);
+            return response.toString();
+          }
+        }
+      }
+
       case BlockId.record_post_or_delete: {
         //Handle the case where user wants us to post the message!
         //Falls through to router
