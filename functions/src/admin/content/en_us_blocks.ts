@@ -4,7 +4,8 @@ import { BlockType, BlockMap } from "../../types_rn/TwilioTypes";
 const TwilioBlocks: BlockMap = {
   'entrypoint': { type: BlockType.DEFAULT },
   'intro_0': { type: BlockType.DEFAULT },
-  'listen_0': { type: BlockType.PLAYBACK },
+  'listen_0': { type: BlockType.DEFAULT },
+  'listen_playback': { type: BlockType.PLAYBACK },
   'listen_end': { type: BlockType.DEFAULT },
   'listen_end_error': { type: BlockType.DEFAULT },
   'listen_feedback': { type: BlockType.RECORD, recordingCallback: '/twiml/recordingCallback/feedback' },

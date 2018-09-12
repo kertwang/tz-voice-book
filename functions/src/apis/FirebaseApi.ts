@@ -1,6 +1,6 @@
 import { User, Recording } from "./UserApi";
 import { sleep } from "../utils";
-import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig } from "../types_rn/TwilioTypes";
+import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage } from "../types_rn/TwilioTypes";
 
 const botId = 'voicebook'; //This is temporary, todo: change this later on.
 
@@ -51,11 +51,13 @@ export default class FirebaseApi {
     });
   }
 
-  public getMessages(limit: number): Promise<any> {
+  public getMessages(limit: number): Promise<PlayMessage[]> {
     return this.fs.collection('bot').doc(botId).collection('messages').orderBy('createdAt', 'desc').limit(limit).get()
     .then(sn => {
-      const messages: any = [];
+      const messages: PlayMessage[] = [];
       sn.forEach(doc => {
+        //TODO: format properly
+
         //Get each document, put in the id
         const data = doc.data();
         data.id = doc.id;

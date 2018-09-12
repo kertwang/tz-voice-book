@@ -26,6 +26,8 @@ const en_text: MessageMap = {
     //or
     // 020_Voicebook_Swahili_020.mp3 ?
     { type: MessageType.PLAY, url: generateUrl(urlPrefix, 'tz_audio/020_Voicebook_Swahili.mp3', firebaseToken) },
+  ],
+  'listen_playback': [
     { type: MessageType.PLAY, url: generateUrl(urlPrefix, 'tz_audio/041_Voicebook_Swahili.mp3', firebaseToken) },
     { type: MessageType.PLAY, url: generateUrl(urlPrefix, 'tz_audio/042_Voicebook_Swahili.mp3', firebaseToken) },
     { type: MessageType.PLAY, url: generateUrl(urlPrefix, 'tz_audio/043_Voicebook_Swahili.mp3', firebaseToken) },

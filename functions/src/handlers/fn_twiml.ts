@@ -91,6 +91,7 @@ module.exports = (functions: any) => {
       mobile: req.body.From,
       userId: user.id,
       firebaseApi,
+      ...saftelyGetPageParamsOrDefaults(req.params),
     };
     
     // const gatherResult: GatherResult = {
@@ -109,6 +110,24 @@ module.exports = (functions: any) => {
     res.end(result);
   });
 
+  type PageParams = {
+    page: number,
+    pageSize: number,
+    maxMessages: number,
+  }
+
+  const saftelyGetPageParamsOrDefaults = (params): PageParams => {
+    const page = params.page ? parseInt(params.page) : 0;
+    const pageSize = params.page ? parseInt(params.pageSize) : 0;
+    const maxMessages = params.page ? parseInt(params.maxMessages) : 10;
+
+    return {
+      page,
+      pageSize,
+      maxMessages,
+    };
+  }
+
   /**
    * Handle all normal routes
    */
@@ -122,6 +141,7 @@ module.exports = (functions: any) => {
       mobile: req.body.From,
       userId: user.id,
       firebaseApi,
+      ...saftelyGetPageParamsOrDefaults(req.params),
     };
 
     const result = await TwilioRouter.nextMessage(ctx, botConfig, blockName);

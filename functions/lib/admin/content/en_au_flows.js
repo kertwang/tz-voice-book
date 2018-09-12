@@ -9,7 +9,7 @@ const TwilioTypes_1 = require("../../types_rn/TwilioTypes");
 const TwilioFlows = {
     'entrypoint': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        //todo change back
+        //todo change back to intro_0
         next: TwilioTypes_1.BlockId.listen_end,
     },
     'intro_0': {
@@ -28,6 +28,10 @@ const TwilioFlows = {
         digitMatches: [],
     },
     'listen_0': {
+        type: TwilioTypes_1.FlowType.DEFAULT,
+        next: TwilioTypes_1.BlockId.listen_playback,
+    },
+    'listen_playback': {
         type: TwilioTypes_1.FlowType.DEFAULT,
         next: TwilioTypes_1.BlockId.listen_end,
     },

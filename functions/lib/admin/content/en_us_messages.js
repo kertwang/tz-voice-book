@@ -21,6 +21,8 @@ const en_text = {
     ],
     'listen_0': [
         { type: TwilioTypes_1.MessageType.SAY, language: 'en_AU', text: 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.' },
+    ],
+    'listen_playback': [
         { type: TwilioTypes_1.MessageType.SAY, language: 'en_AU', text: 'Message 1: Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.' },
         { type: TwilioTypes_1.MessageType.SAY, language: 'en_AU', text: 'Message 2: Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.' },
         { type: TwilioTypes_1.MessageType.SAY, language: 'en_AU', text: 'Message 3: Hi this is a message from ORGANIZATION. We want to inform you that we are expecting WEATHER this week. Please be advised and take precautions. If you have a question, you can ask a local representative.' },

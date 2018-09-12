@@ -9,6 +9,7 @@ export enum BlockId {
   entrypoint = 'entrypoint',
   intro_0 = 'intro_0',
   listen_0 = 'listen_0',
+  listen_playback = 'listen_playback',
   listen_end = 'listen_end',
   listen_end_error = 'listen_end_error',
   listen_feedback = 'listen_feedback',
@@ -28,7 +29,7 @@ export enum BlockId {
  */
 
 export type FlowMap = {
-  [k in BlockId]: DefaultFlow | GatherFlow;
+  [k in BlockId]: DefaultFlow | GatherFlow
 }
 
 export enum FlowType {
@@ -127,7 +128,10 @@ export type CallContext = {
   mobile: string,
   firebaseApi: FirebaseApi,
   userId: string,
-  //We could put the appApi in here, but I'm not too sure thats the best idea...
+  //For pagination
+  page: number,
+  pageSize: number,
+  maxMessages: number, //total number of messages to load from FB
 }
 
 export type DigitResult = {

@@ -4,7 +4,8 @@ const TwilioTypes_1 = require("../../types_rn/TwilioTypes");
 const TwilioBlocks = {
     'entrypoint': { type: TwilioTypes_1.BlockType.DEFAULT },
     'intro_0': { type: TwilioTypes_1.BlockType.DEFAULT },
-    'listen_0': { type: TwilioTypes_1.BlockType.PLAYBACK },
+    'listen_0': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'listen_playback': { type: TwilioTypes_1.BlockType.PLAYBACK },
     'listen_end': { type: TwilioTypes_1.BlockType.DEFAULT },
     'listen_end_error': { type: TwilioTypes_1.BlockType.DEFAULT },
     'listen_feedback': { type: TwilioTypes_1.BlockType.RECORD, recordingCallback: '/twiml/recordingCallback/feedback' },

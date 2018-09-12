@@ -45,7 +45,7 @@ class TwilioRouter {
                     switch (block.type) {
                         case TwilioTypes_1.BlockType.PLAYBACK: {
                             //TODO: abstract this eventually
-                            response = yield this.handlePlaybackBlock(blockName, response, ctx, flow);
+                            response = yield this.handlePlaybackBlock(blockName, response, ctx, flow, messages);
                             break;
                         }
                         case TwilioTypes_1.BlockType.RECORD: {
@@ -73,13 +73,9 @@ class TwilioRouter {
                     return response;
                 }
                 case TwilioTypes_1.FlowType.GATHER: {
-                    //TODO: modify this for digits only
-                    //@ts-ignore
                     const gather = response.gather({
                         action: `${Env_1.baseUrl}/twiml/gather/${blockName}`,
                         method: 'POST',
-                        // API doesn't have this for some reason
-                        // language: 'sw-TZ',
                         input: 'dtmf',
                         numDigits: 1,
                     });
@@ -95,18 +91,37 @@ class TwilioRouter {
             }
         });
     }
-    static handlePlaybackBlock(blockName, response, ctx, flow) {
+    static handlePlaybackBlock(blockName, response, ctx, flow, messages) {
         return __awaiter(this, void 0, void 0, function* () {
-            //TODO: figure out how to make more type safe
+            //TODO: figure out how to make more type safe and more generic
             switch (blockName) {
-                case (TwilioTypes_1.BlockId.listen_0): {
-                    //TODO: load these messages async
-                    //TODO: fix this - 
-                    response.say({}, 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.');
-                    response.say({}, 'Message 1: Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.');
-                    response.say({}, 'Message 2: Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.');
-                    response.say({}, 'Message 3: Hi this is a message from ORGANIZATION. We want to inform you that we are expecting WEATHER this week. Please be advised and take precautions. If you have a question, you can ask a local representative.');
-                    response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${flow.next}`);
+                case (TwilioTypes_1.BlockId.listen_playback): {
+                    //TODO: figure out how to wrap this in a gather block!
+                    //Play all of the pre-recorded messages, then load all of the messages from firestore and play them.
+                    const totalCount = messages.length + ctx.maxMessages;
+                    const recordings = yield ctx.firebaseApi.getMessages(ctx.maxMessages);
+                    const { page, pageSize } = ctx;
+                    //Eg totalcount = 13, page = 0, pageSize = 1
+                    console.log("listen_playback context is:", ctx);
+                    const allToPlay = messages;
+                    recordings.forEach(r => allToPlay.push(r));
+                    const toPlay = allToPlay.slice(page, page + pageSize);
+                    toPlay.forEach(message => {
+                        //Warning - not type safe :()
+                        if (message.type === TwilioTypes_1.MessageType.PLAY) {
+                            return response.play({}, message.url);
+                        }
+                        if (message.type === TwilioTypes_1.MessageType.SAY) {
+                            return response.say({ language: message.language }, message.text);
+                        }
+                        console.log("ERROR in handlePlaybackBlock, bad message:", message);
+                    });
+                    //We are out of messages, redirect
+                    if (page * pageSize > totalCount) {
+                        response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${flow.next}`);
+                    }
+                    //call back to this block.
+                    response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${blockName}?page=${page + 1}?pageSize=${pageSize}?totalCount=${totalCount}`);
                     break;
                 }
                 case (TwilioTypes_1.BlockId.record_playback): {

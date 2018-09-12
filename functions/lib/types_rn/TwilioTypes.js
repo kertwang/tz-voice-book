@@ -9,6 +9,7 @@ var BlockId;
     BlockId["entrypoint"] = "entrypoint";
     BlockId["intro_0"] = "intro_0";
     BlockId["listen_0"] = "listen_0";
+    BlockId["listen_playback"] = "listen_playback";
     BlockId["listen_end"] = "listen_end";
     BlockId["listen_end_error"] = "listen_end_error";
     BlockId["listen_feedback"] = "listen_feedback";

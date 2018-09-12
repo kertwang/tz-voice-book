@@ -8,7 +8,8 @@ import { FlowMap, FlowType, BlockId } from "../../types_rn/TwilioTypes";
 const TwilioFlows: FlowMap = {
   'entrypoint': {
     type: FlowType.DEFAULT,
-    next: BlockId.intro_0,
+    //todo change back to intro_0
+    next: BlockId.listen_end,
   },
   'intro_0': {
     type: FlowType.GATHER,
@@ -26,6 +27,10 @@ const TwilioFlows: FlowMap = {
     digitMatches: [],
   },
   'listen_0': {
+    type: FlowType.DEFAULT,
+    next: BlockId.listen_playback,
+  },
+  'listen_playback': {
     type: FlowType.DEFAULT,
     next: BlockId.listen_end,
   },

@@ -26,6 +26,8 @@ const en_text = {
         //or
         // 020_Voicebook_Swahili_020.mp3 ?
         { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/020_Voicebook_Swahili.mp3', firebaseToken) },
+    ],
+    'listen_playback': [
         { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/041_Voicebook_Swahili.mp3', firebaseToken) },
         { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/042_Voicebook_Swahili.mp3', firebaseToken) },
         { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/043_Voicebook_Swahili.mp3', firebaseToken) },

@@ -38,6 +38,9 @@ const en_text: MessageMap = {
     //'tz_audio/042_Voicebook_Swahili.mp3'
     //'tz_audio/043_Voicebook_Swahili.mp3'
     generateText('Here are messages posted to VOICEBOOK in your COMMUNITY. You can press 1 on your phone keypad at any time to skip a message. You can press 2 at any time to play a message again. Or, you can hang up at any time.'),
+  ],
+  'listen_playback': [
+    //It will play these messages first, then the other messages
     generateText('Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.'),
     generateText('Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.'),
     generateText('Hi this is a message from ORGANIZATION. We want to inform you that we are expecting WEATHER this week. Please be advised and take precautions. If you have a question, you can ask a local representative.')    

@@ -55,6 +55,7 @@ class FirebaseApi {
             .then(sn => {
             const messages = [];
             sn.forEach(doc => {
+                //TODO: format properly
                 //Get each document, put in the id
                 const data = doc.data();
                 data.id = doc.id;
