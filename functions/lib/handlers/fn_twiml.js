@@ -76,6 +76,7 @@ module.exports = (functions) => {
      */
     app.post('/gather/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
         const blockName = utils_1.pathToBlock(req.path);
+        console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
         const user = yield firebaseApi.getUserFromMobile(req.body.From);
         const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
@@ -92,6 +93,7 @@ module.exports = (functions) => {
      */
     app.post('/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
         const blockName = utils_1.pathToBlock(req.path);
+        console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
         const user = yield firebaseApi.getUserFromMobile(req.body.From);
         const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));

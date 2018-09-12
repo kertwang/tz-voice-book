@@ -3,7 +3,7 @@
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { logTwilioResponse, buildPaginatedUrl } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig } from '../types_rn/TwilioTypes';
+import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow } from '../types_rn/TwilioTypes';
 import { baseUrl } from '../utils/Env';
 import UserApi, { Recording } from './UserApi';
 const VoiceResponse = twilio.twiml.VoiceResponse;
@@ -71,6 +71,14 @@ export default class TwilioRouter {
       }
 
       case FlowType.GATHER: {
+        switch (block.type) {
+          case BlockType.PLAYBACK: {
+            //TODO: abstract this eventually
+            response = await this.handlePlaybackBlock(blockName, response, ctx, flow, messages);
+            return response;
+          }
+        }
+
         const gather = response.gather({
           action: `${baseUrl}/twiml/gather/${blockName}`,
           method: 'POST',
@@ -90,13 +98,26 @@ export default class TwilioRouter {
     }
   }
 
-  private static async handlePlaybackBlock(blockName: BlockId, response: any, ctx: CallContext, flow: DefaultFlow, messages: SayMessage[] | PlayMessage []) {
+  private static async handlePlaybackBlock(blockName: BlockId, response: any, ctx: CallContext, flow: DefaultFlow | GatherFlow, messages: SayMessage[] | PlayMessage []) {
+    console.log("HELLO THERE");
+
+    //TODO: this is getting messy
+    let nextBlock;
+    if (flow.type === FlowType.DEFAULT) {
+      nextBlock = flow.next;
+    }
 
     //TODO: figure out how to make more type safe and more generic
     switch(blockName) {
       case(BlockId.listen_playback): {
+        const gather = response.gather({
+          action: `${baseUrl}/twiml/gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
+          method: 'POST',
+          input: 'dtmf',
+          numDigits: 1,
+        });
         //TODO: figure out how to wrap this in a gather block!
-        //TODO: this repeats messages when page size > 1
+        //TODO: fixme this repeats messages when page size > 1
         //Play all of the pre-recorded messages, then load all of the messages from firestore and play them.
         const recordings = await ctx.firebaseApi.getRecordings(ctx.maxMessages);
         console.log('got recordings back from firebase: ', recordings);
@@ -110,11 +131,11 @@ export default class TwilioRouter {
           //Warning - not type safe :(
           //TODO: tidy this up
           if(message.type === MessageType.PLAY) {
-            return response.play({}, message.url);
+            return gather.play({}, message.url);
           }
 
           if (message.type === MessageType.SAY) {
-            return response.say({language: message.language}, message.text);
+            return gather.say({language: message.language}, message.text);
           }
 
           console.log("ERROR in handlePlaybackBlock, bad message:", message);
@@ -123,7 +144,7 @@ export default class TwilioRouter {
         let redirectUrl = buildPaginatedUrl(baseUrl, blockName, page + 1, pageSize, ctx.maxMessages);
         if ((page * pageSize) > totalCount) {
           //We are out of messages, redirect to next block
-          redirectUrl = `${baseUrl}/twiml/${flow.next}`;
+          redirectUrl = `${baseUrl}/twiml/${nextBlock}`;
         }
 
         //call back to this block.
@@ -142,7 +163,7 @@ export default class TwilioRouter {
       
         response.say({}, 'You said:');
         response.play({}, recording.url);
-        response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${flow.next}`);
+        response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${nextBlock}`);
       
         break;
       }
@@ -182,6 +203,7 @@ export default class TwilioRouter {
     //TODO: parse out the twilio response, and redirect to the appropriate block
 
     const flow = config.flows[currentBlock];
+    //TODO: put this back when we have had less wine
     if (flow.type !== FlowType.GATHER) {
       console.error(`gatherNextMessage tried to handle flow with type: ${flow.type}`);
       const response = new VoiceResponse();
@@ -192,26 +214,30 @@ export default class TwilioRouter {
     //TODO: we will need to reformat this nicely soon. maybe have custom action handlers or something
 
     switch (currentBlock) {
-
       //TODO: make more generic - this isn't technically a GATHER block, so we shouldn't do this really.
       case BlockId.listen_playback: {
         const response = new VoiceResponse();
-        let redirectUrl;
+        let nextPage
+        console.log("BlockId.listen_playback. Current page: ", ctx.page);
 
         switch (gatherResult.digits.trim()) {
           case '1': {
             //Skip
-            redirectUrl = buildPaginatedUrl(baseUrl, BlockId.listen_playback, ctx.page + 1, ctx.pageSize, ctx.maxMessages);
+            nextPage = ctx.page + 1;
+            break;
           }
           case '2': {
             //Repeat
-            redirectUrl = buildPaginatedUrl(baseUrl, BlockId.listen_playback, ctx.page, ctx.pageSize, ctx.maxMessages);
-          }
-          default: {
-            response.redirect({ method: 'POST' }, redirectUrl);
-            return response.toString();
+            nextPage = ctx.page;
+            break;
           }
         }
+
+        console.log("skip: new page number: ", nextPage);
+        const redirectUrl = buildPaginatedUrl(baseUrl, BlockId.listen_playback, nextPage, ctx.pageSize, ctx.maxMessages);
+        console.log("redirect url is:", redirectUrl);
+        response.redirect({ method: 'POST' }, redirectUrl);
+        return response.toString();
       }
 
       case BlockId.record_post_or_delete: {

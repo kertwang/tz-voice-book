@@ -9,7 +9,8 @@ const TwilioTypes_1 = require("../../types_rn/TwilioTypes");
 const TwilioFlows = {
     'entrypoint': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.intro_0,
+        // next: BlockId.intro_0,
+        next: TwilioTypes_1.BlockId.listen_playback,
     },
     'intro_0': {
         type: TwilioTypes_1.FlowType.GATHER,
@@ -31,8 +32,14 @@ const TwilioFlows = {
         next: TwilioTypes_1.BlockId.listen_playback,
     },
     'listen_playback': {
-        type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.listen_end,
+        type: TwilioTypes_1.FlowType.GATHER,
+        error: null,
+        // next: BlockId.listen_end,
+        digitMatches: [
+            // Both triggers the same, with different params
+            { digits: '1', nextBlock: TwilioTypes_1.BlockId.listen_playback },
+            { digits: '2', nextBlock: TwilioTypes_1.BlockId.listen_playback },
+        ],
     },
     'listen_end': {
         type: TwilioTypes_1.FlowType.GATHER,

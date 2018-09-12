@@ -23,7 +23,7 @@ class FirebaseApi {
         const user = {
             mobile,
             //This is the version that new users will use by default.
-            version: TwilioTypes_1.VersionId.en_us,
+            version: TwilioTypes_1.VersionId.tz_audio,
         };
         //TODO: should we add the id in here?
         return this.fs.collection('bot').doc(botId).collection('users').add(user);

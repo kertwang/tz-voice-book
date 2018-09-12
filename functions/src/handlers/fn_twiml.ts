@@ -83,6 +83,7 @@ module.exports = (functions: any) => {
    */
   app.post('/gather/*', async (req, res) => {
     const blockName = pathToBlock(req.path);
+    console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
 
     const user = await firebaseApi.getUserFromMobile(req.body.From);
     const botConfig = await firebaseApi.getBotConfig(req.body.CallSid, user.id);
@@ -109,6 +110,7 @@ module.exports = (functions: any) => {
    */
   app.post('/*', async (req, res) => {
     const blockName = pathToBlock(req.path);
+    console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
 
     const user = await firebaseApi.getUserFromMobile(req.body.From);
     const botConfig = await firebaseApi.getBotConfig(req.body.CallSid, user.id);

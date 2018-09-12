@@ -17,9 +17,10 @@ function logGatherBlock(block, result) {
 }
 exports.logGatherBlock = logGatherBlock;
 function logTwilioResponse(xmlString) {
-    if (process.env.LOG_TWILIO_RESPONSE !== 'true') {
-        return;
-    }
+    //TODO: make a cloud function config
+    // if (process.env.LOG_TWILIO_RESPONSE !== 'true') {
+    //   return;
+    // }
     console.log(`TWILIO Response: \n ${format(xmlString)}`);
 }
 exports.logTwilioResponse = logTwilioResponse;
@@ -38,8 +39,8 @@ exports.generateUrl = (urlPrefix, path, firebaseToken) => {
 exports.saftelyGetPageParamsOrDefaults = (params) => {
     console.log('params are', params);
     const page = params.page ? parseInt(params.page) : 0;
-    let pageSize = params.page ? parseInt(params.pageSize) : 1;
-    let maxMessages = params.page ? parseInt(params.maxMessages) : 10;
+    let pageSize = params.pageSize ? parseInt(params.pageSize) : 1;
+    let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
     //Also handle shitty twilio url encoded params :(
     if (params['amp;pageSize']) {
         pageSize = parseInt(params['amp;pageSize']);

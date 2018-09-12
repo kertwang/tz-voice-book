@@ -20,7 +20,7 @@ export default class FirebaseApi {
     const user = {
       mobile,
       //This is the version that new users will use by default.
-      version: VersionId.en_us, //This is the only one for now
+      version: VersionId.tz_audio,
     };
     //TODO: should we add the id in here?
     return this.fs.collection('bot').doc(botId).collection('users').add(user);
