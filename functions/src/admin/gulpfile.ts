@@ -28,6 +28,8 @@ gulp.task('deploy_config', async () => {
   await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_au, {messages: en_au_messages,blocks: en_au_blocks,flows: en_au_flows,});
   await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.tz_audio, {messages: tz_audio_messages,blocks: tz_audio_blocks,flows: tz_audio_flows,});
 
+  console.log(tz_audio_messages);
+
   console.log("deployed config.");
 });
 
@@ -47,13 +49,22 @@ gulp.task('deploy_audio', async () => {
     return storage.upload(`./content/audio/${file}`, {
       destination: file,
       public: true,
+      metadata: {
+        metadata: {
+          firebaseStorageDownloadTokens: '1536715274666696'
+        }
+      }
     })
     //Get the public url:
     .then(([thing1, thing2]) => {
       //TODO: fix this crazyness
-      // console.log("thing1: ", thing1);
-      // console.log("thing2: ", thing2);
       console.log(`  ${file} => ${thing2.mediaLink.replace('https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/', '')}`);
     })
   }));
 });
+
+
+/*
+
+https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/tz_audio%2F015a_Voicebook_Swahili.mp3?alt=media&token=1536715274666696
+*/
