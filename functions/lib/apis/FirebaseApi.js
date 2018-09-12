@@ -50,16 +50,18 @@ class FirebaseApi {
             return this.createUserForMobile(mobile);
         });
     }
-    getMessages(limit) {
-        return this.fs.collection('bot').doc(botId).collection('messages').orderBy('createdAt', 'desc').limit(limit).get()
+    getRecordings(limit) {
+        return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'desc').limit(limit).get()
             .then(sn => {
             const messages = [];
             sn.forEach(doc => {
-                //TODO: format properly
                 //Get each document, put in the id
                 const data = doc.data();
                 data.id = doc.id;
-                messages.push(data);
+                messages.push({
+                    type: TwilioTypes_1.MessageType.PLAY,
+                    url: data.url,
+                });
             });
             return messages;
         });

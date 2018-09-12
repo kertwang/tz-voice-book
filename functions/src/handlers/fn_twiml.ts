@@ -9,7 +9,7 @@ import * as morganBody from 'morgan-body';
 import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
-import { pathToBlock, logGatherBlock, logTwilioResponse } from '../utils';
+import { pathToBlock, logGatherBlock, logTwilioResponse, saftelyGetPageParamsOrDefaults } from '../utils';
 import { GatherResult, CallContext, DigitResult } from '../types_rn/TwilioTypes';
 import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
@@ -91,14 +91,8 @@ module.exports = (functions: any) => {
       mobile: req.body.From,
       userId: user.id,
       firebaseApi,
-      ...saftelyGetPageParamsOrDefaults(req.params),
+      ...saftelyGetPageParamsOrDefaults(req.query),
     };
-    
-    // const gatherResult: GatherResult = {
-    //   speechResult: req.body.SpeechResult,
-    //   confidence: req.body.Confidence,
-    // };
-    // logGatherBlock(blockName, gatherResult);
 
     const gatherResult: DigitResult = {
       digits: req.body.Digits,
@@ -109,24 +103,6 @@ module.exports = (functions: any) => {
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(result);
   });
-
-  type PageParams = {
-    page: number,
-    pageSize: number,
-    maxMessages: number,
-  }
-
-  const saftelyGetPageParamsOrDefaults = (params): PageParams => {
-    const page = params.page ? parseInt(params.page) : 0;
-    const pageSize = params.page ? parseInt(params.pageSize) : 0;
-    const maxMessages = params.page ? parseInt(params.maxMessages) : 10;
-
-    return {
-      page,
-      pageSize,
-      maxMessages,
-    };
-  }
 
   /**
    * Handle all normal routes
@@ -141,7 +117,7 @@ module.exports = (functions: any) => {
       mobile: req.body.From,
       userId: user.id,
       firebaseApi,
-      ...saftelyGetPageParamsOrDefaults(req.params),
+      ...saftelyGetPageParamsOrDefaults(req.query),
     };
 
     const result = await TwilioRouter.nextMessage(ctx, botConfig, blockName);

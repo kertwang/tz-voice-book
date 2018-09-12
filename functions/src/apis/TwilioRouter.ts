@@ -96,19 +96,19 @@ export default class TwilioRouter {
     switch(blockName) {
       case(BlockId.listen_playback): {
         //TODO: figure out how to wrap this in a gather block!
+        //TODO: this repeats messages when page size > 1
         //Play all of the pre-recorded messages, then load all of the messages from firestore and play them.
-        const totalCount = messages.length + ctx.maxMessages;
-        const recordings = await ctx.firebaseApi.getMessages(ctx.maxMessages);
+        const recordings = await ctx.firebaseApi.getRecordings(ctx.maxMessages);
+        console.log('got recordings back from firebase: ', recordings);
+        const totalCount = messages.length + recordings.length;
         const {page, pageSize} = ctx
-        //Eg totalcount = 13, page = 0, pageSize = 1
-
-        console.log("listen_playback context is:", ctx);
 
         const allToPlay: any[] = messages;
         recordings.forEach(r => allToPlay.push(r));
         const toPlay = allToPlay.slice(page, page + pageSize);
         toPlay.forEach(message => {
-          //Warning - not type safe :()
+          //Warning - not type safe :(
+          //TODO: tidy this up
           if(message.type === MessageType.PLAY) {
             return response.play({}, message.url);
           }
@@ -120,13 +120,14 @@ export default class TwilioRouter {
           console.log("ERROR in handlePlaybackBlock, bad message:", message);
         });
 
-        //We are out of messages, redirect
-        if (page * pageSize > totalCount) {
-          response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${flow.next}`);
+        let redirectUrl = `${baseUrl}/twiml/${blockName}?page=${page + 1}\&pageSize=${pageSize}\&maxMessages=${ctx.maxMessages}`;
+        if ((page * pageSize) > totalCount) {
+          //We are out of messages, redirect to next block
+          redirectUrl = `${baseUrl}/twiml/${flow.next}`;
         }
-        //call back to this block.
-        response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${blockName}?page=${page + 1}?pageSize=${pageSize}?totalCount=${totalCount}`);
 
+        //call back to this block.
+        response.redirect({ method: 'POST' }, redirectUrl);
         break;
       }
       case (BlockId.record_playback): {

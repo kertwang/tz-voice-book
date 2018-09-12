@@ -78,12 +78,7 @@ module.exports = (functions) => {
         const blockName = utils_1.pathToBlock(req.path);
         const user = yield firebaseApi.getUserFromMobile(req.body.From);
         const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
-        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, saftelyGetPageParamsOrDefaults(req.params));
-        // const gatherResult: GatherResult = {
-        //   speechResult: req.body.SpeechResult,
-        //   confidence: req.body.Confidence,
-        // };
-        // logGatherBlock(blockName, gatherResult);
+        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
         const gatherResult = {
             digits: req.body.Digits,
         };
@@ -92,16 +87,6 @@ module.exports = (functions) => {
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);
     }));
-    const saftelyGetPageParamsOrDefaults = (params) => {
-        const page = params.page ? parseInt(params.page) : 0;
-        const pageSize = params.page ? parseInt(params.pageSize) : 0;
-        const maxMessages = params.page ? parseInt(params.maxMessages) : 10;
-        return {
-            page,
-            pageSize,
-            maxMessages,
-        };
-    };
     /**
      * Handle all normal routes
      */
@@ -109,7 +94,7 @@ module.exports = (functions) => {
         const blockName = utils_1.pathToBlock(req.path);
         const user = yield firebaseApi.getUserFromMobile(req.body.From);
         const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
-        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, saftelyGetPageParamsOrDefaults(req.params));
+        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
         const result = yield TwilioRouter_1.default.nextMessage(ctx, botConfig, blockName);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);

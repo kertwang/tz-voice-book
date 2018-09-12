@@ -5,7 +5,7 @@ const generateText = (text): SayMessage => {
   return {
     type: MessageType.SAY,
     text,
-    language: 'en-US' 
+    language: 'en-AU' 
   }
 }
 

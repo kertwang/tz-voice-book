@@ -167,7 +167,7 @@ Example url for ngrok: `http://4e27e9ad.ngrok.io/tz-phone-book/us-central1/bench
 Example request for localtunnel:
 `curl -X POST "https://lwilld3.localtunnel.me/tz-phone-book/us-central1/twiml/entrypoint"`
 
-Benchmark url for Firebase deployment `https://us-central1-tz-phone-book.cloudfunctions.net/benchmark/entrypoint`
+Benchmark url for Firebase deployment `https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint`
 
 
 ## Handy Snippets

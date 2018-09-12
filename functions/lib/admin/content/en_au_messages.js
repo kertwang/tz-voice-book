@@ -5,7 +5,7 @@ const generateText = (text) => {
     return {
         type: TwilioTypes_1.MessageType.SAY,
         text,
-        language: 'en-US'
+        language: 'en-AU'
     };
 };
 /* the deploy script will automatically fill in the urls for us */

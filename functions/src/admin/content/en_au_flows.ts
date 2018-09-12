@@ -9,7 +9,7 @@ const TwilioFlows: FlowMap = {
   'entrypoint': {
     type: FlowType.DEFAULT,
     //todo change back to intro_0
-    next: BlockId.listen_end,
+    next: BlockId.listen_0,
   },
   'intro_0': {
     type: FlowType.GATHER,

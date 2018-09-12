@@ -153,3 +153,9 @@ export type BotConfig = {
   flows: FlowMap,
   messages: MessageMap
 }
+
+export type PageParams = {
+  page: number,
+  pageSize: number,
+  maxMessages: number,
+}

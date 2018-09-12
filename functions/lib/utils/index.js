@@ -31,4 +31,26 @@ exports.generateUrl = (urlPrefix, path, firebaseToken) => {
     //eg: https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/tz_audio%2F015a_Voicebook_Swahili.mp3?alt=media&token=1536715274666696
     return `${urlPrefix}${encodeURIComponent(path)}?alt=media&token=${firebaseToken}`;
 };
+/**
+ * Use this to inject pagination where we don't have it set up
+ * This is really less than ideal, and we need to find a better way.
+ */
+exports.saftelyGetPageParamsOrDefaults = (params) => {
+    console.log('params are', params);
+    const page = params.page ? parseInt(params.page) : 0;
+    let pageSize = params.page ? parseInt(params.pageSize) : 1;
+    let maxMessages = params.page ? parseInt(params.maxMessages) : 10;
+    //Also handle shitty twilio url encoded params :(
+    if (params['amp;pageSize']) {
+        pageSize = parseInt(params['amp;pageSize']);
+    }
+    if (params['amp;maxMessages']) {
+        maxMessages = parseInt(params['amp;maxMessages']);
+    }
+    return {
+        page,
+        pageSize,
+        maxMessages,
+    };
+};
 //# sourceMappingURL=index.js.map
