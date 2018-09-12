@@ -14,8 +14,8 @@ const TwilioBlocks = {
     'record_0': { type: TwilioTypes_1.BlockType.RECORD, recordingCallback: '/twiml/recordingCallback/message' },
     'record_playback': { type: TwilioTypes_1.BlockType.PLAYBACK },
     'record_post_or_delete': { type: TwilioTypes_1.BlockType.DEFAULT },
-    'record_save': { type: TwilioTypes_1.BlockType.DEFAULT },
-    'record_delete': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'record_save': { type: TwilioTypes_1.BlockType.END },
+    'record_delete': { type: TwilioTypes_1.BlockType.END },
     'record_post_or_delete_error': { type: TwilioTypes_1.BlockType.DEFAULT },
 };
 exports.default = TwilioBlocks;

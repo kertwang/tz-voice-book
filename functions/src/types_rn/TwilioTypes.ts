@@ -66,17 +66,22 @@ export type DigitMatch = {
  */
 
 export type BlockMap = {
-  [k in BlockId]: DefaultBlock | PlaybackBlock | RecordBlock;
+  [k in BlockId]: DefaultBlock | PlaybackBlock | RecordBlock | EndBlock;
 }
 
 export enum BlockType {
-  DEFAULT = 'DEFAULT',  //Just a playback block
+  DEFAULT = 'DEFAULT',   //Just a playback block
   PLAYBACK = 'PLAYBACK', //Plays back non-static messages
-  RECORD = 'RECORD',   //Records a user's input
+  RECORD = 'RECORD',     //Records a user's input
+  END = 'END',           //Play messages and hang up.
 }
 
 export interface DefaultBlock {
   type: BlockType.DEFAULT,
+}
+
+export interface EndBlock {
+  type: BlockType.END,
 }
 
 export interface PlaybackBlock {

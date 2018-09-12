@@ -51,7 +51,7 @@ const TwilioFlows: FlowMap = {
   },
   'listen_feedback_complete': {
     type: FlowType.DEFAULT,
-    next: null,
+    next: BlockId.intro_0,
   },
   'record_0': {
     type: FlowType.DEFAULT,

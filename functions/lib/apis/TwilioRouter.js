@@ -58,6 +58,11 @@ class TwilioRouter {
                             });
                             break;
                         }
+                        case TwilioTypes_1.BlockType.END: {
+                            this.appendMessagesToResponse(response, messages);
+                            response.hangup();
+                            break;
+                        }
                         case TwilioTypes_1.BlockType.DEFAULT:
                         default: {
                             const nextUrl = `${Env_1.baseUrl}/twiml/${flow.next}`;

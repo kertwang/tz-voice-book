@@ -32,6 +32,7 @@ var BlockType;
     BlockType["DEFAULT"] = "DEFAULT";
     BlockType["PLAYBACK"] = "PLAYBACK";
     BlockType["RECORD"] = "RECORD";
+    BlockType["END"] = "END";
 })(BlockType = exports.BlockType || (exports.BlockType = {}));
 var MessageType;
 (function (MessageType) {

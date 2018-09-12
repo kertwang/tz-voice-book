@@ -14,8 +14,8 @@ const TwilioBlocks: BlockMap = {
   'record_0': { type: BlockType.RECORD, recordingCallback: '/twiml/recordingCallback/message' },
   'record_playback': {type: BlockType.PLAYBACK },
   'record_post_or_delete': { type: BlockType.DEFAULT }, 
-  'record_save': { type: BlockType.DEFAULT }, 
-  'record_delete': { type: BlockType.DEFAULT }, 
+  'record_save': { type: BlockType.END }, 
+  'record_delete': { type: BlockType.END }, 
   'record_post_or_delete_error': { type: BlockType.DEFAULT }, 
 }
 

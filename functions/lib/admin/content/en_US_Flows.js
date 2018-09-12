@@ -52,7 +52,7 @@ const TwilioFlows = {
     },
     'listen_feedback_complete': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: null,
+        next: TwilioTypes_1.BlockId.intro_0,
     },
     'record_0': {
         type: TwilioTypes_1.FlowType.DEFAULT,
