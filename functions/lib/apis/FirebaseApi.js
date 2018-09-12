@@ -119,8 +119,8 @@ class FirebaseApi {
      */
     getPendingRecordingsWithRetries(callSid, limit, retries, timeoutMs = 10) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("getPendingRecordingsWithRetries, callSid:", callSid);
             const result = yield this.getPendingRecordings(callSid, limit);
-            // console.log("retries, ", retries, "sleeping for:", timeoutMs);
             if (result.length > 0) {
                 return result;
             }

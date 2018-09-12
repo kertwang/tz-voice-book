@@ -119,8 +119,8 @@ export default class FirebaseApi {
    * too long, and causes the call to die
    */
   public async getPendingRecordingsWithRetries(callSid: string, limit: number, retries: number, timeoutMs: number = 10): Promise<Recording[]> {
+    console.log("getPendingRecordingsWithRetries, callSid:", callSid);
     const result = await this.getPendingRecordings(callSid, limit);
-    // console.log("retries, ", retries, "sleeping for:", timeoutMs);
 
     if (result.length > 0) {
       return result;

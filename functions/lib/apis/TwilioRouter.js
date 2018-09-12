@@ -135,14 +135,14 @@ class TwilioRouter {
                 }
                 case (TwilioTypes_1.BlockId.record_playback): {
                     // const recordings: Recording[] = [];
-                    const recordings = yield ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 5, 100);
+                    const recordings = yield ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 8, 100);
                     if (recordings.length === 0) {
                         //TODO: handle somehow
                         response.say({}, 'There was a problem saving your recording. Please try again.');
                         return response;
                     }
                     const recording = recordings[0];
-                    response.say({}, 'You said:');
+                    // response.say({}, 'You said:');
                     response.play({}, recording.url);
                     response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${nextBlock}`);
                     break;
