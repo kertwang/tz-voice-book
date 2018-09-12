@@ -45,7 +45,8 @@ class TwilioRouter {
                     switch (block.type) {
                         case TwilioTypes_1.BlockType.PLAYBACK: {
                             //TODO: abstract this eventually
-                            response = yield this.handlePlaybackBlock(blockName, response, ctx, flow, messages);
+                            console.log("HELLO?");
+                            response = yield this.handlePlaybackBlock(blockName, response, ctx, flow.next, messages);
                             break;
                         }
                         case TwilioTypes_1.BlockType.RECORD: {
@@ -73,13 +74,6 @@ class TwilioRouter {
                     return response;
                 }
                 case TwilioTypes_1.FlowType.GATHER: {
-                    switch (block.type) {
-                        case TwilioTypes_1.BlockType.PLAYBACK: {
-                            //TODO: abstract this eventually
-                            response = yield this.handlePlaybackBlock(blockName, response, ctx, flow, messages);
-                            return response;
-                        }
-                    }
                     const gather = response.gather({
                         action: `${Env_1.baseUrl}/twiml/gather/${blockName}`,
                         method: 'POST',
@@ -98,16 +92,11 @@ class TwilioRouter {
             }
         });
     }
-    static handlePlaybackBlock(blockName, response, ctx, flow, messages) {
+    static handlePlaybackBlock(blockName, response, ctx, nextBlock, messages) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("HELLO THERE");
-            //TODO: this is getting messy
-            let nextBlock;
-            if (flow.type === TwilioTypes_1.FlowType.DEFAULT) {
-                nextBlock = flow.next;
-            }
             //TODO: figure out how to make more type safe and more generic
             switch (blockName) {
+                //this has a flow type of gather- breaking some weird stuff
                 case (TwilioTypes_1.BlockId.listen_playback): {
                     const gather = response.gather({
                         action: `${Env_1.baseUrl}/twiml/gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
@@ -119,7 +108,6 @@ class TwilioRouter {
                     //TODO: fixme this repeats messages when page size > 1
                     //Play all of the pre-recorded messages, then load all of the messages from firestore and play them.
                     const recordings = yield ctx.firebaseApi.getRecordings(ctx.maxMessages);
-                    console.log('got recordings back from firebase: ', recordings);
                     const totalCount = messages.length + recordings.length;
                     const { page, pageSize } = ctx;
                     const allToPlay = messages;
@@ -186,8 +174,31 @@ class TwilioRouter {
     static gatherNextMessage(ctx, config, currentBlock, gatherResult) {
         return __awaiter(this, void 0, void 0, function* () {
             //TODO: parse out the twilio response, and redirect to the appropriate block
+            //TODO: make more generic - this isn't technically a GATHER block, so we shouldn't do this really.
+            console.log("currentBlock", currentBlock);
+            if (currentBlock === TwilioTypes_1.BlockId.listen_playback) {
+                const response = new VoiceResponse();
+                let nextPage;
+                console.log("BlockId.listen_playback. Current page: ", ctx.page);
+                switch (gatherResult.digits.trim()) {
+                    case '1': {
+                        //Skip
+                        nextPage = ctx.page + 1;
+                        break;
+                    }
+                    case '2': {
+                        //Repeat
+                        nextPage = ctx.page;
+                        break;
+                    }
+                }
+                console.log("skip: new page number: ", nextPage);
+                const redirectUrl = utils_1.buildPaginatedUrl(Env_1.baseUrl, TwilioTypes_1.BlockId.listen_playback, nextPage, ctx.pageSize, ctx.maxMessages);
+                console.log("redirect url is:", redirectUrl);
+                response.redirect({ method: 'POST' }, redirectUrl);
+                return response.toString();
+            }
             const flow = config.flows[currentBlock];
-            //TODO: put this back when we have had less wine
             if (flow.type !== TwilioTypes_1.FlowType.GATHER) {
                 console.error(`gatherNextMessage tried to handle flow with type: ${flow.type}`);
                 const response = new VoiceResponse();
@@ -196,29 +207,6 @@ class TwilioRouter {
             }
             //TODO: we will need to reformat this nicely soon. maybe have custom action handlers or something
             switch (currentBlock) {
-                //TODO: make more generic - this isn't technically a GATHER block, so we shouldn't do this really.
-                case TwilioTypes_1.BlockId.listen_playback: {
-                    const response = new VoiceResponse();
-                    let nextPage;
-                    console.log("BlockId.listen_playback. Current page: ", ctx.page);
-                    switch (gatherResult.digits.trim()) {
-                        case '1': {
-                            //Skip
-                            nextPage = ctx.page + 1;
-                            break;
-                        }
-                        case '2': {
-                            //Repeat
-                            nextPage = ctx.page;
-                            break;
-                        }
-                    }
-                    console.log("skip: new page number: ", nextPage);
-                    const redirectUrl = utils_1.buildPaginatedUrl(Env_1.baseUrl, TwilioTypes_1.BlockId.listen_playback, nextPage, ctx.pageSize, ctx.maxMessages);
-                    console.log("redirect url is:", redirectUrl);
-                    response.redirect({ method: 'POST' }, redirectUrl);
-                    return response.toString();
-                }
                 case TwilioTypes_1.BlockId.record_post_or_delete: {
                     //Handle the case where user wants us to post the message!
                     //Falls through to router

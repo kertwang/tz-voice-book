@@ -31,14 +31,15 @@ const TwilioFlows: FlowMap = {
     next: BlockId.listen_playback,
   },
   'listen_playback': {
-    type: FlowType.GATHER,
-    error: null, //ew gross
-    // next: BlockId.listen_end,
-    digitMatches: [
-      // Both triggers the same, with different params
-      { digits: '1', nextBlock: BlockId.listen_playback },
-      { digits: '2', nextBlock: BlockId.listen_playback },
-    ],
+    // TODO: define new block type?
+    type: FlowType.DEFAULT,
+    // error: null, //ew gross
+    next: BlockId.listen_end,
+    // digitMatches: [
+    //   // Both triggers the same, with different params
+    //   { digits: '1', nextBlock: BlockId.listen_playback },
+    //   { digits: '2', nextBlock: BlockId.listen_playback },
+    // ],
   },
   'listen_end': {
     type: FlowType.GATHER,

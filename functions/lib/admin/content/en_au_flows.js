@@ -32,14 +32,10 @@ const TwilioFlows = {
         next: TwilioTypes_1.BlockId.listen_playback,
     },
     'listen_playback': {
-        type: TwilioTypes_1.FlowType.GATHER,
-        error: null,
-        // next: BlockId.listen_end,
-        digitMatches: [
-            // Both triggers the same, with different params
-            { digits: '1', nextBlock: TwilioTypes_1.BlockId.listen_playback },
-            { digits: '2', nextBlock: TwilioTypes_1.BlockId.listen_playback },
-        ],
+        // TODO: define new block type?
+        type: TwilioTypes_1.FlowType.DEFAULT,
+        // error: null, //ew gross
+        next: TwilioTypes_1.BlockId.listen_end,
     },
     'listen_end': {
         type: TwilioTypes_1.FlowType.GATHER,
