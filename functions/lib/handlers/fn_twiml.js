@@ -50,11 +50,15 @@ module.exports = (functions) => {
     /**
      * Callback triggered once feedback recording is finished
      */
-    app.post('/recordingCallback/feedback', (req, res) => {
-        console.log(`SAVED recording to: ${req.body.RecordingUrl}`);
-        //TODO: save to a feedback object
-        res.json(true);
-    });
+    app.post('/recordingCallback/feedback', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const recording = {
+            url: req.body.RecordingUrl,
+            createdAt: moment().toISOString(),
+            callSid: req.body.CallSid,
+        };
+        const pendingId = yield firebaseApi.saveFeedbackRecording(recording);
+        res.json(pendingId);
+    }));
     /**
      * Handle Twilio Callback to save the recording for pending submission.
      */

@@ -64,6 +64,19 @@ class FirebaseApi {
         });
     }
     /**
+     * Save a feedback recording
+     */
+    saveFeedbackRecording(recording) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.fs.collection('bot').doc(botId).collection('feedback').add(recording)
+                .then(ref => ref.id)
+                .catch(err => {
+                console.log("Error in savePendingRecording", err);
+                return Promise.reject(err);
+            });
+        });
+    }
+    /**
      * Save a reading to the pending collection
      *
      * Returns the id of the pending reading

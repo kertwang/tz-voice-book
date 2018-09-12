@@ -172,10 +172,22 @@ export default class TwilioRouter {
 
     //TODO: we will need to reformat this nicely soon.
     switch (currentBlock) {
+      case BlockId.record_post_or_delete: {
+        //Handle the case where user wants us to post the message!
+        //Falls through to router
+        if (gatherResult.digits.trim() === '1') {
+          const pendingRecordings = await ctx.firebaseApi.getPendingRecordings(ctx.callSid, 1);
+          if (pendingRecordings.length === 1) {
+            const recordingId = await ctx.firebaseApi.postRecording(pendingRecordings[0]);
+            //TODO: make a logger class
+            console.log(`LOG: {"action":"POST_MESSAGE", "recordingId":"${recordingId}"}`);
+          }
+        }
+      }
+    
       // Default implementation
       case BlockId.intro_0:
       case BlockId.listen_end:
-      case BlockId.record_post_or_delete:
       //TODO: handle the digits as well!
         {
           const validDigits = flow.digitMatches.map(d => d.digits);
@@ -197,7 +209,7 @@ export default class TwilioRouter {
       default: {
         console.log(`ERROR: gatherNextMessage not implemented for ${currentBlock}`)
         const response = new VoiceResponse();
-        response.say({}, 'Sorry. Something went wrong. Please try again.');
+        response.say({}, 'Sorry. There was a problem. Please try again.');
         return response.toString();
       }
     }

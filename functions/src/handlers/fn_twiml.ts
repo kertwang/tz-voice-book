@@ -53,11 +53,15 @@ module.exports = (functions: any) => {
   /**
    * Callback triggered once feedback recording is finished
    */
-  app.post('/recordingCallback/feedback', (req, res) => {
-    console.log(`SAVED recording to: ${req.body.RecordingUrl}`);
-    //TODO: save to a feedback object
+  app.post('/recordingCallback/feedback', async (req, res) => {
+    const recording: Recording = {
+      url: req.body.RecordingUrl,
+      createdAt: moment().toISOString(),
+      callSid: req.body.CallSid,
+    };
+    const pendingId = await firebaseApi.saveFeedbackRecording(recording);
 
-    res.json(true);
+    res.json(pendingId);
   });
 
   /**

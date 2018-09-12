@@ -67,6 +67,18 @@ export default class FirebaseApi {
   }
 
   /**
+   * Save a feedback recording
+   */
+  public async saveFeedbackRecording(recording: Recording): Promise<string> {
+    return this.fs.collection('bot').doc(botId).collection('feedback').add(recording)
+      .then(ref => ref.id)
+      .catch(err => {
+        console.log("Error in savePendingRecording", err);
+        return Promise.reject(err);
+      });
+  }
+
+  /**
    * Save a reading to the pending collection
    * 
    * Returns the id of the pending reading
