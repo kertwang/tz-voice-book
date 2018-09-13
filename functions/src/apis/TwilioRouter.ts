@@ -3,9 +3,10 @@
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { logTwilioResponse, buildPaginatedUrl } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow } from '../types_rn/TwilioTypes';
+import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, LogType } from '../types_rn/TwilioTypes';
 import { baseUrl } from '../utils/Env';
 import UserApi, { Recording } from './UserApi';
+import { log } from '../utils/Log';
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
 /**
@@ -41,7 +42,6 @@ export default class TwilioRouter {
         switch (block.type) {
           case BlockType.PLAYBACK: {
             //TODO: abstract this eventually
-            console.log("HELLO?");
             response = await this.handlePlaybackBlock(blockName, response, ctx, flow.next, messages);
             break;
           }
@@ -92,7 +92,7 @@ export default class TwilioRouter {
   }
 
   private static async handlePlaybackBlock(blockName: BlockId, response: any, ctx: CallContext, nextBlock: BlockId, messages: SayMessage[] | PlayMessage []) {
-    //TODO: figure out how to make more type safe and more generic
+    //TODO: figure out how to make more type safe and more generic - eg a custom block definition, with a function for how to handle it defined elsewhere
     switch(blockName) {
       //this has a flow type of gather- breaking some weird stuff
       case(BlockId.listen_playback): {
@@ -140,8 +140,9 @@ export default class TwilioRouter {
         // const recordings: Recording[] = [];
         const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 8, 100);
         if (recordings.length === 0) {
-          //TODO: handle somehow
-          response.say({}, 'There was a problem saving your recording. Please try again.');
+          //Try again
+          //TODO: fix slow infinte loop here :(
+          response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${BlockId.record_delete}`);
           return response;
         }
         const recording = recordings[0];
@@ -192,7 +193,6 @@ export default class TwilioRouter {
     if (currentBlock === BlockId.listen_playback) {
       const response = new VoiceResponse();
       let nextPage
-      console.log("BlockId.listen_playback. Current page: ", ctx.page);
 
       switch (gatherResult.digits.trim()) {
         case '1': {
@@ -207,7 +207,6 @@ export default class TwilioRouter {
         }
       }
 
-      console.log("skip: new page number: ", nextPage);
       const redirectUrl = buildPaginatedUrl(baseUrl, BlockId.listen_playback, nextPage, ctx.pageSize, ctx.maxMessages);
       console.log("redirect url is:", redirectUrl);
       response.redirect({ method: 'POST' }, redirectUrl);
@@ -235,6 +234,13 @@ export default class TwilioRouter {
             const recordingId = await ctx.firebaseApi.postRecording(pendingRecordings[0]);
             //TODO: make a logger class
             console.log(`LOG: {"action":"POST_MESSAGE", "recordingId":"${recordingId}"}`);
+
+            log({
+              type: LogType.POST_MESSAGE,
+              recordingId,
+              callSid: ctx.callSid,
+              url: pendingRecordings[0].url,
+            });
           }
         }
       }

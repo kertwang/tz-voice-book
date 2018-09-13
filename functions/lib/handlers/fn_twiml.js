@@ -18,8 +18,10 @@ const morganBody = require("morgan-body");
 const TwilioRouter_1 = require("../apis/TwilioRouter");
 const ErrorHandler_1 = require("../utils/ErrorHandler");
 const utils_1 = require("../utils");
+const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 const Firestore_1 = require("../apis/Firestore");
+const Log_1 = require("../utils/Log");
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const bodyParser = require('body-parser');
@@ -57,6 +59,12 @@ module.exports = (functions) => {
             callSid: req.body.CallSid,
         };
         const pendingId = yield firebaseApi.saveFeedbackRecording(recording);
+        Log_1.log({
+            type: TwilioTypes_1.LogType.PENDING_MESSAGE,
+            pendingId,
+            callSid: recording.callSid,
+            url: recording.url,
+        });
         res.json(pendingId);
     }));
     /**
@@ -69,6 +77,12 @@ module.exports = (functions) => {
             callSid: req.body.CallSid,
         };
         const pendingId = yield firebaseApi.savePendingRecording(recording);
+        Log_1.log({
+            type: TwilioTypes_1.LogType.PENDING_MESSAGE,
+            pendingId,
+            callSid: recording.callSid,
+            url: recording.url,
+        });
         res.json(pendingId);
     }));
     /**
@@ -80,6 +94,13 @@ module.exports = (functions) => {
         const user = yield firebaseApi.getUserFromMobile(req.body.From);
         const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
+        Log_1.log({
+            type: TwilioTypes_1.LogType.BLOCK,
+            callSid: ctx.callSid,
+            blockId: blockName,
+            mobile: ctx.mobile,
+            pageParams: utils_1.saftelyGetPageParamsOrDefaults(req.query),
+        });
         const gatherResult = {
             digits: req.body.Digits,
         };
@@ -93,10 +114,16 @@ module.exports = (functions) => {
      */
     app.post('/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
         const blockName = utils_1.pathToBlock(req.path);
-        console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
         const user = yield firebaseApi.getUserFromMobile(req.body.From);
         const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
+        Log_1.log({
+            type: TwilioTypes_1.LogType.BLOCK,
+            callSid: ctx.callSid,
+            blockId: blockName,
+            mobile: ctx.mobile,
+            pageParams: utils_1.saftelyGetPageParamsOrDefaults(req.query),
+        });
         const result = yield TwilioRouter_1.default.nextMessage(ctx, botConfig, blockName);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);

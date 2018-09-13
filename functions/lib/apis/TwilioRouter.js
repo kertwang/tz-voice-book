@@ -13,6 +13,7 @@ const twilio = require("twilio");
 const utils_1 = require("../utils");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const Env_1 = require("../utils/Env");
+const Log_1 = require("../utils/Log");
 const VoiceResponse = twilio.twiml.VoiceResponse;
 /**
  * TwilioRouter is a stateless router for twilio requests.
@@ -45,7 +46,6 @@ class TwilioRouter {
                     switch (block.type) {
                         case TwilioTypes_1.BlockType.PLAYBACK: {
                             //TODO: abstract this eventually
-                            console.log("HELLO?");
                             response = yield this.handlePlaybackBlock(blockName, response, ctx, flow.next, messages);
                             break;
                         }
@@ -94,7 +94,7 @@ class TwilioRouter {
     }
     static handlePlaybackBlock(blockName, response, ctx, nextBlock, messages) {
         return __awaiter(this, void 0, void 0, function* () {
-            //TODO: figure out how to make more type safe and more generic
+            //TODO: figure out how to make more type safe and more generic - eg a custom block definition, with a function for how to handle it defined elsewhere
             switch (blockName) {
                 //this has a flow type of gather- breaking some weird stuff
                 case (TwilioTypes_1.BlockId.listen_playback): {
@@ -137,8 +137,9 @@ class TwilioRouter {
                     // const recordings: Recording[] = [];
                     const recordings = yield ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 8, 100);
                     if (recordings.length === 0) {
-                        //TODO: handle somehow
-                        response.say({}, 'There was a problem saving your recording. Please try again.');
+                        //Try again
+                        //TODO: fix slow infinte loop here :(
+                        response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${TwilioTypes_1.BlockId.record_delete}`);
                         return response;
                     }
                     const recording = recordings[0];
@@ -179,7 +180,6 @@ class TwilioRouter {
             if (currentBlock === TwilioTypes_1.BlockId.listen_playback) {
                 const response = new VoiceResponse();
                 let nextPage;
-                console.log("BlockId.listen_playback. Current page: ", ctx.page);
                 switch (gatherResult.digits.trim()) {
                     case '1': {
                         //Skip
@@ -192,7 +192,6 @@ class TwilioRouter {
                         break;
                     }
                 }
-                console.log("skip: new page number: ", nextPage);
                 const redirectUrl = utils_1.buildPaginatedUrl(Env_1.baseUrl, TwilioTypes_1.BlockId.listen_playback, nextPage, ctx.pageSize, ctx.maxMessages);
                 console.log("redirect url is:", redirectUrl);
                 response.redirect({ method: 'POST' }, redirectUrl);
@@ -216,6 +215,12 @@ class TwilioRouter {
                             const recordingId = yield ctx.firebaseApi.postRecording(pendingRecordings[0]);
                             //TODO: make a logger class
                             console.log(`LOG: {"action":"POST_MESSAGE", "recordingId":"${recordingId}"}`);
+                            Log_1.log({
+                                type: TwilioTypes_1.LogType.POST_MESSAGE,
+                                recordingId,
+                                callSid: ctx.callSid,
+                                url: pendingRecordings[0].url,
+                            });
                         }
                     }
                 }

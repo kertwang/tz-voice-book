@@ -52,7 +52,7 @@ export default class FirebaseApi {
   }
 
   public getRecordings(limit: number): Promise<PlayMessage[]> {
-    return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'desc').limit(limit).get()
+    return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'asc').limit(limit).get()
     .then(sn => {
       const messages: PlayMessage[] = [];
       sn.forEach(doc => {
@@ -119,7 +119,6 @@ export default class FirebaseApi {
    * too long, and causes the call to die
    */
   public async getPendingRecordingsWithRetries(callSid: string, limit: number, retries: number, timeoutMs: number = 10): Promise<Recording[]> {
-    console.log("getPendingRecordingsWithRetries, callSid:", callSid);
     const result = await this.getPendingRecordings(callSid, limit);
 
     if (result.length > 0) {
