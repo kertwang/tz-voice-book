@@ -1,4 +1,6 @@
 const admin = require('firebase-admin');
+const functions = require('firebase-functions');
+
 
 /* Not in git. Download from FB console*/
 const serviceAccount = require('../../.serviceAccountKey.json');
@@ -20,4 +22,5 @@ const storage = admin.storage().bucket();
 
 export {
   storage,
+  functions,
 }

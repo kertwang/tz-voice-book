@@ -54,7 +54,7 @@ module.exports = (functions: any) => {
   /**
    * Callback triggered once feedback recording is finished
    */
-  app.post('/recordingCallback/feedback', async (req, res) => {
+  app.post('/{:botId}/recordingCallback/feedback', async (req, res) => {
     const recording: Recording = {
       url: req.body.RecordingUrl,
       createdAt: moment().toISOString(),
@@ -75,7 +75,8 @@ module.exports = (functions: any) => {
   /**
    * Handle Twilio Callback to save the recording for pending submission.
    */
-  app.post('/recordingCallback/message', async (req, res) => {
+  app.post('/{:botId}/recordingCallback/message', async (req, res) => {
+    //TODO: pull out botId
     const recording: Recording = {
       url: req.body.RecordingUrl,
       createdAt: moment().toISOString(),
@@ -96,7 +97,8 @@ module.exports = (functions: any) => {
   /**
    * Action callback handlers.
    */
-  app.post('/gather/*', async (req, res) => {
+  app.post('{:botId}/gather/*', async (req, res) => {
+    //TODO: pull out botId
     const blockName = pathToBlock(req.path);
     console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
 
@@ -131,7 +133,8 @@ module.exports = (functions: any) => {
   /**
    * Handle all normal routes
    */
-  app.post('/*', async (req, res) => {
+  app.post('/{:botId}/*', async (req, res) => {
+    //TODO: pull out botId
     const blockName = pathToBlock(req.path);
 
     const user = await firebaseApi.getUserFromMobile(req.body.From);
