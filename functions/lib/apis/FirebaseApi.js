@@ -51,7 +51,7 @@ class FirebaseApi {
         });
     }
     getRecordings(limit) {
-        return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'desc').limit(limit).get()
+        return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'asc').limit(limit).get()
             .then(sn => {
             const messages = [];
             sn.forEach(doc => {
@@ -120,7 +120,6 @@ class FirebaseApi {
     getPendingRecordingsWithRetries(callSid, limit, retries, timeoutMs = 10) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = yield this.getPendingRecordings(callSid, limit);
-            // console.log("retries, ", retries, "sleeping for:", timeoutMs);
             if (result.length > 0) {
                 return result;
             }

@@ -7,7 +7,8 @@ const firebaseToken = '1536715274666696'; //This isn't too precious, our files a
 /* the deploy script will automatically fill in the urls for us */
 const en_text = {
     'entrypoint': [
-        { type: TwilioTypes_1.MessageType.SAY, text: "Hello, and welcome to voicebook", language: 'en-US' },
+        //"Hello, and welcome to voicebook"
+        { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/000_Voicebook_Swahili.mp3', firebaseToken) },
     ],
     'intro_0': [
         { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/001a_Voicebook_Swahili_v2.mp3', firebaseToken) },
@@ -25,7 +26,7 @@ const en_text = {
         // 020_Voicebook_Swahili.mp3 
         //or
         // 020_Voicebook_Swahili_020.mp3 ?
-        { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/020_Voicebook_Swahili.mp3', firebaseToken) },
+        { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/020_Voicebook_Swahili_020.mp3', firebaseToken) },
     ],
     'listen_playback': [
         { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/041_Voicebook_Swahili.mp3', firebaseToken) },
@@ -43,8 +44,8 @@ const en_text = {
         { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/060_Voicebook_Swahili.mp3', firebaseToken) },
     ],
     'listen_feedback_complete': [
-        //No audio yet!
-        { type: TwilioTypes_1.MessageType.SAY, text: 'Thanks! Your feedback has been recorded.', language: 'en-US' },
+    //No audio yet!
+    // { type: MessageType.SAY, text: 'Thanks! Your feedback has been recorded.', language: 'en-US' },
     ],
     'record_0': [
         //Need to find elsewhere!

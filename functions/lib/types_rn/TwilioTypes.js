@@ -51,4 +51,11 @@ var VersionId;
     VersionId["en_au"] = "en_au";
     VersionId["tz_audio"] = "tz_audio";
 })(VersionId = exports.VersionId || (exports.VersionId = {}));
+var LogType;
+(function (LogType) {
+    LogType["BLOCK"] = "BLOCK";
+    LogType["FEEDBACK"] = "FEEDBACK";
+    LogType["PENDING_MESSAGE"] = "PENDING_MESSAGE";
+    LogType["POST_MESSAGE"] = "POST_MESSAGE";
+})(LogType = exports.LogType || (exports.LogType = {}));
 //# sourceMappingURL=TwilioTypes.js.map
