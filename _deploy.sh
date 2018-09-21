@@ -1,8 +1,18 @@
 #!/usr/bin/env bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-source "$DIR/env/env.sh" #public
-source "$DIR/env/.env.sh" #private
+environment="development"
+
+if [ "$1" == "production" ]; then 
+  echo 'Deploying to production environment'
+  environment="production"
+  firebase use production
+else
+  firebase use development
+fi
+
+source "$DIR/env/env."$environment".sh" || exit 1 #public
+source "$DIR/env/.env."$environment".sh" || exit 1 #private
 
 # set the firebase env variables
 firebase functions:config:set \

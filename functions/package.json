@@ -26,6 +26,7 @@
     "firebase-admin": "~5.13.1",
     "firebase-app": "^0.0.1",
     "firebase-functions": "^2.0.2",
+    "googleapis": "27",
     "gulp": "^3.9.1",
     "gulpclass": "^0.2.0",
     "joi": "^13.2.0",

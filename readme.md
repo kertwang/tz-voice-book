@@ -25,6 +25,21 @@ cd functions
 yarn
 ```
 
+Setting up credentials.
+
+We need to set up the `.env.sh` and `.env.development.sh` files, which should follow the following format:
+
+```bash
+#[todo: insert private variables]
+```
+
+We also need to download the service account files, and place them  in the `functions/auth` directory. You can download them from the google developers console. The filename should follow the format:
+`<project-name>.service.json`, 
+
+eg: 
+
+`tz-phone-book-dev.service.json` contains the service account auth for the service account.
+
 ## Running Locally:
 
 ```bash

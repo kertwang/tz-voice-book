@@ -1,0 +1,28 @@
+[debug] [2018-09-21T05:45:41.695Z] ----------------------------------------------------------------------
+[debug] [2018-09-21T05:45:41.697Z] Command:       /home/alpha/.nvm/versions/node/v8.12.0/bin/node /home/alpha/.nvm/versions/node/v8.12.0/bin/firebase functions:config:set config.twilio_account_sid= config.twilio_auth_token= config.base_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net
+[debug] [2018-09-21T05:45:41.697Z] CLI Version:   4.2.1
+[debug] [2018-09-21T05:45:41.697Z] Platform:      linux
+[debug] [2018-09-21T05:45:41.697Z] Node Version:  v8.12.0
+[debug] [2018-09-21T05:45:41.697Z] Time:          Fri Sep 21 2018 15:15:41 GMT+0930 (ACST)
+[debug] [2018-09-21T05:45:41.698Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-09-21T05:45:41.706Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-09-21T05:45:41.706Z] > authorizing via signed-in user
+[debug] [2018-09-21T05:45:41.708Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/tz-phone-book-dev  
+ 
+[debug] [2018-09-21T05:47:49.772Z] ----------------------------------------------------------------------
+[debug] [2018-09-21T05:47:49.775Z] Command:       /home/alpha/.nvm/versions/node/v8.12.0/bin/node /home/alpha/.nvm/versions/node/v8.12.0/bin/firebase use development
+[debug] [2018-09-21T05:47:49.775Z] CLI Version:   4.2.1
+[debug] [2018-09-21T05:47:49.775Z] Platform:      linux
+[debug] [2018-09-21T05:47:49.775Z] Node Version:  v8.12.0
+[debug] [2018-09-21T05:47:49.775Z] Time:          Fri Sep 21 2018 15:17:49 GMT+0930 (ACST)
+[debug] [2018-09-21T05:47:49.776Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-09-21T05:47:49.786Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase"]
+[debug] [2018-09-21T05:47:49.786Z] > authorizing via signed-in user
+[debug] [2018-09-21T05:47:49.788Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-09-21T05:47:49.789Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+
+[debug] [2018-09-21T05:47:50.386Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-21T05:47:50.390Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects  
+ 
