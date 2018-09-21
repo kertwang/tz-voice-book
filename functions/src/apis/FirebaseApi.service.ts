@@ -19,10 +19,12 @@ describe('FirebaseApi', function() {
   this.timeout(5000);
 
   const firebaseApi = new FirebaseApi(fs);
+  console.logg(Hello);
 
   const ctx: CallContext = {
     callSid: '12345',
     mobile: '+61410233233',
+    userId: '12345',
     firebaseApi: new FirebaseApi(fs)
   };
 

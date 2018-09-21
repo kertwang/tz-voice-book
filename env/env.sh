@@ -7,3 +7,4 @@ export LT_SUBDOMAIN="lwilld3"
 
 # Public
 export BASE_URL="https://us-central1-tz-phone-book.cloudfunctions.net"
+export SERVICE_ACCOUNT_NAME="tz-phone-book-dev"

@@ -18,7 +18,10 @@ source "$DIR/env/.env."$environment".sh" || exit 1 #private
 firebase functions:config:set \
   config.twilio_account_sid="$TWILIO_ACCOUNT_SID" \
   config.twilio_auth_token="$TWILIO_AUTH_TOKEN" \
-  config.base_url="$BASE_URL"
+  config.base_url="$BASE_URL"\
+  config.service_account_name="$SERVICE_ACCOUNT_NAME"\
+  config.admin_sheet_id="$ADMIN_SHEET_ID"
+
 
 
 firebase deploy --only functions
