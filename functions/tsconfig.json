@@ -8,8 +8,8 @@
     "outDir": "lib",
     "sourceMap": true,
     "target": "es6",
-    "experimentalDecorators": true
-    // "noImplicitAny": true,
+    "experimentalDecorators": true,
+    // "noImplicitAny": true
     // "noImplicitThis": true,
   },
   "compileOnSave": true,

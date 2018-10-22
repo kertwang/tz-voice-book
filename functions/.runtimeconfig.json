@@ -2,6 +2,8 @@
   "config": {
     "base_url": "https://lwilld3.localtunnel.me/tz-phone-book/us-central1",
     "twilio_account_sid": "ACb098d653b93dbac6f87acb5ea8fc76d9",
-    "twilio_auth_token": "83895b5958bf314b0d8119858b59303b"
+    "twilio_auth_token": "83895b5958bf314b0d8119858b59303b",
+    "twilio_outbound_number": "+18442526460",
+    "temporary_insecure_auth_key": "xP6mXwOpuJTYzs2Enxi",
   }
 }

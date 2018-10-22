@@ -8,7 +8,11 @@ const firebaseToken = '1536715274666696'; //This isn't too precious, our files a
 const en_text = {
     'entrypoint': [
         //"Hello, and welcome to voicebook"
-        { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/000_Voicebook_Swahili.mp3', firebaseToken) },
+        // { type: MessageType.PLAY, url: generateUrl(urlPrefix, 'tz_audio/000_Voicebook_Swahili.mp3', firebaseToken) },
+        //Hello and welcome to ___. Imagine if you could listen to announcements from your village leaders simply by calling a phone number, and that you could even leave messages of your own for everyone in your community to hear. ____ is a free service that lets you do that.
+        { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/100a_Voicebook_Swahili_v2.1.mp3', firebaseToken) },
+        //Using ___, you can listen to and share messages about topics such as the date of the next community meeting, agricultural news, goods or produce for sale and many additional topics.
+        { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/100b_Voicebook_Swahili_v2.1.mp3', firebaseToken) },
     ],
     'intro_0': [
         { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/001a_Voicebook_Swahili_v2.mp3', firebaseToken) },

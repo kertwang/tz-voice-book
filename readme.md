@@ -189,3 +189,16 @@ curl -X POST \
 	"From":"+61410237238"
 }'
 ```
+
+
+#### Trigger an outbound call using the api
+``` bash
+curl -X POST \
+  http://localhost:5000/tz-phone-book-dev/us-central1/admin/triggerCall \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "Authorization": "Basic <base64 encoded username and password>",
+	"mobile": "+61410237238",
+	"url": "https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint"
+}'
+```
