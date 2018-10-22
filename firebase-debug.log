@@ -1,0 +1,137 @@
+[debug] [2018-10-22T05:55:52.236Z] ----------------------------------------------------------------------
+[debug] [2018-10-22T05:55:52.238Z] Command:       /usr/local/Cellar/node/10.0.0/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2018-10-22T05:55:52.238Z] CLI Version:   3.18.6
+[debug] [2018-10-22T05:55:52.238Z] Platform:      darwin
+[debug] [2018-10-22T05:55:52.238Z] Node Version:  v10.0.0
+[debug] [2018-10-22T05:55:52.239Z] Time:          Mon Oct 22 2018 16:25:52 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:55:52.239Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-10-22T05:55:52.249Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-10-22T05:55:52.249Z] > authorizing via signed-in user
+[debug] [2018-10-22T05:55:52.252Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/tz-phone-book-dev  
+  
+ Mon Oct 22 2018 16:25:52 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:55:53.390Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:55:53.391Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/tz-phone-book-dev/tokens  
+  
+ Mon Oct 22 2018 16:25:53 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:55:54.146Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'tz-phone-book-dev'...
+[info] 
+[info] i  deploying functions
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[info] ✔  functions: Finished running predeploy script.
+[debug] [2018-10-22T05:56:06.120Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "tslint --project tsconfig.json",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "npm run build && firebase serve --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "unit": "mocha -r ts-node/register ./**/*.unit.ts",
+    "service": "mocha -r ts-node/register ./**/*.service.ts"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "@firebase/app-types": "0.x",
+    "@google-cloud/firestore": "^0.13.1",
+    "@types/mocha": "^5.2.5",
+    "@types/request-promise-native": "^1.0.14",
+    "async-file": "^2.0.2",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-basic-auth": "^1.1.5",
+    "express-validation": "^1.0.2",
+    "firebase-admin": "~5.13.1",
+    "firebase-app": "^0.0.1",
+    "firebase-functions": "^2.0.2",
+    "gulp": "^3.9.1",
+    "gulpclass": "^0.2.0",
+    "joi": "^13.2.0",
+    "lt": "^0.3.3",
+    "mocha": "^5.2.0",
+    "moment": "^2.22.1",
+    "morgan": "^1.9.0",
+    "morgan-body": "^2.4.5",
+    "papaparse": "^4.4.0",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2",
+    "request-promise-native": "^1.0.5",
+    "twilio": "^3.19.2",
+    "xml-formatter": "^1.0.1"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "chai": "^4.1.2",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.8.0",
+    "typescript": "^2.5.3"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2018-10-22T05:56:06.121Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/tz-phone-book-dev?view=CONSUMER_VIEW  
+  
+ Mon Oct 22 2018 16:26:06 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:06.121Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/tz-phone-book-dev?view=CONSUMER_VIEW  
+  
+ Mon Oct 22 2018 16:26:06 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:08.219Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2018-10-22T05:56:08.221Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:08.221Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book-dev  
+  
+ Mon Oct 22 2018 16:26:08 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:09.702Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:09.702Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/961389843531:getServerAppConfig  
+  
+ Mon Oct 22 2018 16:26:09 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:10.384Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2018-10-22T05:56:10.386Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs  
+  
+ Mon Oct 22 2018 16:26:10 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:10.967Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:10.968Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables  
+  
+ Mon Oct 22 2018 16:26:10 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:11.511Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:11.513Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_auth_token  
+  
+ Mon Oct 22 2018 16:26:11 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:11.513Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_outbound_number  
+  
+ Mon Oct 22 2018 16:26:11 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:11.514Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/base_url  
+  
+ Mon Oct 22 2018 16:26:11 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:11.514Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/database_url  
+  
+ Mon Oct 22 2018 16:26:11 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:11.514Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/service_account_key_file_name  
+  
+ Mon Oct 22 2018 16:26:11 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:11.515Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/temporary_insecure_auth_key  
+  
+ Mon Oct 22 2018 16:26:11 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:11.515Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/storage_bucket  
+  
+ Mon Oct 22 2018 16:26:11 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:11.515Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_account_sid  
+  
+ Mon Oct 22 2018 16:26:11 GMT+1030 (ACDT)
+[debug] [2018-10-22T05:56:12.024Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:12.027Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:12.028Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:12.053Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:12.147Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:12.148Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:12.149Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-22T05:56:12.152Z] <<< HTTP RESPONSE 200

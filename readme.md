@@ -50,6 +50,7 @@ You need a `.env.sh` file in `./env`, which contains the following:
 #Put private env vars here.
 export TWILIO_ACCOUNT_SID='<insert_me>'
 export TWILIO_AUTH_TOKEN='<insert_me>'
+
 ```
 
 and the BASE_URL entry in `env.sh` should point to the firebase endpoint:
@@ -73,6 +74,17 @@ eg:`https://us-central1-tz-phone-book.cloudfunctions.net/benchmark/entrypoint`
 
 ![deployment_number](./docs/deployment_number.png)
 
+
+### Deploying Bot Content
+
+The bot content is deployed separately from the above endpoints. This means we can dynamically change content without
+having to perform an entire deployment
+
+```bash
+cd functions/src/admin
+gulp deploy_config 
+gulp deploy_audio
+```
 
 ----
 ## Firebase Api: [DEPRECTATED]

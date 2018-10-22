@@ -1,5 +1,6 @@
 {
   "projects": {
-    "development": "tz-phone-book-dev"
+    "development": "tz-phone-book-dev",
+    "production": "tz-phone-book"
   }
 }

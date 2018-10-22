@@ -7,4 +7,7 @@ exports.twilioAuthToken = envConfig.config.twilio_auth_token;
 exports.baseUrl = envConfig.config.base_url;
 exports.twilioOutboundNumber = envConfig.config.twilio_outbound_number;
 exports.temporaryInsecureAuthKey = envConfig.config.temporary_insecure_auth_key;
+exports.serviceAccountKeyFileName = envConfig.config.service_account_key_file_name;
+exports.databaseUrl = envConfig.config.database_url;
+exports.storageBucket = envConfig.config.storage_bucket;
 //# sourceMappingURL=Env.js.map

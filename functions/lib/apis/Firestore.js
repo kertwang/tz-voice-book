@@ -1,13 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Env_1 = require("../utils/Env");
 const admin = require('firebase-admin');
 /* Not in git. Download from FB console*/
-const serviceAccount = require('../../.serviceAccountKey.json');
+// const serviceAccount = require('../../.serviceAccountKey.json');
+const serviceAccount = require(`../../${Env_1.serviceAccountKeyFileName}`);
 if (admin.apps.length === 0) {
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        databaseURL: "https://tz-phone-book.firebaseio.com",
-        storageBucket: "tz-phone-book.appspot.com"
+        databaseURL: Env_1.databaseUrl,
+        storageBucket: Env_1.storageBucket,
     });
 }
 const firestore = admin.firestore();

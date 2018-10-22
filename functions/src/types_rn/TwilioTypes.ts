@@ -4,6 +4,9 @@ import { Gather } from "twilio/lib/twiml/VoiceResponse";
 /**
  * A block is a request for twiml that we respond to.
  * Similar to the idea of blocks in Twilio Studio
+ * 
+ * //TODO: how do we abstract this away for blocks of new bots?
+ * //I think we need a new namespace on top of this
  */
 export enum BlockId {
   entrypoint = 'entrypoint',
