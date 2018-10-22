@@ -34,7 +34,7 @@ gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {
     //Iterate through each /version/filename in ./content/audio, and upload
     const versionDirs = yield fs.readdir('./content/audio/');
     const audioFiles = yield Promise.all(versionDirs.map(dir => {
-        return fs.readdir(`./content/audio/${dir}/`)
+        return fs.readdir(`../../../audio_processing/audio/${dir}/`)
             .then(childs => childs.map(child => `${dir}/${child}`));
     }));
     const flatAudioFiles = [];

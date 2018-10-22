@@ -18,7 +18,6 @@ const ErrorHandler_1 = require("../utils/ErrorHandler");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 const Firestore_1 = require("../apis/Firestore");
 const TwilioApi_1 = require("../apis/TwilioApi");
-const Env_1 = require("../utils/Env");
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 const twilioApi = new TwilioApi_1.TwilioApi();
@@ -39,9 +38,10 @@ module.exports = (functions) => {
     const openCors = cors({ origin: '*' });
     app.use(openCors);
     /* Basic Auth using express-basic-auth */
-    app.use(basicAuth({
-        users: { 'admin': Env_1.temporaryInsecureAuthKey }
-    }));
+    // Disable this auth, as chatfuel doesn't support Auth in their POST request :(
+    // app.use(basicAuth({
+    //   users: { 'admin': temporaryInsecureAuthKey }
+    // }))
     /**
      * triggerCall
      *

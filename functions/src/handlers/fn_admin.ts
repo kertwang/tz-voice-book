@@ -46,9 +46,10 @@ module.exports = (functions: any) => {
 
 
   /* Basic Auth using express-basic-auth */
-  app.use(basicAuth({
-    users: { 'admin': temporaryInsecureAuthKey }
-  }))
+  // Disable this auth, as chatfuel doesn't support Auth in their POST request :(
+  // app.use(basicAuth({
+  //   users: { 'admin': temporaryInsecureAuthKey }
+  // }))
 
 
   /**
