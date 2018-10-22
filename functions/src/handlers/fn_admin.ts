@@ -46,31 +46,11 @@ module.exports = (functions: any) => {
 
 
   /* Basic Auth using express-basic-auth */
-  // Disable this auth, as chatfuel doesn't support Auth in their POST request :(
-  // app.use(basicAuth({
-  //   users: { 'admin': temporaryInsecureAuthKey }
-  // }))
+  app.use(basicAuth({
+    users: { 'admin': temporaryInsecureAuthKey }
+  }))
 
 
-  /**
-   * triggerCall
-   * 
-   * triggers a call.
-   * TODO: set up auth
-   * 
-   * example body:
-   * {
-   *   "mobile": "+61410237238",
-   *   "url": "https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint"
-   * }
-   * 
-   */
-  app.post('/triggerCall', async (req, res) => {
-
-    // TODO: add Joi validation
-    const response = twilioApi.startCall(req.body.mobile, req.body.url);
-    res.json(response);
-  });
 
 
 

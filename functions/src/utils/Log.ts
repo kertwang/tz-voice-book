@@ -1,8 +1,8 @@
-import { BlockLog, PendingMessageLog, FeedbackLog, PostMessageLog } from "../types_rn/TwilioTypes";
+import { AnyLog } from "../types_rn/TwilioTypes";
 import * as moment from 'moment';
 
 //TODO: make more explicit
-export function log(logObj: BlockLog | FeedbackLog | PendingMessageLog | PostMessageLog)  {
+export function log(logObj: AnyLog)  {
   const anonymous: any = {
     time: moment().toISOString(),
     ...logObj

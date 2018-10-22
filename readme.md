@@ -198,7 +198,7 @@ curl -X POST \
   https://lwilld3.localtunnel.me/tz-phone-book/us-central1/twiml/intro_0 \
   -H 'Postman-Token: d1ec563e-975d-4860-bc54-a4cdf8c5a45c' \
   -d '{
-	"From":"+61410237238"
+	"From":"<redacted>"
 }'
 ```
 
@@ -206,11 +206,11 @@ curl -X POST \
 #### Trigger an outbound call using the api
 ``` bash
 curl -X POST \
-  http://localhost:5000/tz-phone-book-dev/us-central1/admin/triggerCall \
-  -H 'Content-Type: application/json' \
+  'https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/triggerCall?temporaryInsecureAuthKey=<redacted>' \
+  -H 'Content-Type: application/json' \c
+  -H 'cache-control: no-cache' \
   -d '{
-  "Authorization": "Basic <base64 encoded username and password>",
-	"mobile": "+61410237238",
+	"mobile": "<redacted>",
 	"url": "https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint"
 }'
 ```

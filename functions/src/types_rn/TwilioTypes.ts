@@ -168,8 +168,11 @@ export enum LogType {
   BLOCK = 'BLOCK',
   FEEDBACK = 'FEEDBACK',
   PENDING_MESSAGE = 'PENDING_MESSAGE',
-  POST_MESSAGE = 'POST_MESSAGE'
+  POST_MESSAGE = 'POST_MESSAGE',
+  TWILIO_API = 'TWILIO_API'
 }
+
+export type AnyLog = BlockLog | FeedbackLog | PendingMessageLog | PostMessageLog | TwilioApiLog;
 
 export type BlockLog = {
   type: LogType.BLOCK,
@@ -198,5 +201,10 @@ export type PostMessageLog = {
   recordingId: string,
   callSid: string,
   url: string,
+}
 
+export type TwilioApiLog = {
+  type: LogType.TWILIO_API,
+  method: string,
+  params: any,
 }

@@ -16,7 +16,11 @@ import FirebaseApi from '../apis/FirebaseApi';
 import fs from '../apis/Firestore';
 import { log } from '../utils/Log';
 import { TwilioApi } from '../apis/TwilioApi';
+import { temporaryInsecureAuthKey } from '../utils/Env';
 
+
+
+const twilioApi = new TwilioApi();
 
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
@@ -72,6 +76,36 @@ module.exports = (functions: any) => {
 
     res.json(pendingId);
   });
+
+
+  /**
+   * triggerCall
+   * 
+   * triggers a call.
+   * TODO: set up auth
+   * 
+   * example body:
+   * {
+   *   "mobile": "+61410237238",
+   *   "url": "https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint"
+   *   "apiKey": "<API_KEY>"
+   * }
+   * 
+   */
+  app.post('/triggerCall', async (req, res) => {
+    if (!req.query.temporaryInsecureAuthKey) {
+      res.status(401).send('apiKey is required');
+    }
+
+    if (req.query.temporaryInsecureAuthKey !== temporaryInsecureAuthKey) {
+      res.status(401).send('Invalid Api Key');
+    }
+
+    // TODO: add Joi validation
+    const response = twilioApi.startCall(req.body.mobile, req.body.url);
+    res.json(response);
+  });
+
 
   /**
    * Handle Twilio Callback to save the recording for pending submission.

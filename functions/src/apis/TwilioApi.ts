@@ -1,5 +1,7 @@
 import * as twilio from 'twilio';
-import { twilioAccountSid, twilioAuthToken } from '../utils/Env';
+import { twilioAccountSid, twilioAuthToken, twilioOutboundNumber } from '../utils/Env';
+import { log } from '../utils/Log';
+import { LogType } from '../types_rn/TwilioTypes';
 
 export class TwilioApi {
   private client: any;
@@ -18,14 +20,19 @@ export class TwilioApi {
    * Initiate a call to the given number
    */
   async startCall(mobile: string, url: string): Promise<any> {
-
     const options = {
-      //Figure out the url we want to trigger
       url,
       to: mobile,
-      // from: '+61282947835', //This must be twilio number
-      from: '+18442526460',
+      from: twilioOutboundNumber,
     };
+
+    log({
+      type: LogType.TWILIO_API,
+      method: 'client.calls.create',
+      params: options,
+    });
+
+
     return this.client.calls.create(options)
     .then((call: any) => process.stdout.write(call.sid));
   }

@@ -22,6 +22,9 @@ const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 const Firestore_1 = require("../apis/Firestore");
 const Log_1 = require("../utils/Log");
+const TwilioApi_1 = require("../apis/TwilioApi");
+const Env_1 = require("../utils/Env");
+const twilioApi = new TwilioApi_1.TwilioApi();
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const bodyParser = require('body-parser');
@@ -66,6 +69,31 @@ module.exports = (functions) => {
             url: recording.url,
         });
         res.json(pendingId);
+    }));
+    /**
+     * triggerCall
+     *
+     * triggers a call.
+     * TODO: set up auth
+     *
+     * example body:
+     * {
+     *   "mobile": "+61410237238",
+     *   "url": "https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint"
+     *   "apiKey": "<API_KEY>"
+     * }
+     *
+     */
+    app.post('/triggerCall', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        if (!req.query.temporaryInsecureAuthKey) {
+            res.status(401).send('apiKey is required');
+        }
+        if (req.query.temporaryInsecureAuthKey !== Env_1.temporaryInsecureAuthKey) {
+            res.status(401).send('Invalid Api Key');
+        }
+        // TODO: add Joi validation
+        const response = twilioApi.startCall(req.body.mobile, req.body.url);
+        res.json(response);
     }));
     /**
      * Handle Twilio Callback to save the recording for pending submission.
