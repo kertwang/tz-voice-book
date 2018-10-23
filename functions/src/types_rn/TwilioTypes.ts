@@ -141,14 +141,27 @@ export type DigitResult = {
   digits: string,
 }
 
+
+/**
+ * Define different bots here
+ */
 export enum BotId {
   voicebook = 'voicebook',
+  senegalNotification = 'senegalNotification',
+  senegalMobileMoney = 'senegalMobileMoney',
 }
 
+/**
+ * Define different translations + versions (text, audio, informal etc)
+ */
 export enum VersionId {
   en_us = 'en_us',
   en_au = 'en_au', //Australian accent version mate.
   tz_audio = 'tz_audio',
+
+  fr_sg = 'fr_sg', //Text, Senegalese French
+  sg_audio_formal = 'sg_audio_formal', //Audio, Formal Senegalese French
+  sg_audio_informal = 'sg_audio_informal' //Audio, Informal Senegalese French
 }
 
 export type BotConfig = {
@@ -161,63 +174,4 @@ export type PageParams = {
   page: number,
   pageSize: number,
   maxMessages: number,
-}
-
-
-export enum LogType {
-  BLOCK = 'BLOCK',
-  FEEDBACK = 'FEEDBACK',
-  PENDING_MESSAGE = 'PENDING_MESSAGE',
-  POST_MESSAGE = 'POST_MESSAGE',
-  TWILIO_API_REQUEST = 'TWILIO_API_REQUEST',
-  TWILIO_API_RESPONSE = 'TWILIO_API_RESPONSE',
-}
-
-export type AnyLog = 
-  BlockLog | 
-  FeedbackLog | 
-  PendingMessageLog | 
-  PostMessageLog | 
-  TwilioApiRequestLog | 
-  TwilioApiResponseLog;
-
-export type BlockLog = {
-  type: LogType.BLOCK,
-  callSid: string,
-  blockId: BlockId,
-  mobile: string,
-  pageParams: PageParams,
-}
-
-export type FeedbackLog = {
-  type: LogType.FEEDBACK,
-  pendingId: string,
-  callSid: string,
-  url: string,
-}
-
-export type PendingMessageLog = {
-  type: LogType.PENDING_MESSAGE,
-  pendingId: string,
-  callSid: string,
-  url: string,
-}
-
-export type PostMessageLog = {
-  type: LogType.POST_MESSAGE,
-  recordingId: string,
-  callSid: string,
-  url: string,
-}
-
-export type TwilioApiRequestLog = {
-  type: LogType.TWILIO_API_REQUEST,
-  method: string,
-  params: any,
-}
-
-export type TwilioApiResponseLog = {
-  type: LogType.TWILIO_API_RESPONSE,
-  method: string,
-  response: any,
 }

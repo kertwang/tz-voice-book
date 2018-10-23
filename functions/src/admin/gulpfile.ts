@@ -2,21 +2,15 @@ import * as gulp from 'gulp';
 
 import firestore, { storage } from '../apis/Firestore';
 import * as fs from 'async-file';
-
-import en_us_flows from './content/en_us_flows';
-import en_us_blocks from './content/en_us_blocks';
-import en_us_messages from './content/en_us_messages';
-
-import en_au_flows from './content/en_au_flows';
-import en_au_blocks from './content/en_au_blocks';
-import en_au_messages from './content/en_au_messages';
-
-import tz_audio_flows from './content/tz_audio_flows';
-import tz_audio_blocks from './content/tz_audio_blocks';
-import tz_audio_messages from './content/tz_audio_messages';
-
 import FirebaseApi from '../apis/FirebaseApi';
 import { BotId, VersionId } from '../types_rn/TwilioTypes';
+
+
+
+/* import your bot configs here */
+import voicebook from './content/voicebook/index';
+import senegalNotification from './content/senegalNotification/index';
+
 
 
 const fbApi = new FirebaseApi(firestore);
@@ -24,9 +18,19 @@ const fbApi = new FirebaseApi(firestore);
 gulp.task('deploy_config', async () => {
   console.log("deploying conversation config for /twiml");
 
-  await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_us, {messages: en_us_messages,blocks: en_us_blocks,flows: en_us_flows,});
-  await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_au, {messages: en_au_messages,blocks: en_au_blocks,flows: en_au_flows,});
-  await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.tz_audio, {messages: tz_audio_messages,blocks: tz_audio_blocks,flows: tz_audio_flows,});
+  /* Voicebook Bots */
+  await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_us, voicebook.en_us);
+  await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_au, voicebook.en_au);
+  await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.tz_audio, voicebook.tz_audio);
+
+  /* Senegal Notifiction Bots */
+  await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.en_au, senegalNotification.en_au);
+  // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.fr_sg, { messages: sg_not_fr_sg_messages, blocks: sg_not_fr_sg_blocks, flows: sg_not_fr_sg_flows });
+  // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.sg_audio_formal, { messages: sg_not_audio_formal_messages, blocks: sg_not_audio_formal_blocks, flows: sg_not_audio_formal_flows });
+  // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.sg_audio_informal, { messages: sg_not_audio_informal_messages, blocks: sg_not_sg_audio_informal_blocks, flows: sg_not_sg_audio_informal_flows });
+
+  /* TODO: Senegal MM 101 Bots */
+
 
   console.log("deployed config.");
 });

@@ -1,4 +1,4 @@
-import { FlowMap, FlowType, BlockId } from "../../types_rn/TwilioTypes";
+import { FlowMap, FlowType, BlockId } from "../../../types_rn/TwilioTypes";
 
 /**
  * Flows is a graph based data structure, with the key being the valid
@@ -14,10 +14,10 @@ const TwilioFlows: FlowMap = {
     type: FlowType.GATHER,
     error: BlockId.error_0,
     digitMatches: [
-      { digits: '1', nextBlock: BlockId.listen_0 },
-      { digits: '2', nextBlock: BlockId.record_0 },
-      { digits: '3', nextBlock: BlockId.info_0 },
-      { digits: '4', nextBlock: BlockId.intro_0 }
+      { digits:'1', nextBlock: BlockId.listen_0 },
+      { digits:'2', nextBlock: BlockId.record_0 },
+      { digits:'3', nextBlock: BlockId.info_0 },
+      { digits:'4', nextBlock: BlockId.intro_0 }
     ],
   },
   'error_0': {
