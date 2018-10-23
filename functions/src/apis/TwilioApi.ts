@@ -1,7 +1,7 @@
 import * as twilio from 'twilio';
 import { twilioAccountSid, twilioAuthToken, twilioOutboundNumber } from '../utils/Env';
 import { log } from '../utils/Log';
-import { LogType } from '../types_rn/TwilioTypes';
+import { LogType } from '../types_rn/LogTypes';
 
 export class TwilioApi {
   private client: any;

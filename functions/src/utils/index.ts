@@ -3,12 +3,15 @@ import * as format from 'xml-formatter';
 
 
 export function pathToBlock(path: string): BlockId {
-
-  const sanitized = path
-    .replace('/gather/', '')
-    .replace('/', '');
+  const sanitized = path.replace(/\/$/, "");
+  const key = sanitized.substr(sanitized.lastIndexOf("/") + 1)
   
-  return BlockId[sanitized];
+  const blockId = BlockId[key];
+  if (!blockId) {
+    throw new Error(`Could not find blockId from path: ${path}`);
+  }
+
+  return blockId;
 }
 
 export function logGatherBlock(block: any, result: GatherResult) {

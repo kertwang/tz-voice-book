@@ -2,8 +2,6 @@ import { User, Recording } from "./UserApi";
 import { sleep } from "../utils";
 import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage, MessageType } from "../types_rn/TwilioTypes";
 
-const botId = 'voicebook'; //This is temporary, todo: change this later on.
-
 export default class FirebaseApi {
   fs: any;
 
@@ -11,7 +9,7 @@ export default class FirebaseApi {
     this.fs = fs;
   }
 
-  public getUser(userId: string): Promise<User> {
+  public getUser(userId: string, botId: string): Promise<User> {
     return this.fs.collection('bot').doc(botId).collection('users').doc(userId).get()
       .then((doc: any) => doc.data());
   }
@@ -153,7 +151,7 @@ export default class FirebaseApi {
    * 
    * This will be stored in firebase, parsed, and filled into the context object
    */
-  public async getBotConfig(callSid: string, userId: string): Promise<BotConfig> {
+  public async getBotConfig(callSid: string, userId: string, botId: BotId): Promise<BotConfig> {
     //TODO: implement configurable stuff.
 
     const version = await this.getVerionForUser(userId);

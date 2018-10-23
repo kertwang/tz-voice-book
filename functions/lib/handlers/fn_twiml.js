@@ -18,12 +18,13 @@ const morganBody = require("morgan-body");
 const TwilioRouter_1 = require("../apis/TwilioRouter");
 const ErrorHandler_1 = require("../utils/ErrorHandler");
 const utils_1 = require("../utils");
-const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 const Firestore_1 = require("../apis/Firestore");
 const Log_1 = require("../utils/Log");
 const TwilioApi_1 = require("../apis/TwilioApi");
 const Env_1 = require("../utils/Env");
+const LogTypes_1 = require("../types_rn/LogTypes");
+require('express-async-errors');
 const twilioApi = new TwilioApi_1.TwilioApi();
 //TODO: make newer import format
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
@@ -55,7 +56,7 @@ module.exports = (functions) => {
     /**
      * Callback triggered once feedback recording is finished
      */
-    app.post('/recordingCallback/feedback', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.post('/:botId/recordingCallback/feedback', (req, res) => __awaiter(this, void 0, void 0, function* () {
         const recording = {
             url: req.body.RecordingUrl,
             createdAt: moment().toISOString(),
@@ -63,7 +64,7 @@ module.exports = (functions) => {
         };
         const pendingId = yield firebaseApi.saveFeedbackRecording(recording);
         Log_1.log({
-            type: TwilioTypes_1.LogType.PENDING_MESSAGE,
+            type: LogTypes_1.LogType.PENDING_MESSAGE,
             pendingId,
             callSid: recording.callSid,
             url: recording.url,
@@ -97,7 +98,7 @@ module.exports = (functions) => {
     /**
      * Handle Twilio Callback to save the recording for pending submission.
      */
-    app.post('/recordingCallback/message', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.post('/:botId/recordingCallback/message', (req, res) => __awaiter(this, void 0, void 0, function* () {
         const recording = {
             url: req.body.RecordingUrl,
             createdAt: moment().toISOString(),
@@ -105,7 +106,7 @@ module.exports = (functions) => {
         };
         const pendingId = yield firebaseApi.savePendingRecording(recording);
         Log_1.log({
-            type: TwilioTypes_1.LogType.PENDING_MESSAGE,
+            type: LogTypes_1.LogType.PENDING_MESSAGE,
             pendingId,
             callSid: recording.callSid,
             url: recording.url,
@@ -115,14 +116,14 @@ module.exports = (functions) => {
     /**
      * Action callback handlers.
      */
-    app.post('/gather/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.post('/:botId/gather/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
         const blockName = utils_1.pathToBlock(req.path);
         console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
         const user = yield firebaseApi.getUserFromMobile(req.body.From);
         const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
         Log_1.log({
-            type: TwilioTypes_1.LogType.BLOCK,
+            type: LogTypes_1.LogType.BLOCK,
             callSid: ctx.callSid,
             blockId: blockName,
             mobile: ctx.mobile,
@@ -139,13 +140,16 @@ module.exports = (functions) => {
     /**
      * Handle all normal routes
      */
-    app.post('/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.post('/:botId/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
         const blockName = utils_1.pathToBlock(req.path);
+        console.log("Bot id is: ", req.params.botId);
         const user = yield firebaseApi.getUserFromMobile(req.body.From);
+        //TODO: load different bots here?
         const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
+        console.log("blockName is", blockName);
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
         Log_1.log({
-            type: TwilioTypes_1.LogType.BLOCK,
+            type: LogTypes_1.LogType.BLOCK,
             callSid: ctx.callSid,
             blockId: blockName,
             mobile: ctx.mobile,

@@ -11,23 +11,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const gulp = require("gulp");
 const Firestore_1 = require("../apis/Firestore");
 const fs = require("async-file");
-const en_us_flows_1 = require("./content/en_us_flows");
-const en_us_blocks_1 = require("./content/en_us_blocks");
-const en_us_messages_1 = require("./content/en_us_messages");
-const en_au_flows_1 = require("./content/en_au_flows");
-const en_au_blocks_1 = require("./content/en_au_blocks");
-const en_au_messages_1 = require("./content/en_au_messages");
-const tz_audio_flows_1 = require("./content/tz_audio_flows");
-const tz_audio_blocks_1 = require("./content/tz_audio_blocks");
-const tz_audio_messages_1 = require("./content/tz_audio_messages");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
+/* import your bot configs here */
+const index_1 = require("./content/voicebook/index");
+const index_2 = require("./content/senegalNotification/index");
 const fbApi = new FirebaseApi_1.default(Firestore_1.default);
 gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     console.log("deploying conversation config for /twiml");
-    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_us, { messages: en_us_messages_1.default, blocks: en_us_blocks_1.default, flows: en_us_flows_1.default, });
-    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_au, { messages: en_au_messages_1.default, blocks: en_au_blocks_1.default, flows: en_au_flows_1.default, });
-    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.tz_audio, { messages: tz_audio_messages_1.default, blocks: tz_audio_blocks_1.default, flows: tz_audio_flows_1.default, });
+    /* Voicebook Bots */
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_us, index_1.default.en_us);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_au, index_1.default.en_au);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.tz_audio, index_1.default.tz_audio);
+    /* Senegal Notifiction Bots */
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalNotification, TwilioTypes_1.VersionId.en_au, index_2.default.en_au);
+    // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.fr_sg, { messages: sg_not_fr_sg_messages, blocks: sg_not_fr_sg_blocks, flows: sg_not_fr_sg_flows });
+    // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.sg_audio_formal, { messages: sg_not_audio_formal_messages, blocks: sg_not_audio_formal_blocks, flows: sg_not_audio_formal_flows });
+    // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.sg_audio_informal, { messages: sg_not_audio_informal_messages, blocks: sg_not_sg_audio_informal_blocks, flows: sg_not_sg_audio_informal_flows });
+    /* TODO: Senegal MM 101 Bots */
     console.log("deployed config.");
 }));
 gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {

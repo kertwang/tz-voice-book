@@ -3,10 +3,11 @@
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { logTwilioResponse, buildPaginatedUrl } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, LogType } from '../types_rn/TwilioTypes';
+import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow } from '../types_rn/TwilioTypes';
 import { baseUrl } from '../utils/Env';
 import UserApi, { Recording } from './UserApi';
 import { log } from '../utils/Log';
+import { LogType } from '../types_rn/LogTypes';
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
 /**
@@ -18,7 +19,7 @@ export default class TwilioRouter {
 
   public static async nextMessage(ctx: CallContext, config: BotConfig, currentBlock: BlockId): Promise<string> {
     //Not sure if this will work, we may need to nest stuff
-    const response = await TwilioRouter.getBlock(ctx,config, currentBlock);
+    const response = await TwilioRouter.getBlock(ctx, config, currentBlock);
     logTwilioResponse(response.toString());
 
     return response.toString();
@@ -34,6 +35,9 @@ export default class TwilioRouter {
     const flow = config.flows[blockName];
     const block = config.blocks[blockName];
     const messages = messageBlocks[blockName]; //TODO: make type safe?
+
+    console.log("config.blocks:", config.blocks);
+    console.log("block is", block);
 
     let response = new VoiceResponse();
 

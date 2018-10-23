@@ -1,5 +1,4 @@
-import { BlockId } from "./BenchmarkRouter";
-import { PageParams } from "./TwilioTypes";
+import { PageParams, BlockId } from "./TwilioTypes";
 
 export enum LogType {
   BLOCK = 'BLOCK',

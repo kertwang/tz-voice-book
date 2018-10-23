@@ -10,12 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
-const botId = 'voicebook'; //This is temporary, todo: change this later on.
 class FirebaseApi {
     constructor(fs) {
         this.fs = fs;
     }
-    getUser(userId) {
+    getUser(userId, botId) {
         return this.fs.collection('bot').doc(botId).collection('users').doc(userId).get()
             .then((doc) => doc.data());
     }
@@ -150,7 +149,7 @@ class FirebaseApi {
      *
      * This will be stored in firebase, parsed, and filled into the context object
      */
-    getBotConfig(callSid, userId) {
+    getBotConfig(callSid, userId, botId) {
         return __awaiter(this, void 0, void 0, function* () {
             //TODO: implement configurable stuff.
             const version = yield this.getVerionForUser(userId);

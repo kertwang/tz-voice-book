@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const twilio = require("twilio");
 const Env_1 = require("../utils/Env");
 const Log_1 = require("../utils/Log");
-const TwilioTypes_1 = require("../types_rn/TwilioTypes");
+const LogTypes_1 = require("../types_rn/LogTypes");
 class TwilioApi {
     constructor() {
         this.client = twilio(Env_1.twilioAccountSid, Env_1.twilioAuthToken);
@@ -27,14 +27,14 @@ class TwilioApi {
             from: Env_1.twilioOutboundNumber,
         };
         Log_1.log({
-            type: TwilioTypes_1.LogType.TWILIO_API_REQUEST,
+            type: LogTypes_1.LogType.TWILIO_API_REQUEST,
             method: 'client.calls.create',
             params: options,
         });
         return this.client.calls.create(options)
             .then((call) => {
             Log_1.log({
-                type: TwilioTypes_1.LogType.TWILIO_API_RESPONSE,
+                type: LogTypes_1.LogType.TWILIO_API_RESPONSE,
                 method: 'client.calls.create',
                 response: call,
             });

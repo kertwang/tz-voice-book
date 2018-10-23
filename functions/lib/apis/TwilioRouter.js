@@ -14,6 +14,7 @@ const utils_1 = require("../utils");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const Env_1 = require("../utils/Env");
 const Log_1 = require("../utils/Log");
+const LogTypes_1 = require("../types_rn/LogTypes");
 const VoiceResponse = twilio.twiml.VoiceResponse;
 /**
  * TwilioRouter is a stateless router for twilio requests.
@@ -40,6 +41,8 @@ class TwilioRouter {
             const flow = config.flows[blockName];
             const block = config.blocks[blockName];
             const messages = messageBlocks[blockName]; //TODO: make type safe?
+            console.log("config.blocks:", config.blocks);
+            console.log("block is", block);
             let response = new VoiceResponse();
             switch (flow.type) {
                 case TwilioTypes_1.FlowType.DEFAULT: {
@@ -216,7 +219,7 @@ class TwilioRouter {
                             //TODO: make a logger class
                             console.log(`LOG: {"action":"POST_MESSAGE", "recordingId":"${recordingId}"}`);
                             Log_1.log({
-                                type: TwilioTypes_1.LogType.POST_MESSAGE,
+                                type: LogTypes_1.LogType.POST_MESSAGE,
                                 recordingId,
                                 callSid: ctx.callSid,
                                 url: pendingRecordings[0].url,

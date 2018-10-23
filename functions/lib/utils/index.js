@@ -3,10 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const format = require("xml-formatter");
 function pathToBlock(path) {
-    const sanitized = path
-        .replace('/gather/', '')
-        .replace('/', '');
-    return TwilioTypes_1.BlockId[sanitized];
+    const sanitized = path.replace(/\/$/, "");
+    const key = sanitized.substr(sanitized.lastIndexOf("/") + 1);
+    const blockId = TwilioTypes_1.BlockId[key];
+    if (!blockId) {
+        throw new Error(`Could not find blockId from path: ${path}`);
+    }
+    return blockId;
 }
 exports.pathToBlock = pathToBlock;
 function logGatherBlock(block, result) {

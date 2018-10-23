@@ -44,23 +44,25 @@ var MessageType;
     MessageType["PLAY"] = "PLAY";
 })(MessageType = exports.MessageType || (exports.MessageType = {}));
 ;
+/**
+ * Define different bots here
+ */
 var BotId;
 (function (BotId) {
     BotId["voicebook"] = "voicebook";
+    BotId["senegalNotification"] = "senegalNotification";
+    BotId["senegalMobileMoney"] = "senegalMobileMoney";
 })(BotId = exports.BotId || (exports.BotId = {}));
+/**
+ * Define different translations + versions (text, audio, informal etc)
+ */
 var VersionId;
 (function (VersionId) {
     VersionId["en_us"] = "en_us";
     VersionId["en_au"] = "en_au";
     VersionId["tz_audio"] = "tz_audio";
+    VersionId["fr_sg"] = "fr_sg";
+    VersionId["sg_audio_formal"] = "sg_audio_formal";
+    VersionId["sg_audio_informal"] = "sg_audio_informal"; //Audio, Informal Senegalese French
 })(VersionId = exports.VersionId || (exports.VersionId = {}));
-var LogType;
-(function (LogType) {
-    LogType["BLOCK"] = "BLOCK";
-    LogType["FEEDBACK"] = "FEEDBACK";
-    LogType["PENDING_MESSAGE"] = "PENDING_MESSAGE";
-    LogType["POST_MESSAGE"] = "POST_MESSAGE";
-    LogType["TWILIO_API_REQUEST"] = "TWILIO_API_REQUEST";
-    LogType["TWILIO_API_RESPONSE"] = "TWILIO_API_RESPONSE";
-})(LogType = exports.LogType || (exports.LogType = {}));
 //# sourceMappingURL=TwilioTypes.js.map

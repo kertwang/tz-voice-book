@@ -10,14 +10,16 @@ import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
 import { pathToBlock, logGatherBlock, logTwilioResponse, saftelyGetPageParamsOrDefaults } from '../utils';
-import { GatherResult, CallContext, DigitResult, LogType } from '../types_rn/TwilioTypes';
+import { GatherResult, CallContext, DigitResult } from '../types_rn/TwilioTypes';
 import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
 import fs from '../apis/Firestore';
 import { log } from '../utils/Log';
 import { TwilioApi } from '../apis/TwilioApi';
 import { temporaryInsecureAuthKey } from '../utils/Env';
+import { LogType } from '../types_rn/LogTypes';
 
+require('express-async-errors');
 
 
 const twilioApi = new TwilioApi();
@@ -59,7 +61,7 @@ module.exports = (functions: any) => {
   /**
    * Callback triggered once feedback recording is finished
    */
-  app.post('/recordingCallback/feedback', async (req, res) => {
+  app.post('/:botId/recordingCallback/feedback', async (req, res) => {
     const recording: Recording = {
       url: req.body.RecordingUrl,
       createdAt: moment().toISOString(),
@@ -109,7 +111,7 @@ module.exports = (functions: any) => {
   /**
    * Handle Twilio Callback to save the recording for pending submission.
    */
-  app.post('/recordingCallback/message', async (req, res) => {
+  app.post('/:botId/recordingCallback/message', async (req, res) => {
     const recording: Recording = {
       url: req.body.RecordingUrl,
       createdAt: moment().toISOString(),
@@ -130,7 +132,7 @@ module.exports = (functions: any) => {
   /**
    * Action callback handlers.
    */
-  app.post('/gather/*', async (req, res) => {
+  app.post('/:botId/gather/*', async (req, res) => {
     const blockName = pathToBlock(req.path);
     console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
 
@@ -165,11 +167,15 @@ module.exports = (functions: any) => {
   /**
    * Handle all normal routes
    */
-  app.post('/*', async (req, res) => {
+  app.post('/:botId/*', async (req, res) => {
     const blockName = pathToBlock(req.path);
 
+    console.log("Bot id is: ", req.params.botId);
+
     const user = await firebaseApi.getUserFromMobile(req.body.From);
+    //TODO: load different bots here?
     const botConfig = await firebaseApi.getBotConfig(req.body.CallSid, user.id);
+    console.log("blockName is", blockName);
     const ctx: CallContext = {
       callSid: req.body.CallSid,
       mobile: req.body.From,
