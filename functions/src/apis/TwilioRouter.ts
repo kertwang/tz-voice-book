@@ -30,15 +30,10 @@ export default class TwilioRouter {
    * twilio response
    */
   public static async getBlock(ctx: CallContext, config: BotConfig, blockName: BlockId): Promise<any> {
-    console.log("Config is:", config);
-
-
-    //TODO: load based on context etc.
     const messageBlocks = config.messages;
     const flow = config.flows[blockName];
     const block = config.blocks[blockName];
     const messages = messageBlocks[blockName]; //TODO: make type safe?
-
 
     let response = new VoiceResponse();
 

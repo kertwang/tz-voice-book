@@ -143,7 +143,16 @@ module.exports = (functions: any) => {
     console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
 
     const user = await firebaseApi.getUserFromMobile(req.body.From, botId);
-    const botConfig = await firebaseApi.getBotConfig(req.body.CallSid, user.id, botId);
+    
+    /* Configure the version using a versionOverride query param */
+    let botConfig;
+    if (req.query.versionOverride) {
+      botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, req.query.versionOverride);
+    } else {
+      botConfig = await firebaseApi.getBotConfig(user.id, botId);
+    }
+
+    
     const ctx: CallContext = {
       callSid: req.body.CallSid,
       mobile: req.body.From,
@@ -178,7 +187,15 @@ module.exports = (functions: any) => {
     const blockName = pathToBlock(req.path);
 
     const user = await firebaseApi.getUserFromMobile(req.body.From, botId);
-    const botConfig = await firebaseApi.getBotConfig(req.body.CallSid, user.id, botId);
+
+    /* Configure the version using a versionOverride query param */
+    let botConfig;
+    if (req.query.versionOverride) {
+      botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, req.query.versionOverride);
+    } else {
+      botConfig = await firebaseApi.getBotConfig(user.id, botId);
+    }
+
     const ctx: CallContext = {
       callSid: req.body.CallSid,
       mobile: req.body.From,

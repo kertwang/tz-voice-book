@@ -149,16 +149,29 @@ class FirebaseApi {
      *
      * This will be stored in firebase, parsed, and filled into the context object
      */
-    getBotConfig(callSid, userId, botId) {
+    getBotConfig(userId, botId) {
         return __awaiter(this, void 0, void 0, function* () {
-            //TODO: implement configurable stuff.
             const version = yield this.getVerionForUser(userId, botId);
-            console.log("version is", version);
-            console.log("botId is", botId);
+            return this.getBotConfigForVersion(userId, botId, version);
+        });
+    }
+    /**
+     * getBotConfigOverride
+     *
+     * Get the bot config, but override the user's version. This is useful for testing
+     * different versions when the user can't configure the version fot themselves
+     */
+    getBotConfigOverride(userId, botId, versionOverride) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const version = yield this.getVerionForUser(userId, botId, versionOverride);
+            return this.getBotConfigForVersion(userId, botId, version);
+        });
+    }
+    getBotConfigForVersion(userId, botId, version) {
+        return __awaiter(this, void 0, void 0, function* () {
             return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
                 .then(doc => doc.data())
                 .then((config) => {
-                console.log("config", config);
                 if (!config) {
                     throw new Error(`Couldn't getBotConfig for version and botId: ${version}, ${botId}`);
                 }
@@ -166,8 +179,11 @@ class FirebaseApi {
             });
         });
     }
-    getVerionForUser(userId, botId) {
+    getVerionForUser(userId, botId, override) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (override) {
+                return override;
+            }
             const user = yield this.getUser(userId, botId);
             if (user.version) {
                 //TODO: should also make sure the version code is correct

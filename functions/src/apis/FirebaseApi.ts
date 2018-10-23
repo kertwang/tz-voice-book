@@ -151,27 +151,39 @@ export default class FirebaseApi {
    * 
    * This will be stored in firebase, parsed, and filled into the context object
    */
-  public async getBotConfig(callSid: string, userId: string, botId: BotId): Promise<BotConfig> {
-    //TODO: implement configurable stuff.
-
+  public async getBotConfig(userId: string, botId: BotId): Promise<BotConfig> {
     const version = await this.getVerionForUser(userId, botId);
-
-    console.log("version is", version);
-    console.log("botId is", botId);
-
-    return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
-    .then(doc => doc.data())
-    .then((config: BotConfig) => {
-      console.log("config", config);
-      if (!config) {
-        throw new Error(`Couldn't getBotConfig for version and botId: ${version}, ${botId}`);
-      }
-
-      return config;
-    })
+    return this.getBotConfigForVersion(userId, botId, version);
   }
 
-  public async getVerionForUser(userId: string, botId: string): Promise<VersionId> {
+  /**
+   * getBotConfigOverride
+   * 
+   * Get the bot config, but override the user's version. This is useful for testing
+   * different versions when the user can't configure the version fot themselves
+   */
+  public async getBotConfigOverride(userId: string, botId: BotId, versionOverride: VersionId): Promise<BotConfig> {
+    const version = await this.getVerionForUser(userId, botId, versionOverride);
+    return this.getBotConfigForVersion(userId, botId, version);
+  }
+
+  public async getBotConfigForVersion(userId: string, botId: BotId, version: VersionId): Promise<BotConfig> {
+    return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
+      .then(doc => doc.data())
+      .then((config: BotConfig) => {
+        if (!config) {
+          throw new Error(`Couldn't getBotConfig for version and botId: ${version}, ${botId}`);
+        }
+
+        return config;
+      })
+  }
+
+  public async getVerionForUser(userId: string, botId: string, override?: VersionId): Promise<VersionId> {
+    if (override) {
+      return override;
+    }
+
     const user = await this.getUser(userId, botId);
     if (user.version) {
 

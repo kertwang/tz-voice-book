@@ -36,8 +36,6 @@ class TwilioRouter {
      */
     static getBlock(ctx, config, blockName) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("Config is:", config);
-            //TODO: load based on context etc.
             const messageBlocks = config.messages;
             const flow = config.flows[blockName];
             const block = config.blocks[blockName];

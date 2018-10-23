@@ -123,7 +123,14 @@ module.exports = (functions) => {
         const blockName = utils_1.pathToBlock(req.path);
         console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
         const user = yield firebaseApi.getUserFromMobile(req.body.From, botId);
-        const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id, botId);
+        /* Configure the version using a versionOverride query param */
+        let botConfig;
+        if (req.query.versionOverride) {
+            botConfig = yield firebaseApi.getBotConfigOverride(user.id, botId, req.query.versionOverride);
+        }
+        else {
+            botConfig = yield firebaseApi.getBotConfig(user.id, botId);
+        }
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
@@ -147,7 +154,14 @@ module.exports = (functions) => {
         const botId = utils_1.getBotId(req.params.botId);
         const blockName = utils_1.pathToBlock(req.path);
         const user = yield firebaseApi.getUserFromMobile(req.body.From, botId);
-        const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id, botId);
+        /* Configure the version using a versionOverride query param */
+        let botConfig;
+        if (req.query.versionOverride) {
+            botConfig = yield firebaseApi.getBotConfigOverride(user.id, botId, req.query.versionOverride);
+        }
+        else {
+            botConfig = yield firebaseApi.getBotConfig(user.id, botId);
+        }
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
