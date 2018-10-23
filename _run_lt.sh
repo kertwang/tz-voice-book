@@ -2,7 +2,11 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-source "$DIR"/env/env.sh
+ENVIRONMENT=`cat "$DIR"/.environment`
+
+## set up envs
+source "$DIR/env/env.$ENVIRONMENT.sh" #public
+source "$DIR/env/.env.$ENVIRONMENT.sh" #private
 
 lt --subdomain "$LT_SUBDOMAIN" --port 5000
 

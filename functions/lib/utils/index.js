@@ -67,7 +67,7 @@ exports.saftelyGetPageParamsOrDefaults = (params) => {
     const page = params.page ? parseInt(params.page) : 0;
     let pageSize = params.pageSize ? parseInt(params.pageSize) : 1;
     let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
-    let versionOverride = params.versionOverride ? (params.maxMessages) : null;
+    let versionOverride = params.versionOverride ? (params.versionOverride) : null;
     //Also handle shitty twilio url encoded params :(
     if (params['amp;pageSize']) {
         pageSize = parseInt(params['amp;pageSize']);
@@ -77,7 +77,7 @@ exports.saftelyGetPageParamsOrDefaults = (params) => {
     }
     //TODO: we need to test this...
     if (params['amp;versionOverride']) {
-        versionOverride = params['amp;maxMessages'];
+        versionOverride = params['amp;versionOverride'];
     }
     return {
         page,
@@ -111,7 +111,7 @@ const buildVersionOverrideUrl = (b) => {
     return `${b.baseUrl}/twiml/${b.botId}/${b.blockName}?versionOverride=${b.versionOverride}`;
 };
 const buildRecordingCallbackUrl = (b) => {
-    return `${b.baseUrl}/twiml/${b.botId}/${b.recordingCallback}`;
+    return `${b.baseUrl}/twiml/${b.botId}/recordingCallback/${b.recordingCallback}`;
 };
 const buildGatherCallbackUrl = (b) => {
     //eg: `${baseUrl}/twiml/${config.botId}/gather/${blockName}`,
@@ -126,6 +126,7 @@ const buildPaginatedGatherCallbackUrl = (b) => {
     return `${url}\&versionOverride=${b.versionOverride}`;
 };
 function buildRedirectUrl(builder) {
+    console.log("buildingUrl", builder);
     switch (builder.type) {
         case NextUrlType.PaginatedUrl: return buildPaginatedUrl(builder);
         case NextUrlType.DefaultUrl: return buildVersionOverrideUrl(builder);
