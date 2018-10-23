@@ -1,4 +1,4 @@
-import { BlockId, GatherResult, PageParams, BotId } from "../types_rn/TwilioTypes";
+import { BlockId, GatherResult, PageParams, BotId, VersionId } from "../types_rn/TwilioTypes";
 import * as format from 'xml-formatter';
 
 
@@ -9,6 +9,21 @@ export function getBotId(maybeBotId: string): BotId {
   }
 
   return botId;
+}
+
+export function getDefaultVersionForBot(botId: BotId): VersionId {
+  switch(botId) {
+    case BotId.voicebook: {
+      return VersionId.tz_audio;
+    }
+    case BotId.senegalNotification: {
+      //TODO: Change this.
+      return VersionId.en_au;
+    }
+    default: {
+      throw new Error(`No Default version specified for botId: ${botId}`);
+    }
+  }
 }
 
 export function pathToBlock(path: string): BlockId {

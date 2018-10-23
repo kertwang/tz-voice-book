@@ -1,5 +1,5 @@
 import { User, Recording } from "./UserApi";
-import { sleep } from "../utils";
+import { sleep, getDefaultVersionForBot } from "../utils";
 import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage, MessageType } from "../types_rn/TwilioTypes";
 
 export default class FirebaseApi {
@@ -14,11 +14,11 @@ export default class FirebaseApi {
       .then((doc: any) => doc.data());
   }
 
-  public createUserForMobile(mobile: string, botId: string): Promise<User> {
+  public createUserForMobile(mobile: string, botId: BotId): Promise<User> {
     const user = {
       mobile,
       //This is the version that new users will use by default.
-      version: VersionId.tz_audio,
+      version: getDefaultVersionForBot(botId),
     };
     //TODO: should we add the id in here?
     return this.fs.collection('bot').doc(botId).collection('users').add(user);
@@ -28,7 +28,7 @@ export default class FirebaseApi {
    * Get the user from their mobile number. 
    * If we don't already have a user for this number, lazy create one
    */
-  public getUserFromMobile(mobile: string, botId: string): Promise<User> {
+  public getUserFromMobile(mobile: string, botId: BotId): Promise<User> {
     return this.fs.collection('bot').doc(botId).collection('users').where('mobile', '==', mobile).limit(1).get()
     .then((sn: any) => {
       const users: User[] = [];
@@ -156,8 +156,19 @@ export default class FirebaseApi {
 
     const version = await this.getVerionForUser(userId, botId);
 
+    console.log("version is", version);
+    console.log("botId is", botId);
+
     return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
-    .then(doc => doc.data());
+    .then(doc => doc.data())
+    .then((config: BotConfig) => {
+      console.log("config", config);
+      if (!config) {
+        throw new Error(`Couldn't getBotConfig for version and botId: ${version}, ${botId}`);
+      }
+
+      return config;
+    })
   }
 
   public async getVerionForUser(userId: string, botId: string): Promise<VersionId> {

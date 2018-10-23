@@ -22,7 +22,7 @@ class FirebaseApi {
         const user = {
             mobile,
             //This is the version that new users will use by default.
-            version: TwilioTypes_1.VersionId.tz_audio,
+            version: utils_1.getDefaultVersionForBot(botId),
         };
         //TODO: should we add the id in here?
         return this.fs.collection('bot').doc(botId).collection('users').add(user);
@@ -153,8 +153,17 @@ class FirebaseApi {
         return __awaiter(this, void 0, void 0, function* () {
             //TODO: implement configurable stuff.
             const version = yield this.getVerionForUser(userId, botId);
+            console.log("version is", version);
+            console.log("botId is", botId);
             return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
-                .then(doc => doc.data());
+                .then(doc => doc.data())
+                .then((config) => {
+                console.log("config", config);
+                if (!config) {
+                    throw new Error(`Couldn't getBotConfig for version and botId: ${version}, ${botId}`);
+                }
+                return config;
+            });
         });
     }
     getVerionForUser(userId, botId) {

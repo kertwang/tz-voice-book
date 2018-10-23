@@ -30,14 +30,15 @@ export default class TwilioRouter {
    * twilio response
    */
   public static async getBlock(ctx: CallContext, config: BotConfig, blockName: BlockId): Promise<any> {
+    console.log("Config is:", config);
+
+
     //TODO: load based on context etc.
     const messageBlocks = config.messages;
     const flow = config.flows[blockName];
     const block = config.blocks[blockName];
     const messages = messageBlocks[blockName]; //TODO: make type safe?
 
-    console.log("config.blocks:", config.blocks);
-    console.log("block is", block);
 
     let response = new VoiceResponse();
 
@@ -52,10 +53,10 @@ export default class TwilioRouter {
           case BlockType.RECORD: {
             response = this.appendMessagesToResponse(response, messages);
             response.record({
-              action: `${baseUrl}/twiml/${flow.next}`,
+              action: `${baseUrl}/twiml/${config.botId}/${flow.next}`,
               maxLength: 10,
               transcribe: false,
-              recordingStatusCallback: `${baseUrl}${block.recordingCallback}`
+              recordingStatusCallback: `${baseUrl}/twiml/${config.botId}/${block.recordingCallback}`
             });
             break;
           }
@@ -66,7 +67,7 @@ export default class TwilioRouter {
           }
           case BlockType.DEFAULT:
           default: {
-            const nextUrl = `${baseUrl}/twiml/${flow.next}`;
+            const nextUrl = `${baseUrl}/twiml/${config.botId}/${flow.next}`;
             this.appendMessagesToResponse(response, messages);
             response.redirect({ method: 'POST' }, nextUrl);
           }
@@ -77,7 +78,7 @@ export default class TwilioRouter {
 
       case FlowType.GATHER: {
         const gather = response.gather({
-          action: `${baseUrl}/twiml/gather/${blockName}`,
+          action: `${baseUrl}/twiml/${config.botId}/gather/${blockName}`,
           method: 'POST',
           input: 'dtmf',
           numDigits: 1,
@@ -101,7 +102,7 @@ export default class TwilioRouter {
       //this has a flow type of gather- breaking some weird stuff
       case(BlockId.listen_playback): {
         const gather = response.gather({
-          action: `${baseUrl}/twiml/${botId}gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
+          action: `${baseUrl}/twiml/${botId}/gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
           method: 'POST',
           input: 'dtmf',
           numDigits: 1,
@@ -133,7 +134,7 @@ export default class TwilioRouter {
         let redirectUrl = buildPaginatedUrl(baseUrl, botId, blockName, page + 1, pageSize, ctx.maxMessages);
         if ((page * pageSize) > totalCount) {
           //We are out of messages, redirect to next block
-          redirectUrl = `${baseUrl}/twiml/${nextBlock}`;
+          redirectUrl = `${baseUrl}/twiml/${botId}/${nextBlock}`;
         }
 
         //call back to this block.

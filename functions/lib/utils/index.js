@@ -10,6 +10,21 @@ function getBotId(maybeBotId) {
     return botId;
 }
 exports.getBotId = getBotId;
+function getDefaultVersionForBot(botId) {
+    switch (botId) {
+        case TwilioTypes_1.BotId.voicebook: {
+            return TwilioTypes_1.VersionId.tz_audio;
+        }
+        case TwilioTypes_1.BotId.senegalNotification: {
+            //TODO: Change this.
+            return TwilioTypes_1.VersionId.en_au;
+        }
+        default: {
+            throw new Error(`No Default version specified for botId: ${botId}`);
+        }
+    }
+}
+exports.getDefaultVersionForBot = getDefaultVersionForBot;
 function pathToBlock(path) {
     const sanitized = path.replace(/\/$/, "");
     const key = sanitized.substr(sanitized.lastIndexOf("/") + 1);
