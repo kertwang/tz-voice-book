@@ -1,5 +1,6 @@
 import FirebaseApi from "../apis/FirebaseApi";
 import { Gather } from "twilio/lib/twiml/VoiceResponse";
+import Version = require("twilio/lib/base/Version");
 
 /**
  * A block is a request for twiml that we respond to.
@@ -131,6 +132,10 @@ export type CallContext = {
   mobile: string,
   firebaseApi: FirebaseApi,
   userId: string,
+  
+  //For translation overrides
+  versionOverride: VersionId | null,
+
   //For pagination
   page: number,
   pageSize: number,
@@ -175,4 +180,5 @@ export type PageParams = {
   page: number,
   pageSize: number,
   maxMessages: number,
+  versionOverride: VersionId | null,
 }

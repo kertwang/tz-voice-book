@@ -52,10 +52,23 @@ class TwilioRouter {
                         case TwilioTypes_1.BlockType.RECORD: {
                             response = this.appendMessagesToResponse(response, messages);
                             response.record({
-                                action: `${Env_1.baseUrl}/twiml/${config.botId}/${flow.next}`,
+                                // action: `${baseUrl}/twiml/${config.botId}/${flow.next}`,
+                                action: utils_1.buildRedirectUrl({
+                                    type: utils_1.NextUrlType.DefaultUrl,
+                                    baseUrl: Env_1.baseUrl,
+                                    botId: config.botId,
+                                    blockName: flow.next,
+                                    versionOverride: ctx.versionOverride,
+                                }),
                                 maxLength: 10,
                                 transcribe: false,
-                                recordingStatusCallback: `${Env_1.baseUrl}/twiml/${config.botId}/${block.recordingCallback}`
+                                // recordingStatusCallback: `${baseUrl}/twiml/${config.botId}/${block.recordingCallback}`
+                                recordingStatusCallback: utils_1.buildRedirectUrl({
+                                    type: utils_1.NextUrlType.RecordingCallbackUrl,
+                                    baseUrl: Env_1.baseUrl,
+                                    botId: config.botId,
+                                    recordingCallback: block.recordingCallback,
+                                })
                             });
                             break;
                         }
@@ -66,7 +79,14 @@ class TwilioRouter {
                         }
                         case TwilioTypes_1.BlockType.DEFAULT:
                         default: {
-                            const nextUrl = `${Env_1.baseUrl}/twiml/${config.botId}/${flow.next}`;
+                            // const nextUrl = `${baseUrl}/twiml/${config.botId}/${flow.next}`;
+                            const nextUrl = utils_1.buildRedirectUrl({
+                                type: utils_1.NextUrlType.DefaultUrl,
+                                baseUrl: Env_1.baseUrl,
+                                botId: config.botId,
+                                blockName: flow.next,
+                                versionOverride: ctx.versionOverride,
+                            });
                             this.appendMessagesToResponse(response, messages);
                             response.redirect({ method: 'POST' }, nextUrl);
                         }
@@ -75,7 +95,14 @@ class TwilioRouter {
                 }
                 case TwilioTypes_1.FlowType.GATHER: {
                     const gather = response.gather({
-                        action: `${Env_1.baseUrl}/twiml/${config.botId}/gather/${blockName}`,
+                        // action: `${baseUrl}/twiml/${config.botId}/gather/${blockName}`,
+                        action: utils_1.buildRedirectUrl({
+                            type: utils_1.NextUrlType.GatherUrl,
+                            baseUrl: Env_1.baseUrl,
+                            botId: config.botId,
+                            blockName,
+                            versionOverride: ctx.versionOverride,
+                        }),
                         method: 'POST',
                         input: 'dtmf',
                         numDigits: 1,
@@ -99,7 +126,17 @@ class TwilioRouter {
                 //this has a flow type of gather- breaking some weird stuff
                 case (TwilioTypes_1.BlockId.listen_playback): {
                     const gather = response.gather({
-                        action: `${Env_1.baseUrl}/twiml/${botId}/gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
+                        // action: `${baseUrl}/twiml/${botId}/gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
+                        action: utils_1.buildRedirectUrl({
+                            type: utils_1.NextUrlType.PaginatedGatherUrl,
+                            baseUrl: Env_1.baseUrl,
+                            botId,
+                            blockName: nextBlock,
+                            nextPageNo: ctx.page,
+                            pageSize: ctx.pageSize,
+                            maxMessages: ctx.maxMessages,
+                            versionOverride: ctx.versionOverride,
+                        }),
                         method: 'POST',
                         input: 'dtmf',
                         numDigits: 1,
@@ -124,13 +161,30 @@ class TwilioRouter {
                         }
                         console.log("ERROR in handlePlaybackBlock, bad message:", message);
                     });
-                    let redirectUrl = utils_1.buildPaginatedUrl(Env_1.baseUrl, botId, blockName, page + 1, pageSize, ctx.maxMessages);
+                    let urlBuilder;
                     if ((page * pageSize) > totalCount) {
-                        //We are out of messages, redirect to next block
-                        redirectUrl = `${Env_1.baseUrl}/twiml/${botId}/${nextBlock}`;
+                        urlBuilder = {
+                            type: utils_1.NextUrlType.DefaultUrl,
+                            baseUrl: Env_1.baseUrl,
+                            botId,
+                            blockName: nextBlock,
+                            versionOverride: ctx.versionOverride,
+                        };
+                    }
+                    else {
+                        urlBuilder = {
+                            type: utils_1.NextUrlType.PaginatedUrl,
+                            baseUrl: Env_1.baseUrl,
+                            botId,
+                            blockName: nextBlock,
+                            nextPageNo: page + 1,
+                            pageSize,
+                            maxMessages: ctx.maxMessages,
+                            versionOverride: ctx.versionOverride,
+                        };
                     }
                     //call back to this block.
-                    response.redirect({ method: 'POST' }, redirectUrl);
+                    response.redirect({ method: 'POST' }, utils_1.buildRedirectUrl(urlBuilder));
                     break;
                 }
                 case (TwilioTypes_1.BlockId.record_playback): {
@@ -139,13 +193,25 @@ class TwilioRouter {
                     if (recordings.length === 0) {
                         //Try again
                         //TODO: fix slow infinte loop here :(
-                        response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${botId}/${TwilioTypes_1.BlockId.record_delete}`);
+                        const urlBuilder = {
+                            type: utils_1.NextUrlType.DefaultUrl,
+                            baseUrl: Env_1.baseUrl,
+                            botId,
+                            blockName: nextBlock,
+                            versionOverride: ctx.versionOverride,
+                        };
+                        response.redirect({ method: 'POST' }, utils_1.buildRedirectUrl(urlBuilder));
                         return response;
                     }
                     const recording = recordings[0];
-                    // response.say({}, 'You said:');
                     response.play({}, recording.url);
-                    response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${botId}/${nextBlock}`);
+                    response.redirect({ method: 'POST' }, utils_1.buildRedirectUrl({
+                        type: utils_1.NextUrlType.DefaultUrl,
+                        baseUrl: Env_1.baseUrl,
+                        botId,
+                        blockName: nextBlock,
+                        versionOverride: ctx.versionOverride,
+                    }));
                     break;
                 }
                 default:
@@ -192,9 +258,19 @@ class TwilioRouter {
                         break;
                     }
                 }
-                const redirectUrl = utils_1.buildPaginatedUrl(Env_1.baseUrl, config.botId, TwilioTypes_1.BlockId.listen_playback, nextPage, ctx.pageSize, ctx.maxMessages);
-                console.log("redirect url is:", redirectUrl);
-                response.redirect({ method: 'POST' }, redirectUrl);
+                // const redirectUrl = buildPaginatedUrl(baseUrl, config.botId, BlockId.listen_playback, nextPage, ctx.pageSize, ctx.maxMessages);
+                const urlBuilder = {
+                    type: utils_1.NextUrlType.PaginatedUrl,
+                    baseUrl: Env_1.baseUrl,
+                    botId: config.botId,
+                    blockName: TwilioTypes_1.BlockId.listen_playback,
+                    nextPageNo: nextPage,
+                    pageSize: ctx.pageSize,
+                    maxMessages: ctx.maxMessages,
+                    versionOverride: ctx.versionOverride,
+                };
+                console.log("redirect url is:", utils_1.buildRedirectUrl(urlBuilder));
+                response.redirect({ method: 'POST' }, utils_1.buildRedirectUrl(urlBuilder));
                 return response.toString();
             }
             const flow = config.flows[currentBlock];
@@ -239,7 +315,15 @@ class TwilioRouter {
                         }
                         const nextBlock = flow.digitMatches[idx].nextBlock;
                         const response = new VoiceResponse();
-                        response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${config.botId}/${nextBlock}`);
+                        //TODO: here
+                        // response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${config.botId}/${nextBlock}`);
+                        response.redirect({ method: 'POST' }, utils_1.buildRedirectUrl({
+                            type: utils_1.NextUrlType.DefaultUrl,
+                            baseUrl: Env_1.baseUrl,
+                            botId: config.botId,
+                            blockName: nextBlock,
+                            versionOverride: ctx.versionOverride,
+                        }));
                         return response.toString();
                     }
                 default: {

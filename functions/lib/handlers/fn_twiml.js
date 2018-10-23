@@ -123,21 +123,22 @@ module.exports = (functions) => {
         const blockName = utils_1.pathToBlock(req.path);
         console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
         const user = yield firebaseApi.getUserFromMobile(req.body.From, botId);
+        const pageParams = utils_1.saftelyGetPageParamsOrDefaults(req.query);
         /* Configure the version using a versionOverride query param */
         let botConfig;
-        if (req.query.versionOverride) {
-            botConfig = yield firebaseApi.getBotConfigOverride(user.id, botId, req.query.versionOverride);
+        if (pageParams.versionOverride) {
+            botConfig = yield firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
         }
         else {
             botConfig = yield firebaseApi.getBotConfig(user.id, botId);
         }
-        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
+        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, pageParams);
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
             callSid: ctx.callSid,
             blockId: blockName,
             mobile: ctx.mobile,
-            pageParams: utils_1.saftelyGetPageParamsOrDefaults(req.query),
+            pageParams,
         });
         const gatherResult = {
             digits: req.body.Digits,
@@ -154,21 +155,22 @@ module.exports = (functions) => {
         const botId = utils_1.getBotId(req.params.botId);
         const blockName = utils_1.pathToBlock(req.path);
         const user = yield firebaseApi.getUserFromMobile(req.body.From, botId);
+        const pageParams = utils_1.saftelyGetPageParamsOrDefaults(req.query);
         /* Configure the version using a versionOverride query param */
         let botConfig;
-        if (req.query.versionOverride) {
-            botConfig = yield firebaseApi.getBotConfigOverride(user.id, botId, req.query.versionOverride);
+        if (pageParams.versionOverride) {
+            botConfig = yield firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
         }
         else {
             botConfig = yield firebaseApi.getBotConfig(user.id, botId);
         }
-        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
+        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, versionOverride: req.query.versionOverride || null, firebaseApi }, pageParams);
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
             callSid: ctx.callSid,
             blockId: blockName,
             mobile: ctx.mobile,
-            pageParams: utils_1.saftelyGetPageParamsOrDefaults(req.query),
+            pageParams,
         });
         const result = yield TwilioRouter_1.default.nextMessage(ctx, botConfig, blockName);
         res.writeHead(200, { 'Content-Type': 'text/xml' });

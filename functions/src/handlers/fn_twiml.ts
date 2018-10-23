@@ -143,22 +143,22 @@ module.exports = (functions: any) => {
     console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
 
     const user = await firebaseApi.getUserFromMobile(req.body.From, botId);
+    const pageParams = saftelyGetPageParamsOrDefaults(req.query);
     
     /* Configure the version using a versionOverride query param */
     let botConfig;
-    if (req.query.versionOverride) {
-      botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, req.query.versionOverride);
+    if (pageParams.versionOverride) {
+      botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
     } else {
       botConfig = await firebaseApi.getBotConfig(user.id, botId);
     }
-
     
     const ctx: CallContext = {
       callSid: req.body.CallSid,
       mobile: req.body.From,
       userId: user.id,
       firebaseApi,
-      ...saftelyGetPageParamsOrDefaults(req.query),
+      ...pageParams,
     };
 
     log({
@@ -166,7 +166,7 @@ module.exports = (functions: any) => {
       callSid: ctx.callSid,
       blockId: blockName,
       mobile: ctx.mobile,
-      pageParams: saftelyGetPageParamsOrDefaults(req.query),
+      pageParams,
     });
 
     const gatherResult: DigitResult = {
@@ -187,11 +187,12 @@ module.exports = (functions: any) => {
     const blockName = pathToBlock(req.path);
 
     const user = await firebaseApi.getUserFromMobile(req.body.From, botId);
+    const pageParams = saftelyGetPageParamsOrDefaults(req.query);
 
     /* Configure the version using a versionOverride query param */
     let botConfig;
-    if (req.query.versionOverride) {
-      botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, req.query.versionOverride);
+    if (pageParams.versionOverride) {
+      botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
     } else {
       botConfig = await firebaseApi.getBotConfig(user.id, botId);
     }
@@ -200,8 +201,9 @@ module.exports = (functions: any) => {
       callSid: req.body.CallSid,
       mobile: req.body.From,
       userId: user.id,
+      versionOverride: req.query.versionOverride || null,
       firebaseApi,
-      ...saftelyGetPageParamsOrDefaults(req.query),
+      ...pageParams,
     };
 
     log({
@@ -209,7 +211,7 @@ module.exports = (functions: any) => {
       callSid: ctx.callSid,
       blockId: blockName,
       mobile: ctx.mobile,
-      pageParams: saftelyGetPageParamsOrDefaults(req.query),
+      pageParams,
     });
 
     const result = await TwilioRouter.nextMessage(ctx, botConfig, blockName);

@@ -1,5 +1,6 @@
 import { BlockId, GatherResult, PageParams, BotId, VersionId } from "../types_rn/TwilioTypes";
 import * as format from 'xml-formatter';
+import { VerifyOptions } from "jsonwebtoken";
 
 
 export function getBotId(maybeBotId: string): BotId {
@@ -74,6 +75,7 @@ export const saftelyGetPageParamsOrDefaults = (params): PageParams => {
   const page = params.page ? parseInt(params.page) : 0;
   let pageSize = params.pageSize ? parseInt(params.pageSize) : 1;
   let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
+  let versionOverride = params.versionOverride ? (params.maxMessages) : null;
 
   //Also handle shitty twilio url encoded params :(
   if (params['amp;pageSize']) {
@@ -84,16 +86,141 @@ export const saftelyGetPageParamsOrDefaults = (params): PageParams => {
     maxMessages = parseInt(params['amp;maxMessages'])
   }
 
+  //TODO: we need to test this...
+  if (params['amp;versionOverride']) {
+    versionOverride = params['amp;maxMessages'];
+  }
+
+
   return {
     page,
     pageSize,
     maxMessages,
+    versionOverride,
   };
 }
+
+export enum NextUrlType {
+  PaginatedUrl = 'PaginatedUrl',
+  DefaultUrl = 'DefaultUrl',
+  RecordingCallbackUrl = 'RecordingCallbackUrl',
+  GatherUrl = 'GatherUrl',
+  PaginatedGatherUrl = 'PaginatedGatherUrl',
+}
+
+
+export type NextUrlBuilder = 
+  PaginatedUrlBuilder | 
+  DefaultUrlBuilder | 
+  RecordingCallbackUrlBuilder |
+  GatherUrlBuilder |
+  PaginatedGatherUrlBuilder;
+
+export type PaginatedUrlBuilder = {
+  type: NextUrlType.PaginatedUrl,
+  baseUrl: string,
+  botId: BotId,
+  blockName: BlockId,
+  
+  nextPageNo: number,
+  pageSize: number,
+  maxMessages: number,
+  
+  versionOverride: VersionId | null,
+}
+
+export type DefaultUrlBuilder = {
+  type: NextUrlType.DefaultUrl,
+  baseUrl: string,
+  botId: BotId,
+  blockName: BlockId,
+
+  versionOverride: VersionId | null,
+}
+
+export type RecordingCallbackUrlBuilder = {
+  type: NextUrlType.RecordingCallbackUrl,
+  baseUrl: string,
+  botId: BotId,
+  recordingCallback: string,
+}
+
+export type GatherUrlBuilder = {
+  type: NextUrlType.GatherUrl,
+  baseUrl: string,
+  botId: BotId,
+  blockName: BlockId,
+
+  versionOverride: VersionId | null,
+}
+
+export type PaginatedGatherUrlBuilder = {
+  type: NextUrlType.PaginatedGatherUrl,
+  baseUrl: string,
+  botId: BotId,
+  blockName: BlockId,
+
+  nextPageNo: number,
+  pageSize: number,
+  maxMessages: number,
+
+  versionOverride: VersionId | null,
+}
+
 
 /**
  * Make a magical paginated url
  */
-export const buildPaginatedUrl = (baseUrl: string, botId: BotId, blockName: BlockId, nextPageNo: number, pageSize: number, maxMessages: number) => {
-  return `${baseUrl}/twiml/${botId}/${blockName}?page=${nextPageNo}\&pageSize=${pageSize}\&maxMessages=${maxMessages}`;
+const buildPaginatedUrl = (b: PaginatedUrlBuilder): string => {
+  const url = `${b.baseUrl}/twiml/${b.botId}/${b.blockName}?page=${b.nextPageNo}\&pageSize=${b.pageSize}\&maxMessages=${b.maxMessages}`;
+  if (!b.versionOverride) {
+    return url;
+  }
+
+  return `${url}\&versionOverride=${b.versionOverride}`;
+}
+
+const buildVersionOverrideUrl = (b: DefaultUrlBuilder): string => {
+  if (!b.versionOverride) {
+    return `${b.baseUrl}/twiml/${b.botId}/${b.blockName}`;  
+  }
+
+  return `${b.baseUrl}/twiml/${b.botId}/${b.blockName}?versionOverride=${b.versionOverride}`;
+}
+
+const buildRecordingCallbackUrl = (b: RecordingCallbackUrlBuilder): string => {
+  return `${b.baseUrl}/twiml/${b.botId}/${b.recordingCallback}`;
+}
+
+const buildGatherCallbackUrl = (b: GatherUrlBuilder): string => {
+  //eg: `${baseUrl}/twiml/${config.botId}/gather/${blockName}`,
+
+  return `${b.baseUrl}/twiml/${b.botId}/gather/${b.blockName}?versionOverride=${b.versionOverride}`;
+}
+
+const buildPaginatedGatherCallbackUrl = (b: PaginatedGatherUrlBuilder): string => {
+  //eg: `${baseUrl}/twiml/${config.botId}/gather/${blockName}`,
+
+  const url = `${b.baseUrl}/twiml/${b.botId}/gather/${b.blockName}?page=${b.nextPageNo}\&pageSize=${b.pageSize}\&maxMessages=${b.maxMessages}`;
+  if (!b.versionOverride) {
+    return url;
+  }
+
+  return `${url}\&versionOverride=${b.versionOverride}`;
+
+}
+
+
+export function buildRedirectUrl(builder: NextUrlBuilder): string {
+  switch(builder.type) {
+    case NextUrlType.PaginatedUrl: return buildPaginatedUrl(builder)
+    case NextUrlType.DefaultUrl: return buildVersionOverrideUrl(builder)
+    case NextUrlType.RecordingCallbackUrl: return buildRecordingCallbackUrl(builder)
+    case NextUrlType.GatherUrl: return buildGatherCallbackUrl(builder)
+    case NextUrlType.PaginatedGatherUrl: return buildPaginatedGatherCallbackUrl(builder)
+    default: {
+      const _exhaustiveMatch: never = builder;
+      throw new Error(`Non-exhausive match for path: ${_exhaustiveMatch}`);
+    }
+  }
 }
