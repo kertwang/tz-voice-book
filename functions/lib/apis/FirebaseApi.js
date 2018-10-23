@@ -18,7 +18,7 @@ class FirebaseApi {
         return this.fs.collection('bot').doc(botId).collection('users').doc(userId).get()
             .then((doc) => doc.data());
     }
-    createUserForMobile(mobile) {
+    createUserForMobile(mobile, botId) {
         const user = {
             mobile,
             //This is the version that new users will use by default.
@@ -31,7 +31,7 @@ class FirebaseApi {
      * Get the user from their mobile number.
      * If we don't already have a user for this number, lazy create one
      */
-    getUserFromMobile(mobile) {
+    getUserFromMobile(mobile, botId) {
         return this.fs.collection('bot').doc(botId).collection('users').where('mobile', '==', mobile).limit(1).get()
             .then((sn) => {
             const users = [];
@@ -46,10 +46,10 @@ class FirebaseApi {
             if (users.length !== 0) {
                 return users[0];
             }
-            return this.createUserForMobile(mobile);
+            return this.createUserForMobile(mobile, botId);
         });
     }
-    getRecordings(limit) {
+    getRecordings(limit, botId) {
         return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'asc').limit(limit).get()
             .then(sn => {
             const messages = [];
@@ -68,7 +68,7 @@ class FirebaseApi {
     /**
      * Save a feedback recording
      */
-    saveFeedbackRecording(recording) {
+    saveFeedbackRecording(recording, botId) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.fs.collection('bot').doc(botId).collection('feedback').add(recording)
                 .then(ref => ref.id)
@@ -83,7 +83,7 @@ class FirebaseApi {
      *
      * Returns the id of the pending reading
      */
-    savePendingRecording(recording) {
+    savePendingRecording(recording, botId) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.fs.collection('bot').doc(botId).collection('pendingRecordings').add(recording)
                 .then(ref => ref.id)
@@ -96,7 +96,7 @@ class FirebaseApi {
     /**
      * Get all pending recordings for a given callSid, newest first
      */
-    getPendingRecordings(callSid, limit) {
+    getPendingRecordings(callSid, limit, botId) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.fs.collection('bot').doc(botId).collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
                 .then((sn) => {
@@ -116,9 +116,9 @@ class FirebaseApi {
      * This is because the callback to save the pending recording sometimes takes
      * too long, and causes the call to die
      */
-    getPendingRecordingsWithRetries(callSid, limit, retries, timeoutMs = 10) {
+    getPendingRecordingsWithRetries(botId, callSid, limit, retries, timeoutMs = 10) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield this.getPendingRecordings(callSid, limit);
+            const result = yield this.getPendingRecordings(callSid, limit, botId);
             if (result.length > 0) {
                 return result;
             }
@@ -127,7 +127,7 @@ class FirebaseApi {
                 return result;
             }
             yield utils_1.sleep(timeoutMs);
-            return this.getPendingRecordingsWithRetries(callSid, limit, retries - 1, timeoutMs * 2);
+            return this.getPendingRecordingsWithRetries(botId, callSid, limit, retries - 1, timeoutMs * 2);
         });
     }
     deletePendingRecordingsForCall(callSid) {
@@ -140,7 +140,7 @@ class FirebaseApi {
      * Publish a recording for everyone else to listen to.
      * Returns the id of the recording
      */
-    postRecording(recording) {
+    postRecording(recording, botId) {
         return this.fs.collection('bot').doc(botId).collection('recordings').add(recording)
             .then(ref => ref.id);
     }
@@ -152,14 +152,14 @@ class FirebaseApi {
     getBotConfig(callSid, userId, botId) {
         return __awaiter(this, void 0, void 0, function* () {
             //TODO: implement configurable stuff.
-            const version = yield this.getVerionForUser(userId);
+            const version = yield this.getVerionForUser(userId, botId);
             return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
                 .then(doc => doc.data());
         });
     }
-    getVerionForUser(userId) {
+    getVerionForUser(userId, botId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield this.getUser(userId);
+            const user = yield this.getUser(userId, botId);
             if (user.version) {
                 //TODO: should also make sure the version code is correct
                 return user.version;

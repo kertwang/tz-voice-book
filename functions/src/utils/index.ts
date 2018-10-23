@@ -1,6 +1,15 @@
-import { BlockId, GatherResult, PageParams } from "../types_rn/TwilioTypes";
+import { BlockId, GatherResult, PageParams, BotId } from "../types_rn/TwilioTypes";
 import * as format from 'xml-formatter';
 
+
+export function getBotId(maybeBotId: string): BotId {
+  const botId = BotId[maybeBotId];
+  if (!botId) {
+    throw new Error(`Could not find botId for ${maybeBotId}`);
+  }
+
+  return botId;
+}
 
 export function pathToBlock(path: string): BlockId {
   const sanitized = path.replace(/\/$/, "");

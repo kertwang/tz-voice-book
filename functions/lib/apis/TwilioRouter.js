@@ -49,7 +49,7 @@ class TwilioRouter {
                     switch (block.type) {
                         case TwilioTypes_1.BlockType.PLAYBACK: {
                             //TODO: abstract this eventually
-                            response = yield this.handlePlaybackBlock(blockName, response, ctx, flow.next, messages);
+                            response = yield this.handlePlaybackBlock(config.botId, blockName, response, ctx, flow.next, messages);
                             break;
                         }
                         case TwilioTypes_1.BlockType.RECORD: {
@@ -95,7 +95,7 @@ class TwilioRouter {
             }
         });
     }
-    static handlePlaybackBlock(blockName, response, ctx, nextBlock, messages) {
+    static handlePlaybackBlock(botId, blockName, response, ctx, nextBlock, messages) {
         return __awaiter(this, void 0, void 0, function* () {
             //TODO: figure out how to make more type safe and more generic - eg a custom block definition, with a function for how to handle it defined elsewhere
             switch (blockName) {
@@ -110,7 +110,7 @@ class TwilioRouter {
                     //TODO: figure out how to wrap this in a gather block!
                     //TODO: fixme this repeats messages when page size > 1
                     //Play all of the pre-recorded messages, then load all of the messages from firestore and play them.
-                    const recordings = yield ctx.firebaseApi.getRecordings(ctx.maxMessages);
+                    const recordings = yield ctx.firebaseApi.getRecordings(ctx.maxMessages, botId);
                     const totalCount = messages.length + recordings.length;
                     const { page, pageSize } = ctx;
                     const allToPlay = messages;
@@ -138,7 +138,7 @@ class TwilioRouter {
                 }
                 case (TwilioTypes_1.BlockId.record_playback): {
                     // const recordings: Recording[] = [];
-                    const recordings = yield ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 8, 100);
+                    const recordings = yield ctx.firebaseApi.getPendingRecordingsWithRetries(botId, ctx.callSid, 1, 8, 100);
                     if (recordings.length === 0) {
                         //Try again
                         //TODO: fix slow infinte loop here :(
@@ -213,9 +213,9 @@ class TwilioRouter {
                     //Handle the case where user wants us to post the message!
                     //Falls through to router
                     if (gatherResult.digits.trim() === '1') {
-                        const pendingRecordings = yield ctx.firebaseApi.getPendingRecordings(ctx.callSid, 1);
+                        const pendingRecordings = yield ctx.firebaseApi.getPendingRecordings(ctx.callSid, 1, config.botId);
                         if (pendingRecordings.length === 1) {
-                            const recordingId = yield ctx.firebaseApi.postRecording(pendingRecordings[0]);
+                            const recordingId = yield ctx.firebaseApi.postRecording(pendingRecordings[0], config.botId);
                             //TODO: make a logger class
                             console.log(`LOG: {"action":"POST_MESSAGE", "recordingId":"${recordingId}"}`);
                             Log_1.log({

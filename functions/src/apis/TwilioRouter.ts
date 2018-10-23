@@ -3,7 +3,7 @@
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { logTwilioResponse, buildPaginatedUrl } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow } from '../types_rn/TwilioTypes';
+import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, BotId } from '../types_rn/TwilioTypes';
 import { baseUrl } from '../utils/Env';
 import UserApi, { Recording } from './UserApi';
 import { log } from '../utils/Log';
@@ -46,7 +46,7 @@ export default class TwilioRouter {
         switch (block.type) {
           case BlockType.PLAYBACK: {
             //TODO: abstract this eventually
-            response = await this.handlePlaybackBlock(blockName, response, ctx, flow.next, messages);
+            response = await this.handlePlaybackBlock(config.botId, blockName, response, ctx, flow.next, messages);
             break;
           }
           case BlockType.RECORD: {
@@ -95,7 +95,7 @@ export default class TwilioRouter {
     }
   }
 
-  private static async handlePlaybackBlock(blockName: BlockId, response: any, ctx: CallContext, nextBlock: BlockId, messages: SayMessage[] | PlayMessage []) {
+  private static async handlePlaybackBlock(botId: BotId, blockName: BlockId, response: any, ctx: CallContext, nextBlock: BlockId, messages: SayMessage[] | PlayMessage []) {
     //TODO: figure out how to make more type safe and more generic - eg a custom block definition, with a function for how to handle it defined elsewhere
     switch(blockName) {
       //this has a flow type of gather- breaking some weird stuff
@@ -109,7 +109,7 @@ export default class TwilioRouter {
         //TODO: figure out how to wrap this in a gather block!
         //TODO: fixme this repeats messages when page size > 1
         //Play all of the pre-recorded messages, then load all of the messages from firestore and play them.
-        const recordings = await ctx.firebaseApi.getRecordings(ctx.maxMessages);
+        const recordings = await ctx.firebaseApi.getRecordings(ctx.maxMessages, botId);
         const totalCount = messages.length + recordings.length;
         const {page, pageSize} = ctx
 
@@ -142,7 +142,7 @@ export default class TwilioRouter {
       }
       case (BlockId.record_playback): {
         // const recordings: Recording[] = [];
-        const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordingsWithRetries(ctx.callSid, 1, 8, 100);
+        const recordings: Recording[] = await ctx.firebaseApi.getPendingRecordingsWithRetries(botId, ctx.callSid, 1, 8, 100);
         if (recordings.length === 0) {
           //Try again
           //TODO: fix slow infinte loop here :(
@@ -233,9 +233,9 @@ export default class TwilioRouter {
         //Handle the case where user wants us to post the message!
         //Falls through to router
         if (gatherResult.digits.trim() === '1') {
-          const pendingRecordings = await ctx.firebaseApi.getPendingRecordings(ctx.callSid, 1);
+          const pendingRecordings = await ctx.firebaseApi.getPendingRecordings(ctx.callSid, 1, config.botId);
           if (pendingRecordings.length === 1) {
-            const recordingId = await ctx.firebaseApi.postRecording(pendingRecordings[0]);
+            const recordingId = await ctx.firebaseApi.postRecording(pendingRecordings[0], config.botId);
             //TODO: make a logger class
             console.log(`LOG: {"action":"POST_MESSAGE", "recordingId":"${recordingId}"}`);
 

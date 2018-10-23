@@ -165,6 +165,7 @@ export enum VersionId {
 }
 
 export type BotConfig = {
+  botId: BotId,
   blocks: BlockMap,
   flows: FlowMap,
   messages: MessageMap

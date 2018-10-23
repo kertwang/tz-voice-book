@@ -57,12 +57,13 @@ module.exports = (functions) => {
      * Callback triggered once feedback recording is finished
      */
     app.post('/:botId/recordingCallback/feedback', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const botId = utils_1.getBotId(req.params.botId);
         const recording = {
             url: req.body.RecordingUrl,
             createdAt: moment().toISOString(),
             callSid: req.body.CallSid,
         };
-        const pendingId = yield firebaseApi.saveFeedbackRecording(recording);
+        const pendingId = yield firebaseApi.saveFeedbackRecording(recording, botId);
         Log_1.log({
             type: LogTypes_1.LogType.PENDING_MESSAGE,
             pendingId,
@@ -99,12 +100,13 @@ module.exports = (functions) => {
      * Handle Twilio Callback to save the recording for pending submission.
      */
     app.post('/:botId/recordingCallback/message', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const botId = utils_1.getBotId(req.params.botId);
         const recording = {
             url: req.body.RecordingUrl,
             createdAt: moment().toISOString(),
             callSid: req.body.CallSid,
         };
-        const pendingId = yield firebaseApi.savePendingRecording(recording);
+        const pendingId = yield firebaseApi.savePendingRecording(recording, botId);
         Log_1.log({
             type: LogTypes_1.LogType.PENDING_MESSAGE,
             pendingId,
@@ -117,10 +119,11 @@ module.exports = (functions) => {
      * Action callback handlers.
      */
     app.post('/:botId/gather/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const botId = utils_1.getBotId(req.params.botId);
         const blockName = utils_1.pathToBlock(req.path);
         console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
-        const user = yield firebaseApi.getUserFromMobile(req.body.From);
-        const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
+        const user = yield firebaseApi.getUserFromMobile(req.body.From, botId);
+        const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id, botId);
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
@@ -141,12 +144,10 @@ module.exports = (functions) => {
      * Handle all normal routes
      */
     app.post('/:botId/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const botId = utils_1.getBotId(req.params.botId);
         const blockName = utils_1.pathToBlock(req.path);
-        console.log("Bot id is: ", req.params.botId);
-        const user = yield firebaseApi.getUserFromMobile(req.body.From);
-        //TODO: load different bots here?
-        const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id);
-        console.log("blockName is", blockName);
+        const user = yield firebaseApi.getUserFromMobile(req.body.From, botId);
+        const botConfig = yield firebaseApi.getBotConfig(req.body.CallSid, user.id, botId);
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, utils_1.saftelyGetPageParamsOrDefaults(req.query));
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,

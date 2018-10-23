@@ -2,6 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const format = require("xml-formatter");
+function getBotId(maybeBotId) {
+    const botId = TwilioTypes_1.BotId[maybeBotId];
+    if (!botId) {
+        throw new Error(`Could not find botId for ${maybeBotId}`);
+    }
+    return botId;
+}
+exports.getBotId = getBotId;
 function pathToBlock(path) {
     const sanitized = path.replace(/\/$/, "");
     const key = sanitized.substr(sanitized.lastIndexOf("/") + 1);

@@ -14,7 +14,7 @@ export default class FirebaseApi {
       .then((doc: any) => doc.data());
   }
 
-  public createUserForMobile(mobile: string): Promise<User> {
+  public createUserForMobile(mobile: string, botId: string): Promise<User> {
     const user = {
       mobile,
       //This is the version that new users will use by default.
@@ -28,7 +28,7 @@ export default class FirebaseApi {
    * Get the user from their mobile number. 
    * If we don't already have a user for this number, lazy create one
    */
-  public getUserFromMobile(mobile: string): Promise<User> {
+  public getUserFromMobile(mobile: string, botId: string): Promise<User> {
     return this.fs.collection('bot').doc(botId).collection('users').where('mobile', '==', mobile).limit(1).get()
     .then((sn: any) => {
       const users: User[] = [];
@@ -45,11 +45,11 @@ export default class FirebaseApi {
         return users[0];
       }
 
-      return this.createUserForMobile(mobile);
+      return this.createUserForMobile(mobile, botId);
     });
   }
 
-  public getRecordings(limit: number): Promise<PlayMessage[]> {
+  public getRecordings(limit: number, botId: string): Promise<PlayMessage[]> {
     return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'asc').limit(limit).get()
     .then(sn => {
       const messages: PlayMessage[] = [];
@@ -70,7 +70,7 @@ export default class FirebaseApi {
   /**
    * Save a feedback recording
    */
-  public async saveFeedbackRecording(recording: Recording): Promise<string> {
+  public async saveFeedbackRecording(recording: Recording, botId: string): Promise<string> {
     return this.fs.collection('bot').doc(botId).collection('feedback').add(recording)
       .then(ref => ref.id)
       .catch(err => {
@@ -84,7 +84,7 @@ export default class FirebaseApi {
    * 
    * Returns the id of the pending reading
    */
-  public async savePendingRecording(recording: Recording): Promise<string> {
+  public async savePendingRecording(recording: Recording, botId: string): Promise<string> {
     return this.fs.collection('bot').doc(botId).collection('pendingRecordings').add(recording)
     .then(ref => ref.id)
     .catch(err => {
@@ -96,7 +96,7 @@ export default class FirebaseApi {
   /**
    * Get all pending recordings for a given callSid, newest first
    */
-  public async getPendingRecordings(callSid: string, limit: number): Promise<Recording[]> {
+  public async getPendingRecordings(callSid: string, limit: number, botId: string): Promise<Recording[]> {
     return this.fs.collection('bot').doc(botId).collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
     .then((sn: any) => {
       const recordings: Recording[] = [];
@@ -116,8 +116,8 @@ export default class FirebaseApi {
    * This is because the callback to save the pending recording sometimes takes
    * too long, and causes the call to die
    */
-  public async getPendingRecordingsWithRetries(callSid: string, limit: number, retries: number, timeoutMs: number = 10): Promise<Recording[]> {
-    const result = await this.getPendingRecordings(callSid, limit);
+  public async getPendingRecordingsWithRetries(botId: string, callSid: string, limit: number, retries: number, timeoutMs: number = 10): Promise<Recording[]> {
+    const result = await this.getPendingRecordings(callSid, limit, botId);
 
     if (result.length > 0) {
       return result;
@@ -129,7 +129,7 @@ export default class FirebaseApi {
     }
 
     await sleep(timeoutMs);
-    return this.getPendingRecordingsWithRetries(callSid, limit, retries - 1, timeoutMs * 2);
+    return this.getPendingRecordingsWithRetries(botId, callSid, limit, retries - 1, timeoutMs * 2);
   }
 
   public async deletePendingRecordingsForCall(callSid: string): Promise<any> {
@@ -141,7 +141,7 @@ export default class FirebaseApi {
    * Publish a recording for everyone else to listen to.
    * Returns the id of the recording
    */
-  public postRecording(recording: Recording): Promise<string> {
+  public postRecording(recording: Recording, botId: string): Promise<string> {
     return this.fs.collection('bot').doc(botId).collection('recordings').add(recording)
     .then(ref => ref.id);
   }
@@ -154,14 +154,14 @@ export default class FirebaseApi {
   public async getBotConfig(callSid: string, userId: string, botId: BotId): Promise<BotConfig> {
     //TODO: implement configurable stuff.
 
-    const version = await this.getVerionForUser(userId);
+    const version = await this.getVerionForUser(userId, botId);
 
     return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
     .then(doc => doc.data());
   }
 
-  public async getVerionForUser( userId: string): Promise<VersionId> {
-    const user = await this.getUser(userId);
+  public async getVerionForUser(userId: string, botId: string): Promise<VersionId> {
+    const user = await this.getUser(userId, botId);
     if (user.version) {
 
       //TODO: should also make sure the version code is correct
