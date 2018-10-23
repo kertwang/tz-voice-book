@@ -1,7 +1,7 @@
-import { BlockType, BlockMap, AnyBlockMap } from "../../../types_rn/TwilioTypes";
+import { BlockType, BlockMap, AnyBlockMap, SenegalNotificationBlockMap } from "../../../types_rn/TwilioTypes";
 
 
-const TwilioBlocks: AnyBlockMap = {
+const TwilioBlocks: SenegalNotificationBlockMap = {
   'entrypoint': { type: BlockType.DEFAULT }, 
   'notification_0': {type: BlockType.DEFAULT},
 }

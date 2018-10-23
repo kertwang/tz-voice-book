@@ -1,4 +1,4 @@
-import { MessageType, MessageMap, SayMessage, AnyMessageMap } from "../../../types_rn/TwilioTypes";
+import { MessageType, MessageMap, SayMessage, AnyMessageMap, SenegalNotificationMessageMap } from "../../../types_rn/TwilioTypes";
 
 const generateText = (text): SayMessage => {
   return {
@@ -9,7 +9,7 @@ const generateText = (text): SayMessage => {
 }
 
 /* the deploy script will automatically fill in the urls for us */
-const en_text: AnyMessageMap = {
+const en_text: SenegalNotificationMessageMap = {
   'entrypoint': [
     generateText('Hello. This is an automated notification.'),
   ],

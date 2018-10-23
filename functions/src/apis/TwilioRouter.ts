@@ -3,7 +3,7 @@
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
 import { logTwilioResponse, NextUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, BotId } from '../types_rn/TwilioTypes';
+import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, BotId, AnyBlock, AnyMessageMap } from '../types_rn/TwilioTypes';
 import { baseUrl } from '../utils/Env';
 import UserApi, { Recording } from './UserApi';
 import { log } from '../utils/Log';
@@ -31,9 +31,9 @@ export default class TwilioRouter {
    */
   public static async getBlock(ctx: CallContext, config: BotConfig, blockName: BlockId): Promise<any> {
     const messageBlocks = config.messages;
-    const flow = config.flows[blockName];
-    const block = config.blocks[blockName];
-    const messages = messageBlocks[blockName]; //TODO: make type safe?
+    const flow: DefaultFlow | GatherFlow = config.flows[blockName];
+    const block: AnyBlock = config.blocks[blockName];
+    const messages: SayMessage[] | PlayMessage[] = messageBlocks[blockName]; //TODO: make type safe?
 
     let response = new VoiceResponse();
 

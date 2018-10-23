@@ -30,6 +30,13 @@ export enum BlockId {
   notification_0 = 'notification_0',
 }
 
+// export enum SenegalNotificationBlockId { 
+//   entrypoint = 'entrypoint',
+//   notification_0 = 'notification_0',
+// }
+
+
+
 /**
  * Flow Types:
  */
@@ -40,6 +47,8 @@ export type AnyFlowMap = FlowMap | SenegalNotificationFlowMap;
 //this is the voicebook block map
 //TODO: change name to VoiceBookFlowMap
 export type FlowMap = {
+  // [k in VoiceBookBlockId]: DefaultFlow | GatherFlow
+
   entrypoint: DefaultFlow | GatherFlow,
   intro_0: DefaultFlow | GatherFlow,
   listen_0: DefaultFlow | GatherFlow,
