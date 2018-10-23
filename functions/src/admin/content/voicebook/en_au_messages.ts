@@ -1,4 +1,4 @@
-import { MessageType, MessageMap, SayMessage } from "../../../types_rn/TwilioTypes";
+import { MessageType, MessageMap, SayMessage, AnyMessageMap } from "../../../types_rn/TwilioTypes";
 import { generateUrl } from "../../../utils";
 
 const generateText = (text): SayMessage => {
@@ -10,7 +10,7 @@ const generateText = (text): SayMessage => {
 }
 
 /* the deploy script will automatically fill in the urls for us */
-const en_text: MessageMap = {
+const en_text: AnyMessageMap = {
   'entrypoint': [
     generateText('Hello and welcome to voicebook.'),
   ],

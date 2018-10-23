@@ -1,6 +1,5 @@
 import { BlockId, GatherResult, PageParams, BotId, VersionId } from "../types_rn/TwilioTypes";
 import * as format from 'xml-formatter';
-import { VerifyOptions } from "jsonwebtoken";
 
 
 export function getBotId(maybeBotId: string): BotId {

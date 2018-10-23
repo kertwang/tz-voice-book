@@ -25,6 +25,7 @@ var BlockId;
     BlockId["record_save"] = "record_save";
     BlockId["record_delete"] = "record_delete";
     BlockId["record_post_or_delete_error"] = "record_post_or_delete_error";
+    BlockId["notification_0"] = "notification_0";
 })(BlockId = exports.BlockId || (exports.BlockId = {}));
 var FlowType;
 (function (FlowType) {
@@ -61,7 +62,8 @@ var VersionId;
     VersionId["en_us"] = "en_us";
     VersionId["en_au"] = "en_au";
     VersionId["tz_audio"] = "tz_audio";
-    VersionId["fr_sg"] = "fr_sg";
+    VersionId["sg_text_formal"] = "sg_text_formal";
+    VersionId["sg_text_informal"] = "sg_text_informal";
     VersionId["sg_audio_formal"] = "sg_audio_formal";
     VersionId["sg_audio_informal"] = "sg_audio_informal"; //Audio, Informal Senegalese French
 })(VersionId = exports.VersionId || (exports.VersionId = {}));

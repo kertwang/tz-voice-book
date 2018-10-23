@@ -1,11 +1,11 @@
-import { FlowMap, FlowType, BlockId } from "../../../types_rn/TwilioTypes";
+import { FlowMap, FlowType, BlockId, AnyFlowMap } from "../../../types_rn/TwilioTypes";
 
 /**
  * Flows is a graph based data structure, with the key being the valid
  * entrypoint, and the value a dict containing possible next points based
  * on if the block is successful or errors
  */
-const TwilioFlows: FlowMap = {
+const TwilioFlows: AnyFlowMap = {
   'entrypoint': {
     type: FlowType.DEFAULT,
     next: BlockId.intro_0,

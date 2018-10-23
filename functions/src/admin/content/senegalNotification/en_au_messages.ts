@@ -1,4 +1,4 @@
-import { MessageType, MessageMap, SayMessage } from "../../../types_rn/TwilioTypes";
+import { MessageType, MessageMap, SayMessage, AnyMessageMap } from "../../../types_rn/TwilioTypes";
 
 const generateText = (text): SayMessage => {
   return {
@@ -9,19 +9,12 @@ const generateText = (text): SayMessage => {
 }
 
 /* the deploy script will automatically fill in the urls for us */
-const en_text: MessageMap = {
+const en_text: AnyMessageMap = {
   'entrypoint': [
-    generateText('Hello and welcome to voicebook.'),
+    generateText('Hello. This is an automated notification.'),
   ],
-  'intro_0': [
-    //'tz_audio/001a_Voicebook_Swahili_v2.mp3'
-    //'tz_audio/001b_Voicebook_Swahili_v2.mp3'
-    //'tz_audio/001c_Voicebook_Swahili_v2.mp3'
-    //'tz_audio/001d_Voicebook_Swahili_v2.mp3'
-    generateText('To learn what is new in your community press 1 on your phone keypad'),
-    generateText('To record a message that people in your community can hear, press 2 on your phone keypad'),
-    generateText('To learn more about this service, press 3 on your phone keypad'),
-    generateText('To hear these options again, press 4 on your phone keypad'),
+  'notification_0': [
+    generateText('You have recieved some money.'),
   ],
   'info_0': [
     //'tz_audio/030_Voicebook_Swahili.mp3'

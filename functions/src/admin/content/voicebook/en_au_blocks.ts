@@ -2,7 +2,6 @@ import { BlockType, BlockMap } from "../../../types_rn/TwilioTypes";
 
 
 const TwilioBlocks: BlockMap = {
-  // change this to voicebook?
   'entrypoint': { type: BlockType.DEFAULT }, 
   'intro_0': { type: BlockType.DEFAULT }, 
   'listen_0': { type: BlockType.DEFAULT }, 

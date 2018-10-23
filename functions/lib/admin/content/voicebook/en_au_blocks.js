@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
 const TwilioBlocks = {
-    // change this to voicebook?
     'entrypoint': { type: TwilioTypes_1.BlockType.DEFAULT },
     'intro_0': { type: TwilioTypes_1.BlockType.DEFAULT },
     'listen_0': { type: TwilioTypes_1.BlockType.DEFAULT },

@@ -211,7 +211,7 @@ curl -X POST \
   -H 'cache-control: no-cache' \
   -d '{
 	"mobile": "<redacted>",
-	"url": "https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint"
+	"url": "https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=en_au"
 }'
 ```
 
