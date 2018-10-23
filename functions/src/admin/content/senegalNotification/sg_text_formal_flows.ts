@@ -8,12 +8,12 @@ import { FlowMap, FlowType, BlockId, AnyFlowMap, SenegalNotificationFlowMap } fr
 const TwilioFlows: SenegalNotificationFlowMap = {
   'entrypoint': {
     type: FlowType.DEFAULT,
-    next: BlockId.intro_0,
+    next: BlockId.notification_0,
   },
   // TODO: Not sure how to end the call...
   'notification_0': {
     type: FlowType.DEFAULT,
-    next: BlockId.intro_0,
+    next: BlockId.entrypoint,
   },
 }
 
