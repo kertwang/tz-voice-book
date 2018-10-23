@@ -84,17 +84,16 @@ module.exports = (functions) => {
      * }
      *
      */
-    app.post('/triggerCall', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.post('/triggerCall', (req, res) => {
         if (!req.query.temporaryInsecureAuthKey) {
             res.status(401).send('apiKey is required');
         }
         if (req.query.temporaryInsecureAuthKey !== Env_1.temporaryInsecureAuthKey) {
             res.status(401).send('Invalid Api Key');
         }
-        // TODO: add Joi validation
-        const response = twilioApi.startCall(req.body.mobile, req.body.url);
-        res.json(response);
-    }));
+        return twilioApi.startCall(req.body.mobile, req.body.url)
+            .then(response => res.json(response));
+    });
     /**
      * Handle Twilio Callback to save the recording for pending submission.
      */

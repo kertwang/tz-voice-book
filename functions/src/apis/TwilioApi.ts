@@ -18,22 +18,35 @@ export class TwilioApi {
    * startCall
    * 
    * Initiate a call to the given number
+   * 
+   * TODO: for some reason using the async/await api doesn't
+   * handle exceptions properly with Twilio.
+   * We should move to the SomeResult pattern anyway
    */
-  async startCall(mobile: string, url: string): Promise<any> {
+  startCall(mobile: string, url: string): Promise<any> {
     const options = {
       url,
       to: mobile,
       from: twilioOutboundNumber,
+      // from: 'client:VoiceBook'
     };
 
     log({
-      type: LogType.TWILIO_API,
+      type: LogType.TWILIO_API_REQUEST,
       method: 'client.calls.create',
       params: options,
     });
 
 
     return this.client.calls.create(options)
-    .then((call: any) => process.stdout.write(call.sid));
+    .then((call: any) => {
+      log({
+        type: LogType.TWILIO_API_RESPONSE,
+        method: 'client.calls.create',
+        response: call,
+      });
+
+      return call.sid;
+    });
   }
 }

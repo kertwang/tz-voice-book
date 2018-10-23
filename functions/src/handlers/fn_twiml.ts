@@ -92,7 +92,7 @@ module.exports = (functions: any) => {
    * }
    * 
    */
-  app.post('/triggerCall', async (req, res) => {
+  app.post('/triggerCall', (req, res) => {
     if (!req.query.temporaryInsecureAuthKey) {
       res.status(401).send('apiKey is required');
     }
@@ -101,9 +101,8 @@ module.exports = (functions: any) => {
       res.status(401).send('Invalid Api Key');
     }
 
-    // TODO: add Joi validation
-    const response = twilioApi.startCall(req.body.mobile, req.body.url);
-    res.json(response);
+    return twilioApi.startCall(req.body.mobile, req.body.url)
+    .then(response => res.json(response));
   });
 
 
