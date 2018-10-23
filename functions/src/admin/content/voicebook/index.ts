@@ -28,11 +28,10 @@ const tz_audio: BotConfig = {
   messages: tz_audio_messages,
 }
 
-
-const voicebook = {
+const configs = {
   en_us,
   en_au,
   tz_audio,
 }
 
-export default voicebook;
+export default configs;

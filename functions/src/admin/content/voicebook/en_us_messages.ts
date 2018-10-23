@@ -1,4 +1,4 @@
-import {  MessageType, MessageMap } from "../../types_rn/TwilioTypes";
+import {  MessageType, MessageMap } from "../../../types_rn/TwilioTypes";
 
 
 /* Define each translation/variaton here */

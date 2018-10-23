@@ -1,5 +1,5 @@
-import { MessageType, MessageMap, SayMessage } from "../../types_rn/TwilioTypes";
-import { generateUrl } from "../../utils";
+import { MessageType, MessageMap, SayMessage } from "../../../types_rn/TwilioTypes";
+import { generateUrl } from "../../../utils";
 
 const generateText = (text): SayMessage => {
   return {

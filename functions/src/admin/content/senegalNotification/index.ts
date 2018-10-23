@@ -4,7 +4,6 @@ import en_au_messages from './en_au_messages';
 import { BotConfig } from '../../../types_rn/TwilioTypes';
 
 
-
 const en_au: BotConfig = {
   blocks: en_au_blocks,
   flows: en_au_flows,

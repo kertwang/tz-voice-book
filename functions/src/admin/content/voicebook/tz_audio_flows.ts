@@ -1,4 +1,4 @@
-import { FlowMap, FlowType, BlockId } from "../../types_rn/TwilioTypes";
+import { FlowMap, FlowType, BlockId } from "../../../types_rn/TwilioTypes";
 
 /**
  * Flows is a graph based data structure, with the key being the valid

@@ -1,5 +1,5 @@
-import { MessageType, MessageMap } from "../../types_rn/TwilioTypes";
-import { generateUrl } from "../../utils";
+import { MessageType, MessageMap } from "../../../types_rn/TwilioTypes";
+import { generateUrl } from "../../../utils";
 
 const urlPrefix = 'https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/';
 const firebaseToken = '1536715274666696'; //This isn't too precious, our files are public anyway

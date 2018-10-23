@@ -1,4 +1,4 @@
-import { BlockType, BlockMap } from "../../types_rn/TwilioTypes";
+import { BlockType, BlockMap } from "../../../types_rn/TwilioTypes";
 
 
 const TwilioBlocks: BlockMap = {
