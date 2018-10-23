@@ -102,7 +102,7 @@ class TwilioRouter {
                 //this has a flow type of gather- breaking some weird stuff
                 case (TwilioTypes_1.BlockId.listen_playback): {
                     const gather = response.gather({
-                        action: `${Env_1.baseUrl}/twiml/gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
+                        action: `${Env_1.baseUrl}/twiml/${botId}gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
                         method: 'POST',
                         input: 'dtmf',
                         numDigits: 1,
@@ -127,7 +127,7 @@ class TwilioRouter {
                         }
                         console.log("ERROR in handlePlaybackBlock, bad message:", message);
                     });
-                    let redirectUrl = utils_1.buildPaginatedUrl(Env_1.baseUrl, blockName, page + 1, pageSize, ctx.maxMessages);
+                    let redirectUrl = utils_1.buildPaginatedUrl(Env_1.baseUrl, botId, blockName, page + 1, pageSize, ctx.maxMessages);
                     if ((page * pageSize) > totalCount) {
                         //We are out of messages, redirect to next block
                         redirectUrl = `${Env_1.baseUrl}/twiml/${nextBlock}`;
@@ -142,13 +142,13 @@ class TwilioRouter {
                     if (recordings.length === 0) {
                         //Try again
                         //TODO: fix slow infinte loop here :(
-                        response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${TwilioTypes_1.BlockId.record_delete}`);
+                        response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${botId}/${TwilioTypes_1.BlockId.record_delete}`);
                         return response;
                     }
                     const recording = recordings[0];
                     // response.say({}, 'You said:');
                     response.play({}, recording.url);
-                    response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${nextBlock}`);
+                    response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${botId}/${nextBlock}`);
                     break;
                 }
                 default:
@@ -195,7 +195,7 @@ class TwilioRouter {
                         break;
                     }
                 }
-                const redirectUrl = utils_1.buildPaginatedUrl(Env_1.baseUrl, TwilioTypes_1.BlockId.listen_playback, nextPage, ctx.pageSize, ctx.maxMessages);
+                const redirectUrl = utils_1.buildPaginatedUrl(Env_1.baseUrl, config.botId, TwilioTypes_1.BlockId.listen_playback, nextPage, ctx.pageSize, ctx.maxMessages);
                 console.log("redirect url is:", redirectUrl);
                 response.redirect({ method: 'POST' }, redirectUrl);
                 return response.toString();
@@ -242,7 +242,7 @@ class TwilioRouter {
                         }
                         const nextBlock = flow.digitMatches[idx].nextBlock;
                         const response = new VoiceResponse();
-                        response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${nextBlock}`);
+                        response.redirect({ method: 'POST' }, `${Env_1.baseUrl}/twiml/${config.botId}/${nextBlock}`);
                         return response.toString();
                     }
                 default: {

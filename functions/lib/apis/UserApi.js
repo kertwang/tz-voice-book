@@ -9,12 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 class UserApi {
-    static fromMobileNumber(fb, mobile) {
+    static fromMobileNumber(fb, botId, mobile) {
         return __awaiter(this, void 0, void 0, function* () {
             const api = new UserApi();
             api.fb = fb;
             //Set up the user api from the mobile number
-            api.user = yield fb.getUserFromMobile(mobile);
+            api.user = yield fb.getUserFromMobile(mobile, botId);
             return api;
         });
     }

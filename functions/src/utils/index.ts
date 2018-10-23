@@ -79,6 +79,6 @@ export const saftelyGetPageParamsOrDefaults = (params): PageParams => {
 /**
  * Make a magical paginated url
  */
-export const buildPaginatedUrl = (baseUrl: string, blockName: BlockId, nextPageNo: number, pageSize: number, maxMessages: number) => {
-  return `${baseUrl}/twiml/${blockName}?page=${nextPageNo}\&pageSize=${pageSize}\&maxMessages=${maxMessages}`;
+export const buildPaginatedUrl = (baseUrl: string, botId: BotId, blockName: BlockId, nextPageNo: number, pageSize: number, maxMessages: number) => {
+  return `${baseUrl}/twiml/${botId}/${blockName}?page=${nextPageNo}\&pageSize=${pageSize}\&maxMessages=${maxMessages}`;
 }

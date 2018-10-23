@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import FirebaseApi from "./FirebaseApi";
 import { fstat } from 'fs';
-import { VersionId } from '../types_rn/TwilioTypes';
+import { VersionId, BotId } from '../types_rn/TwilioTypes';
 
 /**
  * UserApi is the api we use to keep a track of users based
@@ -28,11 +28,11 @@ export default class UserApi {
   private user: User;
 
 
-  public static async fromMobileNumber(fb: FirebaseApi, mobile: string): Promise<UserApi> {
+  public static async fromMobileNumber(fb: FirebaseApi, botId: BotId, mobile: string): Promise<UserApi> {
     const api = new UserApi();  
     api.fb = fb;
     //Set up the user api from the mobile number
-    api.user = await fb.getUserFromMobile(mobile);
+    api.user = await fb.getUserFromMobile(mobile, botId);
 
     return api;
   }
