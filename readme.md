@@ -217,3 +217,17 @@ curl -X POST \
 
 
 
+
+```bash
+NO_1=+61410237238
+NO_2=+19783999202
+NO_3=+17862179055
+NO_4=+18322476664
+
+
+URL="https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/triggerCall?temporaryInsecureAuthKey=xP6mXwOpuJTYzs2Enxi"
+CALL_URL=https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=en_au
+
+curl -X POST $URL -H 'Content-Type: application/json' -d '{ "mobile": ""$NO_1"", "url": "$CALL_URL"}'
+
+```
