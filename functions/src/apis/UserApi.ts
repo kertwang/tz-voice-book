@@ -8,7 +8,6 @@ import { VersionId, BotId } from '../types_rn/TwilioTypes';
  * on their phone number and interactions
  */
 
-
 export type User = {
   mobile: string,
   name: string,

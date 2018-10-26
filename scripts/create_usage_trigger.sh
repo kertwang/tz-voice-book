@@ -11,7 +11,7 @@ curl -XPOST https://api.twilio.com/2010-04-01/Accounts/$TWILIO_ACCOUNT_SID/Usage
     -d "UsageCategory=totalprice" \
     -d "FriendlyName=test_trigger" \
     -d "TriggerBy=price" \
-    -d "TriggerValue=0.7000" \
+    -d "TriggerValue=5.0000" \
     -d "Recurring=daily" \
     -u "$TWILIO_ACCOUNT_SID:$TWILIO_AUTH_TOKEN"
 

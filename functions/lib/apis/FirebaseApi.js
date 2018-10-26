@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
+const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
 class FirebaseApi {
     constructor(fs) {
         this.fs = fs;
@@ -201,6 +202,27 @@ class FirebaseApi {
             console.log(`Saving config to bot/${new_botId}/version/${versionId}/`);
             return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(config);
         });
+    }
+    //
+    // DialogFlow API
+    // ----------------------------
+    getDFUser(botId, sessionId) {
+        return this.fs.collection('df').doc(botId).collection('users').doc(sessionId).get()
+            .then((doc) => doc.data())
+            .then((user) => {
+            if (!user) {
+                throw new Error(`No user found for sessionId: ${sessionId}`);
+            }
+            return { type: AppProviderTypes_1.ResultType.SUCCESS, result: user };
+        })
+            .catch(err => {
+            return { type: AppProviderTypes_1.ResultType.ERROR, message: err.message };
+        });
+    }
+    saveDFUser(botId, sessionId, user) {
+        return this.fs.collection('df').doc(botId).collection('users').doc(sessionId).set(user)
+            .then(() => ({ type: AppProviderTypes_1.ResultType.SUCCESS, result: null }))
+            .catch(err => ({ type: AppProviderTypes_1.ResultType.ERROR, message: err.message }));
     }
 }
 exports.default = FirebaseApi;

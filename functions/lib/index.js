@@ -7,4 +7,5 @@ exports.admin = require('./handlers/fn_admin')(functions, fbAdmin);
 exports.message = require('./handlers/fn_message')(functions, fbAdmin);
 exports.reset_pin = require('./handlers/fn_reset_pin')(functions, fbAdmin);
 exports.twiml = require('./handlers/fn_twiml')(functions);
+exports.dialogflow = require('./handlers/fn_dialogflow');
 //# sourceMappingURL=index.js.map

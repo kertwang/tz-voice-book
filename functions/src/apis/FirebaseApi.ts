@@ -1,6 +1,8 @@
 import { User, Recording } from "./UserApi";
 import { sleep, getDefaultVersionForBot } from "../utils";
 import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage, MessageType } from "../types_rn/TwilioTypes";
+import { DFUser } from "../handlers/fn_dialogflow";
+import { SomeResult, ResultType } from "../types_rn/AppProviderTypes";
 
 export default class FirebaseApi {
   fs: any;
@@ -201,5 +203,31 @@ export default class FirebaseApi {
   public async deployConfigForBotAndVersion(new_botId: BotId, versionId: VersionId, config: BotConfig) {
     console.log(`Saving config to bot/${new_botId}/version/${versionId}/`);
     return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(config);
+  }
+
+
+  //
+  // DialogFlow API
+  // ----------------------------
+
+  public getDFUser(botId: string, sessionId: string): Promise<SomeResult<DFUser>> {
+    return this.fs.collection('df').doc(botId).collection('users').doc(sessionId).get()
+      .then((doc: any) => doc.data())
+      .then((user: DFUser) => {
+        if (!user) {
+          throw new Error(`No user found for sessionId: ${sessionId}`);
+        }
+
+        return { type: ResultType.SUCCESS, result: user }
+      })
+      .catch(err => {
+        return { type: ResultType.ERROR, message: err.message}
+      });
+  }
+
+  public saveDFUser(botId: string, sessionId: string, user: DFUser): Promise<SomeResult<void>> {
+    return this.fs.collection('df').doc(botId).collection('users').doc(sessionId).set(user)
+    .then(() => ({ type: ResultType.SUCCESS, result: null }))
+    .catch(err => ({ type: ResultType.ERROR, message: err.message }))
   }
 }
