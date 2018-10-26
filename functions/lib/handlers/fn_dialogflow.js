@@ -13,7 +13,7 @@ const FirebaseApi_1 = require("../apis/FirebaseApi");
 const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
-const { Card, Suggestion } = require('dialogflow-fulfillment');
+const { Card, Suggestion, Payload, PLATFORMS } = require('dialogflow-fulfillment');
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 //TODO: add basic auth
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
@@ -41,12 +41,25 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                 return;
             }
             const mobile = userResult.result.mobile;
-            let card = new Card('Last Numbers:');
+            // let card = new Card('Last Numbers:'); 
+            // card.setPlatform("FACEBOOK");
+            // //TODO: use payload instead
             conv.add('Who should I call?');
-            // card.setButton({ title: mobile, text: 'Call'});
-            card.setButton({ text: 'button text', url: 'http://yoururlhere.com' });
-            conv.add(card);
+            // // card.setButton({ title: mobile, text: 'Call'});
+            // card.setButton({text: mobile, url: 'http://yoururlhere.com' });
+            // conv.add(card);
+            // conv.add('Or just type a new number.');
+            // conv.add(new Card({
+            //   title: `Title: this is a card title`,
+            //   imageUrl: 'https://dialogflow.com/images/api_home_laptop.svg',
+            //   text: `This is the body text of a card.  You can even use line\n  breaks and emoji! 💁`,
+            //   buttonText: 'This is a button',
+            //   buttonUrl: 'this is a button',
+            //   platform: "FACEBOOK",
+            // }));
             conv.add('Or just type a new number.');
+            conv.add(new Suggestion({ title: `${mobile}`, platform: 'FACEBOOK' }));
+            return;
         });
     }
     function menuCallMobile(conv) {
