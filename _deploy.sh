@@ -16,7 +16,10 @@ firebase functions:config:set \
   config.base_url="$BASE_URL" \
   config.service_account_key_file_name="$serviceAccountKeyFileName" \
   config.database_url="$databaseUrl" \
-  config.storage_bucket="$storageBucket"
+  config.storage_bucket="$storageBucket" \
+  config.informal_notification_url="$informal_notification_url" \
+  config.formal_notification_url="$formal_notification_url" \
+  config.mm_101_url="$mm_101_url"
 
 firebase deploy --only functions
 

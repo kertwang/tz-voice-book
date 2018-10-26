@@ -11,6 +11,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Firestore_1 = require("../apis/Firestore");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
+const TwilioApi_1 = require("../apis/TwilioApi");
+const Env_1 = require("../utils/Env");
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion, Payload, PLATFORMS } = require('dialogflow-fulfillment');
@@ -18,6 +20,7 @@ process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 //TODO: add basic auth
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
     const firebaseApi = new FirebaseApi_1.default(Firestore_1.default);
+    const twilioApi = new TwilioApi_1.TwilioApi();
     const client = new WebhookClient({ request, response });
     console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
     console.log('Dialogflow Request body: ' + JSON.stringify(request.body, null, 2));
@@ -49,22 +52,19 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             // card.setButton({text: mobile, url: 'http://yoururlhere.com' });
             // conv.add(card);
             // conv.add('Or just type a new number.');
-            // conv.add(new Card({
-            //   title: `Title: this is a card title`,
-            //   imageUrl: 'https://dialogflow.com/images/api_home_laptop.svg',
-            //   text: `This is the body text of a card.  You can even use line\n  breaks and emoji! 💁`,
-            //   buttonText: 'This is a button',
-            //   buttonUrl: 'this is a button',
-            //   platform: "FACEBOOK",
-            // }));
+            conv.add(new Card({
+                title: `Saved numbers:`,
+                buttonText: mobile,
+                buttonUrl: mobile,
+                platform: "FACEBOOK",
+            }));
             conv.add('Or just type a new number.');
-            conv.add(new Suggestion({ title: `${mobile}`, platform: 'FACEBOOK' }));
+            // conv.add(new Suggestion({title: `${mobile}`, platform: 'FACEBOOK'}));
             return;
         });
     }
     function menuCallMobile(conv) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("request.body", request.body);
             const mobile = request.body.result.parameters.mobile;
             if (!mobile) {
                 conv.add("I'm Sorry. Something went wrong. Please say 'menu' to try again.");
@@ -79,44 +79,84 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                 return;
             }
             conv.add('Thanks.');
-            conv.add('What type of call should I make?');
-            //TODO: Add cards for each call type
+            conv.add('What type of call should they recieve?.');
+            conv.add(new Card({
+                title: `Informal Payment Notification`,
+                buttonText: 'CALL',
+                buttonUrl: 'informal_payment_notification',
+                platform: "FACEBOOK",
+            }));
+            conv.add(new Card({
+                title: `Formal Payment Notification:`,
+                buttonText: 'CALL',
+                buttonUrl: 'formal_payment_notification',
+                platform: "FACEBOOK",
+            }));
+            conv.add(new Card({
+                title: `Mobile Money 101:`,
+                buttonText: 'CALL',
+                buttonUrl: 'mm101',
+                platform: "FACEBOOK",
+            }));
             return;
         });
     }
-    // // Uncomment and edit to make your own intent handler
-    // // uncomment `intentMap.set('your intent name here', yourFunctionHandler);`
-    // // below to get this function to be run when a Dialogflow intent is matched
-    // function yourFunctionHandler(agent) {
-    //   agent.add(`This message is from Dialogflow's Cloud Functions for Firebase inline editor!`);
-    //   agent.add(new Card({
-    //       title: `Title: this is a card title`,
-    //       imageUrl: 'https://dialogflow.com/images/api_home_laptop.svg',
-    //       text: `This is the body text of a card.  You can even use line\n  breaks and emoji! 💁`,
-    //       buttonText: 'This is a button',
-    //       buttonUrl: 'https://docs.dialogflow.com/'
-    //     })
-    //   );
-    //   agent.add(new Suggestion(`Quick Reply`));
-    //   agent.add(new Suggestion(`Suggestion`));
-    //   agent.setContext({ name: 'weather', lifespan: 2, parameters: { city: 'Rome' }});
-    // }
-    // // Uncomment and edit to make your own Google Assistant intent handler
-    // // uncomment `intentMap.set('your intent name here', googleAssistantHandler);`
-    // // below to get this function to be run when a Dialogflow intent is matched
-    // function googleAssistantHandler(agent) {
-    //   let conv = agent.conv(); // Get Actions on Google library conv instance
-    //   conv.ask('Hello from the Actions on Google client library!') // Use Actions on Google library
-    //   agent.add(conv); // Add Actions on Google library responses to your agent's response
-    // }
-    // Run the proper function handler based on the matched Dialogflow intent name
-    let intentMap = new Map();
+    function triggerFormalCall(conv) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const url = Env_1.formalNotificationUrl;
+            yield triggerCall(conv, url);
+            handlePostCall(conv);
+        });
+    }
+    function triggerInformalCall(conv) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const url = Env_1.informalNotificationUrl;
+            yield triggerCall(conv, url);
+            handlePostCall(conv);
+        });
+    }
+    function triggerMMCall(conv) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const url = Env_1.mm101CallUrl;
+            yield triggerCall(conv, url);
+            handlePostCall(conv);
+        });
+    }
+    function triggerCall(conv, url) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userResult = yield firebaseApi.getDFUser(botId, sessionId);
+            if (userResult.type === AppProviderTypes_1.ResultType.ERROR || !userResult.result.mobile) {
+                //No existing user
+                //TODO: Translate?
+                conv.add(`Something went wrong. Please try again.`);
+                return;
+            }
+            try {
+                yield twilioApi.startCall(userResult.result.mobile, url);
+            }
+            catch (err) {
+                conv.add(`There was a problem making the call. Please try again.`);
+            }
+            return;
+        });
+    }
+    function handlePostCall(conv) {
+        conv.add('Making the call now.');
+        conv.add(new Card({
+            title: `Make another Call`,
+            buttonText: 'New Call',
+            buttonUrl: 'trigger call',
+            platform: "FACEBOOK",
+        }));
+    }
+    const intentMap = new Map();
     intentMap.set('Default Welcome Intent', welcome);
     intentMap.set('Default Fallback Intent', fallback);
     intentMap.set('menu.call', menuCall);
     intentMap.set('menu.call.mobile', menuCallMobile);
-    // intentMap.set('<INTENT_NAME_HERE>', yourFunctionHandler);
-    // intentMap.set('<INTENT_NAME_HERE>', googleAssistantHandler);
+    intentMap.set('menu.call.mobile.formal', triggerFormalCall);
+    intentMap.set('menu.call.mobile.informal', triggerInformalCall);
+    intentMap.set('menu.call.mobile.mm101', triggerMMCall);
     client.handleRequest(intentMap);
 });
 //# sourceMappingURL=fn_dialogflow.js.map

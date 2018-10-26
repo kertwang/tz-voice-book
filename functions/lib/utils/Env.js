@@ -10,4 +10,7 @@ exports.temporaryInsecureAuthKey = envConfig.config.temporary_insecure_auth_key;
 exports.serviceAccountKeyFileName = envConfig.config.service_account_key_file_name;
 exports.databaseUrl = envConfig.config.database_url;
 exports.storageBucket = envConfig.config.storage_bucket;
+exports.informalNotificationUrl = envConfig.config.informal_notification_url;
+exports.formalNotificationUrl = envConfig.config.formal_notification_url;
+exports.mm101CallUrl = envConfig.config.mm_101_url;
 //# sourceMappingURL=Env.js.map
