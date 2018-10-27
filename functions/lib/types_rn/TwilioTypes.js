@@ -4,11 +4,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * A block is a request for twiml that we respond to.
  * Similar to the idea of blocks in Twilio Studio
  *
- * //TODO: how do we abstract this away for blocks of new bots?
- * //I think we need a new namespace on top of this
+ * BlockIds are not bot specific, and can be reused or recycled.
  */
 var BlockId;
 (function (BlockId) {
+    /* voicebook */
     BlockId["entrypoint"] = "entrypoint";
     BlockId["intro_0"] = "intro_0";
     BlockId["listen_0"] = "listen_0";
@@ -25,7 +25,42 @@ var BlockId;
     BlockId["record_save"] = "record_save";
     BlockId["record_delete"] = "record_delete";
     BlockId["record_post_or_delete_error"] = "record_post_or_delete_error";
+    /* senegalNotification */
     BlockId["notification_0"] = "notification_0";
+    /* senegalMobileMoney */
+    BlockId["story_1_intro_1"] = "story_1_intro_1";
+    BlockId["story_1_intro_option_1"] = "story_1_intro_option_1";
+    BlockId["story_1_intro_option_2"] = "story_1_intro_option_2";
+    BlockId["story_1_pin_advice"] = "story_1_pin_advice";
+    BlockId["story_1_pin_option_1"] = "story_1_pin_option_1";
+    BlockId["story_1_pin_option_2"] = "story_1_pin_option_2";
+    BlockId["story_1_guess"] = "story_1_guess";
+    BlockId["story_1_guess_option_2"] = "story_1_guess_option_2";
+    BlockId["story_1_customer"] = "story_1_customer";
+    BlockId["story_1_customer_option_2"] = "story_1_customer_option_2";
+    BlockId["story_1_end"] = "story_1_end";
+    BlockId["story_1_next"] = "story_1_next";
+    BlockId["story_2_intro"] = "story_2_intro";
+    BlockId["story_2_intro_option_1"] = "story_2_intro_option_1";
+    BlockId["story_2_intro_option_2"] = "story_2_intro_option_2";
+    BlockId["story_2_explain"] = "story_2_explain";
+    BlockId["story_2_explain_option_1"] = "story_2_explain_option_1";
+    BlockId["story_2_explain_option_2"] = "story_2_explain_option_2";
+    BlockId["story_2_customer_care"] = "story_2_customer_care";
+    BlockId["story_2_send_no_agent"] = "story_2_send_no_agent";
+    BlockId["story_2_send_agent_option_1"] = "story_2_send_agent_option_1";
+    BlockId["story_2_send_explain"] = "story_2_send_explain";
+    BlockId["story_2_send_explain_option_1"] = "story_2_send_explain_option_1";
+    BlockId["story_2_send_explain_option_2"] = "story_2_send_explain_option_2";
+    BlockId["story_2_send_explain_2"] = "story_2_send_explain_2";
+    BlockId["story_2_end"] = "story_2_end";
+    BlockId["story_2_next"] = "story_2_next";
+    BlockId["story_3_intro"] = "story_3_intro";
+    BlockId["story_3_intro_option_1"] = "story_3_intro_option_1";
+    BlockId["story_3_intro_option_2"] = "story_3_intro_option_2";
+    BlockId["story_3_decision"] = "story_3_decision";
+    BlockId["story_3_decision_option_1"] = "story_3_decision_option_1";
+    BlockId["story_3_end"] = "story_3_end";
 })(BlockId = exports.BlockId || (exports.BlockId = {}));
 var FlowType;
 (function (FlowType) {

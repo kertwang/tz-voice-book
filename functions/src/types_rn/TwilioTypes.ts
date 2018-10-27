@@ -6,10 +6,10 @@ import Version = require("twilio/lib/base/Version");
  * A block is a request for twiml that we respond to.
  * Similar to the idea of blocks in Twilio Studio
  * 
- * //TODO: how do we abstract this away for blocks of new bots?
- * //I think we need a new namespace on top of this
+ * BlockIds are not bot specific, and can be reused or recycled.
  */
 export enum BlockId {
+  /* voicebook */
   entrypoint = 'entrypoint',
   intro_0 = 'intro_0',
   listen_0 = 'listen_0',
@@ -27,14 +27,44 @@ export enum BlockId {
   record_delete ='record_delete',
   record_post_or_delete_error = 'record_post_or_delete_error',
 
+  /* senegalNotification */
   notification_0 = 'notification_0',
+
+  /* senegalMobileMoney */
+  story_1_intro_1 = 'story_1_intro_1',
+  story_1_intro_option_1 = 'story_1_intro_option_1',
+  story_1_intro_option_2 = 'story_1_intro_option_2',
+  story_1_pin_advice = 'story_1_pin_advice',
+  story_1_pin_option_1 = 'story_1_pin_option_1',
+  story_1_pin_option_2 = 'story_1_pin_option_2',
+  story_1_guess = 'story_1_guess',
+  story_1_guess_option_2 = 'story_1_guess_option_2',
+  story_1_customer = 'story_1_customer',
+  story_1_customer_option_2 = 'story_1_customer_option_2',
+  story_1_end = 'story_1_end',
+  story_1_next = 'story_1_next',
+  story_2_intro = 'story_2_intro',
+  story_2_intro_option_1 = 'story_2_intro_option_1',
+  story_2_intro_option_2 = 'story_2_intro_option_2',
+  story_2_explain = 'story_2_explain',
+  story_2_explain_option_1 = 'story_2_explain_option_1',
+  story_2_explain_option_2 = 'story_2_explain_option_2',
+  story_2_customer_care = 'story_2_customer_care',
+  story_2_send_no_agent = 'story_2_send_no_agent',
+  story_2_send_agent_option_1 = 'story_2_send_agent_option_1',
+  story_2_send_explain = 'story_2_send_explain',
+  story_2_send_explain_option_1 = 'story_2_send_explain_option_1',
+  story_2_send_explain_option_2 = 'story_2_send_explain_option_2',
+  story_2_send_explain_2 = 'story_2_send_explain_2',
+  story_2_end = 'story_2_end',
+  story_2_next = 'story_2_next',
+  story_3_intro = 'story_3_intro',
+  story_3_intro_option_1 = 'story_3_intro_option_1',
+  story_3_intro_option_2 = 'story_3_intro_option_2',
+  story_3_decision = 'story_3_decision',
+  story_3_decision_option_1 = 'story_3_decision_option_1',
+  story_3_end = 'story_3_end',
 }
-
-// export enum SenegalNotificationBlockId { 
-//   entrypoint = 'entrypoint',
-//   notification_0 = 'notification_0',
-// }
-
 
 
 /**
@@ -199,7 +229,7 @@ export type SenegalNotificationMessageMap = {
 }
 
 export type SenegalMobileMoneyMessageMap = {
-  
+
 }
 
 export enum MessageType {

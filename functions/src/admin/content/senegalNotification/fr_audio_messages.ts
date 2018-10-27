@@ -1,12 +1,5 @@
 import { MessageType, MessageMap, SayMessage, AnyMessageMap, SenegalNotificationMessageMap } from "../../../types_rn/TwilioTypes";
-
-const generateText = (text): SayMessage => {
-  return {
-    type: MessageType.SAY,
-    text,
-    language: 'en-AU' 
-  }
-}
+import { generateText } from "../../utils";
 
 /* the deploy script will automatically fill in the urls for us */
 const en_text: SenegalNotificationMessageMap = {
