@@ -5,11 +5,14 @@ import { generateText } from "../../utils";
 /* the deploy script will automatically fill in the urls for us */
 const en_text: SenegalMobileMoneyMessageMap = {
   entrypoint: [
-    generateText("This is a voice notification from Orange. You’ve just received your quarterly Bourse Familiale payment. The amount is twenty-five thousand francs. To get your money just go to the nearest Orange agent and tell them the amount that you'd like to withdraw."),
+    // generateText("This is a voice notification from Orange. You’ve just received your quarterly Bourse Familiale payment. The amount is twenty-five thousand francs. To get your money just go to the nearest Orange agent and tell them the amount that you'd like to withdraw."),
+    generateText("This is a thing."),
   ],
   entrypoint_option: [
-    generateText("To hear the amount you’ve received again, press 1"),
-    generateText("To hear success stories from people who receive the Bourse Familiale and learn more about using your phone for mobile money, press 2"),
+    // generateText("To hear the amount you’ve received again, press 1"),
+    // generateText("To hear success stories from people who receive the Bourse Familiale and learn more about using your phone for mobile money, press 2"),
+
+    generateText("press 1 or two"),
   ],
   story_1_intro: [
     generateText("I'd just received a mobile money payment that I was really counting on, so I went to the mobile money agent to get my money right away."),

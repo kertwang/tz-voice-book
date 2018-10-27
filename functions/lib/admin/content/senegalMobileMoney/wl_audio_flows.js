@@ -63,7 +63,7 @@ const TwilioFlows = {
         type: TwilioTypes_1.FlowType.GATHER,
         error: TwilioTypes_1.BlockId.error_0,
         digitMatches: [
-            { digits: '2', nextBlock: TwilioTypes_1.BlockId.story_1_end },
+            { digits: '1', nextBlock: TwilioTypes_1.BlockId.story_1_end },
         ],
     },
     'story_1_end': {

@@ -62,7 +62,7 @@ const TwilioFlows: SenegalMobileMoneyFlowMap = {
     type: FlowType.GATHER,
     error: BlockId.error_0,
     digitMatches: [
-      { digits: '2', nextBlock: BlockId.story_1_end },
+      { digits: '1', nextBlock: BlockId.story_1_end },
     ], 
   },
   'story_1_end': { 
