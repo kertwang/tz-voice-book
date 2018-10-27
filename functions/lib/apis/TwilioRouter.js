@@ -311,6 +311,7 @@ class TwilioRouter {
                 // Default implementation
                 case TwilioTypes_1.BlockId.intro_0:
                 case TwilioTypes_1.BlockId.listen_end:
+                default:
                     //TODO: handle the digits as well!
                     {
                         const validDigits = flow.digitMatches.map(d => d.digits);
@@ -334,12 +335,6 @@ class TwilioRouter {
                         }));
                         return response.toString();
                     }
-                default: {
-                    console.log(`ERROR: gatherNextMessage not implemented for ${currentBlock}`);
-                    const response = new VoiceResponse();
-                    response.say({}, 'Sorry. There was a problem. Please try again.');
-                    return response.toString();
-                }
             }
         });
     }
