@@ -96,6 +96,34 @@ export type SenegalNotificationFlowMap = {
 }
 
 export type SenegalMobileMoneyFlowMap = {
+  /* senegalMobileMoney */
+  entrypoint: DefaultFlow | GatherFlow,
+  story_1_intro_option: DefaultFlow | GatherFlow,
+  story_1_pin_advice: DefaultFlow | GatherFlow,
+  story_1_pin_option: DefaultFlow | GatherFlow,
+  story_1_guess: DefaultFlow | GatherFlow,
+  story_1_guess_option: DefaultFlow | GatherFlow,
+  story_1_customer: DefaultFlow | GatherFlow,
+  story_1_customer_option_2: DefaultFlow | GatherFlow,
+  story_1_end: DefaultFlow | GatherFlow,
+  story_1_next: DefaultFlow | GatherFlow,
+  story_2_intro: DefaultFlow | GatherFlow,
+  story_2_intro_option: DefaultFlow | GatherFlow,
+  story_2_explain: DefaultFlow | GatherFlow,
+  story_2_explain_option: DefaultFlow | GatherFlow,
+  story_2_customer_care: DefaultFlow | GatherFlow,
+  story_2_send_no_agent: DefaultFlow | GatherFlow,
+  story_2_send_agent_option: DefaultFlow | GatherFlow,
+  story_2_send_explain: DefaultFlow | GatherFlow,
+  story_2_send_explain_option: DefaultFlow | GatherFlow,
+  story_2_send_explain_2: DefaultFlow | GatherFlow,
+  story_2_end: DefaultFlow | GatherFlow,
+  story_2_next: DefaultFlow | GatherFlow,
+  story_3_intro: DefaultFlow | GatherFlow,
+  story_3_intro_option: DefaultFlow | GatherFlow,
+  story_3_decision: DefaultFlow | GatherFlow,
+  story_3_decision_option: DefaultFlow | GatherFlow,
+  story_3_end: DefaultFlow | GatherFlow,
 
 }
 
@@ -163,7 +191,33 @@ export type SenegalNotificationBlockMap = {
 }
 
 export type SenegalMobileMoneyBlockMap = {
-
+  entrypoint: AnyBlock,
+  story_1_intro_option: AnyBlock,
+  story_1_pin_advice: AnyBlock,
+  story_1_pin_option: AnyBlock,
+  story_1_guess: AnyBlock,
+  story_1_guess_option: AnyBlock,
+  story_1_customer: AnyBlock,
+  story_1_customer_option_2: AnyBlock,
+  story_1_end: AnyBlock,
+  story_1_next: AnyBlock,
+  story_2_intro: AnyBlock,
+  story_2_intro_option: AnyBlock,
+  story_2_explain: AnyBlock,
+  story_2_explain_option: AnyBlock,
+  story_2_customer_care: AnyBlock,
+  story_2_send_no_agent: AnyBlock,
+  story_2_send_agent_option: AnyBlock,
+  story_2_send_explain: AnyBlock,
+  story_2_send_explain_option: AnyBlock,
+  story_2_send_explain_2: AnyBlock,
+  story_2_end: AnyBlock,
+  story_2_next: AnyBlock,
+  story_3_intro: AnyBlock,
+  story_3_intro_option: AnyBlock,
+  story_3_decision: AnyBlock,
+  story_3_decision_option: AnyBlock,
+  story_3_end: AnyBlock,
 }
 
 export enum BlockType {
@@ -222,7 +276,33 @@ export type SenegalNotificationMessageMap = {
 }
 
 export type SenegalMobileMoneyMessageMap = {
-
+  entrypoint: SayMessage[] | PlayMessage[],
+  story_1_intro_option: SayMessage[] | PlayMessage[],
+  story_1_pin_advice: SayMessage[] | PlayMessage[],
+  story_1_pin_option: SayMessage[] | PlayMessage[],
+  story_1_guess: SayMessage[] | PlayMessage[],
+  story_1_guess_option: SayMessage[] | PlayMessage[],
+  story_1_customer: SayMessage[] | PlayMessage[],
+  story_1_customer_option_2: SayMessage[] | PlayMessage[],
+  story_1_end: SayMessage[] | PlayMessage[],
+  story_1_next: SayMessage[] | PlayMessage[],
+  story_2_intro: SayMessage[] | PlayMessage[],
+  story_2_intro_option: SayMessage[] | PlayMessage[],
+  story_2_explain: SayMessage[] | PlayMessage[],
+  story_2_explain_option: SayMessage[] | PlayMessage[],
+  story_2_customer_care: SayMessage[] | PlayMessage[],
+  story_2_send_no_agent: SayMessage[] | PlayMessage[],
+  story_2_send_agent_option: SayMessage[] | PlayMessage[],
+  story_2_send_explain: SayMessage[] | PlayMessage[],
+  story_2_send_explain_option: SayMessage[] | PlayMessage[],
+  story_2_send_explain_2: SayMessage[] | PlayMessage[],
+  story_2_end: SayMessage[] | PlayMessage[],
+  story_2_next: SayMessage[] | PlayMessage[],
+  story_3_intro: SayMessage[] | PlayMessage[],
+  story_3_intro_option: SayMessage[] | PlayMessage[],
+  story_3_decision: SayMessage[] | PlayMessage[],
+  story_3_decision_option: SayMessage[] | PlayMessage[],
+  story_3_end: SayMessage[] | PlayMessage[],
 }
 
 export enum MessageType {
