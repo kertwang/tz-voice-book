@@ -14,27 +14,27 @@ import { BotConfig, BotId } from '../../../types_rn/TwilioTypes';
 
 
 const en_text: BotConfig = {
-  botId: BotId.senegalNotification,
+  botId: BotId.senegalMobileMoney,
   blocks: en_text_formal_blocks,
   flows: en_text_formal_flows,
   messages: en_text_formal_messages,
 };
 
 const fr_audio: BotConfig = {
-  botId: BotId.senegalNotification,
+  botId: BotId.senegalMobileMoney,
   blocks: fr_audio_formal_blocks,
   flows: fr_audio_formal_flows,
   messages: fr_audio_formal_messages,
 };
 
 const wl_audio: BotConfig = {
-  botId: BotId.senegalNotification,
+  botId: BotId.senegalMobileMoney,
   blocks: wl_audio_formal_blocks,
   flows: wl_audio_formal_flows,
   messages: wl_audio_formal_messages,
 };
 
-const configs = { 
+const configs = {
   en_text,
   fr_audio,
   wl_audio

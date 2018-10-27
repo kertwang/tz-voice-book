@@ -11,19 +11,19 @@ const wl_audio_flows_1 = require("./wl_audio_flows");
 const wl_audio_messages_1 = require("./wl_audio_messages");
 const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
 const en_text = {
-    botId: TwilioTypes_1.BotId.senegalNotification,
+    botId: TwilioTypes_1.BotId.senegalMobileMoney,
     blocks: en_text_blocks_1.default,
     flows: en_text_flows_1.default,
     messages: en_text_messages_1.default,
 };
 const fr_audio = {
-    botId: TwilioTypes_1.BotId.senegalNotification,
+    botId: TwilioTypes_1.BotId.senegalMobileMoney,
     blocks: fr_audio_blocks_1.default,
     flows: fr_audio_flows_1.default,
     messages: fr_audio_messages_1.default,
 };
 const wl_audio = {
-    botId: TwilioTypes_1.BotId.senegalNotification,
+    botId: TwilioTypes_1.BotId.senegalMobileMoney,
     blocks: wl_audio_blocks_1.default,
     flows: wl_audio_flows_1.default,
     messages: wl_audio_messages_1.default,

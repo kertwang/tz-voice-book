@@ -41,7 +41,7 @@ export enum BlockId {
  * Flow Types:
  */
 
-export type AnyFlowMap = FlowMap | SenegalNotificationFlowMap;
+export type AnyFlowMap = FlowMap | SenegalNotificationFlowMap | SenegalMobileMoneyFlowMap;
 
 
 //this is the voicebook block map
@@ -70,6 +70,10 @@ export type FlowMap = {
 export type SenegalNotificationFlowMap = {
   entrypoint: DefaultFlow | GatherFlow,
   notification_0: DefaultFlow | GatherFlow,
+}
+
+export type SenegalMobileMoneyFlowMap = {
+
 }
 
 export enum FlowType {
@@ -106,7 +110,7 @@ export type DigitMatch = {
  * Block Types
  */
 
-export type AnyBlockMap = BlockMap | SenegalNotificationBlockMap;
+export type AnyBlockMap = BlockMap | SenegalNotificationBlockMap | SenegalMobileMoneyBlockMap;
 
 export type AnyBlock = DefaultBlock | PlaybackBlock | RecordBlock | EndBlock;
 
@@ -133,6 +137,10 @@ export type BlockMap = {
 export type SenegalNotificationBlockMap = {
   entrypoint: AnyBlock,
   notification_0: AnyBlock,
+}
+
+export type SenegalMobileMoneyBlockMap = {
+
 }
 
 export enum BlockType {
@@ -162,7 +170,7 @@ export interface RecordBlock {
 /**
  * Message Types
  */
-export type AnyMessageMap = MessageMap | SenegalNotificationMessageMap;
+export type AnyMessageMap = MessageMap | SenegalNotificationMessageMap | SenegalMobileMoneyMessageMap;
 
 
 //TODO: change to VoicebookMessageMap
@@ -188,6 +196,10 @@ export type MessageMap = {
 export type SenegalNotificationMessageMap = {
   entrypoint: SayMessage[] | PlayMessage[],
   notification_0: SayMessage[] | PlayMessage[],
+}
+
+export type SenegalMobileMoneyMessageMap = {
+  
 }
 
 export enum MessageType {

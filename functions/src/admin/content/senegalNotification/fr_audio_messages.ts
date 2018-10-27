@@ -14,7 +14,7 @@ const en_text: SenegalNotificationMessageMap = {
     generateText('Hello. This is an automated notification.'),
   ],
   'notification_0': [
-    generateText('Hey buddy, You have recieved some money.'),
+    generateText('You have recieved some money.'),
   ],
 }
 
