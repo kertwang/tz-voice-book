@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
 const TwilioBlocks = {
     'entrypoint': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'entrypoint_option': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'story_1_intro': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_1_intro_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_1_pin_advice': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_1_pin_option': { type: TwilioTypes_1.BlockType.DEFAULT },

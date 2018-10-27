@@ -28,6 +28,8 @@ var BlockId;
     /* senegalNotification */
     BlockId["notification_0"] = "notification_0";
     /* senegalMobileMoney */
+    BlockId["entrypoint_option"] = "entrypoint_option";
+    BlockId["story_1_intro"] = "story_1_intro";
     BlockId["story_1_intro_option"] = "story_1_intro_option";
     BlockId["story_1_pin_advice"] = "story_1_pin_advice";
     BlockId["story_1_pin_option"] = "story_1_pin_option";
@@ -90,9 +92,8 @@ var VersionId;
     VersionId["en_us"] = "en_us";
     VersionId["en_au"] = "en_au";
     VersionId["tz_audio"] = "tz_audio";
-    VersionId["sg_text_formal"] = "sg_text_formal";
-    VersionId["sg_text_informal"] = "sg_text_informal";
-    VersionId["sg_audio_formal"] = "sg_audio_formal";
-    VersionId["sg_audio_informal"] = "sg_audio_informal"; //Audio, Informal Senegalese French
+    VersionId["en_text"] = "en_text";
+    VersionId["fr_audio"] = "fr_audio";
+    VersionId["wl_audio"] = "wl_audio";
 })(VersionId = exports.VersionId || (exports.VersionId = {}));
 //# sourceMappingURL=TwilioTypes.js.map

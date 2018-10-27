@@ -5,6 +5,13 @@ import { generateText } from "../../utils";
 /* the deploy script will automatically fill in the urls for us */
 const en_text: SenegalMobileMoneyMessageMap = {
   entrypoint: [
+    generateText("This is a voice notification from Orange. You’ve just received your quarterly Bourse Familiale payment. The amount is twenty-five thousand francs. To get your money just go to the nearest Orange agent and tell them the amount that you'd like to withdraw."),
+  ],
+  entrypoint_option: [
+    generateText("To hear the amount you’ve received again, press 1"),
+    generateText("To hear success stories from people who receive the Bourse Familiale and learn more about using your phone for mobile money, press 2"),
+  ],
+  story_1_intro: [
     generateText("I'd just received a mobile money payment that I was really counting on, so I went to the mobile money agent to get my money right away."),
     generateText("I told the agent my phone number and the amount I wanted to withdraw and that's when it happened -- I did not know the code to get my money."),
   ],
@@ -20,14 +27,14 @@ const en_text: SenegalMobileMoneyMessageMap = {
     generateText("To hear what the agent told me when I forgot my PIN, press 2"),
   ],
   story_1_guess: [
-    generateText("2__ Agent (male voice): Don't worry -- people forget their PINs all the time. Let me see if I can guess yours. What is your birthday? Aha, that was it. If you want to change your pin, call customer care and tell them you forgot your PIN. They'll help you."),
+    generateText("Don't worry, people forget their PINs all the time. Let me see if I can guess yours. What is your birthday? Aha, that was it. If you want to change your pin, call customer care and tell them you forgot your PIN. They'll help you."),
   ],
   story_1_guess_option: [
     generateText("To hear the number for customer care, press 1"),
     generateText("To hear what Aida did next, press 2"),
   ],
   story_1_customer: [
-    generateText("1__Aida: To speak with customer care, just dial #1441 and tell them you forgot your PIN"),
+    generateText("To speak with customer care, just dial #1441 and tell them you forgot your PIN"),
   ],
   story_1_customer_option_2: [
     generateText("To hear what I did next, press 2"),

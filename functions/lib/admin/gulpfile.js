@@ -16,6 +16,7 @@ const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 /* import your bot configs here */
 const index_1 = require("./content/voicebook/index");
 const index_2 = require("./content/senegalNotification/index");
+const index_3 = require("./content/senegalMobileMoney/index");
 const fbApi = new FirebaseApi_1.default(Firestore_1.default);
 gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     console.log("deploying conversation config for /twiml");
@@ -23,13 +24,14 @@ gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_us, index_1.default.en_us);
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_au, index_1.default.en_au);
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.tz_audio, index_1.default.tz_audio);
-    /* Senegal Notifiction Bots */
-    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalNotification, TwilioTypes_1.VersionId.sg_text_formal, index_2.default.sg_text_formal);
-    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalNotification, TwilioTypes_1.VersionId.sg_text_informal, index_2.default.sg_text_informal);
-    // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.fr_sg, { messages: sg_not_fr_sg_messages, blocks: sg_not_fr_sg_blocks, flows: sg_not_fr_sg_flows });
-    // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.sg_audio_formal, { messages: sg_not_audio_formal_messages, blocks: sg_not_audio_formal_blocks, flows: sg_not_audio_formal_flows });
-    // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.sg_audio_informal, { messages: sg_not_audio_informal_messages, blocks: sg_not_sg_audio_informal_blocks, flows: sg_not_sg_audio_informal_flows });
-    /* TODO: Senegal MM 101 Bots */
+    /* Senegal Notifiction Bot */
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalNotification, TwilioTypes_1.VersionId.en_text, index_2.default.en_text);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalNotification, TwilioTypes_1.VersionId.fr_audio, index_2.default.fr_audio);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalNotification, TwilioTypes_1.VersionId.wl_audio, index_2.default.wl_audio);
+    /* Senegal Mobile Money 101 Bot */
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalMobileMoney, TwilioTypes_1.VersionId.en_text, index_3.default.en_text);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalMobileMoney, TwilioTypes_1.VersionId.fr_audio, index_3.default.fr_audio);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalMobileMoney, TwilioTypes_1.VersionId.wl_audio, index_3.default.wl_audio);
     console.log("deployed config.");
 }));
 gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {

@@ -10,6 +10,7 @@ import { BotId, VersionId } from '../types_rn/TwilioTypes';
 /* import your bot configs here */
 import voicebook from './content/voicebook/index';
 import senegalNotification from './content/senegalNotification/index';
+import senegalMobileMoney from './content/senegalMobileMoney/index';
 
 
 
@@ -23,15 +24,16 @@ gulp.task('deploy_config', async () => {
   await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_au, voicebook.en_au);
   await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.tz_audio, voicebook.tz_audio);
 
-  /* Senegal Notifiction Bots */
-  await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.sg_text_formal, senegalNotification.sg_text_formal);
-  await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.sg_text_informal, senegalNotification.sg_text_informal);
-  // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.fr_sg, { messages: sg_not_fr_sg_messages, blocks: sg_not_fr_sg_blocks, flows: sg_not_fr_sg_flows });
-  // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.sg_audio_formal, { messages: sg_not_audio_formal_messages, blocks: sg_not_audio_formal_blocks, flows: sg_not_audio_formal_flows });
-  // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.sg_audio_informal, { messages: sg_not_audio_informal_messages, blocks: sg_not_sg_audio_informal_blocks, flows: sg_not_sg_audio_informal_flows });
+  /* Senegal Notifiction Bot */
+  await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.en_text, senegalNotification.en_text);
+  await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.fr_audio, senegalNotification.fr_audio);
+  await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.wl_audio, senegalNotification.wl_audio);
 
-  /* TODO: Senegal MM 101 Bots */
-
+  /* Senegal Mobile Money 101 Bot */
+  await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.en_text, senegalMobileMoney.en_text);
+  await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.fr_audio, senegalMobileMoney.fr_audio);
+  await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.wl_audio, senegalMobileMoney.wl_audio);
+  
 
   console.log("deployed config.");
 });

@@ -9,6 +9,18 @@ const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
 const TwilioFlows = {
     'entrypoint': {
         type: TwilioTypes_1.FlowType.DEFAULT,
+        next: TwilioTypes_1.BlockId.entrypoint_option,
+    },
+    'entrypoint_option': {
+        type: TwilioTypes_1.FlowType.GATHER,
+        error: TwilioTypes_1.BlockId.error_0,
+        digitMatches: [
+            { digits: '1', nextBlock: TwilioTypes_1.BlockId.entrypoint },
+            { digits: '2', nextBlock: TwilioTypes_1.BlockId.story_1_intro },
+        ],
+    },
+    'story_1_intro': {
+        type: TwilioTypes_1.FlowType.DEFAULT,
         next: TwilioTypes_1.BlockId.story_1_intro_option,
     },
     'story_1_intro_option': {

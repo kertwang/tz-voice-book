@@ -17,7 +17,11 @@ function getDefaultVersionForBot(botId) {
         }
         case TwilioTypes_1.BotId.senegalNotification: {
             //TODO: Change this.
-            return TwilioTypes_1.VersionId.en_au;
+            return TwilioTypes_1.VersionId.en_text;
+        }
+        case TwilioTypes_1.BotId.senegalMobileMoney: {
+            //TODO: Change this.
+            return TwilioTypes_1.VersionId.en_text;
         }
         default: {
             throw new Error(`No Default version specified for botId: ${botId}`);

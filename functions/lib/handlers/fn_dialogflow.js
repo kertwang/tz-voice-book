@@ -95,7 +95,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             conv.add(new Card({
                 title: `Mobile Money 101:`,
                 buttonText: 'CALL',
-                buttonUrl: 'mm101',
+                buttonUrl: 'mobile_money_101',
                 platform: "FACEBOOK",
             }));
             return;

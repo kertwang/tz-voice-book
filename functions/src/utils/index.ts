@@ -18,7 +18,11 @@ export function getDefaultVersionForBot(botId: BotId): VersionId {
     }
     case BotId.senegalNotification: {
       //TODO: Change this.
-      return VersionId.en_au;
+      return VersionId.en_text;
+    }
+    case BotId.senegalMobileMoney: {
+      //TODO: Change this.
+      return VersionId.en_text;
     }
     default: {
       throw new Error(`No Default version specified for botId: ${botId}`);

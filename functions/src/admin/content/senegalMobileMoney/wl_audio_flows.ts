@@ -8,6 +8,18 @@ import { FlowMap, FlowType, BlockId, AnyFlowMap, SenegalNotificationFlowMap, Sen
 const TwilioFlows: SenegalMobileMoneyFlowMap = {
   'entrypoint': {
     type: FlowType.DEFAULT,
+    next: BlockId.entrypoint_option,
+  },
+  'entrypoint_option': {
+    type: FlowType.GATHER,
+    error: BlockId.error_0,
+    digitMatches: [
+      { digits: '1', nextBlock: BlockId.entrypoint },
+      { digits: '2', nextBlock: BlockId.story_1_intro },
+    ],
+  },
+  'story_1_intro': {
+    type: FlowType.DEFAULT,
     next: BlockId.story_1_intro_option,
   },
   'story_1_intro_option': {

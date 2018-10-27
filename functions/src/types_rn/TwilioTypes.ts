@@ -31,6 +31,8 @@ export enum BlockId {
   notification_0 = 'notification_0',
 
   /* senegalMobileMoney */
+  entrypoint_option = 'entrypoint_option',
+  story_1_intro = 'story_1_intro',
   story_1_intro_option = 'story_1_intro_option',
   story_1_pin_advice = 'story_1_pin_advice',
   story_1_pin_option = 'story_1_pin_option',
@@ -98,6 +100,8 @@ export type SenegalNotificationFlowMap = {
 export type SenegalMobileMoneyFlowMap = {
   /* senegalMobileMoney */
   entrypoint: DefaultFlow | GatherFlow,
+  entrypoint_option: DefaultFlow | GatherFlow,
+  story_1_intro: DefaultFlow | GatherFlow,
   story_1_intro_option: DefaultFlow | GatherFlow,
   story_1_pin_advice: DefaultFlow | GatherFlow,
   story_1_pin_option: DefaultFlow | GatherFlow,
@@ -192,6 +196,8 @@ export type SenegalNotificationBlockMap = {
 
 export type SenegalMobileMoneyBlockMap = {
   entrypoint: AnyBlock,
+  entrypoint_option: AnyBlock,
+  story_1_intro: AnyBlock,
   story_1_intro_option: AnyBlock,
   story_1_pin_advice: AnyBlock,
   story_1_pin_option: AnyBlock,
@@ -277,6 +283,8 @@ export type SenegalNotificationMessageMap = {
 
 export type SenegalMobileMoneyMessageMap = {
   entrypoint: SayMessage[] | PlayMessage[],
+  entrypoint_option: SayMessage[] | PlayMessage[],
+  story_1_intro: SayMessage[] | PlayMessage[],
   story_1_intro_option: SayMessage[] | PlayMessage[],
   story_1_pin_advice: SayMessage[] | PlayMessage[],
   story_1_pin_option: SayMessage[] | PlayMessage[],
@@ -363,10 +371,9 @@ export enum VersionId {
   en_au = 'en_au', //Australian accent version mate.
   tz_audio = 'tz_audio',
 
-  sg_text_formal = 'sg_text_formal',
-  sg_text_informal = 'sg_text_informal',
-  sg_audio_formal = 'sg_audio_formal', //Audio, Formal Senegalese French
-  sg_audio_informal = 'sg_audio_informal' //Audio, Informal Senegalese French
+  en_text = 'en_text', //english text
+  fr_audio = 'fr_audio', //french audio
+  wl_audio = 'wl_audio', //wolof audio
 }
 
 export type BotConfig = {

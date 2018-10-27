@@ -108,8 +108,16 @@ class TwilioRouter {
                         numDigits: 1,
                     });
                     this.appendMessagesToResponse(gather, messages);
-                    //This is a backup TODO: remove
-                    response.say({}, 'We didn\'t receive any input. Hrrmm.');
+                    //Default to first option
+                    const nextUrl = utils_1.buildRedirectUrl({
+                        type: utils_1.NextUrlType.DefaultUrl,
+                        baseUrl: Env_1.baseUrl,
+                        botId: config.botId,
+                        blockName: flow.digitMatches[0].nextBlock,
+                        versionOverride: ctx.versionOverride,
+                    });
+                    this.appendMessagesToResponse(response, messages);
+                    response.redirect({ method: 'POST' }, nextUrl);
                     return response;
                 }
                 default: {
