@@ -158,4 +158,9 @@ function getBoolean(value) {
     }
 }
 exports.getBoolean = getBoolean;
+function buildExpectedToken(username, password) {
+    const encoded = Buffer.from(`${username}:${password}`).toString('base64');
+    return `Basic ${encoded}`;
+}
+exports.buildExpectedToken = buildExpectedToken;
 //# sourceMappingURL=index.js.map

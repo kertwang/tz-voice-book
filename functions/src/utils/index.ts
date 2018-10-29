@@ -242,3 +242,8 @@ export function getBoolean(value: any) {
       return false;
   }
 }
+
+export function buildExpectedToken(username: string, password: string) {
+  const encoded = Buffer.from(`${username}:${password}`).toString('base64');
+  return `Basic ${encoded}`
+}

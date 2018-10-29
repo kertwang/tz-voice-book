@@ -16,22 +16,25 @@ const Env_1 = require("../utils/Env");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const Log_1 = require("../utils/Log");
 const LogTypes_1 = require("../types_rn/LogTypes");
+const utils_1 = require("../utils");
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card } = require('dialogflow-fulfillment');
 process.env.DEBUG = 'dialogflow:production'; // enables lib debugging statements
 //TODO: add basic auth
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
-    console.log("request handler", request);
+    //Super basic auth:
+    if (request.headers.authorization !== utils_1.buildExpectedToken('apikey', Env_1.temporaryInsecureAuthKey)) {
+        console.log("unquthorized request");
+        return response.status(401).send('Not Authorized');
+    }
     const firebaseApi = new FirebaseApi_1.default(Firestore_1.default);
     const twilioApi = new TwilioApi_1.TwilioApi();
     const client = new WebhookClient({ request, response });
-    const requestLogStr = `Dialogflow Request headers:, ${JSON.stringify(request.headers)}`;
-    const responseLogStr = `Dialogflow Response headers:, ${JSON.stringify(request.headers)}`;
+    // const requestLogStr = `Dialogflow Request headers:, ${JSON.stringify(request.headers)}`;
+    // const responseLogStr = `Dialogflow Response headers:, ${JSON.stringify(request.headers)}`;
     // maybeLog(requestLogStr);
     // maybeLog(responseLogStr);
-    // maybeLog(`Dialogflow Request headers:` + JSON.stringify(request.headers));
-    // maybeLog(`Dialogflow Request body: `, JSON.stringify(request.body, null, 2));
     const botId = TwilioTypes_1.BotId.uncdfBot;
     const sessionId = request.body.sessionId;
     function menuCall(conv) {
