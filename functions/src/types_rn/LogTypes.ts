@@ -69,4 +69,5 @@ export type TwilioApiResponseLog = {
 export type DialogFlowIntentLog = {
   type: LogType.DIALOG_FLOW_INTENT,
   intent: string,
+  sessionId: string,
 }

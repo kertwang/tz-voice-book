@@ -12,7 +12,7 @@ import { buildExpectedToken } from '../utils';
 
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
-const { Card } = require('dialogflow-fulfillment');
+const { Card, Suggestion } = require('dialogflow-fulfillment');
 
 process.env.DEBUG = 'dialogflow:production'; // enables lib debugging statements
 
@@ -46,6 +46,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     log({
       type: LogType.DIALOG_FLOW_INTENT,
       intent: 'menu.call',
+      sessionId,
     });
 
     const userResult = await firebaseApi.getDFUser(botId, sessionId);
@@ -75,6 +76,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     log({
       type: LogType.DIALOG_FLOW_INTENT,
       intent: 'menu.call.mobile',
+      sessionId,
     });
 
     const mobile = request.body.result.parameters.mobile;
@@ -84,7 +86,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
 
     /* Save the number and user */
-    const newUser: DFUser = { mobile, sessionId }; 
+    const newUser: DFUser = { mobile: `${mobile}`, sessionId }; 
     const saveResult = await firebaseApi.saveDFUser(botId, sessionId, newUser);
 
     if (saveResult.type === ResultType.ERROR) {
@@ -94,19 +96,19 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
 
     conv.add('Thanks.');
-    conv.add('What type of call should they recieve?.');
+    conv.add('What type of call should they recieve?');
     conv.add(new Card({
-      title: `Informal Payment Notification`,
+      title: `Payment Notification`,
       buttonText: 'CALL',
       buttonUrl: 'informal_payment_notification',
       platform: "FACEBOOK",
     }));
-    conv.add(new Card({
-      title: `Formal Payment Notification:`,
-      buttonText: 'CALL',
-      buttonUrl: 'formal_payment_notification',
-      platform: "FACEBOOK",
-    }));
+    // conv.add(new Card({
+    //   title: `Formal Payment Notification:`,
+    //   buttonText: 'CALL',
+    //   buttonUrl: 'formal_payment_notification',
+    //   platform: "FACEBOOK",
+    // }));
     conv.add(new Card({
       title: `Mobile Money 101:`,
       buttonText: 'CALL',
@@ -120,6 +122,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     log({
       type: LogType.DIALOG_FLOW_INTENT,
       intent: 'menu.call.mobile.formal',
+      sessionId,
     });
 
     const url = formalNotificationUrl;
@@ -131,6 +134,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     log({
       type: LogType.DIALOG_FLOW_INTENT,
       intent: 'menu.call.mobile.informal',
+      sessionId,
     });
 
     const url = informalNotificationUrl;
@@ -142,6 +146,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     log({
       type: LogType.DIALOG_FLOW_INTENT,
       intent: 'menu.call.mobile.mm101',
+      sessionId,
     });
 
     const url = mm101CallUrl;
@@ -169,12 +174,13 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
 
   function handlePostCall(conv: any) {
     conv.add('Making the call now.');
-    conv.add(new Card({
-      title: `Make another Call`,
-      buttonText: 'New Call',
-      buttonUrl: 'trigger call',
-      platform: "FACEBOOK",
-    }));
+
+    const quickReplies = new Suggestion({
+      title: 'What would you like to do next?',
+      reply: 'New Call'
+    });
+    quickReplies.addReply_('Menu');
+    conv.add(quickReplies);
   }
 
   const intentMap = new Map();

@@ -29,7 +29,7 @@
     "firebase-app": "^0.0.1",
     "firebase-functions": "^2.0.2",
     "dialogflow": "^0.6.0",
-    "dialogflow-fulfillment": "^0.5.0",
+    "dialogflow-fulfillment": "git+https://github.com/naranjja/dialogflow-fulfillment-nodejs.git#57302849b17325890e83108472247f1267b4a80a",
     "actions-on-google": "^2.2.0",
     "gulp": "^3.9.1",
     "gulpclass": "^0.2.0",
