@@ -3,11 +3,10 @@
 import fs from '../apis/Firestore';
 import FirebaseApi from "../apis/FirebaseApi";
 import { ResultType } from '../types_rn/AppProviderTypes';
-import { user } from 'firebase-functions/lib/providers/auth';
 import { TwilioApi } from '../apis/TwilioApi';
 import { mm101CallUrl, informalNotificationUrl, formalNotificationUrl } from '../utils/Env';
 import { BotId } from '../types_rn/TwilioTypes';
-import { log, maybeLog } from '../utils/Log';
+import { log } from '../utils/Log';
 import { LogType } from '../types_rn/LogTypes';
 
 const functions = require('firebase-functions');
@@ -24,14 +23,16 @@ export type DFUser = {
 
 //TODO: add basic auth
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+  console.log("request handler", request);
+
   const firebaseApi = new FirebaseApi(fs);
   const twilioApi = new TwilioApi();
   const client = new WebhookClient({ request, response });
   const requestLogStr = `Dialogflow Request headers:, ${JSON.stringify(request.headers)}`;
   const responseLogStr = `Dialogflow Response headers:, ${JSON.stringify(request.headers)}`;
 
-  maybeLog(requestLogStr);
-  maybeLog(responseLogStr);
+  // maybeLog(requestLogStr);
+  // maybeLog(responseLogStr);
   // maybeLog(`Dialogflow Request headers:` + JSON.stringify(request.headers));
   // maybeLog(`Dialogflow Request body: `, JSON.stringify(request.body, null, 2));
 
@@ -39,6 +40,11 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   const sessionId = request.body.sessionId;
 
   async function menuCall(conv: any) {
+    log({
+      type: LogType.DIALOG_FLOW_INTENT,
+      intent: 'menu.call',
+    });
+
     const userResult = await firebaseApi.getDFUser(botId, sessionId);
     if (userResult.type === ResultType.ERROR || !userResult.result.mobile) {
       //No existing user
@@ -63,6 +69,11 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   }
 
   async function menuCallMobile(conv: any) {
+    log({
+      type: LogType.DIALOG_FLOW_INTENT,
+      intent: 'menu.call.mobile',
+    });
+
     const mobile = request.body.result.parameters.mobile;
     if (!mobile) {
       conv.add("I'm Sorry. Something went wrong. Please say 'menu' to try again.");
@@ -103,18 +114,33 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   }
 
   async function triggerFormalCall(conv: any) {
+    log({
+      type: LogType.DIALOG_FLOW_INTENT,
+      intent: 'menu.call.mobile.formal',
+    });
+
     const url = formalNotificationUrl;
     await triggerCall(conv, url);
     handlePostCall(conv);
   }
 
   async function triggerInformalCall(conv: any) {
+    log({
+      type: LogType.DIALOG_FLOW_INTENT,
+      intent: 'menu.call.mobile.informal',
+    });
+
     const url = informalNotificationUrl;
     await triggerCall(conv, url);
     handlePostCall(conv);
   }
 
   async function triggerMMCall(conv: any) {
+    log({
+      type: LogType.DIALOG_FLOW_INTENT,
+      intent: 'menu.call.mobile.mm101',
+    });
+
     const url = mm101CallUrl;
     await triggerCall(conv, url);
     handlePostCall(conv);
@@ -148,21 +174,12 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }));
   }
 
-  function logWrapper(intent: string, next: (conv: any) => any): (conv: any) => any { 
-    log({
-      type: LogType.DIALOG_FLOW_INTENT,
-      intent,
-    });
-
-    return next;
-  }
-
   const intentMap = new Map();
-  intentMap.set('menu.call', logWrapper('menu.call', menuCall));
-  intentMap.set('menu.call.mobile', logWrapper('menu.call.mobile', menuCallMobile));
-  intentMap.set('menu.call.mobile.formal', logWrapper('menu.call.mobile.formal', triggerFormalCall));
-  intentMap.set('menu.call.mobile.informal', logWrapper('menu.call.mobile.informal', triggerInformalCall));
-  intentMap.set('menu.call.mobile.mm101', logWrapper('menu.call.mobile.mm101', triggerMMCall));
+  intentMap.set('menu.call', menuCall);
+  intentMap.set('menu.call.mobile', menuCallMobile);
+  intentMap.set('menu.call.mobile.formal',  triggerFormalCall);
+  intentMap.set('menu.call.mobile.informal',  triggerInformalCall);
+  intentMap.set('menu.call.mobile.mm101',  triggerMMCall);
 
   client.handleRequest(intentMap);
 });

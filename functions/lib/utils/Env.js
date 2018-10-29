@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
+const _1 = require(".");
 const envConfig = functions.config();
 exports.twilioAccountSid = envConfig.config.twilio_account_sid;
 exports.twilioAuthToken = envConfig.config.twilio_auth_token;
@@ -13,4 +14,5 @@ exports.storageBucket = envConfig.config.storage_bucket;
 exports.informalNotificationUrl = envConfig.config.informal_notification_url;
 exports.formalNotificationUrl = envConfig.config.formal_notification_url;
 exports.mm101CallUrl = envConfig.config.mm_101_url;
+exports.shouldLog = _1.getBoolean(envConfig.config.should_log);
 //# sourceMappingURL=Env.js.map

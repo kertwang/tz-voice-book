@@ -16,3 +16,5 @@ export BASE_URL="https://us-central1-tz-phone-book.cloudfunctions.net"
 export formal_notification_url="https://us-central1-tz-phone-book.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=sg_text_formal"
 export informal_notification_url="https://us-central1-tz-phone-book.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=sg_text_informal"
 export mm_101_url="https://us-central1-tz-phone-book.cloudfunctions.net/twiml/mm101/entrypoint?versionOverride=sg_text"
+
+export should_log='false'

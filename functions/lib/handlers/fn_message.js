@@ -6,8 +6,6 @@ const moment = require("moment");
 const morgan = require("morgan");
 const morganBody = require("morgan-body");
 const bodyParser = require('body-parser');
-const Joi = require('joi');
-const fb = require('firebase-admin');
 module.exports = (functions, admin) => {
     const app = express();
     app.use(bodyParser.json());

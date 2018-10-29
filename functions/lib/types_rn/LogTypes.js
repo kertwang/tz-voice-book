@@ -8,5 +8,6 @@ var LogType;
     LogType["POST_MESSAGE"] = "POST_MESSAGE";
     LogType["TWILIO_API_REQUEST"] = "TWILIO_API_REQUEST";
     LogType["TWILIO_API_RESPONSE"] = "TWILIO_API_RESPONSE";
+    LogType["DIALOG_FLOW_INTENT"] = "DIALOG_FLOW_INTENT";
 })(LogType = exports.LogType || (exports.LogType = {}));
 //# sourceMappingURL=LogTypes.js.map

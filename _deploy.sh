@@ -19,7 +19,8 @@ firebase functions:config:set \
   config.storage_bucket="$storageBucket" \
   config.informal_notification_url="$informal_notification_url" \
   config.formal_notification_url="$formal_notification_url" \
-  config.mm_101_url="$mm_101_url"
+  config.mm_101_url="$mm_101_url"\
+  config.should_log="$should_log"
 
 firebase deploy --only functions
 

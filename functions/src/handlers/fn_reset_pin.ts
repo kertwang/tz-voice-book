@@ -1,12 +1,9 @@
-import * as validate from 'express-validation';
 import * as express from 'express';
 import * as cors from 'cors';
 import * as morgan from 'morgan';
 import * as morganBody from 'morgan-body';
 
 const bodyParser = require('body-parser');
-const Joi = require('joi');
-const fb = require('firebase-admin');
 
 module.exports = (functions: any, admin: any) => {
   const app = express();

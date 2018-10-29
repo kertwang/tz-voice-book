@@ -6,8 +6,6 @@ import * as morgan from 'morgan';
 import * as morganBody from 'morgan-body';
 
 const bodyParser = require('body-parser');
-const Joi = require('joi');
-const fb = require('firebase-admin');
 
 module.exports = (functions, admin) => {
   const app = express();
