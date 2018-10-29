@@ -1,4 +1,5 @@
 import * as functions from 'firebase-functions';
+import { getBoolean } from '.';
 
 const envConfig = functions.config();
 
@@ -14,3 +15,4 @@ export const storageBucket = envConfig.config.storage_bucket;
 export const informalNotificationUrl = envConfig.config.informal_notification_url;
 export const formalNotificationUrl = envConfig.config.formal_notification_url;
 export const mm101CallUrl = envConfig.config.mm_101_url;
+export const shouldLog = getBoolean(envConfig.config.should_log);

@@ -358,9 +358,14 @@ export type DigitResult = {
  * Define different bots here
  */
 export enum BotId {
+  //Twilio Bots
   voicebook = 'voicebook',
   senegalNotification = 'senegalNotification',
   senegalMobileMoney = 'senegalMobileMoney',
+
+  //DF Bots
+  uncdfBot = 'uncdfBot',
+
 }
 
 /**

@@ -13,6 +13,7 @@ const FirebaseApi_1 = require("../apis/FirebaseApi");
 const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
 const TwilioApi_1 = require("../apis/TwilioApi");
 const Env_1 = require("../utils/Env");
+const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion, Payload, PLATFORMS } = require('dialogflow-fulfillment');
@@ -24,7 +25,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     const client = new WebhookClient({ request, response });
     console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
     console.log('Dialogflow Request body: ' + JSON.stringify(request.body, null, 2));
-    const botId = 'uncdfBot';
+    const botId = TwilioTypes_1.BotId.uncdfBot;
     const sessionId = request.body.sessionId;
     function welcome(agent) {
         agent.add(`Welcome to my agent!`);
@@ -132,7 +133,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                 return;
             }
             try {
-                yield twilioApi.startCall(userResult.result.mobile, url);
+                yield twilioApi.startCall(botId, userResult.result.mobile, url);
             }
             catch (err) {
                 conv.add(`There was a problem making the call. Please try again.`);

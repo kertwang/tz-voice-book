@@ -6,12 +6,15 @@ import { ResultType } from '../types_rn/AppProviderTypes';
 import { user } from 'firebase-functions/lib/providers/auth';
 import { TwilioApi } from '../apis/TwilioApi';
 import { mm101CallUrl, informalNotificationUrl, formalNotificationUrl } from '../utils/Env';
+import { BotId } from '../types_rn/TwilioTypes';
+import { log, maybeLog } from '../utils/Log';
+import { LogType } from '../types_rn/LogTypes';
 
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
-const { Card, Suggestion, Payload, PLATFORMS } = require('dialogflow-fulfillment');
+const { Card } = require('dialogflow-fulfillment');
 
-process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
+process.env.DEBUG = 'dialogflow:production'; // enables lib debugging statements
 
 export type DFUser = { 
   sessionId: string,
@@ -24,24 +27,18 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   const firebaseApi = new FirebaseApi(fs);
   const twilioApi = new TwilioApi();
   const client = new WebhookClient({ request, response });
-  console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
-  console.log('Dialogflow Request body: ' + JSON.stringify(request.body, null, 2));
-  
-  const botId = 'uncdfBot';
+  const requestLogStr = `Dialogflow Request headers:, ${JSON.stringify(request.headers)}`;
+  const responseLogStr = `Dialogflow Response headers:, ${JSON.stringify(request.headers)}`;
+
+  maybeLog(requestLogStr);
+  maybeLog(responseLogStr);
+  // maybeLog(`Dialogflow Request headers:` + JSON.stringify(request.headers));
+  // maybeLog(`Dialogflow Request body: `, JSON.stringify(request.body, null, 2));
+
+  const botId = BotId.uncdfBot;
   const sessionId = request.body.sessionId;
 
-  function welcome(agent: any) {
-    agent.add(`Welcome to my agent!`);
-  }
-
-  function fallback(agent: any) {
-    agent.add(`I didn't understand`);
-    agent.add(`I'm sorry, can you try again?`);
-  }
-
   async function menuCall(conv: any) {
-    console.log("sessionId", sessionId);
-
     const userResult = await firebaseApi.getDFUser(botId, sessionId);
     if (userResult.type === ResultType.ERROR || !userResult.result.mobile) {
       //No existing user
@@ -51,14 +48,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
 
     const mobile = userResult.result.mobile;
-    // let card = new Card('Last Numbers:'); 
-    // card.setPlatform("FACEBOOK");
-    // //TODO: use payload instead
+
     conv.add('Who should I call?');
-    // // card.setButton({ title: mobile, text: 'Call'});
-    // card.setButton({text: mobile, url: 'http://yoururlhere.com' });
-    // conv.add(card);
-    // conv.add('Or just type a new number.');
 
     conv.add(new Card({
       title: `Saved numbers:`,
@@ -68,7 +59,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }));
 
     conv.add('Or just type a new number.');
-    // conv.add(new Suggestion({title: `${mobile}`, platform: 'FACEBOOK'}));
     return
   }
 
@@ -140,7 +130,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }
 
     try {
-      await twilioApi.startCall(userResult.result.mobile, url);
+      await twilioApi.startCall(botId, userResult.result.mobile, url);
     } catch (err) {
       conv.add(`There was a problem making the call. Please try again.`);
     }
@@ -158,15 +148,21 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     }));
   }
 
-  const intentMap = new Map();
-  intentMap.set('Default Welcome Intent', welcome);
-  intentMap.set('Default Fallback Intent', fallback);
+  function logWrapper(intent: string, next: (conv: any) => any): (conv: any) => any { 
+    log({
+      type: LogType.DIALOG_FLOW_INTENT,
+      intent,
+    });
 
-  intentMap.set('menu.call', menuCall);
-  intentMap.set('menu.call.mobile', menuCallMobile);
-  intentMap.set('menu.call.mobile.formal', triggerFormalCall);
-  intentMap.set('menu.call.mobile.informal', triggerInformalCall);
-  intentMap.set('menu.call.mobile.mm101', triggerMMCall);
+    return next;
+  }
+
+  const intentMap = new Map();
+  intentMap.set('menu.call', logWrapper('menu.call', menuCall));
+  intentMap.set('menu.call.mobile', logWrapper('menu.call.mobile', menuCallMobile));
+  intentMap.set('menu.call.mobile.formal', logWrapper('menu.call.mobile.formal', triggerFormalCall));
+  intentMap.set('menu.call.mobile.informal', logWrapper('menu.call.mobile.informal', triggerInformalCall));
+  intentMap.set('menu.call.mobile.mm101', logWrapper('menu.call.mobile.mm101', triggerMMCall));
 
   client.handleRequest(intentMap);
 });

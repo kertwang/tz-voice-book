@@ -66,6 +66,7 @@ module.exports = (functions) => {
         const pendingId = yield firebaseApi.saveFeedbackRecording(recording, botId);
         Log_1.log({
             type: LogTypes_1.LogType.PENDING_MESSAGE,
+            botId,
             pendingId,
             callSid: recording.callSid,
             url: recording.url,
@@ -81,8 +82,8 @@ module.exports = (functions) => {
      * example body:
      * {
      *   "mobile": "+61410237238",
-     *   "url": "https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint"
-     *   "apiKey": "<API_KEY>"
+     *   "url": "https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint",
+     *   "botId": "senegalNotification",
      * }
      *
      */
@@ -93,7 +94,7 @@ module.exports = (functions) => {
         if (req.query.temporaryInsecureAuthKey !== Env_1.temporaryInsecureAuthKey) {
             res.status(401).send('Invalid Api Key');
         }
-        return twilioApi.startCall(req.body.mobile, req.body.url)
+        return twilioApi.startCall(req.body.botId, req.body.mobile, req.body.url)
             .then(response => res.json(response));
     });
     /**
@@ -109,6 +110,7 @@ module.exports = (functions) => {
         const pendingId = yield firebaseApi.savePendingRecording(recording, botId);
         Log_1.log({
             type: LogTypes_1.LogType.PENDING_MESSAGE,
+            botId,
             pendingId,
             callSid: recording.callSid,
             url: recording.url,
@@ -135,6 +137,7 @@ module.exports = (functions) => {
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, pageParams);
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
+            botId,
             callSid: ctx.callSid,
             blockId: blockName,
             mobile: ctx.mobile,
@@ -167,6 +170,7 @@ module.exports = (functions) => {
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, versionOverride: req.query.versionOverride || null, firebaseApi }, pageParams);
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
+            botId,
             callSid: ctx.callSid,
             blockId: blockName,
             mobile: ctx.mobile,

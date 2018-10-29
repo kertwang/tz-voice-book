@@ -16,11 +16,10 @@ class TwilioApi {
      *
      * Initiate a call to the given number
      *
-     * TODO: for some reason using the async/await api doesn't
      * handle exceptions properly with Twilio.
      * We should move to the SomeResult pattern anyway
      */
-    startCall(mobile, url) {
+    startCall(botId, mobile, url) {
         const options = {
             url,
             to: mobile,
@@ -28,6 +27,7 @@ class TwilioApi {
         };
         Log_1.log({
             type: LogTypes_1.LogType.TWILIO_API_REQUEST,
+            botId,
             method: 'client.calls.create',
             params: options,
         });
@@ -35,6 +35,7 @@ class TwilioApi {
             .then((call) => {
             Log_1.log({
                 type: LogTypes_1.LogType.TWILIO_API_RESPONSE,
+                botId,
                 method: 'client.calls.create',
                 response: call,
             });

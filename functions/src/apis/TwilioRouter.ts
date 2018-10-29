@@ -322,6 +322,7 @@ export default class TwilioRouter {
 
             log({
               type: LogType.POST_MESSAGE,
+              botId: config.botId,
               recordingId,
               callSid: ctx.callSid,
               url: pendingRecordings[0].url,

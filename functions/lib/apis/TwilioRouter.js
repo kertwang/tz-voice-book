@@ -301,6 +301,7 @@ class TwilioRouter {
                             console.log(`LOG: {"action":"POST_MESSAGE", "recordingId":"${recordingId}"}`);
                             Log_1.log({
                                 type: LogTypes_1.LogType.POST_MESSAGE,
+                                botId: config.botId,
                                 recordingId,
                                 callSid: ctx.callSid,
                                 url: pendingRecordings[0].url,

@@ -1,5 +1,7 @@
 import * as moment from 'moment';
 import { AnyLog } from '../types_rn/LogTypes';
+import { eventNames } from 'cluster';
+import {shouldLog} from './Env';
 
 //TODO: make more explicit
 export function log(logObj: AnyLog)  {
@@ -8,4 +10,12 @@ export function log(logObj: AnyLog)  {
     ...logObj
   }
   console.log(JSON.stringify(anonymous));
+}
+
+export function maybeLog(...params: string[]) {
+  if (!shouldLog) {
+    return;
+  }
+
+  console.log(...params);
 }

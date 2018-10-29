@@ -80,9 +80,12 @@ var MessageType;
  */
 var BotId;
 (function (BotId) {
+    //Twilio Bots
     BotId["voicebook"] = "voicebook";
     BotId["senegalNotification"] = "senegalNotification";
     BotId["senegalMobileMoney"] = "senegalMobileMoney";
+    //DF Bots
+    BotId["uncdfBot"] = "uncdfBot";
 })(BotId = exports.BotId || (exports.BotId = {}));
 /**
  * Define different translations + versions (text, audio, informal etc)

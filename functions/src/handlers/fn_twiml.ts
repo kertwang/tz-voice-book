@@ -73,6 +73,7 @@ module.exports = (functions: any) => {
 
     log({
       type: LogType.PENDING_MESSAGE,
+      botId,
       pendingId,
       callSid: recording.callSid,
       url: recording.url,
@@ -91,8 +92,8 @@ module.exports = (functions: any) => {
    * example body:
    * {
    *   "mobile": "+61410237238",
-   *   "url": "https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint"
-   *   "apiKey": "<API_KEY>"
+   *   "url": "https://us-central1-tz-phone-book.cloudfunctions.net/twiml/entrypoint",
+   *   "botId": "senegalNotification",
    * }
    * 
    */
@@ -105,7 +106,7 @@ module.exports = (functions: any) => {
       res.status(401).send('Invalid Api Key');
     }
 
-    return twilioApi.startCall(req.body.mobile, req.body.url)
+    return twilioApi.startCall(req.body.botId, req.body.mobile, req.body.url)
     .then(response => res.json(response));
   });
 
@@ -125,6 +126,7 @@ module.exports = (functions: any) => {
 
     log({
       type: LogType.PENDING_MESSAGE,
+      botId,
       pendingId,
       callSid: recording.callSid,
       url: recording.url,
@@ -163,6 +165,7 @@ module.exports = (functions: any) => {
 
     log({
       type: LogType.BLOCK,
+      botId,
       callSid: ctx.callSid,
       blockId: blockName,
       mobile: ctx.mobile,
@@ -208,6 +211,7 @@ module.exports = (functions: any) => {
 
     log({
       type: LogType.BLOCK,
+      botId,
       callSid: ctx.callSid,
       blockId: blockName,
       mobile: ctx.mobile,
