@@ -8,6 +8,7 @@
     "outDir": "lib",
     "sourceMap": true,
     "target": "es6",
+    "allowJs": true,
     "experimentalDecorators": true,
     // "noImplicitAny": true
     // "noImplicitThis": true,
