@@ -6,12 +6,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
 
-ENVIRONMENT=`cat "$DIR"/.environment`
-firebase use "$ENVIRONMENT"
+source /tmp/tz_env
 
-## set up envs
-source "$DIR/env/env.$ENVIRONMENT.sh" #public
-source "$DIR/env/.env.$ENVIRONMENT.sh" #private
+# ENVIRONMENT=`cat "$DIR"/.environment`
+firebase use "$stage"
+
+# ## set up envs
+# source "$DIR/env/env.$ENVIRONMENT.sh" #public
+# source "$DIR/env/.env.$ENVIRONMENT.sh" #private
 
 ## Get any remote firebase config
 # firebase functions:config:get > "$DIR"/functions/.runtimeconfig.json

@@ -1,5 +1,7 @@
 #Put public env vars here
 
+export stage="production"
+
 export VERBOSE_LOG=true
 export LOG_TWILIO_RESPONSE=true
 export LT_SUBDOMAIN="lwilld3"

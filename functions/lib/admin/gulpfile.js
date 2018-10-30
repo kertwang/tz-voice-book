@@ -35,10 +35,11 @@ gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     console.log("deployed config.");
 }));
 gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {
+    const audioDir = `../../../audio_processing/audio/`;
     //Iterate through each /version/filename in ./content/audio, and upload
-    const versionDirs = yield fs.readdir('./content/audio/');
+    const versionDirs = yield fs.readdir(audioDir);
     const audioFiles = yield Promise.all(versionDirs.map(dir => {
-        return fs.readdir(`../../../audio_processing/audio/${dir}/`)
+        return fs.readdir(`${audioDir}${dir}/`)
             .then(childs => childs.map(child => `${dir}/${child}`));
     }));
     const flatAudioFiles = [];
@@ -46,7 +47,7 @@ gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {
     console.log("Use the following long links to refer to your files");
     //TODO: make this process nicer
     yield Promise.all(flatAudioFiles.map(file => {
-        return Firestore_1.storage.upload(`./content/audio/${file}`, {
+        return Firestore_1.storage.upload(`${audioDir}${file}`, {
             destination: file,
             public: true,
             metadata: {

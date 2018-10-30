@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-ENVIRONMENT=`cat "$DIR"/.environment`
-firebase use "$ENVIRONMENT"
+source /tmp/tz_env
+firebase use "$stage"
 
-source "$DIR/env/env.$ENVIRONMENT.sh" #public
-source "$DIR/env/.env.$ENVIRONMENT.sh" #private
+
+# ENVIRONMENT=`cat "$DIR"/.environment`
+# firebase use "$ENVIRONMENT"
+
+# source "$DIR/env/env.$ENVIRONMENT.sh" #public
+# source "$DIR/env/.env.$ENVIRONMENT.sh" #private
 
 # set the firebase env variables
 firebase functions:config:set \

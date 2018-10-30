@@ -39,10 +39,11 @@ gulp.task('deploy_config', async () => {
 });
 
 gulp.task('deploy_audio', async () => {
+  const audioDir = `../../../audio_processing/audio/`;
   //Iterate through each /version/filename in ./content/audio, and upload
-  const versionDirs = await fs.readdir('./content/audio/');
+  const versionDirs = await fs.readdir(audioDir);
   const audioFiles: string[][] = await Promise.all(versionDirs.map(dir => {
-    return fs.readdir(`../../../audio_processing/audio/${dir}/`)
+    return fs.readdir(`${audioDir}${dir}/`)
       .then(childs => childs.map(child => `${dir}/${child}`))
   }));
   const flatAudioFiles: string[] = [];
@@ -51,7 +52,7 @@ gulp.task('deploy_audio', async () => {
   console.log("Use the following long links to refer to your files");
   //TODO: make this process nicer
   await Promise.all(flatAudioFiles.map(file => {
-    return storage.upload(`./content/audio/${file}`, {
+    return storage.upload(`${audioDir}${file}`, {
       destination: file,
       public: true,
       metadata: {
