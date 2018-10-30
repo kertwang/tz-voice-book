@@ -1,3 +1,5 @@
+
+
 #Put public env vars here
 
 export stage="production"
@@ -7,7 +9,7 @@ export LOG_TWILIO_RESPONSE=true
 export LT_SUBDOMAIN="lwilld3"
 export serviceAccountKeyFileName=".serviceAccountKey.development.json"
 export databaseUrl="https://tz-phone-book.firebaseio.com"
-export storageBucket="tz-phone-book.appspot.com"
+export storageBucket=tz-phone-book.appspot.com
 
 # export BASE_URL="https://$LT_SUBDOMAIN.localtunnel.me/tz-phone-book/us-central1"
 

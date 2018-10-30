@@ -11,6 +11,7 @@ source /tmp/tz_env
 # ENVIRONMENT=`cat "$DIR"/.environment`
 firebase use "$stage"
 
+
 # ## set up envs
 # source "$DIR/env/env.$ENVIRONMENT.sh" #public
 # source "$DIR/env/.env.$ENVIRONMENT.sh" #private
