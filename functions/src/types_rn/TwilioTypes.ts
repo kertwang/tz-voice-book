@@ -32,6 +32,8 @@ export enum BlockId {
 
   /* senegalMobileMoney */
   entrypoint_option = 'entrypoint_option',
+  amount_repeat = 'amount_repeat',
+  story_option = 'story_option',
   story_1_intro = 'story_1_intro',
   story_1_intro_option = 'story_1_intro_option',
   story_1_pin_advice = 'story_1_pin_advice',
@@ -100,6 +102,8 @@ export type SenegalNotificationFlowMap = {
 export type SenegalMobileMoneyFlowMap = {
   /* senegalMobileMoney */
   entrypoint: DefaultFlow | GatherFlow,
+  amount_repeat: DefaultFlow | GatherFlow,
+  story_option: DefaultFlow | GatherFlow,
   entrypoint_option: DefaultFlow | GatherFlow,
   story_1_intro: DefaultFlow | GatherFlow,
   story_1_intro_option: DefaultFlow | GatherFlow,
@@ -197,6 +201,8 @@ export type SenegalNotificationBlockMap = {
 export type SenegalMobileMoneyBlockMap = {
   entrypoint: AnyBlock,
   entrypoint_option: AnyBlock,
+  amount_repeat: AnyBlock,
+  story_option: AnyBlock,
   story_1_intro: AnyBlock,
   story_1_intro_option: AnyBlock,
   story_1_pin_advice: AnyBlock,
@@ -284,6 +290,8 @@ export type SenegalNotificationMessageMap = {
 export type SenegalMobileMoneyMessageMap = {
   entrypoint: SayMessage[] | PlayMessage[],
   entrypoint_option: SayMessage[] | PlayMessage[],
+  amount_repeat: SayMessage[] | PlayMessage[],
+  story_option: SayMessage[] | PlayMessage[],
   story_1_intro: SayMessage[] | PlayMessage[],
   story_1_intro_option: SayMessage[] | PlayMessage[],
   story_1_pin_advice: SayMessage[] | PlayMessage[],

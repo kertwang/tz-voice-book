@@ -4,6 +4,8 @@ import { BlockType, SenegalMobileMoneyBlockMap } from "../../../types_rn/TwilioT
 const TwilioBlocks: SenegalMobileMoneyBlockMap = {
   'entrypoint': { type: BlockType.DEFAULT },
   'entrypoint_option': { type: BlockType.DEFAULT },
+  'amount_repeat': { type:BlockType.DEFAULT},
+  'story_option': { type:BlockType.DEFAULT},
   'story_1_intro': { type: BlockType.DEFAULT },
   'story_1_intro_option': { type: BlockType.DEFAULT },
   'story_1_pin_advice': { type: BlockType.DEFAULT },
@@ -30,7 +32,7 @@ const TwilioBlocks: SenegalMobileMoneyBlockMap = {
   'story_3_intro_option': { type: BlockType.DEFAULT },
   'story_3_decision': { type: BlockType.DEFAULT },
   'story_3_decision_option': { type: BlockType.DEFAULT },
-  'story_3_end': { type: BlockType.END },
+  'story_3_end': { type: BlockType.DEFAULT },
 }
 
 export default TwilioBlocks;
