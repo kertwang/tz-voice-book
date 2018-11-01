@@ -146,6 +146,9 @@ const en_text = {
         //W19
         utils_1.generateText("The next day my cash was stolen. I was very upset, but luckily all of the money from my Bourse Familiale payment that I hadn’t withdrawn yet was still safe in my mobile money account. When I went back to the Mobile Money agent I again decided to not take out all of it at once. If I don’t need all of my money right away, leaving it in my mobile money account is a safe place for it."),
     ],
+    error_0: [
+        utils_1.generateText("An error has occoured"),
+    ]
 };
 exports.default = en_text;
 //# sourceMappingURL=fr_audio_messages.js.map

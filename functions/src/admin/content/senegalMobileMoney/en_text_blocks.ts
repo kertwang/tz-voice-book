@@ -34,7 +34,8 @@ const TwilioBlocks: SenegalMobileMoneyBlockMap = {
   'story_3_intro_option' : { type: BlockType.DEFAULT},
   'story_3_decision' : { type: BlockType.DEFAULT},
   'story_3_decision_option' : { type: BlockType.DEFAULT},
-  'story_3_end' : { type: BlockType.END},
+  'story_3_end': { type: BlockType.DEFAULT},
+  'error_0' : { type: BlockType.END},
 }
 
 export default TwilioBlocks;

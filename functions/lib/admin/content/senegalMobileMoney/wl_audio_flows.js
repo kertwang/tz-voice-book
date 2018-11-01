@@ -27,6 +27,7 @@ const TwilioFlows = {
         type: TwilioTypes_1.FlowType.GATHER,
         error: TwilioTypes_1.BlockId.error_0,
         digitMatches: [
+            { digits: '0', nextBlock: TwilioTypes_1.BlockId.error_0 },
             { digits: '1', nextBlock: TwilioTypes_1.BlockId.story_1_intro },
             { digits: '2', nextBlock: TwilioTypes_1.BlockId.story_2_intro },
             { digits: '3', nextBlock: TwilioTypes_1.BlockId.story_3_intro },
@@ -115,7 +116,7 @@ const TwilioFlows = {
     },
     'story_2_customer_care': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.story_2_intro_option,
+        next: TwilioTypes_1.BlockId.story_2_send_money,
     },
     'story_2_send_no_agent': {
         type: TwilioTypes_1.FlowType.DEFAULT,
@@ -194,6 +195,11 @@ const TwilioFlows = {
         type: TwilioTypes_1.FlowType.DEFAULT,
         next: TwilioTypes_1.BlockId.story_option,
     },
+    'error_0': {
+        type: TwilioTypes_1.FlowType.DEFAULT,
+        //This won't get triggered
+        next: TwilioTypes_1.BlockId.story_option
+    }
 };
 exports.default = TwilioFlows;
 //# sourceMappingURL=wl_audio_flows.js.map

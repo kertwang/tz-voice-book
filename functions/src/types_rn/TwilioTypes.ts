@@ -135,6 +135,7 @@ export type SenegalMobileMoneyFlowMap = {
   story_3_decision: DefaultFlow | GatherFlow,
   story_3_decision_option: DefaultFlow | GatherFlow,
   story_3_end: DefaultFlow | GatherFlow,
+  error_0: DefaultFlow | GatherFlow,
 
 }
 
@@ -234,6 +235,7 @@ export type SenegalMobileMoneyBlockMap = {
   story_3_decision: AnyBlock,
   story_3_decision_option: AnyBlock,
   story_3_end: AnyBlock,
+  error_0: EndBlock,
 }
 
 export enum BlockType {
@@ -324,6 +326,7 @@ export type SenegalMobileMoneyMessageMap = {
   story_3_decision: SayMessage[] | PlayMessage[],
   story_3_decision_option: SayMessage[] | PlayMessage[],
   story_3_end: SayMessage[] | PlayMessage[],
+  error_0: SayMessage[] | PlayMessage[],
 }
 
 export enum MessageType {

@@ -34,7 +34,8 @@ const TwilioBlocks = {
     'story_3_intro_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_3_decision': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_3_decision_option': { type: TwilioTypes_1.BlockType.DEFAULT },
-    'story_3_end': { type: TwilioTypes_1.BlockType.END },
+    'story_3_end': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'error_0': { type: TwilioTypes_1.BlockType.END },
 };
 exports.default = TwilioBlocks;
 //# sourceMappingURL=en_text_blocks.js.map

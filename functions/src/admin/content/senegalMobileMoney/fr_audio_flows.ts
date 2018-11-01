@@ -26,6 +26,7 @@ const TwilioFlows: SenegalMobileMoneyFlowMap = {
     type: FlowType.GATHER,
     error: BlockId.error_0,
     digitMatches: [
+      { digits: '0', nextBlock: BlockId.error_0 },
       { digits: '1', nextBlock: BlockId.story_1_intro },
       { digits: '2', nextBlock: BlockId.story_2_intro },
       { digits: '3', nextBlock: BlockId.story_3_intro },
@@ -114,7 +115,7 @@ const TwilioFlows: SenegalMobileMoneyFlowMap = {
   },
   'story_2_customer_care': {
     type: FlowType.DEFAULT,
-    next: BlockId.story_2_intro_option,
+    next: BlockId.story_2_send_money,
   },
   'story_2_send_no_agent': {
     type: FlowType.DEFAULT,
@@ -193,6 +194,11 @@ const TwilioFlows: SenegalMobileMoneyFlowMap = {
     type: FlowType.DEFAULT,
     next: BlockId.story_option,
   },
+  'error_0': {
+    type: FlowType.DEFAULT,
+    //This won't get triggered
+    next: BlockId.story_option
+  }
 }
 
 export default TwilioFlows;
