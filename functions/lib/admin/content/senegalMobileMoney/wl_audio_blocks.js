@@ -22,17 +22,19 @@ const TwilioBlocks = {
     'story_2_explain_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_2_customer_care': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_2_send_no_agent': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'story_2_send_money': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_2_send_agent_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_2_send_explain': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_2_send_explain_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_2_send_explain_2': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'story_2_send_explain_2_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_2_end': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_2_next': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_3_intro': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_3_intro_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_3_decision': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_3_decision_option': { type: TwilioTypes_1.BlockType.DEFAULT },
-    'story_3_end': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'story_3_end': { type: TwilioTypes_1.BlockType.END },
 };
 exports.default = TwilioBlocks;
 //# sourceMappingURL=wl_audio_blocks.js.map

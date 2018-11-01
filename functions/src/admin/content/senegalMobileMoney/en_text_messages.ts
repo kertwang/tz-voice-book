@@ -133,7 +133,7 @@ const en_text: SenegalMobileMoneyMessageMap = {
   ],
   story_3_decision_option: [
     //W18
-    generateText("W1"),
+    generateText("W18"),
   ],
   story_3_end: [
     //W19

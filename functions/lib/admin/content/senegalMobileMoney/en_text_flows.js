@@ -21,7 +21,7 @@ const TwilioFlows = {
     },
     'amount_repeat': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.entrypoint_option,
+        next: TwilioTypes_1.BlockId.story_option,
     },
     'story_option': {
         type: TwilioTypes_1.FlowType.GATHER,
@@ -107,17 +107,27 @@ const TwilioFlows = {
         type: TwilioTypes_1.FlowType.GATHER,
         error: TwilioTypes_1.BlockId.error_0,
         digitMatches: [
-            { digits: '1', nextBlock: TwilioTypes_1.BlockId.story_2_send_explain_2 },
-            { digits: '2', nextBlock: TwilioTypes_1.BlockId.story_2_end },
+            //m10
+            { digits: '1', nextBlock: TwilioTypes_1.BlockId.story_2_customer_care },
+            //m5
+            { digits: '2', nextBlock: TwilioTypes_1.BlockId.story_2_send_no_agent },
         ],
     },
     'story_2_customer_care': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.story_2_intro_option,
+        next: TwilioTypes_1.BlockId.story_2_send_money,
     },
     'story_2_send_no_agent': {
         type: TwilioTypes_1.FlowType.DEFAULT,
         next: TwilioTypes_1.BlockId.story_2_send_agent_option,
+    },
+    'story_2_send_money': {
+        //M11
+        type: TwilioTypes_1.FlowType.GATHER,
+        error: TwilioTypes_1.BlockId.error_0,
+        digitMatches: [
+            { digits: '1', nextBlock: TwilioTypes_1.BlockId.story_2_send_no_agent },
+        ],
     },
     'story_2_send_agent_option': {
         type: TwilioTypes_1.FlowType.GATHER,
@@ -134,13 +144,20 @@ const TwilioFlows = {
         type: TwilioTypes_1.FlowType.GATHER,
         error: TwilioTypes_1.BlockId.error_0,
         digitMatches: [
-            { digits: '1', nextBlock: TwilioTypes_1.BlockId.story_2_send_explain_2 },
-            { digits: '2', nextBlock: TwilioTypes_1.BlockId.story_2_end },
+            { digits: '1', nextBlock: TwilioTypes_1.BlockId.story_2_customer_care },
+            { digits: '2', nextBlock: TwilioTypes_1.BlockId.story_2_send_no_agent },
         ],
     },
     'story_2_send_explain_2': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.story_2_end,
+        next: TwilioTypes_1.BlockId.story_2_send_explain_2_option,
+    },
+    'story_2_send_explain_2_option': {
+        type: TwilioTypes_1.FlowType.GATHER,
+        error: TwilioTypes_1.BlockId.error_0,
+        digitMatches: [
+            { digits: '1', nextBlock: TwilioTypes_1.BlockId.story_2_end },
+        ],
     },
     'story_2_end': {
         type: TwilioTypes_1.FlowType.DEFAULT,
@@ -152,7 +169,7 @@ const TwilioFlows = {
     },
     'story_3_intro': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.story_2_intro_option,
+        next: TwilioTypes_1.BlockId.story_3_intro_option,
     },
     'story_3_intro_option': {
         type: TwilioTypes_1.FlowType.GATHER,

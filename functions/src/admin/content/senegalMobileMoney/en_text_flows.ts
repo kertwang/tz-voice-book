@@ -114,7 +114,7 @@ const TwilioFlows: SenegalMobileMoneyFlowMap = {
   },
   'story_2_customer_care': {
     type: FlowType.DEFAULT,
-    next: BlockId.story_2_intro_option,
+    next: BlockId.story_2_send_money,
   },
   'story_2_send_no_agent': {
     type: FlowType.DEFAULT,

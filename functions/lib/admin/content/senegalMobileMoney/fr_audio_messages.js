@@ -92,6 +92,10 @@ const en_text = {
         //M5
         utils_1.generateText("Chidi: I entered the number my son told me and was now sure that I had enough money in my account. Then I had another question: how do I send money to my daughter directly without going to an agent?"),
     ],
+    story_2_send_money: [
+        //M11
+        utils_1.generateText("M11"),
+    ],
     story_2_send_agent_option: [
         //M6
         utils_1.generateText(">To hear what Chidi’s son told him for how to send money, press 1"),
@@ -108,6 +112,10 @@ const en_text = {
     story_2_send_explain_2: [
         //M12
         utils_1.generateText("Son: The first step is to select the option to transfer money, next you enter the phone number of the person you want to send money to. Then you enter the amount of money you want to send and press 1 to confirm that it’s the right amount. Finally you enter your secret code, which is also called your PIN."),
+    ],
+    story_2_send_explain_2_option: [
+        //M13
+        utils_1.generateText("M13"),
     ],
     story_2_end: [
         //M7

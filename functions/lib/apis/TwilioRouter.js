@@ -316,17 +316,16 @@ class TwilioRouter {
                     //TODO: handle the digits as well!
                     {
                         const validDigits = flow.digitMatches.map(d => d.digits);
-                        const idx = validDigits.indexOf(gatherResult.digits.trim());
+                        let idx = validDigits.indexOf(gatherResult.digits.trim());
                         //No match found :(
                         if (idx === -1) {
+                            idx = 0; //default to first option if someone presses the wrong number
                             //TODO: should this redirect instead?
-                            const errorResponse = yield TwilioRouter.getBlock(ctx, config, flow.error);
-                            return errorResponse.toString();
+                            // const errorResponse = await TwilioRouter.getBlock(ctx, config, flow.error);
+                            // return errorResponse.toString();
                         }
                         const nextBlock = flow.digitMatches[idx].nextBlock;
                         const response = new VoiceResponse();
-                        //TODO: here
-                        // response.redirect({ method: 'POST' }, `${baseUrl}/twiml/${config.botId}/${nextBlock}`);
                         response.redirect({ method: 'POST' }, utils_1.buildRedirectUrl({
                             type: utils_1.NextUrlType.DefaultUrl,
                             baseUrl: Env_1.baseUrl,
