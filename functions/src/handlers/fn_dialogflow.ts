@@ -4,7 +4,7 @@ import fs from '../apis/Firestore';
 import FirebaseApi from "../apis/FirebaseApi";
 import { ResultType } from '../types_rn/AppProviderTypes';
 import { TwilioApi } from '../apis/TwilioApi';
-import { mm101CallUrl, informalNotificationUrl, formalNotificationUrl, temporaryInsecureAuthKey } from '../utils/Env';
+import { mm101CallUrl, informalNotificationUrl, formalNotificationUrl, temporaryInsecureAuthKey, shouldDisplayEnglishTestCall, testCallUrl } from '../utils/Env';
 import { BotId } from '../types_rn/TwilioTypes';
 import { log, maybeLog } from '../utils/Log';
 import { LogType } from '../types_rn/LogTypes';
@@ -115,6 +115,15 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       buttonUrl: 'mobile_money_101',
       platform: "FACEBOOK",
     }));
+
+    if (shouldDisplayEnglishTestCall) {
+      conv.add(new Card({
+        title: `Test Call`,
+        buttonText: `CALL`,
+        buttonUrl: 'test_call',
+        platform: "FACEBOOK",
+      }));
+    }
     return;
   }
 
@@ -154,6 +163,18 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     handlePostCall(conv);
   }
 
+  async function triggerTestCall(conv: any) {
+    log({
+      type: LogType.DIALOG_FLOW_INTENT,
+      intent: 'menu.call.mobile.test',
+      sessionId,
+    });
+
+    const url = testCallUrl;
+    await triggerCall(conv, url);
+    handlePostCall(conv);
+  }
+
   async function triggerCall(conv: any, url: string) {
     const userResult = await firebaseApi.getDFUser(botId, sessionId);
     if (userResult.type === ResultType.ERROR || !userResult.result.mobile) {
@@ -189,6 +210,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('menu.call.mobile.formal',  triggerFormalCall);
   intentMap.set('menu.call.mobile.informal',  triggerInformalCall);
   intentMap.set('menu.call.mobile.mm101',  triggerMMCall);
+  intentMap.set('menu.call.mobile.test', triggerTestCall);
 
   client.handleRequest(intentMap);
 });

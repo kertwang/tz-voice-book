@@ -23,8 +23,10 @@ firebase functions:config:set \
   config.storage_bucket="$storageBucket" \
   config.informal_notification_url="$informal_notification_url" \
   config.formal_notification_url="$formal_notification_url" \
-  config.mm_101_url="$mm_101_url"\
-  config.should_log="$should_log"
+  config.mm_101_url="$mm_101_url" \
+  config.should_log="$should_log" \
+  config.should_display_english_test_call="$should_display_english_test_call" \
+  config.test_call_url="$test_call_url "
 
 firebase deploy --only functions
 

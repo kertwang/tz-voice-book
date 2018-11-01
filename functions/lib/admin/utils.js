@@ -5,7 +5,7 @@ exports.generateText = (text) => {
     return {
         type: TwilioTypes_1.MessageType.SAY,
         text,
-        language: 'en-AU'
+        language: 'en-US'
     };
 };
 //# sourceMappingURL=utils.js.map

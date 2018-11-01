@@ -16,10 +16,13 @@ export storageBucket=tz-phone-book-dev.appspot.com
 # Public
 export BASE_URL="https://us-central1-tz-phone-book-dev.cloudfunctions.net"
 
-# Urls for DialogFlow
+# config for DialogFlow
 export formal_notification_url="https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=wl_audio"
 export informal_notification_url="https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=wl_audio"
 export mm_101_url="https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalMobileMoney/entrypoint?versionOverride=wl_audio"
+export should_display_english_test_call="true"
+export test_call_url="https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalMobileMoney/entrypoint?versionOverride=en_text"
+
 
 
 export should_log='true'

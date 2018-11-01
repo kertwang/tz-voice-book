@@ -103,6 +103,14 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                 buttonUrl: 'mobile_money_101',
                 platform: "FACEBOOK",
             }));
+            if (Env_1.shouldDisplayEnglishTestCall) {
+                conv.add(new Card({
+                    title: `Test Call`,
+                    buttonText: `CALL`,
+                    buttonUrl: 'test_call',
+                    platform: "FACEBOOK",
+                }));
+            }
             return;
         });
     }
@@ -142,6 +150,18 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             handlePostCall(conv);
         });
     }
+    function triggerTestCall(conv) {
+        return __awaiter(this, void 0, void 0, function* () {
+            Log_1.log({
+                type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
+                intent: 'menu.call.mobile.test',
+                sessionId,
+            });
+            const url = Env_1.testCallUrl;
+            yield triggerCall(conv, url);
+            handlePostCall(conv);
+        });
+    }
     function triggerCall(conv, url) {
         return __awaiter(this, void 0, void 0, function* () {
             const userResult = yield firebaseApi.getDFUser(botId, sessionId);
@@ -175,6 +195,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     intentMap.set('menu.call.mobile.formal', triggerFormalCall);
     intentMap.set('menu.call.mobile.informal', triggerInformalCall);
     intentMap.set('menu.call.mobile.mm101', triggerMMCall);
+    intentMap.set('menu.call.mobile.test', triggerTestCall);
     client.handleRequest(intentMap);
 });
 //# sourceMappingURL=fn_dialogflow.js.map

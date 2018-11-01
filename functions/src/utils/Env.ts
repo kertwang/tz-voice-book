@@ -16,3 +16,5 @@ export const informalNotificationUrl = envConfig.config.informal_notification_ur
 export const formalNotificationUrl = envConfig.config.formal_notification_url;
 export const mm101CallUrl = envConfig.config.mm_101_url;
 export const shouldLog = getBoolean(envConfig.config.should_log);
+export const shouldDisplayEnglishTestCall = getBoolean(envConfig.config.should_display_english_test_call);
+export const testCallUrl = envConfig.config.test_call_url;

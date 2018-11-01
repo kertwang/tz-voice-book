@@ -15,4 +15,6 @@ exports.informalNotificationUrl = envConfig.config.informal_notification_url;
 exports.formalNotificationUrl = envConfig.config.formal_notification_url;
 exports.mm101CallUrl = envConfig.config.mm_101_url;
 exports.shouldLog = _1.getBoolean(envConfig.config.should_log);
+exports.shouldDisplayEnglishTestCall = _1.getBoolean(envConfig.config.should_display_english_test_call);
+exports.testCallUrl = envConfig.config.test_call_url;
 //# sourceMappingURL=Env.js.map
