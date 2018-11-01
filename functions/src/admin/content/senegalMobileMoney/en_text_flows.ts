@@ -20,7 +20,7 @@ const TwilioFlows: SenegalMobileMoneyFlowMap = {
   },
   'amount_repeat': {
     type: FlowType.DEFAULT,
-    next: BlockId.entrypoint_option,
+    next: BlockId.story_option,
   },
   'story_option': {
     type: FlowType.GATHER,
@@ -106,8 +106,10 @@ const TwilioFlows: SenegalMobileMoneyFlowMap = {
     type: FlowType.GATHER,
     error: BlockId.error_0,
     digitMatches: [
-      { digits: '1', nextBlock: BlockId.story_2_send_explain_2 },
-      { digits: '2', nextBlock: BlockId.story_2_end },
+      //m10
+      { digits: '1', nextBlock: BlockId.story_2_customer_care },
+      //m5
+      { digits: '2', nextBlock: BlockId.story_2_send_no_agent },
     ],
   },
   'story_2_customer_care': {
@@ -117,6 +119,14 @@ const TwilioFlows: SenegalMobileMoneyFlowMap = {
   'story_2_send_no_agent': {
     type: FlowType.DEFAULT,
     next: BlockId.story_2_send_agent_option,
+  },
+  'story_2_send_money': {
+    //M11
+    type: FlowType.GATHER,
+    error: BlockId.error_0,
+    digitMatches: [
+      { digits: '1', nextBlock: BlockId.story_2_send_no_agent },
+    ],
   },
   'story_2_send_agent_option': {
     type: FlowType.GATHER,
@@ -133,13 +143,20 @@ const TwilioFlows: SenegalMobileMoneyFlowMap = {
     type: FlowType.GATHER,
     error: BlockId.error_0,
     digitMatches: [
-      { digits: '1', nextBlock: BlockId.story_2_send_explain_2 },
-      { digits: '2', nextBlock: BlockId.story_2_end },
+      { digits: '1', nextBlock: BlockId.story_2_customer_care },
+      { digits: '2', nextBlock: BlockId.story_2_send_no_agent },
     ],
   },
   'story_2_send_explain_2': {
     type: FlowType.DEFAULT,
-    next: BlockId.story_2_end,
+    next: BlockId.story_2_send_explain_2_option,
+  },
+  'story_2_send_explain_2_option': {
+    type: FlowType.GATHER,
+    error: BlockId.error_0,
+    digitMatches: [
+      { digits: '1', nextBlock: BlockId.story_2_end },
+    ],
   },
   'story_2_end': {
     type: FlowType.DEFAULT,
@@ -151,7 +168,7 @@ const TwilioFlows: SenegalMobileMoneyFlowMap = {
   },
   'story_3_intro': {
     type: FlowType.DEFAULT,
-    next: BlockId.story_2_intro_option,
+    next: BlockId.story_3_intro_option,
   },
   'story_3_intro_option': {
     type: FlowType.GATHER,

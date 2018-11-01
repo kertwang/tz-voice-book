@@ -26,9 +26,11 @@ var BlockId;
     BlockId["record_delete"] = "record_delete";
     BlockId["record_post_or_delete_error"] = "record_post_or_delete_error";
     /* senegalNotification */
-    BlockId["notification_0"] = "notification_0";
+    // notification_0 = 'notification_0',
     /* senegalMobileMoney */
     BlockId["entrypoint_option"] = "entrypoint_option";
+    BlockId["amount_repeat"] = "amount_repeat";
+    BlockId["story_option"] = "story_option";
     BlockId["story_1_intro"] = "story_1_intro";
     BlockId["story_1_intro_option"] = "story_1_intro_option";
     BlockId["story_1_pin_advice"] = "story_1_pin_advice";

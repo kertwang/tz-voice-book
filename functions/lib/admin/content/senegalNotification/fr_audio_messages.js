@@ -5,10 +5,7 @@ const utils_1 = require("../../utils");
 const en_text = {
     'entrypoint': [
         utils_1.generateText('Hello. This is an automated notification.'),
-    ],
-    'notification_0': [
-        utils_1.generateText('You have recieved some money.'),
-    ],
+    ]
 };
 exports.default = en_text;
 //# sourceMappingURL=fr_audio_messages.js.map

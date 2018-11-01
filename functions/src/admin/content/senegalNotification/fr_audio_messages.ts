@@ -5,10 +5,7 @@ import { generateText } from "../../utils";
 const en_text: SenegalNotificationMessageMap = {
   'entrypoint': [
     generateText('Hello. This is an automated notification.'),
-  ],
-  'notification_0': [
-    generateText('You have recieved some money.'),
-  ],
+  ]
 }
 
 export default en_text;

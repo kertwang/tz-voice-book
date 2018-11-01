@@ -1,4 +1,4 @@
-import { FlowMap, FlowType, BlockId, AnyFlowMap, SenegalNotificationFlowMap } from "../../../types_rn/TwilioTypes";
+import { FlowType, BlockId, SenegalNotificationFlowMap } from "../../../types_rn/TwilioTypes";
 
 /**
  * Flows is a graph based data structure, with the key being the valid
@@ -7,11 +7,6 @@ import { FlowMap, FlowType, BlockId, AnyFlowMap, SenegalNotificationFlowMap } fr
  */
 const TwilioFlows: SenegalNotificationFlowMap = {
   'entrypoint': {
-    type: FlowType.DEFAULT,
-    next: BlockId.notification_0,
-  },
-  // TODO: Not sure how to end the call...
-  'notification_0': {
     type: FlowType.DEFAULT,
     next: BlockId.entrypoint,
   },

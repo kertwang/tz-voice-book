@@ -60,6 +60,7 @@ run-local:
 	./_run_local.sh
 
 deploy:
+	@make env
 	./_deploy.sh
 
 .PHONY: switch switch-dev swich-prod env

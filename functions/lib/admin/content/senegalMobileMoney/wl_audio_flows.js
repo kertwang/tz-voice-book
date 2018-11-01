@@ -15,8 +15,21 @@ const TwilioFlows = {
         type: TwilioTypes_1.FlowType.GATHER,
         error: TwilioTypes_1.BlockId.error_0,
         digitMatches: [
-            { digits: '1', nextBlock: TwilioTypes_1.BlockId.entrypoint },
-            { digits: '2', nextBlock: TwilioTypes_1.BlockId.story_1_intro },
+            { digits: '1', nextBlock: TwilioTypes_1.BlockId.amount_repeat },
+            { digits: '2', nextBlock: TwilioTypes_1.BlockId.story_option },
+        ],
+    },
+    'amount_repeat': {
+        type: TwilioTypes_1.FlowType.DEFAULT,
+        next: TwilioTypes_1.BlockId.entrypoint_option,
+    },
+    'story_option': {
+        type: TwilioTypes_1.FlowType.GATHER,
+        error: TwilioTypes_1.BlockId.error_0,
+        digitMatches: [
+            { digits: '1', nextBlock: TwilioTypes_1.BlockId.story_1_intro },
+            { digits: '2', nextBlock: TwilioTypes_1.BlockId.story_2_intro },
+            { digits: '3', nextBlock: TwilioTypes_1.BlockId.story_3_intro },
         ],
     },
     'story_1_intro': {
@@ -72,7 +85,7 @@ const TwilioFlows = {
     },
     'story_1_next': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.story_2_intro,
+        next: TwilioTypes_1.BlockId.story_option,
     },
     'story_2_intro': {
         type: TwilioTypes_1.FlowType.DEFAULT,
@@ -135,7 +148,7 @@ const TwilioFlows = {
     },
     'story_2_next': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.story_3_intro,
+        next: TwilioTypes_1.BlockId.story_option,
     },
     'story_3_intro': {
         type: TwilioTypes_1.FlowType.DEFAULT,
@@ -160,10 +173,9 @@ const TwilioFlows = {
             { digits: '1', nextBlock: TwilioTypes_1.BlockId.story_3_end },
         ],
     },
-    //End block, won't react entrypoint
     'story_3_end': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.entrypoint,
+        next: TwilioTypes_1.BlockId.story_option,
     },
 };
 exports.default = TwilioFlows;

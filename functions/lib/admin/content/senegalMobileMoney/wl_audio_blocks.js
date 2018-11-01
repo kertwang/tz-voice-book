@@ -4,6 +4,8 @@ const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
 const TwilioBlocks = {
     'entrypoint': { type: TwilioTypes_1.BlockType.DEFAULT },
     'entrypoint_option': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'amount_repeat': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'story_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_1_intro': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_1_intro_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_1_pin_advice': { type: TwilioTypes_1.BlockType.DEFAULT },
@@ -30,7 +32,7 @@ const TwilioBlocks = {
     'story_3_intro_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_3_decision': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_3_decision_option': { type: TwilioTypes_1.BlockType.DEFAULT },
-    'story_3_end': { type: TwilioTypes_1.BlockType.END },
+    'story_3_end': { type: TwilioTypes_1.BlockType.DEFAULT },
 };
 exports.default = TwilioBlocks;
 //# sourceMappingURL=wl_audio_blocks.js.map
