@@ -224,6 +224,11 @@ class FirebaseApi {
             .then(() => ({ type: AppProviderTypes_1.ResultType.SUCCESS, result: null }))
             .catch(err => ({ type: AppProviderTypes_1.ResultType.ERROR, message: err.message }));
     }
+    saveResponse(botId, type, response) {
+        return this.fs.collection('df').doc(botId).collection(type).add({ response })
+            .then(() => ({ type: AppProviderTypes_1.ResultType.SUCCESS, result: null }))
+            .catch(err => ({ type: AppProviderTypes_1.ResultType.ERROR, message: err.message }));
+    }
 }
 exports.default = FirebaseApi;
 //# sourceMappingURL=FirebaseApi.js.map

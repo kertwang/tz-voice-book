@@ -31,10 +31,10 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     const firebaseApi = new FirebaseApi_1.default(Firestore_1.default);
     const twilioApi = new TwilioApi_1.TwilioApi();
     const client = new WebhookClient({ request, response });
-    // const requestLogStr = `Dialogflow Request headers:, ${JSON.stringify(request.headers)}`;
-    // const responseLogStr = `Dialogflow Response headers:, ${JSON.stringify(request.headers)}`;
-    // maybeLog(requestLogStr);
-    // maybeLog(responseLogStr);
+    const requestLogStr = `Dialogflow Request headers:, ${JSON.stringify(request.headers)}`;
+    const responseLogStr = `Dialogflow Response headers:, ${JSON.stringify(request.headers)}`;
+    Log_1.maybeLog(requestLogStr);
+    Log_1.maybeLog(responseLogStr);
     const botId = TwilioTypes_1.BotId.uncdfBot;
     const sessionId = request.body.sessionId;
     function menuCall(conv) {
@@ -180,6 +180,19 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             return;
         });
     }
+    function tripSummaryStruggleCapture(conv) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('trip summary', request.body.result);
+            const text = request.body && request.body.result && request.body.result.resolvedQuery;
+            console.log('text is:', text);
+            if (text) {
+                //TODO: get input and capture to google doc somewhere
+                yield firebaseApi.saveResponse(botId, 'tripSummaryStruggleCapture', text);
+            }
+            //TODO: translate
+            conv.add('What aspects of the bots did your beneficiary struggle with? With your fellow group members, write down a few observations on the RED notes. Write one observation per note.');
+        });
+    }
     function handlePostCall(conv) {
         conv.add('Making the call now.');
         const quickReplies = new Suggestion({
@@ -196,6 +209,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     intentMap.set('menu.call.mobile.informal', triggerInformalCall);
     intentMap.set('menu.call.mobile.mm101', triggerMMCall);
     intentMap.set('menu.call.mobile.test', triggerTestCall);
+    intentMap.set('u.1.trip_summary.struggle_1', tripSummaryStruggleCapture);
+    //TODO: add other fallback intent capture methods
     client.handleRequest(intentMap);
 });
 //# sourceMappingURL=fn_dialogflow.js.map

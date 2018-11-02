@@ -230,4 +230,10 @@ export default class FirebaseApi {
     .then(() => ({ type: ResultType.SUCCESS, result: null }))
     .catch(err => ({ type: ResultType.ERROR, message: err.message }))
   }
+
+  public saveResponse(botId: string, type: string, response: string): Promise<SomeResult<void>> {
+    return this.fs.collection('df').doc(botId).collection(type).add({response})
+    .then(() => ({ type: ResultType.SUCCESS, result: null }))
+    .catch(err => ({ type: ResultType.ERROR, message: err.message }))
+  }
 }
