@@ -208,6 +208,36 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   // Capture Words from User
   // ------------------------------------------
 
+  async function shareQuestionCapture(conv: any) {
+    const text = request.body && request.body.result && request.body.result.resolvedQuery;
+    if (text) {
+      await firebaseApi.saveResponse(botId, 'shareQuestionCapture', text);
+    }
+
+    //TODO: translate
+    const quickReplies = new Suggestion({
+      title: 'Excellent question. It’s useful for me to know what kinds of things you humans like to know about 😉',
+      reply: 'Continue'
+    });
+    conv.add(quickReplies);
+  }
+
+  async function improveNotificationMessageCapture(conv: any) {
+    const text = request.body && request.body.result && request.body.result.resolvedQuery;
+    if (text) {
+      await firebaseApi.saveResponse(botId, 'improveNotificationMessageCapture', text);
+    }
+
+    //TODO: translate
+    const quickReplies = new Suggestion({
+      title: 'Great. The “Interviewer” in your group will lead this, but you can all ask questions. When you speak with your beneficiary, start with open-ended questions to see what your beneficiary offers up, and then get more specific. Sometimes you may even want to ask the same question in different ways to see if you get a different response.',
+      reply: 'See an example'
+    });
+    quickReplies.addReply_('Got it');
+    conv.add(quickReplies);
+  }
+
+
   async function conclusionOneThingCapture(conv: any) {
     const text = request.body && request.body.result && request.body.result.resolvedQuery;
     if (text) {
@@ -240,6 +270,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('menu.call.mobile.mm101',  triggerMMCall);
   intentMap.set('menu.call.mobile.test', triggerTestCall);
 
+  intentMap.set('2.7_user_question', shareQuestionCapture);
+  intentMap.set('3.1_asking_questions_fallback', improveNotificationMessageCapture);
   intentMap.set('4.1_conclusion - fallback', conclusionOneThingCapture);
   intentMap.set('u.1.trip_summary.struggle_1', tripSummaryStruggleCapture);
   //TODO: add other fallback intent capture methods
