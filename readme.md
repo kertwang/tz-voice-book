@@ -246,3 +246,4 @@ https://us-central1-tz-phone-book-dev.cloudfunctions.net/dialogflow-dialogflowFi
 ### Get responses
 
 https://lwilld3.localtunnel.me/tz-phone-book-dev/us-central1/twiml/uncdfBot/tripSummaryStruggleCapture/responses
+https://lwilld3.localtunnel.me/tz-phone-book-dev/us-central1/twiml/uncdfBot/conclusionOneThingCapture/responses

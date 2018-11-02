@@ -3,7 +3,6 @@ import { sleep, getDefaultVersionForBot } from "../utils";
 import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage, MessageType } from "../types_rn/TwilioTypes";
 import { DFUser } from "../handlers/fn_dialogflow";
 import { SomeResult, ResultType } from "../types_rn/AppProviderTypes";
-import { Result } from "range-parser";
 
 export default class FirebaseApi {
   fs: any;
