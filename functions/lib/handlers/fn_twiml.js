@@ -25,6 +25,8 @@ const TwilioApi_1 = require("../apis/TwilioApi");
 const Env_1 = require("../utils/Env");
 const LogTypes_1 = require("../types_rn/LogTypes");
 const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
+const responses2_template_1 = require("./responses2.template");
+const mustache = require("mustache");
 require('express-async-errors');
 const twilioApi = new TwilioApi_1.TwilioApi();
 //TODO: make newer import format
@@ -57,17 +59,27 @@ module.exports = (functions) => {
     /**
      * Get the responses from the chatbot in a simple text format
      */
-    app.get('/:botId/:intent/responses', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.get('/:botId/responses', (req, res) => __awaiter(this, void 0, void 0, function* () {
         const { botId, intent } = req.params;
-        const responsesResult = yield firebaseApi.getResponses(botId, intent);
-        if (responsesResult.type === AppProviderTypes_1.ResultType.ERROR) {
-            res.status(400).send(`Couldn't find responses for bot: ${botId} and intent: ${intent}`);
-            return;
-        }
-        const responseString = responsesResult.result.reduce((acc, curr) => {
-            return `${acc}\n<li>${curr}</li>`;
-        }, '<h3>Responses:</h3><ul>');
-        res.status(200).send(responseString);
+        // const responsesResult = await firebaseApi.getResponses(botId, intent);
+        const intents = [
+            { intent: 'shareQuestionCapture', question: 'Great. Would you mind sharing one of your questions with me? You can type it below:', responses: [] },
+            { intent: 'improveNotificationMessageCapture', question: 'Is there anything about the notification text message that you think could be improved? Take a minute and jot down any ideas you have that might improve it. What’s one thing you jotted down?', responses: [] },
+            { intent: 'conclusionOneThingCapture', question: 'One quick question: What would you most like to get out of the exercise today?', responses: [] },
+            { intent: 'tripSummaryStruggleCapture', question: 'In one word, what do you now think is the most important key to using automated digital tools with low-income clients?', responses: [] },
+        ];
+        const responsesResult = yield Promise.all(intents.map((i) => firebaseApi.getResponses(botId, i.intent)));
+        console.log("responses result is", responsesResult);
+        responsesResult.forEach((result, idx) => {
+            if (result.type === AppProviderTypes_1.ResultType.ERROR) {
+                return;
+            }
+            intents[idx].responses = result.result;
+        });
+        // const responseString = responsesResult.result.reduce((acc: string, curr: string) => {
+        //   return `${acc}\n<li>${curr}</li>`;
+        // }, '<h3>Responses:</h3><ul>');
+        res.status(200).send(mustache.render(responses2_template_1.default, { intents }));
     }));
     /**
      * Callback triggered once feedback recording is finished

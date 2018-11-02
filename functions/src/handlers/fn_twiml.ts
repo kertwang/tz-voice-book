@@ -18,7 +18,10 @@ import { log } from '../utils/Log';
 import { TwilioApi } from '../apis/TwilioApi';
 import { temporaryInsecureAuthKey } from '../utils/Env';
 import { LogType } from '../types_rn/LogTypes';
-import { ResultType } from '../types_rn/AppProviderTypes';
+import { ResultType, SomeResult } from '../types_rn/AppProviderTypes';
+
+import template from './responses2.template';
+import * as mustache from 'mustache';
 
 require('express-async-errors');
 
@@ -63,19 +66,34 @@ module.exports = (functions: any) => {
   /**
    * Get the responses from the chatbot in a simple text format
    */
-  app.get('/:botId/:intent/responses', async (req, res) => {
+  app.get('/:botId/responses', async (req, res) => {
     const { botId, intent } = req.params;
-    const responsesResult = await firebaseApi.getResponses(botId, intent);
+    // const responsesResult = await firebaseApi.getResponses(botId, intent);
 
-    if (responsesResult.type === ResultType.ERROR) {
-      res.status(400).send(`Couldn't find responses for bot: ${botId} and intent: ${intent}`);
-      return;
-    }
+    const intents = [
+      { intent: 'shareQuestionCapture', question: 'Great. Would you mind sharing one of your questions with me? You can type it below:', responses:[] },
+      { intent: 'improveNotificationMessageCapture', question: 'Is there anything about the notification text message that you think could be improved? Take a minute and jot down any ideas you have that might improve it. What’s one thing you jotted down?', responses: []},
+      { intent: 'conclusionOneThingCapture', question: 'One quick question: What would you most like to get out of the exercise today?', responses: []},
+      { intent: 'tripSummaryStruggleCapture', question: 'In one word, what do you now think is the most important key to using automated digital tools with low-income clients?', responses: []},
+    ];
 
-    const responseString = responsesResult.result.reduce((acc: string, curr: string) => {
-      return `${acc}\n<li>${curr}</li>`;
-    }, '<h3>Responses:</h3><ul>');
-    res.status(200).send(responseString);
+    const responsesResult: Array<SomeResult<string[]>> = await Promise.all(intents.map((i: any) => firebaseApi.getResponses(botId, i.intent)));
+    console.log("responses result is", responsesResult);
+    responsesResult.forEach((result, idx) => {
+      if (result.type === ResultType.ERROR) {
+        return;
+      }
+
+      intents[idx].responses = result.result;
+    });
+
+
+    // const responseString = responsesResult.result.reduce((acc: string, curr: string) => {
+    //   return `${acc}\n<li>${curr}</li>`;
+    // }, '<h3>Responses:</h3><ul>');
+    
+
+    res.status(200).send(mustache.render(template, { intents }));
   });
 
   /**

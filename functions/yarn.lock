@@ -1270,9 +1270,9 @@ detect-libc@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
 
-dialogflow-fulfillment@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/dialogflow-fulfillment/-/dialogflow-fulfillment-0.5.0.tgz#0b812767234afaa357db6b037d6217cc9d37c43c"
+"dialogflow-fulfillment@git+https://github.com/naranjja/dialogflow-fulfillment-nodejs.git#57302849b17325890e83108472247f1267b4a80a":
+  version "0.4.1"
+  resolved "git+https://github.com/naranjja/dialogflow-fulfillment-nodejs.git#57302849b17325890e83108472247f1267b4a80a"
   dependencies:
     debug "^3.1.0"
 
@@ -3125,6 +3125,10 @@ multipipe@^0.1.2:
   resolved "https://registry.yarnpkg.com/multipipe/-/multipipe-0.1.2.tgz#2a8f2ddf70eed564dff2d57f1e1a137d9f05078b"
   dependencies:
     duplexer2 "0.0.2"
+
+mustache@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/mustache/-/mustache-3.0.0.tgz#3de22dd9ba38152f7355399a953dd4528c403338"
 
 mute-stdout@^1.0.0:
   version "1.0.1"
