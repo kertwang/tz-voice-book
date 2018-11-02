@@ -18,6 +18,7 @@ import { log } from '../utils/Log';
 import { TwilioApi } from '../apis/TwilioApi';
 import { temporaryInsecureAuthKey } from '../utils/Env';
 import { LogType } from '../types_rn/LogTypes';
+import { ResultType } from '../types_rn/AppProviderTypes';
 
 require('express-async-errors');
 
@@ -56,6 +57,25 @@ module.exports = (functions: any) => {
   app.post('/recognitionResults', (req, res) => {
     console.log(`stable: '${req.body.StableSpeechResult}' unstable: '${req.body.UnstableSpeechResult}'`)
     res.json(true);
+  });
+
+
+  /**
+   * Get the responses from the chatbot in a simple text format
+   */
+  app.get('/:botId/:intent/responses', async (req, res) => {
+    const { botId, intent } = req.params;
+    const responsesResult = await firebaseApi.getResponses(botId, intent);
+
+    if (responsesResult.type === ResultType.ERROR) {
+      res.status(400).send(`Couldn't find responses for bot: ${botId} and intent: ${intent}`);
+      return;
+    }
+
+    const responseString = responsesResult.result.reduce((acc: string, curr: string) => {
+      return `${acc}\n<li>${curr}</li>`;
+    }, '<h3>Responses:</h3><ul>');
+    res.status(200).send(responseString);
   });
 
   /**

@@ -24,6 +24,7 @@ const Log_1 = require("../utils/Log");
 const TwilioApi_1 = require("../apis/TwilioApi");
 const Env_1 = require("../utils/Env");
 const LogTypes_1 = require("../types_rn/LogTypes");
+const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
 require('express-async-errors');
 const twilioApi = new TwilioApi_1.TwilioApi();
 //TODO: make newer import format
@@ -53,6 +54,21 @@ module.exports = (functions) => {
         console.log(`stable: '${req.body.StableSpeechResult}' unstable: '${req.body.UnstableSpeechResult}'`);
         res.json(true);
     });
+    /**
+     * Get the responses from the chatbot in a simple text format
+     */
+    app.get('/:botId/:intent/responses', (req, res) => __awaiter(this, void 0, void 0, function* () {
+        const { botId, intent } = req.params;
+        const responsesResult = yield firebaseApi.getResponses(botId, intent);
+        if (responsesResult.type === AppProviderTypes_1.ResultType.ERROR) {
+            res.status(400).send(`Couldn't find responses for bot: ${botId} and intent: ${intent}`);
+            return;
+        }
+        const responseString = responsesResult.result.reduce((acc, curr) => {
+            return `${acc}\n<li>${curr}</li>`;
+        }, '<h3>Responses:</h3><ul>');
+        res.status(200).send(responseString);
+    }));
     /**
      * Callback triggered once feedback recording is finished
      */

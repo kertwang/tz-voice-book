@@ -224,10 +224,33 @@ class FirebaseApi {
             .then(() => ({ type: AppProviderTypes_1.ResultType.SUCCESS, result: null }))
             .catch(err => ({ type: AppProviderTypes_1.ResultType.ERROR, message: err.message }));
     }
-    saveResponse(botId, type, response) {
-        return this.fs.collection('df').doc(botId).collection(type).add({ response })
+    saveResponse(botId, intent, response) {
+        return this.fs.collection('df').doc(botId).collection(intent).add({ response })
             .then(() => ({ type: AppProviderTypes_1.ResultType.SUCCESS, result: null }))
             .catch(err => ({ type: AppProviderTypes_1.ResultType.ERROR, message: err.message }));
+    }
+    getResponses(botId, intent) {
+        return this.fs.collection('df').doc(botId).collection(intent).get()
+            .then((sn) => {
+            console.log();
+            const responses = [];
+            sn.forEach(doc => {
+                //Get each document, put in the id
+                const response = doc.data().response;
+                responses.push(response);
+            });
+            return {
+                type: AppProviderTypes_1.ResultType.SUCCESS,
+                result: responses,
+            };
+        })
+            .catch(err => {
+            console.log("getResponses error: ", err);
+            return {
+                type: AppProviderTypes_1.ResultType.ERROR,
+                message: err,
+            };
+        });
     }
 }
 exports.default = FirebaseApi;

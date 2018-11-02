@@ -240,3 +240,9 @@ curl -X POST $URL -H 'Content-Type: application/json' -d '{ "mobile": ""$NO_1"",
 http://localhost:5000/tz-phone-book-dev/us-central1/dialogflow-dialogflowFirebaseFulfillment
 https://lwilld3.localtunnel.me/tz-phone-book-dev/us-central1/dialogflow-dialogflowFirebaseFulfillment
 https://us-central1-tz-phone-book-dev.cloudfunctions.net/dialogflow-dialogflowFirebaseFulfillment
+
+
+
+### Get responses
+
+https://lwilld3.localtunnel.me/tz-phone-book-dev/us-central1/twiml/uncdfBot/tripSummaryStruggleCapture/responses

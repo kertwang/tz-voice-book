@@ -3,6 +3,7 @@ import { sleep, getDefaultVersionForBot } from "../utils";
 import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage, MessageType } from "../types_rn/TwilioTypes";
 import { DFUser } from "../handlers/fn_dialogflow";
 import { SomeResult, ResultType } from "../types_rn/AppProviderTypes";
+import { Result } from "range-parser";
 
 export default class FirebaseApi {
   fs: any;
@@ -231,9 +232,34 @@ export default class FirebaseApi {
     .catch(err => ({ type: ResultType.ERROR, message: err.message }))
   }
 
-  public saveResponse(botId: string, type: string, response: string): Promise<SomeResult<void>> {
-    return this.fs.collection('df').doc(botId).collection(type).add({response})
+  public saveResponse(botId: string, intent: string, response: string): Promise<SomeResult<void>> {
+    return this.fs.collection('df').doc(botId).collection(intent).add({response})
     .then(() => ({ type: ResultType.SUCCESS, result: null }))
     .catch(err => ({ type: ResultType.ERROR, message: err.message }))
+  }
+
+  public getResponses(botId: string, intent: string): Promise<SomeResult<string[]>> {
+    return this.fs.collection('df').doc(botId).collection(intent).get()
+    .then((sn: any) => {
+      console.log()
+      const responses: string[] = [];
+      sn.forEach(doc => {
+        //Get each document, put in the id
+        const response = doc.data().response;
+        responses.push(response);
+      });
+
+      return {
+        type: ResultType.SUCCESS,
+        result: responses,
+      };
+    })
+    .catch(err => {
+      console.log("getResponses error: ", err);
+      return {
+        type: ResultType.ERROR,
+        message: err,
+      };
+    })
   }
 }
