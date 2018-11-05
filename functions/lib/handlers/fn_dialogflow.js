@@ -21,6 +21,60 @@ const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion } = require('dialogflow-fulfillment');
 process.env.DEBUG = 'dialogflow:production'; // enables lib debugging statements
+const translations = {
+    en: {
+        menuCall_1: `Who should I call? Make sure to enter the number with the country code e.g. +221 for Senegal`,
+        menuCall_2: 'Who should I call?',
+        menuCall_3: 'Saved numbers:',
+        menuCall_4: 'Or just type a new number.',
+        error: "I'm Sorry. Something went wrong. Please say 'menu' to try again.",
+        menuCallMobile_1: 'Thanks.',
+        menuCallMobile_2: 'What type of call should they recieve?',
+        menuCallMobile_3: `Payment Notification`,
+        menuCallMobile_4: 'CALL',
+        menuCallMobile_5: `Mobile Money 101:`,
+        triggerCallError: `Something went wrong. Please try again.`,
+        triggerCallError_2: `There was a problem making the call. Please try again.`,
+        handlePostCall_1: 'Making the call now.',
+        handlePostCall_2: 'What would you like to do next?',
+        handlePostCall_3: 'New Call',
+        handlePostCall_4: 'Menu',
+        shareQuestionCapture_1: 'Excellent question. It’s useful for me to know what kinds of things you humans like to know about 😉',
+        shareQuestionCapture_2: 'Continue',
+        improveNotificationMessageCapture_1: 'Great. The “Interviewer” in your group will lead this, but you can all ask questions. When you speak with your beneficiary, start with open-ended questions to see what your beneficiary offers up, and then get more specific. Sometimes you may even want to ask the same question in different ways to see if you get a different response.',
+        improveNotificationMessageCapture_2: 'See an example',
+        improveNotificationMessageCapture_3: 'Got it',
+        conclusionOneThingCapture_1: 'Okay got it, we’ll do our best! To review the content we just went over and see other things this chatbot can help you with, simply type “menu” at any time.',
+        conclusionOneThingCapture_2: 'Menu',
+        tripSummaryStruggleCapture_1: 'What aspects of the bots did your beneficiary struggle with? With your fellow group members, write down a few observations on the RED notes. Write one observation per note.',
+    },
+    fr: {
+        menuCall_1: `Who should I call? Make sure to enter the number with the country code e.g. +221 for Senegal`,
+        menuCall_2: 'Who should I call?',
+        menuCall_3: 'Saved numbers:',
+        menuCall_4: 'Or just type a new number.',
+        error: "I'm Sorry. Something went wrong. Please say 'menu' to try again.",
+        menuCallMobile_1: 'Thanks.',
+        menuCallMobile_2: 'What type of call should they recieve?',
+        menuCallMobile_3: `Payment Notification`,
+        menuCallMobile_4: 'CALL',
+        menuCallMobile_5: `Mobile Money 101:`,
+        triggerCallError: `Something went wrong. Please try again.`,
+        triggerCallError_2: `There was a problem making the call. Please try again.`,
+        handlePostCall_1: 'Making the call now.',
+        handlePostCall_2: 'What would you like to do next?',
+        handlePostCall_3: 'New Call',
+        handlePostCall_4: 'Menu',
+        shareQuestionCapture_1: 'Excellent question. It’s useful for me to know what kinds of things you humans like to know about 😉',
+        shareQuestionCapture_2: 'Continue',
+        improveNotificationMessageCapture_1: 'Great. The “Interviewer” in your group will lead this, but you can all ask questions. When you speak with your beneficiary, start with open-ended questions to see what your beneficiary offers up, and then get more specific. Sometimes you may even want to ask the same question in different ways to see if you get a different response.',
+        improveNotificationMessageCapture_2: 'See an example',
+        improveNotificationMessageCapture_3: 'Got it',
+        conclusionOneThingCapture_1: 'Okay got it, we’ll do our best! To review the content we just went over and see other things this chatbot can help you with, simply type “menu” at any time.',
+        conclusionOneThingCapture_2: 'Menu',
+        tripSummaryStruggleCapture_1: 'What aspects of the bots did your beneficiary struggle with? With your fellow group members, write down a few observations on the RED notes. Write one observation per note.',
+    }
+};
 //TODO: add basic auth
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
     //Super basic auth:
@@ -37,6 +91,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     Log_1.maybeLog(responseLogStr);
     const botId = TwilioTypes_1.BotId.uncdfBot;
     const sessionId = request.body.sessionId;
+    const lang = 'en';
     function menuCall(conv) {
         return __awaiter(this, void 0, void 0, function* () {
             Log_1.log({
@@ -48,18 +103,18 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             if (userResult.type === AppProviderTypes_1.ResultType.ERROR || !userResult.result.mobile) {
                 //No existing user
                 //TODO: Translate?
-                conv.add(`Who should I call? Make sure to enter the number with the country code e.g. +221 for Senegal`);
+                conv.add(translations[lang].menuCall_1);
                 return;
             }
             const mobile = userResult.result.mobile;
-            conv.add('Who should I call?');
+            conv.add(translations[lang].menuCall_2);
             conv.add(new Card({
-                title: `Saved numbers:`,
+                title: translations[lang].menuCall_3,
                 buttonText: mobile,
                 buttonUrl: mobile,
                 platform: "FACEBOOK",
             }));
-            conv.add('Or just type a new number.');
+            conv.add(translations[lang].menuCall_4);
             return;
         });
     }
@@ -72,7 +127,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             });
             const mobile = request.body.result.parameters.mobile;
             if (!mobile) {
-                conv.add("I'm Sorry. Something went wrong. Please say 'menu' to try again.");
+                conv.add(translations[lang].error);
                 return;
             }
             /* Save the number and user */
@@ -80,14 +135,14 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             const saveResult = yield firebaseApi.saveDFUser(botId, sessionId, newUser);
             if (saveResult.type === AppProviderTypes_1.ResultType.ERROR) {
                 console.log("ERROR:", saveResult.message);
-                conv.add("Sorry. Something went wrong. Please say 'menu' to try again.");
+                conv.add(translations[lang].error);
                 return;
             }
-            conv.add('Thanks.');
-            conv.add('What type of call should they recieve?');
+            conv.add(translations[lang].menuCallMobile_1);
+            conv.add(translations[lang].menuCallMobile_2);
             conv.add(new Card({
-                title: `Payment Notification`,
-                buttonText: 'CALL',
+                title: translations[lang].menuCallMobile_3,
+                buttonText: translations[lang].menuCallMobile_4,
                 buttonUrl: 'informal_payment_notification',
                 platform: "FACEBOOK",
             }));
@@ -98,8 +153,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             //   platform: "FACEBOOK",
             // }));
             conv.add(new Card({
-                title: `Mobile Money 101:`,
-                buttonText: 'CALL',
+                title: translations[lang].menuCallMobile_5,
+                buttonText: translations[lang].menuCallMobile_4,
                 buttonUrl: 'mobile_money_101',
                 platform: "FACEBOOK",
             }));
@@ -168,25 +223,28 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             if (userResult.type === AppProviderTypes_1.ResultType.ERROR || !userResult.result.mobile) {
                 //No existing user
                 //TODO: Translate?
-                conv.add(`Something went wrong. Please try again.`);
+                // conv.add(`Something went wrong. Please try again.`);
+                conv.add(translations[lang].triggerCallError);
                 return;
             }
             try {
                 yield twilioApi.startCall(botId, userResult.result.mobile, url);
             }
             catch (err) {
-                conv.add(`There was a problem making the call. Please try again.`);
+                // conv.add(`There was a problem making the call. Please try again.`);
+                conv.add(translations[lang].triggerCallError_2);
             }
             return;
         });
     }
     function handlePostCall(conv) {
-        conv.add('Making the call now.');
+        // conv.add('Making the call now.');
+        conv.add(translations[lang].handlePostCall_1);
         const quickReplies = new Suggestion({
-            title: 'What would you like to do next?',
-            reply: 'New Call'
+            title: translations[lang].handlePostCall_2,
+            reply: translations[lang].handlePostCall_3,
         });
-        quickReplies.addReply_('Menu');
+        quickReplies.addReply_(translations[lang].handlePostCall_4);
         conv.add(quickReplies);
     }
     //
@@ -200,8 +258,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             }
             //TODO: translate
             const quickReplies = new Suggestion({
-                title: 'Excellent question. It’s useful for me to know what kinds of things you humans like to know about 😉',
-                reply: 'Continue'
+                title: translations[lang].shareQuestionCapture_1,
+                reply: translations[lang].shareQuestionCapture_2
             });
             conv.add(quickReplies);
         });
@@ -214,10 +272,10 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             }
             //TODO: translate
             const quickReplies = new Suggestion({
-                title: 'Great. The “Interviewer” in your group will lead this, but you can all ask questions. When you speak with your beneficiary, start with open-ended questions to see what your beneficiary offers up, and then get more specific. Sometimes you may even want to ask the same question in different ways to see if you get a different response.',
-                reply: 'See an example'
+                title: translations[lang].improveNotificationMessageCapture_1,
+                reply: translations[lang].improveNotificationMessageCapture_2,
             });
-            quickReplies.addReply_('Got it');
+            quickReplies.addReply_(translations[lang].improveNotificationMessageCapture_3);
             conv.add(quickReplies);
         });
     }
@@ -229,8 +287,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             }
             //TODO: translate
             const quickReplies = new Suggestion({
-                title: 'Okay got it, we’ll do our best! To review the content we just went over and see other things this chatbot can help you with, simply type “menu” at any time.',
-                reply: 'Menu'
+                title: translations[lang].conclusionOneThingCapture_1,
+                reply: translations[lang].conclusionOneThingCapture_2,
             });
             conv.add(quickReplies);
         });
@@ -242,7 +300,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                 yield firebaseApi.saveResponse(botId, 'tripSummaryStruggleCapture', text);
             }
             //TODO: translate
-            conv.add('What aspects of the bots did your beneficiary struggle with? With your fellow group members, write down a few observations on the RED notes. Write one observation per note.');
+            conv.add(translations[lang].tripSummaryStruggleCapture_1);
         });
     }
     const intentMap = new Map();

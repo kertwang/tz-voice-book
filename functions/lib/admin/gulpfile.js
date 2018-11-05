@@ -44,7 +44,6 @@ gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {
     }));
     const flatAudioFiles = [];
     audioFiles.forEach(fileList => fileList.forEach(file => flatAudioFiles.push(file)));
-    console.log("Use the following long links to refer to your files");
     //TODO: make this process nicer
     yield Promise.all(flatAudioFiles.map(file => {
         return Firestore_1.storage.upload(`${audioDir}${file}`, {
@@ -58,8 +57,10 @@ gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {
         })
             //Get the public url:
             .then(([thing1, thing2]) => {
-            //TODO: fix this crazyness
-            console.log(`  ${file} => ${thing2.mediaLink.replace('https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/', '')}`);
+            console.log(`   Uploaded: ${file}`);
+        })
+            .catch(err => {
+            console.log("Error uploading file:", err);
         });
     }));
 }));

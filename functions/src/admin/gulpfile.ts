@@ -49,7 +49,6 @@ gulp.task('deploy_audio', async () => {
   const flatAudioFiles: string[] = [];
   audioFiles.forEach(fileList => fileList.forEach(file => flatAudioFiles.push(file)));
   
-  console.log("Use the following long links to refer to your files");
   //TODO: make this process nicer
   await Promise.all(flatAudioFiles.map(file => {
     return storage.upload(`${audioDir}${file}`, {
@@ -63,8 +62,10 @@ gulp.task('deploy_audio', async () => {
     })
     //Get the public url:
     .then(([thing1, thing2]) => {
-      //TODO: fix this crazyness
-      console.log(`  ${file} => ${thing2.mediaLink.replace('https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/', '')}`);
+      console.log(`   Uploaded: ${file}`);
+    })
+    .catch(err => {
+      console.log("Error uploading file:", err);
     })
   }));
 });
