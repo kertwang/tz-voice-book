@@ -49,10 +49,10 @@ const translations = {
         tripSummaryStruggleCapture_1: 'What aspects of the bots did your beneficiary struggle with? With your fellow group members, write down a few observations on the RED notes. Write one observation per note.',
     },
     fr: {
-        menuCall_1: `Who should I call? Make sure to enter the number with the country code e.g. +221 for Senegal`,
-        menuCall_2: 'Who should I call?',
-        menuCall_3: 'Saved numbers:',
-        menuCall_4: 'Or just type a new number.',
+        menuCall_1: `WHO SHOULD I CALL? MAKE SURE TO ENTER THE NUMBER WITH THE COUNTRY CODE E.G. +221 FOR SENEGAL`,
+        menuCall_2: 'WHO SHOULD I CALL?',
+        menuCall_3: 'SAVED NUMBERS:',
+        menuCall_4: 'OR JUST TYPE A NEW NUMBER.',
         error: "I'm Sorry. Something went wrong. Please say 'menu' to try again.",
         menuCallMobile_1: 'Thanks.',
         menuCallMobile_2: 'What type of call should they recieve?',
@@ -91,7 +91,11 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     Log_1.maybeLog(responseLogStr);
     const botId = TwilioTypes_1.BotId.uncdfBot;
     const sessionId = request.body.sessionId;
-    const lang = 'en';
+    //Set up language, default to english
+    let lang = 'en';
+    if (request.headers && request.headers.language && request.headers.language === 'fr') {
+        lang = 'fr';
+    }
     function menuCall(conv) {
         return __awaiter(this, void 0, void 0, function* () {
             Log_1.log({
@@ -310,6 +314,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     intentMap.set('menu.call.mobile.informal', triggerInformalCall);
     intentMap.set('menu.call.mobile.mm101', triggerMMCall);
     intentMap.set('menu.call.mobile.test', triggerTestCall);
+    //For some reason, this is the french one, but not english
+    intentMap.set('2.7_sharing_question - fallback', shareQuestionCapture);
     intentMap.set('2.7_user_question', shareQuestionCapture);
     intentMap.set('3.1_asking_questions_fallback', improveNotificationMessageCapture);
     intentMap.set('4.1_conclusion - fallback', conclusionOneThingCapture);

@@ -69,16 +69,12 @@ module.exports = (functions) => {
             { intent: 'tripSummaryStruggleCapture', question: 'In one word, what do you now think is the most important key to using automated digital tools with low-income clients?', responses: [] },
         ];
         const responsesResult = yield Promise.all(intents.map((i) => firebaseApi.getResponses(botId, i.intent)));
-        console.log("responses result is", responsesResult);
         responsesResult.forEach((result, idx) => {
             if (result.type === AppProviderTypes_1.ResultType.ERROR) {
                 return;
             }
             intents[idx].responses = result.result;
         });
-        // const responseString = responsesResult.result.reduce((acc: string, curr: string) => {
-        //   return `${acc}\n<li>${curr}</li>`;
-        // }, '<h3>Responses:</h3><ul>');
         res.status(200).send(mustache.render(responses2_template_1.default, { intents }));
     }));
     /**

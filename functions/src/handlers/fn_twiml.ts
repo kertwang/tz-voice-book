@@ -78,7 +78,6 @@ module.exports = (functions: any) => {
     ];
 
     const responsesResult: Array<SomeResult<string[]>> = await Promise.all(intents.map((i: any) => firebaseApi.getResponses(botId, i.intent)));
-    console.log("responses result is", responsesResult);
     responsesResult.forEach((result, idx) => {
       if (result.type === ResultType.ERROR) {
         return;
@@ -86,12 +85,6 @@ module.exports = (functions: any) => {
 
       intents[idx].responses = result.result;
     });
-
-
-    // const responseString = responsesResult.result.reduce((acc: string, curr: string) => {
-    //   return `${acc}\n<li>${curr}</li>`;
-    // }, '<h3>Responses:</h3><ul>');
-    
 
     res.status(200).send(mustache.render(template, { intents }));
   });
