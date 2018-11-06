@@ -46,6 +46,8 @@ type TranslationFile = {
   conclusionOneThingCapture_1: string,
   conclusionOneThingCapture_2: string,
   tripSummaryStruggleCapture_1: string,
+  tripSummaryStruggleCapture_2: string,
+  tripSummaryStruggleCapture_3: string,
 }
 
 const translations: { en: TranslationFile, fr: TranslationFile} = {
@@ -74,32 +76,36 @@ const translations: { en: TranslationFile, fr: TranslationFile} = {
     conclusionOneThingCapture_1: 'Okay got it, we’ll do our best! To review the content we just went over and see other things this chatbot can help you with, simply type “menu” at any time.',
     conclusionOneThingCapture_2: 'Menu',
     tripSummaryStruggleCapture_1: 'What aspects of the bots did your beneficiary struggle with? With your fellow group members, write down a few observations on the RED notes. Write one observation per note.',
+    tripSummaryStruggleCapture_2: 'Press continue when you\'re done.',
+    tripSummaryStruggleCapture_3: 'Continue',
   },
   fr: {
-    menuCall_1: `WHO SHOULD I CALL? MAKE SURE TO ENTER THE NUMBER WITH THE COUNTRY CODE E.G. +221 FOR SENEGAL`,
-    menuCall_2: 'WHO SHOULD I CALL?',
-    menuCall_3: 'SAVED NUMBERS:',
-    menuCall_4: 'OR JUST TYPE A NEW NUMBER.',
-    error: "I'm Sorry. Something went wrong. Please say 'menu' to try again.",
-    menuCallMobile_1: 'Thanks.',
-    menuCallMobile_2: 'What type of call should they recieve?',
-    menuCallMobile_3: `Payment Notification`,
-    menuCallMobile_4: 'CALL',
-    menuCallMobile_5: `Mobile Money 101:`,
+    menuCall_1: `Qui dois-je appeler? Assurez-vous de saisir le numéro avec le code pays, par exemple +221 pour le Sénégal`,
+    menuCall_2: 'Appeler qui?',
+    menuCall_3: 'Numéros enregistrés',
+    menuCall_4: 'Ou entrez un nouveau numéro',
+    error: "Je suis désolé. Quelque chose s'est mal passé. S'il vous plaît dites «menu» pour essayer à nouveau.",
+    menuCallMobile_1: 'Merci',
+    menuCallMobile_2: 'Quel type d’appel?',
+    menuCallMobile_3: `Notification de paiement`,
+    menuCallMobile_4: 'APPELER',
+    menuCallMobile_5: `Intro à Mobile Money`,
     triggerCallError: `Something went wrong. Please try again.`,
     triggerCallError_2: `There was a problem making the call. Please try again.`,
-    handlePostCall_1: 'Making the call now.',
-    handlePostCall_2: 'What would you like to do next?',
-    handlePostCall_3: 'New Call',
+    handlePostCall_1: 'Appel en cours',
+    handlePostCall_2: 'Que voulez-vous faire ensuite?',
+    handlePostCall_3: 'Nouvel appel',
     handlePostCall_4: 'Menu',
-    shareQuestionCapture_1: 'Excellent question. It’s useful for me to know what kinds of things you humans like to know about 😉',
-    shareQuestionCapture_2: 'Continue',
-    improveNotificationMessageCapture_1: 'Great. The “Interviewer” in your group will lead this, but you can all ask questions. When you speak with your beneficiary, start with open-ended questions to see what your beneficiary offers up, and then get more specific. Sometimes you may even want to ask the same question in different ways to see if you get a different response.',
-    improveNotificationMessageCapture_2: 'See an example',
-    improveNotificationMessageCapture_3: 'Got it',
-    conclusionOneThingCapture_1: 'Okay got it, we’ll do our best! To review the content we just went over and see other things this chatbot can help you with, simply type “menu” at any time.',
+    shareQuestionCapture_1: 'Excellente question. C’est utile pour moi de savoir le genre de chose vous humains aimez savoir. 😉',
+    shareQuestionCapture_2: 'Continuer',
+    improveNotificationMessageCapture_1: 'Génial. L’intervieweur de votre groupe dirigera la discussion, mais vous pouvez tous poser des questions. Lorsque vous parlez à votre bénéficiaire, commencez par des questions ouvertes pour voir ce que votre bénéficiaire offre, puis faites suit avec des questions plus précis. Parfois, vous voudrez peut-être même poser la même question de différentes façons pour voir si la réponse est différente.',
+    improveNotificationMessageCapture_2: 'Voir un exemple',
+    improveNotificationMessageCapture_3: 'Je l\'ai',
+    conclusionOneThingCapture_1: 'Okay, nous ferons de notre mieux! Pour revoir le contenu que nous venons de presenter et pour voir autres applications de ce chatbot, tapez simplement \'menu\' à tout moment.',
     conclusionOneThingCapture_2: 'Menu',
-    tripSummaryStruggleCapture_1: 'What aspects of the bots did your beneficiary struggle with? With your fellow group members, write down a few observations on the RED notes. Write one observation per note.',
+    tripSummaryStruggleCapture_1: 'Quels aspects des robots ont poser des problèmes pour votre bénéficiaire? Avec les autres membres de votre groupe, écrivez quelques observations sur les feuillets ROUGES -- une observation par feuillet.',
+    tripSummaryStruggleCapture_2: 'Appuyez sur «Continuer» quand vous avez terminé.',
+    tripSummaryStruggleCapture_3: 'Continuer',
   }
 }
 
@@ -319,7 +325,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       await firebaseApi.saveResponse(botId, 'improveNotificationMessageCapture', text);
     }
 
-    //TODO: translate
     const quickReplies = new Suggestion({
       title: translations[lang].improveNotificationMessageCapture_1,
       reply: translations[lang].improveNotificationMessageCapture_2,
@@ -335,7 +340,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       await firebaseApi.saveResponse(botId, 'conclusionOneThingCapture', text);
     }
 
-    //TODO: translate
     const quickReplies = new Suggestion({
       title: translations[lang].conclusionOneThingCapture_1,
       reply: translations[lang].conclusionOneThingCapture_2,
@@ -349,8 +353,13 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       await firebaseApi.saveResponse(botId, 'tripSummaryStruggleCapture', text);
     }
 
-    //TODO: translate
     conv.add(translations[lang].tripSummaryStruggleCapture_1);
+    //TODO: translate
+    const quickReplies = new Suggestion({
+      title: translations[lang].tripSummaryStruggleCapture_2,
+      reply: translations[lang].tripSummaryStruggleCapture_3,
+    });
+    conv.add(quickReplies);
   }
 
   const intentMap = new Map();
