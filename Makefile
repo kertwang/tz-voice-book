@@ -54,9 +54,11 @@ switch-prod:
 ##
 
 run-lt: 
+	@make env
 	@lt --subdomain ${LT_SUBDOMAIN} --port 5000
 
 run-local:
+	@make env
 	./_run_local.sh
 
 deploy:

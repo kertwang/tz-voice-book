@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Env_1 = require("../utils/Env");
 const admin = require('firebase-admin');
+exports.admin = admin;
 /* Not in git. Download from FB console*/
 // const serviceAccount = require('../../.serviceAccountKey.json');
 const serviceAccount = require(`../../${Env_1.serviceAccountKeyFileName}`);

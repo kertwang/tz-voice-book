@@ -23,4 +23,5 @@ const storage = admin.storage().bucket();
 
 export {
   storage,
+  admin,
 }

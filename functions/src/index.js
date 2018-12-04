@@ -10,10 +10,6 @@ fbAdmin.initializeApp();
  * 
  */
 
-// TODO:
-// Implement something like this:
-// https://github.com/firebase/functions-samples/issues/170#issuecomment-323375462
-
 const functionName = process.env.FUNCTION_NAME;
 console.log("init for function", functionName);
 

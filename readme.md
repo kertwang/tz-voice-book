@@ -256,3 +256,9 @@ https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/uncdfBot/conclusi
 
 https://lwilld3.localtunnel.me/tz-phone-book-dev/us-central1/twiml/uncdfBot/responses
 https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/uncdfBot/responses
+
+
+### Relay URL
+
+https://lwilld3.localtunnel.me/tz-phone-book-dev/us-central1/admin/triggerCallFromRelay
+https://us-central1-tz-phone-book-dev.cloudfunctions.net/admin/triggerCallFromRelay

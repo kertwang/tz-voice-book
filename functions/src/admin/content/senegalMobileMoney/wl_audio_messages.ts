@@ -152,7 +152,7 @@ const en_text: SenegalMobileMoneyMessageMap = {
   ],
   story_2_send_explain_2_option: [
     //M13
-    generatePlay("M12"),
+    generatePlay("M13"),
   ],
   story_2_end: [
     //M7

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const format = require("xml-formatter");
+var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 function getBotId(maybeBotId) {
     const botId = TwilioTypes_1.BotId[maybeBotId];
     if (!botId) {
@@ -163,4 +164,12 @@ function buildExpectedToken(username, password) {
     return `Basic ${encoded}`;
 }
 exports.buildExpectedToken = buildExpectedToken;
+/**
+ * Format a mobile string to an international number
+ */
+function formatMobile(unformatted, country) {
+    const parsed = phoneUtil.parse(unformatted, country);
+    return `+${parsed.getCountryCode()}${parsed.getNationalNumber()}`;
+}
+exports.formatMobile = formatMobile;
 //# sourceMappingURL=index.js.map

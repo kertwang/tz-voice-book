@@ -26,7 +26,8 @@ firebase functions:config:set \
   config.mm_101_url="$mm_101_url" \
   config.should_log="$should_log" \
   config.should_display_english_test_call="$should_display_english_test_call" \
-  config.test_call_url="$test_call_url "
+  config.test_call_url="$test_call_url" \
+  config.relay_default_country_code="$relay_default_country_code" 
 
 firebase deploy --only functions
 

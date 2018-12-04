@@ -17,4 +17,5 @@ exports.mm101CallUrl = envConfig.config.mm_101_url;
 exports.shouldLog = _1.getBoolean(envConfig.config.should_log);
 exports.shouldDisplayEnglishTestCall = _1.getBoolean(envConfig.config.should_display_english_test_call);
 exports.testCallUrl = envConfig.config.test_call_url;
+exports.relayDefaultCountrycode = envConfig.config.relay_default_country_code;
 //# sourceMappingURL=Env.js.map

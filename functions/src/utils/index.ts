@@ -1,5 +1,6 @@
 import { BlockId, GatherResult, PageParams, BotId, VersionId } from "../types_rn/TwilioTypes";
 import * as format from 'xml-formatter';
+var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
 
 export function getBotId(maybeBotId: string): BotId {
@@ -246,4 +247,12 @@ export function getBoolean(value: any) {
 export function buildExpectedToken(username: string, password: string) {
   const encoded = Buffer.from(`${username}:${password}`).toString('base64');
   return `Basic ${encoded}`
+}
+
+/**
+ * Format a mobile string to an international number
+ */
+export function formatMobile(unformatted: string, country: string) {
+  const parsed = phoneUtil.parse(unformatted, country);
+  return `+${parsed.getCountryCode()}${parsed.getNationalNumber()}`;
 }
