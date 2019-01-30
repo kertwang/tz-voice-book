@@ -65,4 +65,8 @@ deploy:
 	@make env
 	./_deploy.sh
 
+deploy-vars:
+	@make env
+	./_deploy_vars.sh
+
 .PHONY: switch switch-dev swich-prod env

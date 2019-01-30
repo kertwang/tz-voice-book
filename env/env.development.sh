@@ -15,7 +15,7 @@ export storageBucket=tz-phone-book-dev.appspot.com
 
 # Public
 export BASE_URL="https://us-central1-tz-phone-book-dev.cloudfunctions.net"
-export relay_default_country_code="AU"
+export relay_default_country_code="TZ"
 
 # config for DialogFlow
 export formal_notification_url="https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=wl_audio"
