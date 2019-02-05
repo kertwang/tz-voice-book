@@ -395,16 +395,21 @@ export type DigitResult = {
 
 /**
  * Define different bots here
+ * 
+ * These can be twilio bots with Twiml, or DialogFlow bots
  */
 export enum BotId {
   //Twilio Bots
   voicebook = 'voicebook',
   senegalNotification = 'senegalNotification',
   senegalMobileMoney = 'senegalMobileMoney',
+  rungweIntro = 'rungweIntro',
+  rungweDeposit = 'rungweDeposit',
+  rungwePaymentDate = 'rungwePaymentDate',
+  rungwePaymentNotification = 'rungwePaymentNotification',
 
   //DF Bots
   uncdfBot = 'uncdfBot',
-
 }
 
 /**

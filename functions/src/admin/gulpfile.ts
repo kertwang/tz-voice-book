@@ -11,6 +11,7 @@ import { BotId, VersionId } from '../types_rn/TwilioTypes';
 import voicebook from './content/voicebook/index';
 import senegalNotification from './content/senegalNotification/index';
 import senegalMobileMoney from './content/senegalMobileMoney/index';
+import rungweIntro from './content/rungweIntro/index';
 
 
 
@@ -18,6 +19,8 @@ const fbApi = new FirebaseApi(firestore);
 
 gulp.task('deploy_config', async () => {
   console.log("deploying conversation config for /twiml");
+
+  //TODO: how can we make this auto discover files?
 
   /* Voicebook Bots */
   await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_us, voicebook.en_us);
@@ -33,6 +36,12 @@ gulp.task('deploy_config', async () => {
   await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.en_text, senegalMobileMoney.en_text);
   await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.fr_audio, senegalMobileMoney.fr_audio);
   await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.wl_audio, senegalMobileMoney.wl_audio);
+
+
+  /* Rungwe Intro Bot */
+  await fbApi.deployConfigForBotAndVersion(BotId.rungweIntro, VersionId.en_text, rungweIntro.en_text);
+
+  //TODO: add remaining rungwe bots
   
 
   console.log("deployed config.");
