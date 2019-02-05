@@ -70,7 +70,7 @@ export enum BlockId {
  * Flow Types:
  */
 
-export type AnyFlowMap = FlowMap | SenegalNotificationFlowMap | SenegalMobileMoneyFlowMap;
+export type AnyFlowMap = FlowMap | SenegalNotificationFlowMap | SenegalMobileMoneyFlowMap | RungweGenericFlowMap;
 
 
 //this is the voicebook block map
@@ -136,7 +136,12 @@ export type SenegalMobileMoneyFlowMap = {
   story_3_decision_option: DefaultFlow | GatherFlow,
   story_3_end: DefaultFlow | GatherFlow,
   error_0: DefaultFlow | GatherFlow,
+}
 
+export type RungweGenericFlowMap = {
+  entrypoint: DefaultFlow | GatherFlow,
+  end: DefaultFlow | GatherFlow,
+  [index: string]: DefaultFlow | GatherFlow,
 }
 
 export enum FlowType {
@@ -171,9 +176,10 @@ export type DigitMatch = {
 
 /**
  * Block Types
+ * ----------------------------------------------------------------------------------------
  */
 
-export type AnyBlockMap = BlockMap | SenegalNotificationBlockMap | SenegalMobileMoneyBlockMap;
+export type AnyBlockMap = BlockMap | SenegalNotificationBlockMap | SenegalMobileMoneyBlockMap | RungweGenericBlockMap;
 
 export type AnyBlock = DefaultBlock | PlaybackBlock | RecordBlock | EndBlock;
 
@@ -238,6 +244,12 @@ export type SenegalMobileMoneyBlockMap = {
   error_0: EndBlock,
 }
 
+export type RungweGenericBlockMap = {
+  entrypoint: AnyBlock,
+  end: AnyBlock,
+  [index: string]: AnyBlock,
+}
+
 export enum BlockType {
   DEFAULT = 'DEFAULT',   //Just a playback block
   PLAYBACK = 'PLAYBACK', //Plays back non-static messages
@@ -265,7 +277,7 @@ export interface RecordBlock {
 /**
  * Message Types
  */
-export type AnyMessageMap = MessageMap | SenegalNotificationMessageMap | SenegalMobileMoneyMessageMap;
+export type AnyMessageMap = MessageMap | SenegalNotificationMessageMap | SenegalMobileMoneyMessageMap | RungweGenericMessageMap;
 
 
 //TODO: change to VoicebookMessageMap
@@ -327,6 +339,12 @@ export type SenegalMobileMoneyMessageMap = {
   story_3_decision_option: SayMessage[] | PlayMessage[],
   story_3_end: SayMessage[] | PlayMessage[],
   error_0: SayMessage[] | PlayMessage[],
+}
+
+export type RungweGenericMessageMap = {
+  entrypoint: SayMessage[] | PlayMessage[],
+  end: SayMessage[] | PlayMessage[],
+  [index: string]: SayMessage[] | PlayMessage[],
 }
 
 export enum MessageType {
