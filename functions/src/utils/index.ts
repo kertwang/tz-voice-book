@@ -27,7 +27,10 @@ export function getDefaultVersionForBot(botId: BotId): VersionId {
     }
 
     //TODO: Add new bots here
-    case BotId.rungweIntro: {
+    case BotId.rungweDeposit: 
+    case BotId.rungweIntro: 
+    case BotId.rungwePaymentDate: 
+    case BotId.rungwePaymentNotification: {
       return VersionId.en_text
     }
     default: {

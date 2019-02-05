@@ -5,7 +5,7 @@ const en_text_flows_1 = require("./en_text_flows");
 const en_text_messages_1 = require("./en_text_messages");
 const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
 const en_text = {
-    botId: TwilioTypes_1.BotId.senegalMobileMoney,
+    botId: TwilioTypes_1.BotId.rungwePaymentNotification,
     blocks: en_text_blocks_1.default,
     flows: en_text_flows_1.default,
     messages: en_text_messages_1.default,

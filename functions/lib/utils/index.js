@@ -25,7 +25,10 @@ function getDefaultVersionForBot(botId) {
             return TwilioTypes_1.VersionId.en_text;
         }
         //TODO: Add new bots here
-        case TwilioTypes_1.BotId.rungweIntro: {
+        case TwilioTypes_1.BotId.rungweDeposit:
+        case TwilioTypes_1.BotId.rungweIntro:
+        case TwilioTypes_1.BotId.rungwePaymentDate:
+        case TwilioTypes_1.BotId.rungwePaymentNotification: {
             return TwilioTypes_1.VersionId.en_text;
         }
         default: {
