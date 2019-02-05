@@ -63,6 +63,11 @@ export enum BlockId {
   story_3_decision = 'story_3_decision',
   story_3_decision_option = 'story_3_decision_option',
   story_3_end = 'story_3_end',
+
+  /* rungwe */
+  end = 'end',
+  stop = 'stop',
+  stop_confirm = 'stop_confirm',
 }
 
 
