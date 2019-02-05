@@ -18,6 +18,9 @@ const index_1 = require("./content/voicebook/index");
 const index_2 = require("./content/senegalNotification/index");
 const index_3 = require("./content/senegalMobileMoney/index");
 const index_4 = require("./content/rungweIntro/index");
+const index_5 = require("./content/rungweDeposit/index");
+const index_6 = require("./content/rungwePaymentDate/index");
+const index_7 = require("./content/rungwePaymentNotification/index");
 const fbApi = new FirebaseApi_1.default(Firestore_1.default);
 gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     console.log("deploying conversation config for /twiml");
@@ -36,7 +39,12 @@ gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalMobileMoney, TwilioTypes_1.VersionId.wl_audio, index_3.default.wl_audio);
     /* Rungwe Intro Bot */
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungweIntro, TwilioTypes_1.VersionId.en_text, index_4.default.en_text);
-    //TODO: add remaining rungwe bots
+    /* Rungwe Deposit Bot */
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungweDeposit, TwilioTypes_1.VersionId.en_text, index_5.default.en_text);
+    /* Rungwe PaymentDate Bot */
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungwePaymentDate, TwilioTypes_1.VersionId.en_text, index_6.default.en_text);
+    /* Rungwe PaymentNotification Bot */
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungwePaymentNotification, TwilioTypes_1.VersionId.en_text, index_7.default.en_text);
     console.log("deployed config.");
 }));
 gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {

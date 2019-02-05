@@ -12,6 +12,9 @@ import voicebook from './content/voicebook/index';
 import senegalNotification from './content/senegalNotification/index';
 import senegalMobileMoney from './content/senegalMobileMoney/index';
 import rungweIntro from './content/rungweIntro/index';
+import rungweDeposit from './content/rungweDeposit/index';
+import rungwePaymentDate from './content/rungwePaymentDate/index';
+import rungwePaymentNotification from './content/rungwePaymentNotification/index';
 
 
 
@@ -37,11 +40,18 @@ gulp.task('deploy_config', async () => {
   await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.fr_audio, senegalMobileMoney.fr_audio);
   await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.wl_audio, senegalMobileMoney.wl_audio);
 
-
   /* Rungwe Intro Bot */
   await fbApi.deployConfigForBotAndVersion(BotId.rungweIntro, VersionId.en_text, rungweIntro.en_text);
 
-  //TODO: add remaining rungwe bots
+  /* Rungwe Deposit Bot */
+  await fbApi.deployConfigForBotAndVersion(BotId.rungweDeposit, VersionId.en_text, rungweDeposit.en_text);
+
+  /* Rungwe PaymentDate Bot */
+  await fbApi.deployConfigForBotAndVersion(BotId.rungwePaymentDate, VersionId.en_text, rungwePaymentDate.en_text);
+
+  /* Rungwe PaymentNotification Bot */
+  await fbApi.deployConfigForBotAndVersion(BotId.rungwePaymentNotification, VersionId.en_text, rungwePaymentNotification.en_text);
+
   
 
   console.log("deployed config.");
