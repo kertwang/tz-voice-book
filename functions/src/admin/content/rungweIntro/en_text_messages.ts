@@ -12,6 +12,10 @@ const en_text: RungweGenericMessageMap = {
   'stop_confirm': [
     generateText('Ok. You will no longer receive messages from RSTGA.'),
   ],
+  //This must be empty
+  'end': [
+
+  ]
 }
 
 export default en_text;

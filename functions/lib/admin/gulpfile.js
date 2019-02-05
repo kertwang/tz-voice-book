@@ -17,9 +17,11 @@ const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const index_1 = require("./content/voicebook/index");
 const index_2 = require("./content/senegalNotification/index");
 const index_3 = require("./content/senegalMobileMoney/index");
+const index_4 = require("./content/rungweIntro/index");
 const fbApi = new FirebaseApi_1.default(Firestore_1.default);
 gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     console.log("deploying conversation config for /twiml");
+    //TODO: how can we make this auto discover files?
     /* Voicebook Bots */
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_us, index_1.default.en_us);
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_au, index_1.default.en_au);
@@ -32,6 +34,9 @@ gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalMobileMoney, TwilioTypes_1.VersionId.en_text, index_3.default.en_text);
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalMobileMoney, TwilioTypes_1.VersionId.fr_audio, index_3.default.fr_audio);
     yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalMobileMoney, TwilioTypes_1.VersionId.wl_audio, index_3.default.wl_audio);
+    /* Rungwe Intro Bot */
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungweIntro, TwilioTypes_1.VersionId.en_text, index_4.default.en_text);
+    //TODO: add remaining rungwe bots
     console.log("deployed config.");
 }));
 gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {

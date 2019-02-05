@@ -37,6 +37,8 @@ export default class TwilioRouter {
 
     let response = new VoiceResponse();
 
+
+    //TODO: flow is undefined here for rungwe
     switch (flow.type) {
       case FlowType.DEFAULT: {
         switch (block.type) {
@@ -76,6 +78,7 @@ export default class TwilioRouter {
           case BlockType.DEFAULT:
           default: {
             // const nextUrl = `${baseUrl}/twiml/${config.botId}/${flow.next}`;
+            console.log('getBlock, Blocktype.DEFAULT, building url. config is, ', config.botId);
             const nextUrl = buildRedirectUrl({
               type: NextUrlType.DefaultUrl,
               baseUrl,

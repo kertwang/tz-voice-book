@@ -5,9 +5,8 @@ import en_text_formal_messages from './en_text_messages';
 
 import { BotConfig, BotId } from '../../../types_rn/TwilioTypes';
 
-
 const en_text: BotConfig = {
-  botId: BotId.senegalMobileMoney,
+  botId: BotId.rungweIntro,
   blocks: en_text_formal_blocks,
   flows: en_text_formal_flows,
   messages: en_text_formal_messages,

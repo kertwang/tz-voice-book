@@ -41,6 +41,7 @@ class TwilioRouter {
             const block = config.blocks[blockName];
             const messages = messageBlocks[blockName]; //TODO: make type safe?
             let response = new VoiceResponse();
+            //TODO: flow is undefined here for rungwe
             switch (flow.type) {
                 case TwilioTypes_1.FlowType.DEFAULT: {
                     switch (block.type) {
@@ -80,6 +81,7 @@ class TwilioRouter {
                         case TwilioTypes_1.BlockType.DEFAULT:
                         default: {
                             // const nextUrl = `${baseUrl}/twiml/${config.botId}/${flow.next}`;
+                            console.log('getBlock, Blocktype.DEFAULT, building url. config is, ', config.botId);
                             const nextUrl = utils_1.buildRedirectUrl({
                                 type: utils_1.NextUrlType.DefaultUrl,
                                 baseUrl: Env_1.baseUrl,

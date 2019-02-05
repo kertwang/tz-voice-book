@@ -25,8 +25,15 @@ export function getDefaultVersionForBot(botId: BotId): VersionId {
       //TODO: Change this.
       return VersionId.en_text;
     }
+
+    //TODO: Add new bots here
+    case BotId.rungweIntro: {
+      return VersionId.en_text
+    }
     default: {
-      throw new Error(`No Default version specified for botId: ${botId}`);
+      // throw new Error(`No Default version specified for botId: ${botId}`);
+      console.log(`WARN: getDefaultVersionForBot(), No Default version specified for botId: ${botId}. Returning en_text`);
+      return VersionId.en_text;
     }
   }
 }

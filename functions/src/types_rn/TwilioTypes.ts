@@ -347,9 +347,9 @@ export type SenegalMobileMoneyMessageMap = {
 }
 
 export type RungweGenericMessageMap = {
-  entrypoint: SayMessage[] | PlayMessage[],
+  entrypoint: Array<SayMessage | PlayMessage>,
   // end: SayMessage[] | PlayMessage[],
-  [index: string]: SayMessage[] | PlayMessage[],
+  [index: string]: Array<SayMessage | PlayMessage>,
 }
 
 export enum MessageType {

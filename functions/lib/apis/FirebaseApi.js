@@ -160,10 +160,11 @@ class FirebaseApi {
      * getBotConfigOverride
      *
      * Get the bot config, but override the user's version. This is useful for testing
-     * different versions when the user can't configure the version fot themselves
+     * different versions when the user can't configure the version for themselves
      */
     getBotConfigOverride(userId, botId, versionOverride) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('getBotConfigOverride, botId', botId);
             const version = yield this.getVerionForUser(userId, botId, versionOverride);
             return this.getBotConfigForVersion(userId, botId, version);
         });

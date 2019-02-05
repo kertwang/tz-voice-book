@@ -231,6 +231,8 @@ module.exports = (functions: any) => {
       botConfig = await firebaseApi.getBotConfig(user.id, botId);
     }
 
+    console.log("POST /:botId/ bot config is:", botConfig);
+
     const ctx: CallContext = {
       callSid: req.body.CallSid,
       mobile: req.body.From,

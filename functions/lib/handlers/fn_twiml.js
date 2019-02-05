@@ -191,6 +191,7 @@ module.exports = (functions) => {
         else {
             botConfig = yield firebaseApi.getBotConfig(user.id, botId);
         }
+        console.log("POST /:botId/ bot config is:", botConfig);
         const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, versionOverride: req.query.versionOverride || null, firebaseApi }, pageParams);
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,

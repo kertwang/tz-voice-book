@@ -60,6 +60,10 @@ var BlockId;
     BlockId["story_3_decision"] = "story_3_decision";
     BlockId["story_3_decision_option"] = "story_3_decision_option";
     BlockId["story_3_end"] = "story_3_end";
+    /* rungwe */
+    BlockId["end"] = "end";
+    BlockId["stop"] = "stop";
+    BlockId["stop_confirm"] = "stop_confirm";
 })(BlockId = exports.BlockId || (exports.BlockId = {}));
 var FlowType;
 (function (FlowType) {
@@ -81,6 +85,8 @@ var MessageType;
 ;
 /**
  * Define different bots here
+ *
+ * These can be twilio bots with Twiml, or DialogFlow bots
  */
 var BotId;
 (function (BotId) {
@@ -88,6 +94,10 @@ var BotId;
     BotId["voicebook"] = "voicebook";
     BotId["senegalNotification"] = "senegalNotification";
     BotId["senegalMobileMoney"] = "senegalMobileMoney";
+    BotId["rungweIntro"] = "rungweIntro";
+    BotId["rungweDeposit"] = "rungweDeposit";
+    BotId["rungwePaymentDate"] = "rungwePaymentDate";
+    BotId["rungwePaymentNotification"] = "rungwePaymentNotification";
     //DF Bots
     BotId["uncdfBot"] = "uncdfBot";
 })(BotId = exports.BotId || (exports.BotId = {}));

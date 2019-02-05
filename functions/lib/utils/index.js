@@ -24,8 +24,14 @@ function getDefaultVersionForBot(botId) {
             //TODO: Change this.
             return TwilioTypes_1.VersionId.en_text;
         }
+        //TODO: Add new bots here
+        case TwilioTypes_1.BotId.rungweIntro: {
+            return TwilioTypes_1.VersionId.en_text;
+        }
         default: {
-            throw new Error(`No Default version specified for botId: ${botId}`);
+            // throw new Error(`No Default version specified for botId: ${botId}`);
+            console.log(`WARN: getDefaultVersionForBot(), No Default version specified for botId: ${botId}. Returning en_text`);
+            return TwilioTypes_1.VersionId.en_text;
         }
     }
 }
