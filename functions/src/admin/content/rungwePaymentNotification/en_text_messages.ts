@@ -2,15 +2,21 @@ import { RungweGenericMessageMap } from "../../../types_rn/TwilioTypes";
 import { generateText } from "../../utils";
 
 /* the deploy script will automatically fill in the urls for us */
+
+//TODO: how do we allow the entrypoint to have runtime variables?
 const en_text: RungweGenericMessageMap = {
+  //TODO: Handle specify if farmer has debits etc.
   'entrypoint': [
-    generateText('Hi, this message is from the Rungwe Smallholders Tea Growers Association(RSTGA).This is a new service for our farmers.We will notify you from this number by phone call and text to let you know when your monthly payment is available.'),
-  ],
-  'stop': [
-    generateText('These messages are free. If you would like to stop receiving voice and text messages from RSTGA, press 3 on your phone keypad. If you would like to continue receiving messages, you do not have to do anything and you may hang up at any time. '),
-  ],
-  'stop_confirm': [
-    generateText('Ok. You will no longer receive messages from RSTGA.'),
+    generateText(' Your payment is now available. This month you will receive a payment of '),
+    //TODO: maybe we can have a generate number function which pieces together numbers?
+    generateText('100'),
+    generateText('schillings for the'),
+    generateText('10'),
+    generateText('kilograms of tea that you sold. You can collect your payment at'),
+    generateText('LOCATION.'),
+    //TODO: Runtime variable, does the farmer have debits?
+    generateText('This includes a deduction of zzz for the fertilizer.'),
+
   ],
   //This must be empty
   'end': [

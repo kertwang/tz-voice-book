@@ -9,23 +9,7 @@ const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
 const TwilioFlows = {
     'entrypoint': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.stop,
-    },
-    'stop': {
-        //TODO: how do we make this default to end?
-        type: TwilioTypes_1.FlowType.GATHER,
-        error: TwilioTypes_1.BlockId.error_0,
-        digitMatches: [
-            //I'm pretty sure the first option is the default.
-            { digits: '1', nextBlock: TwilioTypes_1.BlockId.end },
-            { digits: '2', nextBlock: TwilioTypes_1.BlockId.end },
-            { digits: '3', nextBlock: TwilioTypes_1.BlockId.stop_confirm },
-        ],
-    },
-    'stop_confirm': {
-        //This will terminate.
-        type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.entrypoint,
+        next: TwilioTypes_1.BlockId.end,
     },
     'end': {
         //This will terminate.
