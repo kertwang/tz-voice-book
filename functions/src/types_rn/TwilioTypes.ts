@@ -140,7 +140,7 @@ export type SenegalMobileMoneyFlowMap = {
 
 export type RungweGenericFlowMap = {
   entrypoint: DefaultFlow | GatherFlow,
-  end: DefaultFlow | GatherFlow,
+  // end: DefaultFlow | GatherFlow,
   [index: string]: DefaultFlow | GatherFlow,
 }
 
@@ -246,7 +246,7 @@ export type SenegalMobileMoneyBlockMap = {
 
 export type RungweGenericBlockMap = {
   entrypoint: AnyBlock,
-  end: AnyBlock,
+  // end: AnyBlock,
   [index: string]: AnyBlock,
 }
 
@@ -343,7 +343,7 @@ export type SenegalMobileMoneyMessageMap = {
 
 export type RungweGenericMessageMap = {
   entrypoint: SayMessage[] | PlayMessage[],
-  end: SayMessage[] | PlayMessage[],
+  // end: SayMessage[] | PlayMessage[],
   [index: string]: SayMessage[] | PlayMessage[],
 }
 
