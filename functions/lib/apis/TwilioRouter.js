@@ -242,17 +242,24 @@ class TwilioRouter {
                     response.play({}, m.url);
                     break;
                 //RW-TODO: implement the appendMessages for our dynamic friends. We will need to figure out how to pass in the params here.
-                case (TwilioTypes_1.MessageType.DYNAMIC_SAY):
+                case (TwilioTypes_1.MessageType.DYNAMIC_SAY): {
                     if (dynamicParams.length === 0) {
                         console.warn(`appendMessagesToResponse had a dynamic message type, but no dynamic params were supplied! This could be fatal.`);
                     }
-                    const resolvedMessage = m.func(dynamicParams);
-                    response.say({ language: resolvedMessage.language }, resolvedMessage.text);
+                    const resolvedMessages = m.func(dynamicParams);
+                    resolvedMessages.forEach((nestedMessage) => response.say({ language: nestedMessage.language }, nestedMessage.text));
                     break;
-                case (TwilioTypes_1.MessageType.DYNAMIC_PLAY):
-                // console.warn(`appendMessagesToResponse had a dynamic message type, but no dynamic params were supplied! This could be fatal.`);
+                }
+                case (TwilioTypes_1.MessageType.DYNAMIC_PLAY): {
+                    if (dynamicParams.length === 0) {
+                        console.warn(`appendMessagesToResponse had a dynamic message type, but no dynamic params were supplied! This could be fatal.`);
+                    }
+                    const resolvedMessages = m.func(dynamicParams);
+                    resolvedMessages.forEach((nestedMessage) => response.play({}, nestedMessage.url));
+                    break;
+                }
                 default:
-                    throw new Error(`appendMessagesToResponse, not implemented: ${m.type}`);
+                    throw new Error(`Non exhausive match for MessageType`);
             }
         });
         return response;

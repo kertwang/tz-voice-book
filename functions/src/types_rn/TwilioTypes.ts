@@ -372,11 +372,11 @@ export enum MessageType {
 
 export type DynamicPlayMessage = {
   type: MessageType.DYNAMIC_PLAY,
-  func: (params: string[]) => PlayMessage,
+  func: (params: string[]) => PlayMessage[],
 }
 export type DynamicSayMessage = {
   type: MessageType.DYNAMIC_SAY,
-  func: (params: string[]) => SayMessage,
+  func: (params: string[]) => SayMessage[],
 }
 
 // export function dynamicPlayMessage(params: string[]): PlayMessage {
@@ -454,6 +454,7 @@ export enum VersionId {
   en_text = 'en_text', //english text
   fr_audio = 'fr_audio', //french audio
   wl_audio = 'wl_audio', //wolof audio
+  en_audio = 'en_audio', //English audio 
 }
 
 export type BotConfig = {

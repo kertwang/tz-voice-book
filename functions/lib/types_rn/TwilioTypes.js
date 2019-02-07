@@ -115,5 +115,6 @@ var VersionId;
     VersionId["en_text"] = "en_text";
     VersionId["fr_audio"] = "fr_audio";
     VersionId["wl_audio"] = "wl_audio";
+    VersionId["en_audio"] = "en_audio";
 })(VersionId = exports.VersionId || (exports.VersionId = {}));
 //# sourceMappingURL=TwilioTypes.js.map

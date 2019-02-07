@@ -1,0 +1,14 @@
+[debug] [2019-02-07T06:32:49.927Z] ----------------------------------------------------------------------
+[debug] [2019-02-07T06:32:49.929Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase functions:config:set config.twilio_account_sid=ACb098d653b93dbac6f87acb5ea8fc76d9 config.twilio_auth_token=83895b5958bf314b0d8119858b59303b config.twilio_outbound_number=+18442526460 config.temporary_insecure_auth_key=xP6mXwOpuJTYzs2Enxi config.base_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net config.service_account_key_file_name=.serviceAccountKey.development.json config.database_url=https://tz-phone-book-dev.firebaseio.com config.storage_bucket=tz-phone-book-dev.appspot.com config.informal_notification_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=wl_audio config.formal_notification_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=wl_audio config.mm_101_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalMobileMoney/entrypoint?versionOverride=wl_audio config.should_log=true config.should_display_english_test_call=false config.test_call_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalMobileMoney/entrypoint?versionOverride=en_text config.relay_default_country_code=TZ
+[debug] [2019-02-07T06:32:49.929Z] CLI Version:   6.1.0
+[debug] [2019-02-07T06:32:49.929Z] Platform:      darwin
+[debug] [2019-02-07T06:32:49.929Z] Node Version:  v8.11.1
+[debug] [2019-02-07T06:32:49.930Z] Time:          Thu Feb 07 2019 14:32:49 GMT+0800 (PST)
+[debug] [2019-02-07T06:32:49.930Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-02-07T06:32:49.939Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-02-07T06:32:49.939Z] > authorizing via signed-in user
+[debug] [2019-02-07T06:32:49.939Z] [iam] checking project tz-phone-book-dev for permissions ["firebase.projects.get","runtimeconfig.configs.create","runtimeconfig.configs.delete","runtimeconfig.configs.get","runtimeconfig.configs.list","runtimeconfig.configs.update","runtimeconfig.variables.create","runtimeconfig.variables.delete","runtimeconfig.variables.get","runtimeconfig.variables.list","runtimeconfig.variables.update"]
+[debug] [2019-02-07T06:32:49.941Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-02-07T06:32:49.941Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>

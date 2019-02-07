@@ -6,7 +6,6 @@ const utils_1 = require("../../utils");
 //TODO: how do we allow the entrypoint to have runtime variables?
 const en_text = {
     'entrypoint': [
-        //hi
         utils_1.generateText('Hi, this message is from the Rungwe Smallholders Tea Growers Association(RSTGA).Thank you for depositing'),
         {
             type: TwilioTypes_1.MessageType.DYNAMIC_SAY,
@@ -18,7 +17,6 @@ const en_text = {
                     }];
             }
         },
-        //green_leaf
         utils_1.generateText('kg of green leaf at'),
         utils_1.generateText('LOCATION.'),
     ],
@@ -26,4 +24,4 @@ const en_text = {
     'end': []
 };
 exports.default = en_text;
-//# sourceMappingURL=en_text_messages.js.map
+//# sourceMappingURL=en_text_messages.1.js.map

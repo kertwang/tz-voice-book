@@ -13,31 +13,39 @@ const Firestore_1 = require("../apis/Firestore");
 const fs = require("async-file");
 const FirebaseApi_1 = require("../apis/FirebaseApi");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
-const index_1 = require("./content/rungweDeposit/index");
+/* import your bot configs here */
+const index_1 = require("./content/voicebook/index");
+const index_2 = require("./content/senegalNotification/index");
+const index_3 = require("./content/senegalMobileMoney/index");
+const index_4 = require("./content/rungweIntro/index");
+const index_5 = require("./content/rungweDeposit/index");
+const index_6 = require("./content/rungwePaymentDate/index");
+const index_7 = require("./content/rungwePaymentNotification/index");
 const fbApi = new FirebaseApi_1.default(Firestore_1.default);
 gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     console.log("deploying conversation config for /twiml");
     //TODO: how can we make this auto discover files?
     /* Voicebook Bots */
-    // await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_us, voicebook.en_us);
-    // await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_au, voicebook.en_au);
-    // await fbApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.tz_audio, voicebook.tz_audio);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_us, index_1.default.en_us);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.en_au, index_1.default.en_au);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.voicebook, TwilioTypes_1.VersionId.tz_audio, index_1.default.tz_audio);
     /* Senegal Notifiction Bot */
-    // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.en_text, senegalNotification.en_text);
-    // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.fr_audio, senegalNotification.fr_audio);
-    // await fbApi.deployConfigForBotAndVersion(BotId.senegalNotification, VersionId.wl_audio, senegalNotification.wl_audio);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalNotification, TwilioTypes_1.VersionId.en_text, index_2.default.en_text);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalNotification, TwilioTypes_1.VersionId.fr_audio, index_2.default.fr_audio);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalNotification, TwilioTypes_1.VersionId.wl_audio, index_2.default.wl_audio);
     /* Senegal Mobile Money 101 Bot */
-    // await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.en_text, senegalMobileMoney.en_text);
-    // await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.fr_audio, senegalMobileMoney.fr_audio);
-    // await fbApi.deployConfigForBotAndVersion(BotId.senegalMobileMoney, VersionId.wl_audio, senegalMobileMoney.wl_audio);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalMobileMoney, TwilioTypes_1.VersionId.en_text, index_3.default.en_text);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalMobileMoney, TwilioTypes_1.VersionId.fr_audio, index_3.default.fr_audio);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.senegalMobileMoney, TwilioTypes_1.VersionId.wl_audio, index_3.default.wl_audio);
     /* Rungwe Intro Bot */
-    // await fbApi.deployConfigForBotAndVersion(BotId.rungweIntro, VersionId.en_text, rungweIntro.en_text);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungweIntro, TwilioTypes_1.VersionId.en_text, index_4.default.en_text);
     /* Rungwe Deposit Bot */
-    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungweDeposit, TwilioTypes_1.VersionId.en_text, index_1.default.en_text);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungweDeposit, TwilioTypes_1.VersionId.en_text, index_5.default.en_text);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungweDeposit, TwilioTypes_1.VersionId.en_audio, index_5.default.en_audio);
     /* Rungwe PaymentDate Bot */
-    // await fbApi.deployConfigForBotAndVersion(BotId.rungwePaymentDate, VersionId.en_text, rungwePaymentDate.en_text);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungwePaymentDate, TwilioTypes_1.VersionId.en_text, index_6.default.en_text);
     /* Rungwe PaymentNotification Bot */
-    // await fbApi.deployConfigForBotAndVersion(BotId.rungwePaymentNotification, VersionId.en_text, rungwePaymentNotification.en_text);
+    yield fbApi.deployConfigForBotAndVersion(TwilioTypes_1.BotId.rungwePaymentNotification, TwilioTypes_1.VersionId.en_text, index_7.default.en_text);
     console.log("deployed config.");
 }));
 gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {
