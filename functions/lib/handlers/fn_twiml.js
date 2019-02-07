@@ -150,6 +150,7 @@ module.exports = (functions) => {
         console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
         const user = yield firebaseApi.getUserFromMobile(req.body.From, botId);
         const pageParams = utils_1.saftelyGetPageParamsOrDefaults(req.query);
+        const dynamicParams = utils_1.saftelyGetDynamicParamsOrEmpty(req.query);
         /* Configure the version using a versionOverride query param */
         let botConfig;
         if (pageParams.versionOverride) {
@@ -158,7 +159,8 @@ module.exports = (functions) => {
         else {
             botConfig = yield firebaseApi.getBotConfig(user.id, botId);
         }
-        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi }, pageParams);
+        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, firebaseApi,
+            dynamicParams }, pageParams);
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
             botId,
@@ -183,16 +185,19 @@ module.exports = (functions) => {
         const blockName = utils_1.pathToBlock(req.path);
         const user = yield firebaseApi.getUserFromMobile(req.body.From, botId);
         const pageParams = utils_1.saftelyGetPageParamsOrDefaults(req.query);
+        const dynamicParams = utils_1.saftelyGetDynamicParamsOrEmpty(req.query);
         /* Configure the version using a versionOverride query param */
         let botConfig;
         if (pageParams.versionOverride) {
+            //RW-TODO: change this to getBotConfig with params
             botConfig = yield firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
         }
         else {
             botConfig = yield firebaseApi.getBotConfig(user.id, botId);
         }
         console.log("POST /:botId/ bot config is:", botConfig);
-        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, versionOverride: req.query.versionOverride || null, firebaseApi }, pageParams);
+        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, userId: user.id, versionOverride: req.query.versionOverride || null, firebaseApi,
+            dynamicParams }, pageParams);
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
             botId,

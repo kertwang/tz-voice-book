@@ -100,6 +100,21 @@ exports.saftelyGetPageParamsOrDefaults = (params) => {
         versionOverride,
     };
 };
+/**
+ * saftelyGetDynamicParamsOrEmpty
+ *
+ * Get the params from the request and format them.
+ * Returns an empty array if no params are found
+ *
+ * @param params the raw params from the request object
+ */
+exports.saftelyGetDynamicParamsOrEmpty = (params) => {
+    const safeParams = [];
+    console.warn("RW-TODO: parse params properly please. rawParams are", params);
+    //RW-TODO: remove, this is just for an example
+    safeParams["$1"] = "100";
+    return safeParams;
+};
 var NextUrlType;
 (function (NextUrlType) {
     NextUrlType["PaginatedUrl"] = "PaginatedUrl";
@@ -181,4 +196,38 @@ function formatMobile(unformatted, country) {
     return `+${parsed.getCountryCode()}${parsed.getNationalNumber()}`;
 }
 exports.formatMobile = formatMobile;
+/**
+ * functionReplacer
+ *
+ * Serialize a function as a JSON String
+ */
+exports.functionReplacer = (name, val) => {
+    if (typeof val === 'function') {
+        const entire = val.toString();
+        const arg = entire.slice(entire.indexOf("(") + 1, entire.indexOf(")"));
+        const body = entire
+            .slice(entire.indexOf("{") + 1, entire.lastIndexOf("}"))
+            //TODO: replace the `type: TwilioTypes_1.MessageType.SAY` with just type: SAY.
+            .replace(/type:\ ([^\.]+.)([^\.]*.)/g, "type:");
+        console.log("body is", body);
+        return {
+            type: 'function',
+            arguments: arg,
+            body,
+        };
+    }
+    return val;
+};
+/**
+ * functionReviver
+ *
+ * Deserialize a function from JSON String to actual function
+ */
+exports.functionReviver = (name, val) => {
+    if (typeof val === 'object' && val.type === 'function') {
+        console.log("Reviving function, ", val);
+        return new Function(val.arguments, val.body);
+    }
+    return val;
+};
 //# sourceMappingURL=index.js.map

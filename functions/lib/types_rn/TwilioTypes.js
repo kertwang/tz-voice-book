@@ -77,10 +77,13 @@ var BlockType;
     BlockType["RECORD"] = "RECORD";
     BlockType["END"] = "END";
 })(BlockType = exports.BlockType || (exports.BlockType = {}));
+//RW-TODO: Can we add a dynamic message type here? or should we add a SAY_DYNAMIC and PLAY_DYNAMIC?
 var MessageType;
 (function (MessageType) {
     MessageType["SAY"] = "SAY";
     MessageType["PLAY"] = "PLAY";
+    MessageType["DYNAMIC_SAY"] = "DYNAMIC_SAY";
+    MessageType["DYNAMIC_PLAY"] = "DYNAMIC_PLAY";
 })(MessageType = exports.MessageType || (exports.MessageType = {}));
 ;
 /**
