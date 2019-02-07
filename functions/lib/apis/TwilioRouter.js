@@ -254,7 +254,9 @@ class TwilioRouter {
                     if (dynamicParams.length === 0) {
                         console.warn(`appendMessagesToResponse had a dynamic message type, but no dynamic params were supplied! This could be fatal.`);
                     }
-                    const resolvedMessages = m.func(dynamicParams);
+                    //Inject the runtime urlGenerator
+                    const urlGenerator = (path) => utils_1.generateUrl(Env_1.urlPrefix, path, Env_1.firebaseToken);
+                    const resolvedMessages = m.func(dynamicParams, urlGenerator);
                     resolvedMessages.forEach((nestedMessage) => response.play({}, nestedMessage.url));
                     break;
                 }

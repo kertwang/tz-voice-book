@@ -19,3 +19,6 @@ export const shouldLog = getBoolean(envConfig.config.should_log);
 export const shouldDisplayEnglishTestCall = getBoolean(envConfig.config.should_display_english_test_call);
 export const testCallUrl = envConfig.config.test_call_url;
 export const relayDefaultCountrycode = envConfig.config.relay_default_country_code;
+export const urlPrefix = envConfig.config.url_prefix;
+export const firebaseToken = envConfig.config.firebase_token;
+

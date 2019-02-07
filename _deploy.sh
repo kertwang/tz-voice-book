@@ -27,7 +27,9 @@ firebase functions:config:set \
   config.should_log="$should_log" \
   config.should_display_english_test_call="$should_display_english_test_call" \
   config.test_call_url="$test_call_url" \
-  config.relay_default_country_code="$relay_default_country_code" 
+  config.relay_default_country_code="$relay_default_country_code" \
+  config.url_prefix="$urlPrefix" \
+  config.firebase_token="$firebaseToken" 
 
 firebase deploy --only functions
 

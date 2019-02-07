@@ -8,26 +8,35 @@ const utils_1 = require("../../utils");
 //params[1] => location name
 const en_text = {
     'entrypoint': [
-        utils_1.generateText('Hi, this message is from the Rungwe Smallholders Tea Growers Association(RSTGA).Thank you for depositing'),
-        //Amount
+        //rungweDeposit/en/hi
+        utils_1.generatePlay('rungwe_deposit_en', 'hi'),
+        //generic_numbers/en/*
         {
             type: TwilioTypes_1.MessageType.DYNAMIC_PLAY,
-            func: (params) => {
+            //These must be self contained
+            func: (params, urlGenerator) => {
                 const weightSplit = params[0].split('');
-                //TODO: handle commas, bad characters etc.
-                return weightSplit.map(n => utils_1.generatePlay('generic_numbers/en', n));
+                return weightSplit.map(n => {
+                    const message = {
+                        type: TwilioTypes_1.MessageType.PLAY,
+                        url: urlGenerator(`generic_numbers_en/${n}.mp3`),
+                    };
+                    return message;
+                });
             }
         },
-        utils_1.generateText('kg of green leaf at'),
-        //Location
+        //rungweDeposit/en/green_leaf
+        utils_1.generatePlay('rungwe_deposit_en', 'green_leaf'),
+        //generic_locations/en/*
         {
-            type: TwilioTypes_1.MessageType.DYNAMIC_SAY,
-            func: (params) => {
-                return [{
-                        type: TwilioTypes_1.MessageType.SAY,
-                        text: params[1],
-                        language: 'en-US'
-                    }];
+            type: TwilioTypes_1.MessageType.DYNAMIC_PLAY,
+            func: (params, urlGenerator) => {
+                const locationName = params[1];
+                const message = {
+                    type: TwilioTypes_1.MessageType.PLAY,
+                    url: urlGenerator(`generic_locations_en/${locationName}.mp3`),
+                };
+                return [message];
             }
         },
     ],

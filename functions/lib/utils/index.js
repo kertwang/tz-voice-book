@@ -222,7 +222,7 @@ exports.functionReplacer = (name, val) => {
             .slice(entire.indexOf("{") + 1, entire.lastIndexOf("}"))
             //If we ever have another dynamic message type, this will break.
             .replace(/(type: .*.MessageType.SAY)/g, "type: 'SAY'")
-            .replace(/(type: .*.MessageType.SAY)/g, "type: 'PLAY'");
+            .replace(/(type: .*.MessageType.PLAY)/g, "type: 'PLAY'");
         return {
             type: 'function',
             arguments: arg,

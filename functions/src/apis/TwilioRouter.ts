@@ -2,9 +2,9 @@
 // const VoiceResponse = require('twilio').twiml.VoiceResponse;
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
-import { logTwilioResponse, NextUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder } from '../utils';
+import { logTwilioResponse, NextUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder, generateUrl } from '../utils';
 import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, BotId, AnyBlock, AnyMessageMap, AnyMessageType } from '../types_rn/TwilioTypes';
-import { baseUrl } from '../utils/Env';
+import { baseUrl, firebaseToken, urlPrefix } from '../utils/Env';
 import UserApi, { Recording } from './UserApi';
 import { log } from '../utils/Log';
 import { LogType } from '../types_rn/LogTypes';
@@ -265,7 +265,9 @@ export default class TwilioRouter {
             console.warn(`appendMessagesToResponse had a dynamic message type, but no dynamic params were supplied! This could be fatal.`);
           }
 
-          const resolvedMessages = m.func(dynamicParams);
+          //Inject the runtime urlGenerator
+          const urlGenerator = (path: string): string => generateUrl(urlPrefix, path, firebaseToken);
+          const resolvedMessages = m.func(dynamicParams, urlGenerator);
           resolvedMessages.forEach((nestedMessage: PlayMessage) => response.play({}, nestedMessage.url));
           break;
         }

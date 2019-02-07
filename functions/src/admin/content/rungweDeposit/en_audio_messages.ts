@@ -8,6 +8,7 @@ import { generateUrl } from "../../../utils";
 //params[0] => weight of leaf - must be an integer
 //params[1] => location name
 
+
 const en_text: RungweGenericMessageMap = {
   'entrypoint': [
     //rungweDeposit/en/hi
@@ -15,10 +16,16 @@ const en_text: RungweGenericMessageMap = {
     //generic_numbers/en/*
     {
       type: MessageType.DYNAMIC_PLAY,
-      func: (params: string[]) => {
+      //These must be self contained
+      func: (params: string[], urlGenerator: (path: string) => string) => {
         const weightSplit = params[0].split('');
-        //TODO: handle commas, bad characters etc.
-        return weightSplit.map(n => generatePlay('generic_numbers_en', n));
+        return weightSplit.map(n => {
+          const message: PlayMessage = {
+            type: MessageType.PLAY, 
+            url: urlGenerator(`generic_numbers_en/${n}.mp3`),
+          }
+          return message;
+        });
       }
     },
     //rungweDeposit/en/green_leaf
@@ -26,9 +33,13 @@ const en_text: RungweGenericMessageMap = {
     //generic_locations/en/*
     {
       type: MessageType.DYNAMIC_PLAY,
-      func: (params: string[]) => {
+      func: (params: string[], urlGenerator: (path: string) => string) => {
         const locationName = params[1];
-        return [generatePlay('generic_locations_en', locationName)];
+        const message: PlayMessage = {
+          type: MessageType.PLAY, 
+          url: urlGenerator(`generic_locations_en/${locationName}.mp3`),
+        }
+        return [message];
       }
     },
   ],

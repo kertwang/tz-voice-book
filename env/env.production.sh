@@ -23,5 +23,7 @@ export informal_notification_url="https://us-central1-tz-phone-book.cloudfunctio
 export mm_101_url="https://us-central1-tz-phone-book.cloudfunctions.net/twiml/senegalMobileMoney/entrypoint?versionOverride=wl_audio"
 export should_display_english_test_call="false"
 export test_call_url=""
+export urlPrefix="https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/"
+export firebaseToken="1536715274666696"
 
 export should_log='false'
