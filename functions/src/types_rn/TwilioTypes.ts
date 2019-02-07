@@ -372,11 +372,11 @@ export enum MessageType {
 
 export type DynamicPlayMessage = {
   type: MessageType.DYNAMIC_PLAY,
-  func: (params: string[]) => PlayMessage
+  func: (params: string[]) => PlayMessage,
 }
 export type DynamicSayMessage = {
   type: MessageType.DYNAMIC_SAY,
-  func: (params: string[]) => SayMessage;
+  func: (params: string[]) => SayMessage,
 }
 
 // export function dynamicPlayMessage(params: string[]): PlayMessage {

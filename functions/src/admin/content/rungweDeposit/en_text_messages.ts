@@ -15,7 +15,7 @@ const en_text: RungweGenericMessageMap = {
       func: (params: string[]) => {
         return {
           type: MessageType.SAY,
-          text: params[0], //for now, just say the first params
+          text: params[0],
           language: 'en-US'
         }
       }

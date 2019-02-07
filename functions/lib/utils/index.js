@@ -77,7 +77,6 @@ exports.generateUrl = (urlPrefix, path, firebaseToken) => {
  * This is really less than ideal, and we need to find a better way.
  */
 exports.saftelyGetPageParamsOrDefaults = (params) => {
-    console.log('params are', params);
     const page = params.page ? parseInt(params.page) : 0;
     let pageSize = params.pageSize ? parseInt(params.pageSize) : 1;
     let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
@@ -109,10 +108,24 @@ exports.saftelyGetPageParamsOrDefaults = (params) => {
  * @param params the raw params from the request object
  */
 exports.saftelyGetDynamicParamsOrEmpty = (params) => {
-    const safeParams = [];
-    console.warn("RW-TODO: parse params properly please. rawParams are", params);
-    //RW-TODO: remove, this is just for an example
-    safeParams["$1"] = "100";
+    let safeParams = [];
+    const rawParams = params.dynamicParams;
+    if (!rawParams) {
+        return safeParams;
+    }
+    //TD: TODO: this is a security risk!
+    try {
+        const parsed = JSON.parse(rawParams);
+        if (typeof parsed === 'object' && Array.isArray(parsed)) {
+            safeParams = parsed;
+        }
+    }
+    catch (err) {
+        throw {
+            status: 400,
+            message: "Couldn't parse the dynamicParams. Ensure it is a valid JSON Array."
+        };
+    }
     return safeParams;
 };
 var NextUrlType;
@@ -207,9 +220,9 @@ exports.functionReplacer = (name, val) => {
         const arg = entire.slice(entire.indexOf("(") + 1, entire.indexOf(")"));
         const body = entire
             .slice(entire.indexOf("{") + 1, entire.lastIndexOf("}"))
-            //TODO: replace the `type: TwilioTypes_1.MessageType.SAY` with just type: SAY.
-            .replace(/type:\ ([^\.]+.)([^\.]*.)/g, "type:");
-        console.log("body is", body);
+            //If we ever have another dynamic message type, this will break.
+            .replace(/(type: .*.MessageType.SAY)/g, "type: 'SAY'")
+            .replace(/(type: .*.MessageType.SAY)/g, "type: 'PLAY'");
         return {
             type: 'function',
             arguments: arg,
