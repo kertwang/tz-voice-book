@@ -114,6 +114,22 @@ export const saftelyGetPageParamsOrDefaults = (params): PageParams => {
   };
 }
 
+/**
+ * saftelyGetDynamicParamsOrEmpty
+ * 
+ * Get the params from the request and format them.
+ * Returns an empty array if no params are found
+ * 
+ * @param params the raw params from the request object
+ */
+export const saftelyGetDynamicParamsOrEmpty = (params): string[] => {
+  const safeParams = [];
+  //RW-TODO: remove, this is just for an example
+  safeParams["$1"] = "100";
+
+  return safeParams;
+}
+
 export enum NextUrlType {
   PaginatedUrl = 'PaginatedUrl',
   DefaultUrl = 'DefaultUrl',

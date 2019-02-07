@@ -1,4 +1,4 @@
-import { RungweGenericMessageMap } from "../../../types_rn/TwilioTypes";
+import { RungweGenericMessageMap, MessageType } from "../../../types_rn/TwilioTypes";
 import { generateText } from "../../utils";
 
 /* the deploy script will automatically fill in the urls for us */
@@ -7,9 +7,19 @@ import { generateText } from "../../utils";
 const en_text: RungweGenericMessageMap = {
   'entrypoint': [
     generateText('Hi, this message is from the Rungwe Smallholders Tea Growers Association(RSTGA).Thank you for depositing'),
-    //TODO: maybe we can have a generate number function which pieces together numbers?
-    //RW-TODO: Maybe this needs to be a placeholder?
-    generateText('100'),
+    //RW-TODO: How do we generate numbers on the fly???
+
+    {
+      type: MessageType.DYNAMIC_SAY,
+      //RW-TODO: Maybe this needs to be an already serialized function?
+      func: (params: string[]) => {
+        return {
+          type: MessageType.SAY,
+          text: params[0], //for now, just say the first params
+          language: 'en-US'
+        }
+      }
+    },
     generateText('kg of green leaf at'),
     generateText('LOCATION.'),
   ],

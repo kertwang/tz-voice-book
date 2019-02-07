@@ -165,7 +165,6 @@ export default class FirebaseApi {
    * different versions when the user can't configure the version for themselves
    */
   public async getBotConfigOverride(userId: string, botId: BotId, versionOverride: VersionId): Promise<BotConfig> {
-    console.log('getBotConfigOverride, botId', botId);
     const version = await this.getVersionForUser(userId, botId, versionOverride);
     return this.getBotConfigForVersion(userId, botId, version);
   }
@@ -178,10 +177,13 @@ export default class FirebaseApi {
           throw new Error(`Couldn't getBotConfig for version and botId: ${version}, ${botId}`);
         }
 
-        return config;
-      })
+        //RW-TODO: inject a dynamic level of bot config here?
+        //we need to deserialize the functions that we saved for dynamic requests
 
-      //RW-TODO: inject a dynamic level of bot config here?
+        console.log("Bot config is", config);
+
+        return config;
+      });
   }
 
   //RW-TODO: specify other params here that can be overriden?
@@ -208,6 +210,7 @@ export default class FirebaseApi {
 
   public async deployConfigForBotAndVersion(new_botId: BotId, versionId: VersionId, config: BotConfig) {
     console.log(`Saving config to bot/${new_botId}/version/${versionId}/`);
+    //TODO: serialize the functions in BotConfig
     return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(config);
   }
 

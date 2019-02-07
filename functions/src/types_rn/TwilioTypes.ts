@@ -283,88 +283,107 @@ export interface RecordBlock {
  * Message Types
  */
 export type AnyMessageMap = MessageMap | SenegalNotificationMessageMap | SenegalMobileMoneyMessageMap | RungweGenericMessageMap;
-
+export type AnyMessageType = SayMessage | PlayMessage | DynamicPlayMessage | DynamicSayMessage;
 
 //TODO: change to VoicebookMessageMap
 export type MessageMap = {
-  entrypoint: SayMessage[] | PlayMessage[],
-  intro_0: SayMessage[] | PlayMessage[],
-  listen_0: SayMessage[] | PlayMessage[],
-  listen_playback: SayMessage[] | PlayMessage[],
-  listen_end: SayMessage[] | PlayMessage[],
-  listen_end_error: SayMessage[] | PlayMessage[],
-  listen_feedback: SayMessage[] | PlayMessage[],
-  listen_feedback_complete: SayMessage[] | PlayMessage[],
-  error_0: SayMessage[] | PlayMessage[],
-  info_0: SayMessage[] | PlayMessage[],
-  record_0: SayMessage[] | PlayMessage[],
-  record_playback: SayMessage[] | PlayMessage[],
-  record_post_or_delete: SayMessage[] | PlayMessage[],
-  record_save: SayMessage[] | PlayMessage[],
-  record_delete: SayMessage[] | PlayMessage[],
-  record_post_or_delete_error: SayMessage[] | PlayMessage[],
+  entrypoint: Array<AnyMessageType>,
+  intro_0: Array<AnyMessageType>,
+  listen_0: Array<AnyMessageType>,
+  listen_playback: Array<AnyMessageType>,
+  listen_end: Array<AnyMessageType>,
+  listen_end_error: Array<AnyMessageType>,
+  listen_feedback: Array<AnyMessageType>,
+  listen_feedback_complete: Array<AnyMessageType>,
+  error_0: Array<AnyMessageType>,
+  info_0: Array<AnyMessageType>,
+  record_0: Array<AnyMessageType>,
+  record_playback: Array<AnyMessageType>,
+  record_post_or_delete: Array<AnyMessageType>,
+  record_save: Array<AnyMessageType>,
+  record_delete: Array<AnyMessageType>,
+  record_post_or_delete_error: Array<AnyMessageType>,
+
+  //Add index method to make sure we get type safety when getting back from AnyMessageMap
+  [index: string]: Array<AnyMessageType>,
 }
 
 export type SenegalNotificationMessageMap = {
-  entrypoint: SayMessage[] | PlayMessage[],
+  entrypoint: Array<AnyMessageType>,
+
+  //Add index method to make sure we get type safety when getting back from AnyMessageMap
+  [index: string]: Array<AnyMessageType>,
 }
 
 export type SenegalMobileMoneyMessageMap = {
-  entrypoint: SayMessage[] | PlayMessage[],
-  entrypoint_option: SayMessage[] | PlayMessage[],
-  amount_repeat: SayMessage[] | PlayMessage[],
-  story_option: SayMessage[] | PlayMessage[],
-  story_1_intro: SayMessage[] | PlayMessage[],
-  story_1_intro_option: SayMessage[] | PlayMessage[],
-  story_1_pin_advice: SayMessage[] | PlayMessage[],
-  story_1_pin_option: SayMessage[] | PlayMessage[],
-  story_1_guess: SayMessage[] | PlayMessage[],
-  story_1_guess_option: SayMessage[] | PlayMessage[],
-  story_1_customer: SayMessage[] | PlayMessage[],
-  story_1_customer_option_2: SayMessage[] | PlayMessage[],
-  story_1_end: SayMessage[] | PlayMessage[],
-  story_1_next: SayMessage[] | PlayMessage[],
-  story_2_intro: SayMessage[] | PlayMessage[],
-  story_2_intro_option: SayMessage[] | PlayMessage[],
-  story_2_explain: SayMessage[] | PlayMessage[],
-  story_2_explain_option: SayMessage[] | PlayMessage[],
-  story_2_customer_care: SayMessage[] | PlayMessage[],
-  story_2_send_money: SayMessage[] | PlayMessage[],
-  story_2_send_no_agent: SayMessage[] | PlayMessage[],
-  story_2_send_agent_option: SayMessage[] | PlayMessage[],
-  story_2_send_explain: SayMessage[] | PlayMessage[],
-  story_2_send_explain_option: SayMessage[] | PlayMessage[],
-  story_2_send_explain_2: SayMessage[] | PlayMessage[],
-  story_2_send_explain_2_option: SayMessage[] | PlayMessage[],
-  story_2_end: SayMessage[] | PlayMessage[],
-  story_2_next: SayMessage[] | PlayMessage[],
-  story_3_intro: SayMessage[] | PlayMessage[],
-  story_3_intro_option: SayMessage[] | PlayMessage[],
-  story_3_decision: SayMessage[] | PlayMessage[],
-  story_3_decision_option: SayMessage[] | PlayMessage[],
-  story_3_end: SayMessage[] | PlayMessage[],
-  error_0: SayMessage[] | PlayMessage[],
+  entrypoint: Array<AnyMessageType>,
+  entrypoint_option: Array<AnyMessageType>,
+  amount_repeat: Array<AnyMessageType>,
+  story_option: Array<AnyMessageType>,
+  story_1_intro: Array<AnyMessageType>,
+  story_1_intro_option: Array<AnyMessageType>,
+  story_1_pin_advice: Array<AnyMessageType>,
+  story_1_pin_option: Array<AnyMessageType>,
+  story_1_guess: Array<AnyMessageType>,
+  story_1_guess_option: Array<AnyMessageType>,
+  story_1_customer: Array<AnyMessageType>,
+  story_1_customer_option_2: Array<AnyMessageType>,
+  story_1_end: Array<AnyMessageType>,
+  story_1_next: Array<AnyMessageType>,
+  story_2_intro: Array<AnyMessageType>,
+  story_2_intro_option: Array<AnyMessageType>,
+  story_2_explain: Array<AnyMessageType>,
+  story_2_explain_option: Array<AnyMessageType>,
+  story_2_customer_care: Array<AnyMessageType>,
+  story_2_send_money: Array<AnyMessageType>,
+  story_2_send_no_agent: Array<AnyMessageType>,
+  story_2_send_agent_option: Array<AnyMessageType>,
+  story_2_send_explain: Array<AnyMessageType>,
+  story_2_send_explain_option: Array<AnyMessageType>,
+  story_2_send_explain_2: Array<AnyMessageType>,
+  story_2_send_explain_2_option: Array<AnyMessageType>,
+  story_2_end: Array<AnyMessageType>,
+  story_2_next: Array<AnyMessageType>,
+  story_3_intro: Array<AnyMessageType>,
+  story_3_intro_option: Array<AnyMessageType>,
+  story_3_decision: Array<AnyMessageType>,
+  story_3_decision_option: Array<AnyMessageType>,
+  story_3_end: Array<AnyMessageType>,
+  error_0: Array<AnyMessageType>,
+
+  //Add index method to make sure we get type safety when getting back from AnyMessageMap
+  [index: string]: Array<AnyMessageType>,
 }
 
 export type RungweGenericMessageMap = {
-  entrypoint: Array<SayMessage | PlayMessage | DynamicPlayMessage>,
-  // end: SayMessage[] | PlayMessage[],
-  [index: string]: Array<SayMessage | PlayMessage | DynamicPlayMessage>,
+  entrypoint: Array<AnyMessageType>,
+
+  //Add index method to make sure we get type safety when getting back from AnyMessageMap
+  [index: string]: Array<AnyMessageType>,
 }
 
 //RW-TODO: Can we add a dynamic message type here? or should we add a SAY_DYNAMIC and PLAY_DYNAMIC?
 export enum MessageType {
   SAY = 'SAY',
   PLAY = 'PLAY',
+  DYNAMIC_SAY = 'DYNAMIC_SAY',
+  DYNAMIC_PLAY = 'DYNAMIC_PLAY',
 }
 
-export type DynamicPlayMessage = (params: string[]) => PlayMessage;
-
-export function dynamicPlayMessage(params: string[]): PlayMessage {
-  return {
-
-  }
+export type DynamicPlayMessage = {
+  type: MessageType.DYNAMIC_PLAY,
+  func: (params: string[]) => PlayMessage
 }
+export type DynamicSayMessage = {
+  type: MessageType.DYNAMIC_SAY,
+  func: (params: string[]) => SayMessage;
+}
+
+// export function dynamicPlayMessage(params: string[]): PlayMessage {
+//   return {
+
+//   }
+// }
 
 export interface SayMessage {
   type: MessageType.SAY,
@@ -390,6 +409,9 @@ export type CallContext = {
   
   //For translation overrides
   versionOverride: VersionId | null,
+  
+  //For dynamically building responses
+  dynamicParams: string[],
 
   //For pagination
   page: number,
