@@ -226,6 +226,7 @@ module.exports = (functions: any) => {
     /* Configure the version using a versionOverride query param */
     let botConfig;
     if (pageParams.versionOverride) {
+      //RW-TODO: change this to getBotConfig with params
       botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
     } else {
       botConfig = await firebaseApi.getBotConfig(user.id, botId);

@@ -347,14 +347,23 @@ export type SenegalMobileMoneyMessageMap = {
 }
 
 export type RungweGenericMessageMap = {
-  entrypoint: Array<SayMessage | PlayMessage>,
+  entrypoint: Array<SayMessage | PlayMessage | DynamicPlayMessage>,
   // end: SayMessage[] | PlayMessage[],
-  [index: string]: Array<SayMessage | PlayMessage>,
+  [index: string]: Array<SayMessage | PlayMessage | DynamicPlayMessage>,
 }
 
+//RW-TODO: Can we add a dynamic message type here? or should we add a SAY_DYNAMIC and PLAY_DYNAMIC?
 export enum MessageType {
   SAY = 'SAY',
   PLAY = 'PLAY',
+}
+
+export type DynamicPlayMessage = (params: string[]) => PlayMessage;
+
+export function dynamicPlayMessage(params: string[]): PlayMessage {
+  return {
+
+  }
 }
 
 export interface SayMessage {

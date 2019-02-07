@@ -154,7 +154,7 @@ export default class FirebaseApi {
    * This will be stored in firebase, parsed, and filled into the context object
    */
   public async getBotConfig(userId: string, botId: BotId): Promise<BotConfig> {
-    const version = await this.getVerionForUser(userId, botId);
+    const version = await this.getVersionForUser(userId, botId);
     return this.getBotConfigForVersion(userId, botId, version);
   }
 
@@ -166,7 +166,7 @@ export default class FirebaseApi {
    */
   public async getBotConfigOverride(userId: string, botId: BotId, versionOverride: VersionId): Promise<BotConfig> {
     console.log('getBotConfigOverride, botId', botId);
-    const version = await this.getVerionForUser(userId, botId, versionOverride);
+    const version = await this.getVersionForUser(userId, botId, versionOverride);
     return this.getBotConfigForVersion(userId, botId, version);
   }
 
@@ -180,9 +180,13 @@ export default class FirebaseApi {
 
         return config;
       })
+
+      //RW-TODO: inject a dynamic level of bot config here?
   }
 
-  public async getVerionForUser(userId: string, botId: string, override?: VersionId): Promise<VersionId> {
+  //RW-TODO: specify other params here that can be overriden?
+  //This makes it backwards compatible with storing vars in the users object, or specifying them dynamically at runtime
+  public async getVersionForUser(userId: string, botId: string, override?: VersionId): Promise<VersionId> {
     if (override) {
       return override;
     }
@@ -193,6 +197,7 @@ export default class FirebaseApi {
       //TODO: should also make sure the version code is correct
       return user.version;
     } 
+
     //TODO: default to tz_audio version!
     return Promise.resolve(VersionId.en_us);
   }
