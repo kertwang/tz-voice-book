@@ -61,6 +61,18 @@ run-local:
 	@make env
 	./_run_local.sh
 
+##
+# Tests
+##
+test-unit:
+	source ${env_dir}/env.unit.sh && \
+		cd ${dir}/functions && \
+		yarn run unit
+
+##
+# Deployment
+##
+
 deploy:
 	@make env
 	./_deploy.sh
@@ -68,5 +80,8 @@ deploy:
 deploy-vars:
 	@make env
 	./_deploy_vars.sh
+
+
+
 
 .PHONY: switch switch-dev swich-prod env
