@@ -9,8 +9,8 @@ import * as morganBody from 'morgan-body';
 import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
-import { pathToBlock, logTwilioResponse, saftelyGetPageParamsOrDefaults, getBotId, sleep, formatMobile } from '../utils';
-import { CallContext, DigitResult } from '../types_rn/TwilioTypes';
+import { pathToBlock, logTwilioResponse, saftelyGetPageParamsOrDefaults, getBotId, sleep, formatMobile, saftelyGetDynamicParamsOrEmpty } from '../utils';
+import { CallContext, DigitResult, BotConfig } from '../types_rn/TwilioTypes';
 import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
 import fs from '../apis/Firestore';
@@ -177,9 +177,10 @@ module.exports = (functions: any) => {
 
     const user = await firebaseApi.getUserFromMobile(req.body.From, botId);
     const pageParams = saftelyGetPageParamsOrDefaults(req.query);
+    const dynamicParams = saftelyGetDynamicParamsOrEmpty(req.query);
     
     /* Configure the version using a versionOverride query param */
-    let botConfig;
+    let botConfig: BotConfig;
     if (pageParams.versionOverride) {
       botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
     } else {
@@ -191,6 +192,7 @@ module.exports = (functions: any) => {
       mobile: req.body.From,
       userId: user.id,
       firebaseApi,
+      dynamicParams,
       ...pageParams,
     };
 
@@ -222,14 +224,18 @@ module.exports = (functions: any) => {
 
     const user = await firebaseApi.getUserFromMobile(req.body.From, botId);
     const pageParams = saftelyGetPageParamsOrDefaults(req.query);
+    const dynamicParams = saftelyGetDynamicParamsOrEmpty(req.query);
 
     /* Configure the version using a versionOverride query param */
-    let botConfig;
+    let botConfig: BotConfig;
     if (pageParams.versionOverride) {
+      //RW-TODO: change this to getBotConfig with params
       botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
     } else {
       botConfig = await firebaseApi.getBotConfig(user.id, botId);
     }
+
+    console.log("POST /:botId/ bot config is:", botConfig);
 
     const ctx: CallContext = {
       callSid: req.body.CallSid,
@@ -237,6 +243,7 @@ module.exports = (functions: any) => {
       userId: user.id,
       versionOverride: req.query.versionOverride || null,
       firebaseApi,
+      dynamicParams,
       ...pageParams,
     };
 

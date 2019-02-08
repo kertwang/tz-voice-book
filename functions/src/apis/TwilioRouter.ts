@@ -2,9 +2,9 @@
 // const VoiceResponse = require('twilio').twiml.VoiceResponse;
 import * as twilio from 'twilio';
 import AppError from '../utils/AppError';
-import { logTwilioResponse, NextUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder } from '../utils';
-import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, BotId, AnyBlock, AnyMessageMap } from '../types_rn/TwilioTypes';
-import { baseUrl } from '../utils/Env';
+import { logTwilioResponse, NextUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder, generateUrl } from '../utils';
+import { BlockId, FlowMap, GatherResult, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, BotId, AnyBlock, AnyMessageMap, AnyMessageType } from '../types_rn/TwilioTypes';
+import { baseUrl, firebaseToken, urlPrefix } from '../utils/Env';
 import UserApi, { Recording } from './UserApi';
 import { log } from '../utils/Log';
 import { LogType } from '../types_rn/LogTypes';
@@ -18,7 +18,6 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
 export default class TwilioRouter {
 
   public static async nextMessage(ctx: CallContext, config: BotConfig, currentBlock: BlockId): Promise<string> {
-    //Not sure if this will work, we may need to nest stuff
     const response = await TwilioRouter.getBlock(ctx, config, currentBlock);
     logTwilioResponse(response.toString());
 
@@ -33,10 +32,12 @@ export default class TwilioRouter {
     const messageBlocks = config.messages;
     const flow: DefaultFlow | GatherFlow = config.flows[blockName];
     const block: AnyBlock = config.blocks[blockName];
-    const messages: SayMessage[] | PlayMessage[] = messageBlocks[blockName]; //TODO: make type safe?
+    const messages = messageBlocks[blockName];
 
     let response = new VoiceResponse();
 
+
+    //TODO: flow is undefined here for rungwe
     switch (flow.type) {
       case FlowType.DEFAULT: {
         switch (block.type) {
@@ -76,6 +77,7 @@ export default class TwilioRouter {
           case BlockType.DEFAULT:
           default: {
             // const nextUrl = `${baseUrl}/twiml/${config.botId}/${flow.next}`;
+            console.log('getBlock, Blocktype.DEFAULT, building url. config is, ', config.botId);
             const nextUrl = buildRedirectUrl({
               type: NextUrlType.DefaultUrl,
               baseUrl,
@@ -83,7 +85,8 @@ export default class TwilioRouter {
               blockName: flow.next,
               versionOverride: ctx.versionOverride,
             });
-            this.appendMessagesToResponse(response, messages);
+            console.log("BlockType.DEFAULT dynamicParams are:", ctx.dynamicParams);
+            this.appendMessagesToResponse(response, messages, ctx.dynamicParams);
             response.redirect({ method: 'POST' }, nextUrl);
           }
         }
@@ -127,7 +130,7 @@ export default class TwilioRouter {
     }
   }
 
-  private static async handlePlaybackBlock(botId: BotId, blockName: BlockId, response: any, ctx: CallContext, nextBlock: BlockId, messages: SayMessage[] | PlayMessage []) {
+  private static async handlePlaybackBlock(botId: BotId, blockName: BlockId, response: any, ctx: CallContext, nextBlock: BlockId, messages: AnyMessageType[]) {
     //TODO: figure out how to make more type safe and more generic - eg a custom block definition, with a function for how to handle it defined elsewhere
     switch(blockName) {
       //this has a flow type of gather- breaking some weird stuff
@@ -234,8 +237,10 @@ export default class TwilioRouter {
   }
 
 
-  private static appendMessagesToResponse(response, messages): any {
-    messages.forEach((m: SayMessage | PlayMessage) => {
+  private static appendMessagesToResponse(response, messages: AnyMessageType[], dynamicParams: string[] = []): any {
+    messages.forEach(m => {
+      console.log("appending new message", m);
+
       switch (m.type) {
         case (MessageType.SAY):
           //TODO: add language in here.
@@ -244,6 +249,30 @@ export default class TwilioRouter {
         case (MessageType.PLAY):
           response.play({}, m.url);
           break;
+        
+        //RW-TODO: implement the appendMessages for our dynamic friends. We will need to figure out how to pass in the params here.
+        case (MessageType.DYNAMIC_SAY): {
+          if (dynamicParams.length === 0) {
+            console.warn(`appendMessagesToResponse had a dynamic message type, but no dynamic params were supplied! This could be fatal.`);
+          }
+        
+          const resolvedMessages = m.func(dynamicParams);
+          resolvedMessages.forEach((nestedMessage: SayMessage) => response.say({ language: nestedMessage.language }, nestedMessage.text));
+          break;
+        }
+        case (MessageType.DYNAMIC_PLAY): {
+          if (dynamicParams.length === 0) {
+            console.warn(`appendMessagesToResponse had a dynamic message type, but no dynamic params were supplied! This could be fatal.`);
+          }
+
+          //Inject the runtime urlGenerator
+          const urlGenerator = (path: string): string => generateUrl(urlPrefix, path, firebaseToken);
+          const resolvedMessages = m.func(dynamicParams, urlGenerator);
+          resolvedMessages.forEach((nestedMessage: PlayMessage) => response.play({}, nestedMessage.url));
+          break;
+        }
+        default:
+          throw new Error(`Non exhausive match for MessageType`);
       }
     });
 

@@ -152,7 +152,7 @@ class FirebaseApi {
      */
     getBotConfig(userId, botId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const version = yield this.getVerionForUser(userId, botId);
+            const version = yield this.getVersionForUser(userId, botId);
             return this.getBotConfigForVersion(userId, botId, version);
         });
     }
@@ -160,11 +160,11 @@ class FirebaseApi {
      * getBotConfigOverride
      *
      * Get the bot config, but override the user's version. This is useful for testing
-     * different versions when the user can't configure the version fot themselves
+     * different versions when the user can't configure the version for themselves
      */
     getBotConfigOverride(userId, botId, versionOverride) {
         return __awaiter(this, void 0, void 0, function* () {
-            const version = yield this.getVerionForUser(userId, botId, versionOverride);
+            const version = yield this.getVersionForUser(userId, botId, versionOverride);
             return this.getBotConfigForVersion(userId, botId, version);
         });
     }
@@ -172,15 +172,27 @@ class FirebaseApi {
         return __awaiter(this, void 0, void 0, function* () {
             return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
                 .then(doc => doc.data())
-                .then((config) => {
-                if (!config) {
+                .then((rawConfig) => {
+                if (!rawConfig) {
                     throw new Error(`Couldn't getBotConfig for version and botId: ${version}, ${botId}`);
                 }
+                //RW-TODO: inject a dynamic level of bot config here?
+                //we need to deserialize the functions that we saved for dynamic requests
+                const configString = JSON.stringify(rawConfig, null, 2);
+                const config = JSON.parse(configString, utils_1.functionReviver);
+                const anyMessage = config.messages.entrypoint[1];
+                if (anyMessage.type === TwilioTypes_1.MessageType.DYNAMIC_SAY) {
+                    console.log("message is", anyMessage);
+                    console.log("saying message,", anyMessage.func(['HELLO WORLD']));
+                }
+                console.log("getBotConfigForVersion, Bot config is");
                 return config;
             });
         });
     }
-    getVerionForUser(userId, botId, override) {
+    //RW-TODO: specify other params here that can be overriden?
+    //This makes it backwards compatible with storing vars in the users object, or specifying them dynamically at runtime
+    getVersionForUser(userId, botId, override) {
         return __awaiter(this, void 0, void 0, function* () {
             if (override) {
                 return override;
@@ -200,7 +212,9 @@ class FirebaseApi {
     deployConfigForBotAndVersion(new_botId, versionId, config) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(`Saving config to bot/${new_botId}/version/${versionId}/`);
-            return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(config);
+            //Serialize the functions in BotConfig so they can be saved in firebase
+            const serialized = JSON.parse(JSON.stringify(config, utils_1.functionReplacer, 2));
+            return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(serialized);
         });
     }
     //

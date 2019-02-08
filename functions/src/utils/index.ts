@@ -1,5 +1,6 @@
 import { BlockId, GatherResult, PageParams, BotId, VersionId } from "../types_rn/TwilioTypes";
 import * as format from 'xml-formatter';
+import { raw } from "body-parser";
 var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
 
@@ -25,8 +26,18 @@ export function getDefaultVersionForBot(botId: BotId): VersionId {
       //TODO: Change this.
       return VersionId.en_text;
     }
+
+    //TODO: Add new bots here
+    case BotId.rungweDeposit: 
+    case BotId.rungweIntro: 
+    case BotId.rungwePaymentDate: 
+    case BotId.rungwePaymentNotification: {
+      return VersionId.en_text
+    }
     default: {
-      throw new Error(`No Default version specified for botId: ${botId}`);
+      // throw new Error(`No Default version specified for botId: ${botId}`);
+      console.log(`WARN: getDefaultVersionForBot(), No Default version specified for botId: ${botId}. Returning en_text`);
+      return VersionId.en_text;
     }
   }
 }
@@ -74,8 +85,6 @@ export const generateUrl = (urlPrefix: string, path: string, firebaseToken: stri
  * This is really less than ideal, and we need to find a better way.
  */
 export const saftelyGetPageParamsOrDefaults = (params): PageParams => {
-  console.log('params are', params);
-
   const page = params.page ? parseInt(params.page) : 0;
   let pageSize = params.pageSize ? parseInt(params.pageSize) : 1;
   let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
@@ -102,6 +111,37 @@ export const saftelyGetPageParamsOrDefaults = (params): PageParams => {
     maxMessages,
     versionOverride,
   };
+}
+
+/**
+ * saftelyGetDynamicParamsOrEmpty
+ * 
+ * Get the params from the request and format them.
+ * Returns an empty array if no params are found
+ * 
+ * @param params the raw params from the request object
+ */
+export const saftelyGetDynamicParamsOrEmpty = (params): string[] => {
+  let safeParams = [];
+  const rawParams = params.dynamicParams;
+  if (!rawParams) {
+    return safeParams;
+  }
+
+  //TD: TODO: this is a security risk!
+  try {
+    const parsed = JSON.parse(rawParams);
+    if (typeof parsed === 'object' && Array.isArray(parsed)) {
+      safeParams = parsed;
+    }
+  } catch(err) {    
+    throw {
+      status: 400,
+      message: "Couldn't parse the dynamicParams. Ensure it is a valid JSON Array."
+    }
+  }
+
+  return safeParams;
 }
 
 export enum NextUrlType {
@@ -255,4 +295,44 @@ export function buildExpectedToken(username: string, password: string) {
 export function formatMobile(unformatted: string, country: string) {
   const parsed = phoneUtil.parse(unformatted, country);
   return `+${parsed.getCountryCode()}${parsed.getNationalNumber()}`;
+}
+
+
+/**
+ * functionReplacer
+ * 
+ * Serialize a function as a JSON String
+ */
+export const functionReplacer = (name: any, val: any) => {
+  if (typeof val === 'function') {
+    const entire = val.toString();
+    const arg = entire.slice(entire.indexOf("(") + 1, entire.indexOf(")"));
+    const body = entire
+      .slice(entire.indexOf("{") + 1, entire.lastIndexOf("}"))
+      //If we ever have another dynamic message type, this will break.
+      .replace(/(type: .*.MessageType.SAY)/g, "type: 'SAY'")
+      .replace(/(type: .*.MessageType.PLAY)/g, "type: 'PLAY'")
+    return {
+      type: 'function',
+      arguments: arg,
+      body,
+    };
+  }
+
+  return val;
+}
+
+/**
+ * functionReviver
+ *
+ * Deserialize a function from JSON String to actual function
+ */
+export const functionReviver = (name: any, val: any) => {
+
+  if (typeof val === 'object' && val.type === 'function') {
+    console.log("Reviving function, ", val);
+    return new Function(val.arguments, val.body);
+  }
+
+  return val;
 }

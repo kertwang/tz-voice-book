@@ -24,7 +24,6 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
 class TwilioRouter {
     static nextMessage(ctx, config, currentBlock) {
         return __awaiter(this, void 0, void 0, function* () {
-            //Not sure if this will work, we may need to nest stuff
             const response = yield TwilioRouter.getBlock(ctx, config, currentBlock);
             utils_1.logTwilioResponse(response.toString());
             return response.toString();
@@ -39,8 +38,9 @@ class TwilioRouter {
             const messageBlocks = config.messages;
             const flow = config.flows[blockName];
             const block = config.blocks[blockName];
-            const messages = messageBlocks[blockName]; //TODO: make type safe?
+            const messages = messageBlocks[blockName];
             let response = new VoiceResponse();
+            //TODO: flow is undefined here for rungwe
             switch (flow.type) {
                 case TwilioTypes_1.FlowType.DEFAULT: {
                     switch (block.type) {
@@ -80,6 +80,7 @@ class TwilioRouter {
                         case TwilioTypes_1.BlockType.DEFAULT:
                         default: {
                             // const nextUrl = `${baseUrl}/twiml/${config.botId}/${flow.next}`;
+                            console.log('getBlock, Blocktype.DEFAULT, building url. config is, ', config.botId);
                             const nextUrl = utils_1.buildRedirectUrl({
                                 type: utils_1.NextUrlType.DefaultUrl,
                                 baseUrl: Env_1.baseUrl,
@@ -87,7 +88,8 @@ class TwilioRouter {
                                 blockName: flow.next,
                                 versionOverride: ctx.versionOverride,
                             });
-                            this.appendMessagesToResponse(response, messages);
+                            console.log("BlockType.DEFAULT dynamicParams are:", ctx.dynamicParams);
+                            this.appendMessagesToResponse(response, messages, ctx.dynamicParams);
                             response.redirect({ method: 'POST' }, nextUrl);
                         }
                     }
@@ -228,8 +230,9 @@ class TwilioRouter {
             return response;
         });
     }
-    static appendMessagesToResponse(response, messages) {
-        messages.forEach((m) => {
+    static appendMessagesToResponse(response, messages, dynamicParams = []) {
+        messages.forEach(m => {
+            console.log("appending new message", m);
             switch (m.type) {
                 case (TwilioTypes_1.MessageType.SAY):
                     //TODO: add language in here.
@@ -238,6 +241,27 @@ class TwilioRouter {
                 case (TwilioTypes_1.MessageType.PLAY):
                     response.play({}, m.url);
                     break;
+                //RW-TODO: implement the appendMessages for our dynamic friends. We will need to figure out how to pass in the params here.
+                case (TwilioTypes_1.MessageType.DYNAMIC_SAY): {
+                    if (dynamicParams.length === 0) {
+                        console.warn(`appendMessagesToResponse had a dynamic message type, but no dynamic params were supplied! This could be fatal.`);
+                    }
+                    const resolvedMessages = m.func(dynamicParams);
+                    resolvedMessages.forEach((nestedMessage) => response.say({ language: nestedMessage.language }, nestedMessage.text));
+                    break;
+                }
+                case (TwilioTypes_1.MessageType.DYNAMIC_PLAY): {
+                    if (dynamicParams.length === 0) {
+                        console.warn(`appendMessagesToResponse had a dynamic message type, but no dynamic params were supplied! This could be fatal.`);
+                    }
+                    //Inject the runtime urlGenerator
+                    const urlGenerator = (path) => utils_1.generateUrl(Env_1.urlPrefix, path, Env_1.firebaseToken);
+                    const resolvedMessages = m.func(dynamicParams, urlGenerator);
+                    resolvedMessages.forEach((nestedMessage) => response.play({}, nestedMessage.url));
+                    break;
+                }
+                default:
+                    throw new Error(`Non exhausive match for MessageType`);
             }
         });
         return response;

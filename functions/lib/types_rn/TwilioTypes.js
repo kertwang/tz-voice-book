@@ -60,6 +60,10 @@ var BlockId;
     BlockId["story_3_decision"] = "story_3_decision";
     BlockId["story_3_decision_option"] = "story_3_decision_option";
     BlockId["story_3_end"] = "story_3_end";
+    /* rungwe */
+    BlockId["end"] = "end";
+    BlockId["stop"] = "stop";
+    BlockId["stop_confirm"] = "stop_confirm";
 })(BlockId = exports.BlockId || (exports.BlockId = {}));
 var FlowType;
 (function (FlowType) {
@@ -73,14 +77,19 @@ var BlockType;
     BlockType["RECORD"] = "RECORD";
     BlockType["END"] = "END";
 })(BlockType = exports.BlockType || (exports.BlockType = {}));
+//RW-TODO: Can we add a dynamic message type here? or should we add a SAY_DYNAMIC and PLAY_DYNAMIC?
 var MessageType;
 (function (MessageType) {
     MessageType["SAY"] = "SAY";
     MessageType["PLAY"] = "PLAY";
+    MessageType["DYNAMIC_SAY"] = "DYNAMIC_SAY";
+    MessageType["DYNAMIC_PLAY"] = "DYNAMIC_PLAY";
 })(MessageType = exports.MessageType || (exports.MessageType = {}));
 ;
 /**
  * Define different bots here
+ *
+ * These can be twilio bots with Twiml, or DialogFlow bots
  */
 var BotId;
 (function (BotId) {
@@ -88,6 +97,10 @@ var BotId;
     BotId["voicebook"] = "voicebook";
     BotId["senegalNotification"] = "senegalNotification";
     BotId["senegalMobileMoney"] = "senegalMobileMoney";
+    BotId["rungweIntro"] = "rungweIntro";
+    BotId["rungweDeposit"] = "rungweDeposit";
+    BotId["rungwePaymentDate"] = "rungwePaymentDate";
+    BotId["rungwePaymentNotification"] = "rungwePaymentNotification";
     //DF Bots
     BotId["uncdfBot"] = "uncdfBot";
 })(BotId = exports.BotId || (exports.BotId = {}));
@@ -102,5 +115,6 @@ var VersionId;
     VersionId["en_text"] = "en_text";
     VersionId["fr_audio"] = "fr_audio";
     VersionId["wl_audio"] = "wl_audio";
+    VersionId["en_audio"] = "en_audio";
 })(VersionId = exports.VersionId || (exports.VersionId = {}));
 //# sourceMappingURL=TwilioTypes.js.map

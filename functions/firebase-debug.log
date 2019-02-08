@@ -1,0 +1,32 @@
+[debug] [2019-02-07T06:48:30.563Z] ----------------------------------------------------------------------
+[debug] [2019-02-07T06:48:30.565Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase serve --only functions
+[debug] [2019-02-07T06:48:30.565Z] CLI Version:   6.1.0
+[debug] [2019-02-07T06:48:30.565Z] Platform:      darwin
+[debug] [2019-02-07T06:48:30.565Z] Node Version:  v8.11.1
+[debug] [2019-02-07T06:48:30.565Z] Time:          Thu Feb 07 2019 14:48:30 GMT+0800 (PST)
+[debug] [2019-02-07T06:48:30.565Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-02-07T06:48:30.575Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-02-07T06:48:30.575Z] > authorizing via signed-in user
+[debug] [2019-02-07T06:48:30.575Z] [iam] checking project tz-phone-book-dev for permissions ["firebase.projects.get"]
+[debug] [2019-02-07T06:48:30.577Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book-dev:testIamPermissions  
+
+[debug] [2019-02-07T06:48:31.992Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-07T06:48:31.993Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book-dev  
+ 
+[debug] [2019-02-07T06:48:33.309Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/ldaly/developer/vessels/tz/tz-voice-book'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2019-02-07T06:48:33.906Z] Fetching environment
+[debug] [2019-02-07T06:48:33.908Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/961389843531:getServerAppConfig  
+ 
+[debug] [2019-02-07T06:48:34.641Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-07T06:48:34.641Z] Starting @google-cloud/functions-emulator
+[debug] [2019-02-07T06:48:36.204Z] Parsing function triggers
+[info] ✔  functions: message: http://localhost:5000/tz-phone-book-dev/us-central1/message
+[info] ✔  functions: reset_pin: http://localhost:5000/tz-phone-book-dev/us-central1/reset_pin
+[info] ✔  functions: admin: http://localhost:5000/tz-phone-book-dev/us-central1/admin
+[info] ✔  functions: twiml: http://localhost:5000/tz-phone-book-dev/us-central1/twiml
+[info] ✔  functions: dialogflow.dialogflowFirebaseFulfillment: http://localhost:5000/tz-phone-book-dev/us-central1/dialogflow-dialogflowFirebaseFulfillment

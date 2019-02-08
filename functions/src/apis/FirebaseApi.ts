@@ -1,6 +1,6 @@
 import { User, Recording } from "./UserApi";
-import { sleep, getDefaultVersionForBot } from "../utils";
-import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage, MessageType } from "../types_rn/TwilioTypes";
+import { sleep, getDefaultVersionForBot, functionReplacer, functionReviver } from "../utils";
+import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage, MessageType, DynamicSayMessage, AnyMessageType } from "../types_rn/TwilioTypes";
 import { DFUser } from "../handlers/fn_dialogflow";
 import { SomeResult, ResultType } from "../types_rn/AppProviderTypes";
 
@@ -154,7 +154,7 @@ export default class FirebaseApi {
    * This will be stored in firebase, parsed, and filled into the context object
    */
   public async getBotConfig(userId: string, botId: BotId): Promise<BotConfig> {
-    const version = await this.getVerionForUser(userId, botId);
+    const version = await this.getVersionForUser(userId, botId);
     return this.getBotConfigForVersion(userId, botId, version);
   }
 
@@ -162,26 +162,40 @@ export default class FirebaseApi {
    * getBotConfigOverride
    * 
    * Get the bot config, but override the user's version. This is useful for testing
-   * different versions when the user can't configure the version fot themselves
+   * different versions when the user can't configure the version for themselves
    */
   public async getBotConfigOverride(userId: string, botId: BotId, versionOverride: VersionId): Promise<BotConfig> {
-    const version = await this.getVerionForUser(userId, botId, versionOverride);
+    const version = await this.getVersionForUser(userId, botId, versionOverride);
     return this.getBotConfigForVersion(userId, botId, version);
   }
 
   public async getBotConfigForVersion(userId: string, botId: BotId, version: VersionId): Promise<BotConfig> {
     return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
       .then(doc => doc.data())
-      .then((config: BotConfig) => {
-        if (!config) {
+      .then((rawConfig: any) => {
+        if (!rawConfig) {
           throw new Error(`Couldn't getBotConfig for version and botId: ${version}, ${botId}`);
         }
 
+        //RW-TODO: inject a dynamic level of bot config here?
+        //we need to deserialize the functions that we saved for dynamic requests
+        const configString = JSON.stringify(rawConfig, null, 2);
+        const config: BotConfig = JSON.parse(configString, functionReviver);
+
+        const anyMessage: AnyMessageType = config.messages.entrypoint[1];
+        if (anyMessage.type === MessageType.DYNAMIC_SAY) {
+          console.log("message is", anyMessage);
+          console.log("saying message,",  anyMessage.func(['HELLO WORLD']));
+        }
+        console.log("getBotConfigForVersion, Bot config is", );
+
         return config;
-      })
+      });
   }
 
-  public async getVerionForUser(userId: string, botId: string, override?: VersionId): Promise<VersionId> {
+  //RW-TODO: specify other params here that can be overriden?
+  //This makes it backwards compatible with storing vars in the users object, or specifying them dynamically at runtime
+  public async getVersionForUser(userId: string, botId: string, override?: VersionId): Promise<VersionId> {
     if (override) {
       return override;
     }
@@ -192,6 +206,7 @@ export default class FirebaseApi {
       //TODO: should also make sure the version code is correct
       return user.version;
     } 
+
     //TODO: default to tz_audio version!
     return Promise.resolve(VersionId.en_us);
   }
@@ -202,7 +217,9 @@ export default class FirebaseApi {
 
   public async deployConfigForBotAndVersion(new_botId: BotId, versionId: VersionId, config: BotConfig) {
     console.log(`Saving config to bot/${new_botId}/version/${versionId}/`);
-    return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(config);
+    //Serialize the functions in BotConfig so they can be saved in firebase
+    const serialized: any = JSON.parse(JSON.stringify(config, functionReplacer, 2));
+    return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(serialized);
   }
 
 
