@@ -47,8 +47,7 @@ module.exports = (functions: any) => {
    * Also implements a wait time (in seconds) which delays the call to Twilio to 
    * allow the user to hang up in time.
    * 
-   * //TODO: secure using a firebase user token
-   * 
+   * //TODO: secure using a firebase user token - need to update the relay app first.
    * 
    * example body:
    * {
@@ -72,13 +71,13 @@ module.exports = (functions: any) => {
     }
 
     if (!wait) {
-      wait = 10; //wait 30 seconds by default
+      wait = 10; //wait 10 seconds by default
     }
 
     //TODO: load in the desired format for tz
     const mobile = formatMobile(unformattedMobile, relayDefaultCountrycode);
 
-
+    //Wait to make sure the user has sufficent time to hang up.
     return sleep(wait * 1000)
       .then(() => twilioApi.startCall(botId, mobile, url))
       .then(response => res.json(response));
