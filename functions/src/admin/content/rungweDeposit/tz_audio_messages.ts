@@ -1,6 +1,5 @@
 import { RungweGenericMessageMap, MessageType, PlayMessage } from "../../../types_rn/TwilioTypes";
-import { generateText, generatePlay } from "../../utils";
-import { generateUrl } from "../../../utils";
+import { generatePlay } from "../../utils";
 
 /* the deploy script will automatically fill in the urls for us */
 
@@ -11,8 +10,8 @@ import { generateUrl } from "../../../utils";
 
 const en_text: RungweGenericMessageMap = {
   'entrypoint': [
-    //rungwe_deposit_en/hi
-    generatePlay('rungwe_deposit_en', 'hi'),
+    //rungweDeposit/en/hi
+    generatePlay('rungwe_deposit_tz', 'hi'),
     //generic_numbers/en/*
     {
       type: MessageType.DYNAMIC_PLAY,
@@ -22,24 +21,10 @@ const en_text: RungweGenericMessageMap = {
         return weightSplit.map(n => {
           const message: PlayMessage = {
             type: MessageType.PLAY, 
-            url: urlGenerator(`generic_numbers_en/${n}.mp3`),
+            url: urlGenerator(`generic_numbers_tz/${n}.mp3`),
           }
           return message;
         });
-      }
-    },
-    //rungweDeposit/en/green_leaf
-    generatePlay('rungwe_deposit_en', 'green_leaf'),
-    //generic_locations/en/*
-    {
-      type: MessageType.DYNAMIC_PLAY,
-      func: (params: string[], urlGenerator: (path: string) => string) => {
-        const locationName = params[1];
-        const message: PlayMessage = {
-          type: MessageType.PLAY, 
-          url: urlGenerator(`generic_locations_en/${locationName}.mp3`),
-        }
-        return [message];
       }
     },
   ],

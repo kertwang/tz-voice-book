@@ -2,6 +2,7 @@ import blocks from './blocks';
 import flows from './flows';
 import en_text_messages from './en_text_messages';
 import en_audio_messages from './en_audio_messages';
+import tz_audio_messages from './tz_audio_messages';
 
 
 import { BotConfig, BotId } from '../../../types_rn/TwilioTypes';
@@ -21,9 +22,17 @@ const en_audio: BotConfig = {
   flows,
 }
 
+const tz_audio: BotConfig = {
+  botId: BotId.rungweDeposit,
+  blocks,
+  flows,
+  messages: tz_audio_messages,
+}
+
 const configs = {
   en_text,
   en_audio,
+  tz_audio,
 }
 
 export default configs;

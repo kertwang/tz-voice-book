@@ -42,10 +42,12 @@ gulp.task('deploy_config', async () => {
 
   /* Rungwe Intro Bot */
   await fbApi.deployConfigForBotAndVersion(BotId.rungweIntro, VersionId.en_text, rungweIntro.en_text);
+  await fbApi.deployConfigForBotAndVersion(BotId.rungweIntro, VersionId.tz_audio, rungweIntro.tz_audio);
 
   /* Rungwe Deposit Bot */
   await fbApi.deployConfigForBotAndVersion(BotId.rungweDeposit, VersionId.en_text, rungweDeposit.en_text);
   await fbApi.deployConfigForBotAndVersion(BotId.rungweDeposit, VersionId.en_audio, rungweDeposit.en_audio);
+  await fbApi.deployConfigForBotAndVersion(BotId.rungweDeposit, VersionId.tz_audio, rungweDeposit.tz_audio);
 
   /* Rungwe PaymentDate Bot */
   await fbApi.deployConfigForBotAndVersion(BotId.rungwePaymentDate, VersionId.en_text, rungwePaymentDate.en_text);

@@ -8,8 +8,8 @@ const utils_1 = require("../../utils");
 //params[1] => location name
 const en_text = {
     'entrypoint': [
-        //rungwe_deposit_en/hi
-        utils_1.generatePlay('rungwe_deposit_en', 'hi'),
+        //rungweDeposit/en/hi
+        utils_1.generatePlay('rungwe_deposit_ks', 'hi'),
         //generic_numbers/en/*
         {
             type: TwilioTypes_1.MessageType.DYNAMIC_PLAY,
@@ -19,24 +19,10 @@ const en_text = {
                 return weightSplit.map(n => {
                     const message = {
                         type: TwilioTypes_1.MessageType.PLAY,
-                        url: urlGenerator(`generic_numbers_en/${n}.mp3`),
+                        url: urlGenerator(`generic_numbers_tz/${n}.mp3`),
                     };
                     return message;
                 });
-            }
-        },
-        //rungweDeposit/en/green_leaf
-        utils_1.generatePlay('rungwe_deposit_en', 'green_leaf'),
-        //generic_locations/en/*
-        {
-            type: TwilioTypes_1.MessageType.DYNAMIC_PLAY,
-            func: (params, urlGenerator) => {
-                const locationName = params[1];
-                const message = {
-                    type: TwilioTypes_1.MessageType.PLAY,
-                    url: urlGenerator(`generic_locations_en/${locationName}.mp3`),
-                };
-                return [message];
             }
         },
     ],
@@ -44,4 +30,4 @@ const en_text = {
     'end': []
 };
 exports.default = en_text;
-//# sourceMappingURL=en_audio_messages.js.map
+//# sourceMappingURL=tz_audio_messages.js.map

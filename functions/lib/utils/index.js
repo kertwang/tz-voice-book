@@ -203,6 +203,14 @@ function buildExpectedToken(username, password) {
 exports.buildExpectedToken = buildExpectedToken;
 /**
  * Format a mobile string to an international number
+ *
+ * If the number starts with a '+', the formatter will figure out
+ * the country code, and will return the international format of the number.
+ *
+ * If the number is international, but doesn't start with a '+'
+ * (for example 16501111234 instead of +16501111234), the country will default
+ * to the given country.
+ *
  */
 function formatMobile(unformatted, country) {
     const parsed = phoneUtil.parse(unformatted, country);
