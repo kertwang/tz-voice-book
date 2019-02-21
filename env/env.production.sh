@@ -7,7 +7,7 @@ export stage="production"
 export VERBOSE_LOG=true
 export LOG_TWILIO_RESPONSE=true
 export LT_SUBDOMAIN="lwilld3"
-export serviceAccountKeyFileName=".serviceAccountKey.development.json"
+export serviceAccountKeyFileName=".serviceAccountKey.json"
 export databaseUrl="https://tz-phone-book.firebaseio.com"
 export storageBucket=tz-phone-book.appspot.com
 

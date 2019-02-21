@@ -36,7 +36,6 @@ admin-deploy-config:
 env:
 	cat ${env_dir}/.env.${stage}.sh ${env_dir}/env.${stage}.sh > /tmp/tz_env
 
-
 switch:
 	@echo switching to stage: ${stage}
 	@echo 'export stage=${stage}\n' > .tz_config
