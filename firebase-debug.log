@@ -1,206 +1,116 @@
-[debug] [2019-02-21T06:59:19.817Z] ----------------------------------------------------------------------
-[debug] [2019-02-21T06:59:19.820Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase deploy --only functions
-[debug] [2019-02-21T06:59:19.820Z] CLI Version:   6.1.0
-[debug] [2019-02-21T06:59:19.820Z] Platform:      darwin
-[debug] [2019-02-21T06:59:19.820Z] Node Version:  v8.11.1
-[debug] [2019-02-21T06:59:19.821Z] Time:          Thu Feb 21 2019 14:59:19 GMT+0800 (PST)
-[debug] [2019-02-21T06:59:19.821Z] ----------------------------------------------------------------------
+[debug] [2019-02-21T07:12:38.952Z] ----------------------------------------------------------------------
+[debug] [2019-02-21T07:12:38.954Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase functions:config:set config.twilio_account_sid=ACb098d653b93dbac6f87acb5ea8fc76d9 config.twilio_auth_token=83895b5958bf314b0d8119858b59303b config.twilio_outbound_number=+18442526460 config.temporary_insecure_auth_key=xP6mXwOpuJTYzs2Enxi config.base_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net config.service_account_key_file_name=.serviceAccountKey.development.json config.database_url=https://tz-phone-book-dev.firebaseio.com config.storage_bucket=tz-phone-book-dev.appspot.com config.informal_notification_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=wl_audio config.formal_notification_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalNotification/entrypoint?versionOverride=wl_audio config.mm_101_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalMobileMoney/entrypoint?versionOverride=wl_audio config.should_log=true config.should_display_english_test_call=false config.test_call_url=https://us-central1-tz-phone-book-dev.cloudfunctions.net/twiml/senegalMobileMoney/entrypoint?versionOverride=en_text config.relay_default_country_code=TZ config.url_prefix=https://www.googleapis.com/download/storage/v1/b/tz-phone-book-dev.appspot.com/o/ config.firebase_token=1536715274666696
+[debug] [2019-02-21T07:12:38.954Z] CLI Version:   6.1.0
+[debug] [2019-02-21T07:12:38.954Z] Platform:      darwin
+[debug] [2019-02-21T07:12:38.954Z] Node Version:  v8.11.1
+[debug] [2019-02-21T07:12:38.955Z] Time:          Thu Feb 21 2019 15:12:38 GMT+0800 (PST)
+[debug] [2019-02-21T07:12:38.955Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2019-02-21T06:59:19.832Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2019-02-21T06:59:19.832Z] > authorizing via signed-in user
-[debug] [2019-02-21T06:59:19.832Z] [iam] checking project tz-phone-book-dev for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
-[debug] [2019-02-21T06:59:19.834Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book-dev:testIamPermissions  
+[debug] [2019-02-21T07:12:38.965Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-02-21T07:12:38.966Z] > authorizing via signed-in user
+[debug] [2019-02-21T07:12:38.966Z] [iam] checking project tz-phone-book-dev for permissions ["firebase.projects.get","runtimeconfig.configs.create","runtimeconfig.configs.delete","runtimeconfig.configs.get","runtimeconfig.configs.list","runtimeconfig.configs.update","runtimeconfig.variables.create","runtimeconfig.variables.delete","runtimeconfig.variables.get","runtimeconfig.variables.list","runtimeconfig.variables.update"]
+[debug] [2019-02-21T07:12:38.967Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book-dev:testIamPermissions  
 
-[debug] [2019-02-21T06:59:21.217Z] <<< HTTP RESPONSE 200
-[info] 
-[info] === Deploying to 'tz-phone-book-dev'...
-[info] 
-[info] i  deploying functions
-[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
-[info] Running command: npm --prefix "$RESOURCE_DIR" run build
-[info] ✔  functions: Finished running predeploy script.
-[debug] [2019-02-21T06:59:33.105Z] > [functions] package.json contents: {
-  "name": "functions",
-  "scripts": {
-    "lint": "tslint --project tsconfig.json",
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "serve": "npm run build && firebase serve --only functions",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log",
-    "unit": "mocha -r ts-node/register ./**/*.unit.ts",
-    "service": "mocha -r ts-node/register ./**/*.service.ts"
-  },
-  "main": "lib/index.js",
-  "dependencies": {
-    "@firebase/app-types": "0.x",
-    "@google-cloud/firestore": "^0.13.1",
-    "@types/mocha": "^5.2.5",
-    "@types/request-promise-native": "^1.0.14",
-    "actions-on-google": "^2.2.0",
-    "async-file": "^2.0.2",
-    "body-parser": "^1.18.2",
-    "cors": "^2.8.4",
-    "dialogflow": "^0.6.0",
-    "dialogflow-fulfillment": "git+https://github.com/naranjja/dialogflow-fulfillment-nodejs.git#57302849b17325890e83108472247f1267b4a80a",
-    "express": "^4.16.3",
-    "express-async-errors": "^3.1.1",
-    "express-basic-auth": "^1.1.5",
-    "express-validation": "^1.0.2",
-    "firebase-admin": "~5.13.1",
-    "firebase-app": "^0.0.1",
-    "firebase-functions": "^2.0.2",
-    "google-libphonenumber": "^3.2.1",
-    "gulp": "^3.9.1",
-    "gulpclass": "^0.2.0",
-    "joi": "^13.2.0",
-    "lt": "^0.3.3",
-    "mocha": "^5.2.0",
-    "moment": "^2.22.1",
-    "morgan": "^1.9.0",
-    "morgan-body": "^2.4.5",
-    "mustache": "^3.0.0",
-    "papaparse": "^4.4.0",
-    "request": "^2.85.0",
-    "request-promise": "^4.2.2",
-    "request-promise-native": "^1.0.5",
-    "twilio": "^3.19.2",
-    "xml-formatter": "^1.0.1"
-  },
-  "devDependencies": {
-    "assert": "^1.4.1",
-    "chai": "^4.1.2",
-    "ts-node": "^7.0.1",
-    "tslint": "^5.8.0",
-    "typescript": "^2.5.3"
-  },
-  "private": true
-}
-[info] i  functions: ensuring necessary APIs are enabled...
-[debug] [2019-02-21T06:59:33.106Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/tz-phone-book-dev?view=CONSUMER_VIEW  
+[debug] [2019-02-21T07:12:40.384Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:40.385Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/tz-phone-book-dev?view=CONSUMER_VIEW  
  
-[debug] [2019-02-21T06:59:33.107Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/tz-phone-book-dev?view=CONSUMER_VIEW  
+[debug] [2019-02-21T07:12:42.591Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:42.594Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_account_sid  
  
-[debug] [2019-02-21T06:59:35.139Z] <<< HTTP RESPONSE 200
-[info] ✔  functions: all necessary APIs are enabled
-[debug] [2019-02-21T06:59:35.878Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:35.879Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book-dev  
+[debug] [2019-02-21T07:12:42.594Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_auth_token  
  
-[debug] [2019-02-21T06:59:37.038Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:37.039Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/961389843531:getServerAppConfig  
+[debug] [2019-02-21T07:12:42.595Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_outbound_number  
  
-[debug] [2019-02-21T06:59:37.839Z] <<< HTTP RESPONSE 200
-[info] i  functions: preparing functions directory for uploading...
-[debug] [2019-02-21T06:59:37.841Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs  
+[debug] [2019-02-21T07:12:42.595Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/temporary_insecure_auth_key  
  
-[debug] [2019-02-21T06:59:38.470Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:38.472Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables  
+[debug] [2019-02-21T07:12:42.595Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/base_url  
  
-[debug] [2019-02-21T06:59:38.848Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:38.849Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/temporary_insecure_auth_key  
+[debug] [2019-02-21T07:12:42.596Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/service_account_key_file_name  
  
-[debug] [2019-02-21T06:59:38.850Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/database_url  
+[debug] [2019-02-21T07:12:42.596Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/database_url  
  
-[debug] [2019-02-21T06:59:38.850Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/test_call_url  
+[debug] [2019-02-21T07:12:42.596Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/storage_bucket  
  
-[debug] [2019-02-21T06:59:38.850Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/mm_101_url  
+[debug] [2019-02-21T07:12:42.596Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/informal_notification_url  
  
-[debug] [2019-02-21T06:59:38.850Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_account_sid  
+[debug] [2019-02-21T07:12:42.596Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/formal_notification_url  
  
-[debug] [2019-02-21T06:59:38.851Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/informal_notification_url  
+[debug] [2019-02-21T07:12:42.597Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/mm_101_url  
  
-[debug] [2019-02-21T06:59:38.851Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/formal_notification_url  
+[debug] [2019-02-21T07:12:42.597Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/should_log  
  
-[debug] [2019-02-21T06:59:38.851Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/service_account_key_file_name  
+[debug] [2019-02-21T07:12:42.597Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/should_display_english_test_call  
  
-[debug] [2019-02-21T06:59:38.851Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_auth_token  
+[debug] [2019-02-21T07:12:42.597Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/test_call_url  
  
-[debug] [2019-02-21T06:59:38.852Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/should_log  
+[debug] [2019-02-21T07:12:42.598Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/relay_default_country_code  
  
-[debug] [2019-02-21T06:59:38.852Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/relay_default_country_code  
+[debug] [2019-02-21T07:12:42.598Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/url_prefix  
  
-[debug] [2019-02-21T06:59:38.852Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/firebase_token  
+[debug] [2019-02-21T07:12:42.598Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/firebase_token  
  
-[debug] [2019-02-21T06:59:38.852Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/should_display_english_test_call  
- 
-[debug] [2019-02-21T06:59:38.853Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/url_prefix  
- 
-[debug] [2019-02-21T06:59:38.853Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/base_url  
- 
-[debug] [2019-02-21T06:59:38.854Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/storage_bucket  
- 
-[debug] [2019-02-21T06:59:38.854Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_outbound_number  
- 
-[debug] [2019-02-21T06:59:39.216Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.218Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.221Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.222Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.230Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.231Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.233Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.245Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.246Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.251Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.258Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.259Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:39.263Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:40.209Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:40.210Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:40.353Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:40.356Z] <<< HTTP RESPONSE 200
-[info] i  functions: packaged functions (527.33 KB) for uploading
-[debug] [2019-02-21T06:59:42.405Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions:generateUploadUrl  
- 
-[debug] [2019-02-21T06:59:42.985Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:42.985Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-bc966b31-977c-41f2-98af-cd601a83cdba/6d1e6525-89a6-4117-96db-1fac8094def3.zip?GoogleAccessId=service-961389843531@gcf-admin-robot.iam.gserviceaccount.com&Expires=1550734182&Signature=LIw26TRYjwY7TBuSe%2BeFO%2BS6RG01oq5YyHJ4NN8WsOsBwtGUC5Bl2Q8XoQ1tEn%2FuL2c3sG%2Fk0on9Qfq0BTYMTkQ3sry3QF%2F32Ey449dPWSTPESw52Kdc%2B3HC8VcQZUV45JtBt%2FgA%2Bh88XdHY1orqyW2dhVYjVolvMFAp8gGwc6xdrUMViW%2Bh1aEdiuRYpER8BOm4ArKI4wsBfHkSsapF7iD2CfnuEZ%2BsRUvc2U6Fw8Uhr7F%2BUkLAx0OfwbMGu%2FAMs%2F0UmJNk9EASGoOQ3L7l1MVtwohKW0lkF4l%2F0dnuaLDXtmgvJCydJArxwl6GfZy0INgsHVWnwRJmJWcfzCYr%2BQ%3D%3D  
+[debug] [2019-02-21T07:12:43.267Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:43.268Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/url_prefix  
 
-[debug] [2019-02-21T06:59:45.276Z] <<< HTTP RESPONSE 200
-[info] ✔  functions: functions folder uploaded successfully
-[debug] [2019-02-21T06:59:45.279Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/-/functions  
- 
-[debug] [2019-02-21T06:59:45.834Z] <<< HTTP RESPONSE 200
-[info] i  functions: updating Node.js 6 function admin(us-central1)...
-[debug] [2019-02-21T06:59:45.837Z] Trigger is:  {"httpsTrigger":{}}
-[info] i  functions: updating Node.js 6 function message(us-central1)...
-[debug] [2019-02-21T06:59:45.838Z] Trigger is:  {"httpsTrigger":{}}
-[info] i  functions: updating Node.js 6 function reset_pin(us-central1)...
-[debug] [2019-02-21T06:59:45.838Z] Trigger is:  {"httpsTrigger":{}}
-[info] i  functions: updating Node.js 6 function twiml(us-central1)...
-[debug] [2019-02-21T06:59:45.838Z] Trigger is:  {"httpsTrigger":{}}
-[info] i  functions: updating Node.js 6 function dialogflow-dialogflowFirebaseFulfillment(us-central1)...
-[debug] [2019-02-21T06:59:45.838Z] Trigger is:  {"httpsTrigger":{}}
-[debug] [2019-02-21T06:59:45.840Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions/admin {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+[debug] [2019-02-21T07:12:43.487Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:43.487Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/informal_notification_url  
 
-[debug] [2019-02-21T06:59:45.842Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions/message {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+[debug] [2019-02-21T07:12:43.955Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:43.956Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/storage_bucket  
 
-[debug] [2019-02-21T06:59:45.842Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions/reset_pin {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+[debug] [2019-02-21T07:12:43.956Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:43.957Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_auth_token  
 
-[debug] [2019-02-21T06:59:45.843Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions/twiml {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+[debug] [2019-02-21T07:12:43.960Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:43.961Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/should_log  
 
-[debug] [2019-02-21T06:59:45.843Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions/dialogflow-dialogflowFirebaseFulfillment {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+[debug] [2019-02-21T07:12:43.966Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:43.966Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_outbound_number  
 
-[debug] [2019-02-21T06:59:46.601Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:46.602Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:46.603Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:46.604Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:46.689Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:46.691Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/-/functions  
- 
-[debug] [2019-02-21T06:59:47.190Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:47.191Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4vT2ZPYkZ5YXZIM1E  
- 
-[debug] [2019-02-21T06:59:47.192Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS8zWVBRMUdZeEZjcw  
- 
-[debug] [2019-02-21T06:59:47.192Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluL3VqMVVQTE9Ucl9N  
- 
-[debug] [2019-02-21T06:59:47.192Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvTWZweWV4Rnlma28  
- 
-[debug] [2019-02-21T06:59:47.193Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9UaFVhcVgxLTExbw  
- 
-[debug] [2019-02-21T06:59:47.586Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:47.590Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:47.595Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:47.614Z] <<< HTTP RESPONSE 200
-[debug] [2019-02-21T06:59:47.621Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:43.967Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:43.967Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/relay_default_country_code  
+
+[debug] [2019-02-21T07:12:43.967Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:43.967Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_account_sid  
+
+[debug] [2019-02-21T07:12:44.209Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.209Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/test_call_url  
+
+[debug] [2019-02-21T07:12:44.210Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.210Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/should_display_english_test_call  
+
+[debug] [2019-02-21T07:12:44.210Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.210Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/service_account_key_file_name  
+
+[debug] [2019-02-21T07:12:44.220Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.221Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/database_url  
+
+[debug] [2019-02-21T07:12:44.223Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.223Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/base_url  
+
+[debug] [2019-02-21T07:12:44.352Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.352Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/temporary_insecure_auth_key  
+
+[debug] [2019-02-21T07:12:44.380Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.380Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/firebase_token  
+
+[debug] [2019-02-21T07:12:44.409Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.409Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/formal_notification_url  
+
+[debug] [2019-02-21T07:12:44.415Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.415Z] >>> HTTP REQUEST PUT https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/mm_101_url  
+
+[debug] [2019-02-21T07:12:44.585Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.594Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.618Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.689Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.847Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.847Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.850Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.876Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.950Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.966Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:44.990Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:45.110Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:45.139Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-21T07:12:45.321Z] <<< HTTP RESPONSE 200

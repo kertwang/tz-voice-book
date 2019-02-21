@@ -182,12 +182,12 @@ export default class FirebaseApi {
         const configString = JSON.stringify(rawConfig, null, 2);
         const config: BotConfig = JSON.parse(configString, functionReviver);
 
-        const anyMessage: AnyMessageType = config.messages.entrypoint[1];
-        if (anyMessage.type === MessageType.DYNAMIC_SAY) {
-          console.log("message is", anyMessage);
-          console.log("saying message,",  anyMessage.func(['HELLO WORLD']));
-        }
-        console.log("getBotConfigForVersion, Bot config is", );
+        // const anyMessage: AnyMessageType = config.messages.entrypoint[0];
+        // if (anyMessage.type === MessageType.DYNAMIC_SAY) {
+        //   console.log("message is", anyMessage);
+        //   console.log("saying message,",  anyMessage.func(['HELLO WORLD']));
+        // }
+        // console.log("getBotConfigForVersion, Bot config is", );
 
         return config;
       });
