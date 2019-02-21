@@ -9,7 +9,7 @@ const utils_1 = require("../../utils");
 const en_text = {
     'entrypoint': [
         //rungweDeposit/en/hi
-        utils_1.generatePlay('rungwe_deposit_ks', 'hi'),
+        utils_1.generatePlay('rungwe_deposit_tz', 'hi'),
         //generic_numbers/en/*
         {
             type: TwilioTypes_1.MessageType.DYNAMIC_PLAY,

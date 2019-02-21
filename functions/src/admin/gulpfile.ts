@@ -61,7 +61,7 @@ gulp.task('deploy_config', async () => {
 });
 
 gulp.task('deploy_audio', async () => {
-  const audioDir = `../../../audio_processing/audio/`;
+  const audioDir = `../../../audio_processing/audio_new/`;
   //Iterate through each /version/filename in ./content/audio, and upload
   const versionDirs = await fs.readdir(audioDir);
   const audioFiles: string[][] = await Promise.all(versionDirs.map(dir => {

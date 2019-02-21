@@ -180,12 +180,12 @@ class FirebaseApi {
                 //we need to deserialize the functions that we saved for dynamic requests
                 const configString = JSON.stringify(rawConfig, null, 2);
                 const config = JSON.parse(configString, utils_1.functionReviver);
-                const anyMessage = config.messages.entrypoint[1];
-                if (anyMessage.type === TwilioTypes_1.MessageType.DYNAMIC_SAY) {
-                    console.log("message is", anyMessage);
-                    console.log("saying message,", anyMessage.func(['HELLO WORLD']));
-                }
-                console.log("getBotConfigForVersion, Bot config is");
+                // const anyMessage: AnyMessageType = config.messages.entrypoint[0];
+                // if (anyMessage.type === MessageType.DYNAMIC_SAY) {
+                //   console.log("message is", anyMessage);
+                //   console.log("saying message,",  anyMessage.func(['HELLO WORLD']));
+                // }
+                // console.log("getBotConfigForVersion, Bot config is", );
                 return config;
             });
         });
