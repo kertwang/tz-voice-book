@@ -368,7 +368,7 @@ export default class TwilioRouter {
         if (gatherResult.digits.trim() === '3') {
           //Send a call to the spreadsheet api, append this number
           try {
-            ZapierApi.optOut(ctx.mobile);          
+            ZapierApi.optOut(ctx.toMobile);          
           } catch (err) {
             console.warn("Non fatal error: zapier api opt out failed.");
           }

@@ -190,6 +190,7 @@ module.exports = (functions: any) => {
     const ctx: CallContext = {
       callSid: req.body.CallSid,
       mobile: req.body.From,
+      toMobile: req.body.To,
       userId: user.id,
       firebaseApi,
       dynamicParams,
@@ -240,6 +241,7 @@ module.exports = (functions: any) => {
     const ctx: CallContext = {
       callSid: req.body.CallSid,
       mobile: req.body.From,
+      toMobile: req.body.To,
       userId: user.id,
       versionOverride: req.query.versionOverride || null,
       firebaseApi,

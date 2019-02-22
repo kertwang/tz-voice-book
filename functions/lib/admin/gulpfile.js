@@ -51,7 +51,7 @@ gulp.task('deploy_config', () => __awaiter(this, void 0, void 0, function* () {
     console.log("deployed config.");
 }));
 gulp.task('deploy_audio', () => __awaiter(this, void 0, void 0, function* () {
-    const audioDir = `../../../audio_processing/audio/`;
+    const audioDir = `../../../audio_processing/audio_new/`;
     //Iterate through each /version/filename in ./content/audio, and upload
     const versionDirs = yield fs.readdir(audioDir);
     const audioFiles = yield Promise.all(versionDirs.map(dir => {

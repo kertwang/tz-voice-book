@@ -403,7 +403,9 @@ export type GatherResult = {
 
 export type CallContext = {
   callSid: string,
+  //The from number - this can be Twilio or a person depending on if the call is inbound or outbound
   mobile: string,
+  toMobile: string,
   firebaseApi: FirebaseApi,
   userId: string,
   

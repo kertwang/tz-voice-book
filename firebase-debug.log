@@ -1,0 +1,389 @@
+[debug] [2019-02-22T03:32:47.549Z] ----------------------------------------------------------------------
+[debug] [2019-02-22T03:32:47.552Z] Command:       /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/firebase deploy --only functions
+[debug] [2019-02-22T03:32:47.552Z] CLI Version:   6.1.0
+[debug] [2019-02-22T03:32:47.552Z] Platform:      darwin
+[debug] [2019-02-22T03:32:47.552Z] Node Version:  v8.11.1
+[debug] [2019-02-22T03:32:47.553Z] Time:          Fri Feb 22 2019 11:32:47 GMT+0800 (PST)
+[debug] [2019-02-22T03:32:47.553Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-02-22T03:32:47.564Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-02-22T03:32:47.564Z] > authorizing via signed-in user
+[debug] [2019-02-22T03:32:47.565Z] [iam] checking project tz-phone-book-dev for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2019-02-22T03:32:47.566Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book-dev:testIamPermissions  
+
+[debug] [2019-02-22T03:32:48.764Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'tz-phone-book-dev'...
+[info] 
+[info] i  deploying functions
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[info] ✔  functions: Finished running predeploy script.
+[debug] [2019-02-22T03:33:00.744Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "tslint --project tsconfig.json",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "npm run build && firebase serve --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "unit": "mocha -r ts-node/register ./**/*.unit.ts",
+    "service": "mocha -r ts-node/register ./**/*.service.ts"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "@firebase/app-types": "0.x",
+    "@google-cloud/firestore": "^0.13.1",
+    "@types/mocha": "^5.2.5",
+    "@types/request-promise-native": "^1.0.14",
+    "actions-on-google": "^2.2.0",
+    "async-file": "^2.0.2",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "dialogflow": "^0.6.0",
+    "dialogflow-fulfillment": "git+https://github.com/naranjja/dialogflow-fulfillment-nodejs.git#57302849b17325890e83108472247f1267b4a80a",
+    "express": "^4.16.3",
+    "express-async-errors": "^3.1.1",
+    "express-basic-auth": "^1.1.5",
+    "express-validation": "^1.0.2",
+    "firebase-admin": "~5.13.1",
+    "firebase-app": "^0.0.1",
+    "firebase-functions": "^2.0.2",
+    "google-libphonenumber": "^3.2.1",
+    "gulp": "^3.9.1",
+    "gulpclass": "^0.2.0",
+    "joi": "^13.2.0",
+    "lt": "^0.3.3",
+    "mocha": "^5.2.0",
+    "moment": "^2.22.1",
+    "morgan": "^1.9.0",
+    "morgan-body": "^2.4.5",
+    "mustache": "^3.0.0",
+    "papaparse": "^4.4.0",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2",
+    "request-promise-native": "^1.0.5",
+    "twilio": "^3.19.2",
+    "xml-formatter": "^1.0.1"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "chai": "^4.1.2",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.8.0",
+    "typescript": "^2.5.3"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2019-02-22T03:33:00.746Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/tz-phone-book-dev?view=CONSUMER_VIEW  
+ 
+[debug] [2019-02-22T03:33:00.748Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/tz-phone-book-dev?view=CONSUMER_VIEW  
+ 
+[debug] [2019-02-22T03:33:02.771Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:02.870Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2019-02-22T03:33:02.871Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/tz-phone-book-dev  
+ 
+[debug] [2019-02-22T03:33:04.059Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:04.060Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/961389843531:getServerAppConfig  
+ 
+[debug] [2019-02-22T03:33:04.577Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2019-02-22T03:33:04.579Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs  
+ 
+[debug] [2019-02-22T03:33:05.033Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:05.034Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables  
+ 
+[debug] [2019-02-22T03:33:06.124Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.126Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/test_call_url  
+ 
+[debug] [2019-02-22T03:33:06.126Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_auth_token  
+ 
+[debug] [2019-02-22T03:33:06.127Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/temporary_insecure_auth_key  
+ 
+[debug] [2019-02-22T03:33:06.127Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/base_url  
+ 
+[debug] [2019-02-22T03:33:06.127Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/relay_default_country_code  
+ 
+[debug] [2019-02-22T03:33:06.127Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_account_sid  
+ 
+[debug] [2019-02-22T03:33:06.128Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/url_prefix  
+ 
+[debug] [2019-02-22T03:33:06.128Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/opt_out_webhook_url  
+ 
+[debug] [2019-02-22T03:33:06.128Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/should_log  
+ 
+[debug] [2019-02-22T03:33:06.129Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/firebase_token  
+ 
+[debug] [2019-02-22T03:33:06.129Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/storage_bucket  
+ 
+[debug] [2019-02-22T03:33:06.129Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/informal_notification_url  
+ 
+[debug] [2019-02-22T03:33:06.130Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/database_url  
+ 
+[debug] [2019-02-22T03:33:06.130Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/service_account_key_file_name  
+ 
+[debug] [2019-02-22T03:33:06.130Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/twilio_outbound_number  
+ 
+[debug] [2019-02-22T03:33:06.130Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/formal_notification_url  
+ 
+[debug] [2019-02-22T03:33:06.131Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/mm_101_url  
+ 
+[debug] [2019-02-22T03:33:06.134Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/tz-phone-book-dev/configs/config/variables/should_display_english_test_call  
+ 
+[debug] [2019-02-22T03:33:06.504Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.525Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.535Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.548Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.556Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.561Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.562Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.563Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.568Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.570Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:06.571Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:07.250Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:07.261Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:07.548Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:07.672Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:07.673Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:07.674Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:07.674Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (529.76 KB) for uploading
+[debug] [2019-02-22T03:33:09.398Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions:generateUploadUrl  
+ 
+[debug] [2019-02-22T03:33:09.975Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:09.977Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-bc966b31-977c-41f2-98af-cd601a83cdba/ca335b43-4011-4ee7-a959-6e4d9feaef00.zip?GoogleAccessId=service-961389843531@gcf-admin-robot.iam.gserviceaccount.com&Expires=1550808189&Signature=DUQAOZjT7NepCI2lTYbLp0vPaoMBryP%2FLtVdH8wL0%2F6HuFkwdIebJAK7OPZc7qniRUBjDUqewYGQgLXie9LAvlM1c%2BMCiOmhDOi5A2VEn%2BodC0z5ZsU0jDheDPjZahSKnsJsbC3h59%2FKqAtmFZa3buc0NyAYAV8cRjxy7JxYM8%2BOCGjZamlgppm6U%2BQ4PduN5LAEifcXXqJ%2FtLajDKfD3CHXiAA%2Fkwqmh1kdkbMOmxRzoICogNpO1Njrj0qnDlV4fVB3od1vLzywkOPhjgAoX%2FyANZnmmwyDSEffZLZqt%2FuRsB5I4a9h7kkhK1GgcG5YQZBQtnj774PbfwDL3CVsJw%3D%3D  
+
+[debug] [2019-02-22T03:33:11.568Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: functions folder uploaded successfully
+[debug] [2019-02-22T03:33:11.570Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/-/functions  
+ 
+[debug] [2019-02-22T03:33:12.066Z] <<< HTTP RESPONSE 200
+[info] i  functions: updating Node.js 6 function admin(us-central1)...
+[debug] [2019-02-22T03:33:12.070Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 6 function message(us-central1)...
+[debug] [2019-02-22T03:33:12.071Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 6 function reset_pin(us-central1)...
+[debug] [2019-02-22T03:33:12.071Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 6 function twiml(us-central1)...
+[debug] [2019-02-22T03:33:12.072Z] Trigger is:  {"httpsTrigger":{}}
+[info] i  functions: updating Node.js 6 function dialogflow-dialogflowFirebaseFulfillment(us-central1)...
+[debug] [2019-02-22T03:33:12.072Z] Trigger is:  {"httpsTrigger":{}}
+[debug] [2019-02-22T03:33:12.073Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions/admin {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+
+[debug] [2019-02-22T03:33:12.075Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions/message {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+
+[debug] [2019-02-22T03:33:12.075Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions/reset_pin {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+
+[debug] [2019-02-22T03:33:12.076Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions/twiml {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+
+[debug] [2019-02-22T03:33:12.076Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/us-central1/functions/dialogflow-dialogflowFirebaseFulfillment {"updateMask":"sourceUploadUrl,name,labels,httpsTrigger"} 
+
+[debug] [2019-02-22T03:33:12.830Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:12.832Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:12.837Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:12.838Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:12.874Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:12.875Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/tz-phone-book-dev/locations/-/functions  
+ 
+[debug] [2019-02-22T03:33:13.350Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:13.351Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:13.352Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:13.352Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:13.352Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:13.353Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:13.738Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:13.739Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:13.740Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:13.740Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:13.745Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:15.740Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:15.741Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:15.741Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:15.741Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:15.746Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:16.124Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:16.133Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:16.134Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:16.152Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:16.169Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:18.127Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:18.135Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:18.135Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:18.152Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:18.171Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:18.488Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:18.490Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:18.511Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:18.533Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:18.534Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:20.488Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:20.491Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:20.513Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:20.537Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:20.538Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:20.964Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:20.965Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:20.968Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:20.970Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:20.974Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:22.967Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:22.968Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:22.970Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:22.971Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:22.975Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:23.333Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:23.337Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:23.346Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:23.367Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:23.391Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:25.338Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:25.338Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:25.347Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:25.371Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:25.392Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:25.716Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:25.721Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:25.739Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:25.761Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:25.780Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:27.721Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:27.722Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:27.740Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:27.764Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:27.782Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:28.093Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:28.093Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:28.118Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:28.146Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:28.166Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:30.096Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:30.096Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:30.123Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:30.146Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:30.170Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:30.460Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:30.482Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:30.514Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:30.540Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:30.551Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:32.466Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:32.486Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:32.515Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:32.541Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:32.553Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:32.839Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:32.861Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:32.884Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:32.909Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:32.909Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:34.843Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:34.862Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:34.890Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:34.911Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:34.911Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:35.206Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:35.229Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:35.272Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:35.275Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:35.342Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:37.212Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:37.232Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:37.274Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:37.276Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:37.344Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:37.580Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:37.600Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:37.621Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:37.708Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:37.737Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:39.581Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:39.603Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:39.622Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:39.710Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:39.742Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:39.973Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:39.977Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:39.977Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:40.103Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:40.103Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:41.974Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvbWVzc2FnZS9nYXlVRzRzWERCWQ  
+ 
+[debug] [2019-02-22T03:33:41.978Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvdHdpbWwvbDI4ckM5R0ZKMVU  
+ 
+[debug] [2019-02-22T03:33:41.978Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvYWRtaW4veHZXamYyb2N2YXM  
+ 
+[debug] [2019-02-22T03:33:42.106Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvcmVzZXRfcGluLzBJYW1yY2R2aXBF  
+ 
+[debug] [2019-02-22T03:33:42.107Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/dHotcGhvbmUtYm9vay1kZXYvdXMtY2VudHJhbDEvZGlhbG9nZmxvdy1kaWFsb2dmbG93RmlyZWJhc2VGdWxmaWxsbWVudC9IZEptZEFSWUw2QQ  
+ 
+[debug] [2019-02-22T03:33:42.323Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:42.331Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:42.335Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:42.474Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-22T03:33:42.494Z] <<< HTTP RESPONSE 200

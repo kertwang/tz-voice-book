@@ -15,6 +15,7 @@ const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const Env_1 = require("../utils/Env");
 const Log_1 = require("../utils/Log");
 const LogTypes_1 = require("../types_rn/LogTypes");
+const ZapierApi_1 = require("./ZapierApi");
 const VoiceResponse = twilio.twiml.VoiceResponse;
 /**
  * TwilioRouter is a stateless router for twilio requests.
@@ -332,6 +333,19 @@ class TwilioRouter {
                             });
                         }
                     }
+                }
+                /* Implement your custom behavour here */
+                case TwilioTypes_1.BlockId.stop: {
+                    if (gatherResult.digits.trim() === '3') {
+                        //Send a call to the spreadsheet api, append this number
+                        try {
+                            ZapierApi_1.default.optOut(ctx.toMobile);
+                        }
+                        catch (err) {
+                            console.warn("Non fatal error: zapier api opt out failed.");
+                        }
+                    }
+                    //Don't break at the end, since we want this to continue.
                 }
                 // Default implementation
                 case TwilioTypes_1.BlockId.intro_0:
