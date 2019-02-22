@@ -21,4 +21,5 @@ export const testCallUrl = envConfig.config.test_call_url;
 export const relayDefaultCountrycode = envConfig.config.relay_default_country_code;
 export const urlPrefix = envConfig.config.url_prefix;
 export const firebaseToken = envConfig.config.firebase_token;
+export const optOutWebookUrl = envConfig.config.opt_out_webhook_url;
 

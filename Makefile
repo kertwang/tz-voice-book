@@ -68,6 +68,11 @@ test-unit:
 		cd ${dir}/functions && \
 		yarn run unit
 
+test-service:
+	source ${env_dir}/env.unit.sh && \
+		cd ${dir}/functions && \
+		yarn run service
+
 ##
 # Deployment
 ##

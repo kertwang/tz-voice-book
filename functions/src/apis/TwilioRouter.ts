@@ -8,6 +8,7 @@ import { baseUrl, firebaseToken, urlPrefix } from '../utils/Env';
 import UserApi, { Recording } from './UserApi';
 import { log } from '../utils/Log';
 import { LogType } from '../types_rn/LogTypes';
+import ZapierApi from './ZapierApi';
 const VoiceResponse = twilio.twiml.VoiceResponse;
 
 /**
@@ -359,7 +360,22 @@ export default class TwilioRouter {
           }
         }
       }
-    
+
+      /* Implement your custom behavour here */
+
+
+      case BlockId.stop: {
+        if (gatherResult.digits.trim() === '3') {
+          //Send a call to the spreadsheet api, append this number
+          try {
+            ZapierApi.optOut(ctx.mobile);          
+          } catch (err) {
+            console.warn("Non fatal error: zapier api opt out failed.");
+          }
+        }
+       
+        //Don't break at the end, since we want this to continue.
+      }
       // Default implementation
       case BlockId.intro_0:
       case BlockId.listen_end:

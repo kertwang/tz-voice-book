@@ -29,7 +29,8 @@ firebase functions:config:set \
   config.test_call_url="$test_call_url" \
   config.relay_default_country_code="$relay_default_country_code" \
   config.url_prefix="$urlPrefix" \
-  config.firebase_token="$firebaseToken" 
+  config.firebase_token="$firebaseToken" \
+  config.opt_out_webhook_url="$OPT_OUT_WEBHOOK_URL"
 
 
 ## Get any remote firebase config
