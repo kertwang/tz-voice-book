@@ -100,6 +100,23 @@ exports.saftelyGetPageParamsOrDefaults = (params) => {
     };
 };
 /**
+ * Get the user's mobile from the twilio request object
+ *
+ * Throws if the necessary params aren't found
+ */
+exports.getUserMobile = (body) => {
+    const from = body.From;
+    const to = body.To;
+    const direction = body.Direction;
+    if (!from || !to || !direction) {
+        throw new Error("Invalid Twilio request body. from, to and direction is required");
+    }
+    if (direction === 'outbound-api') {
+        return to;
+    }
+    return from;
+};
+/**
  * saftelyGetDynamicParamsOrEmpty
  *
  * Get the params from the request and format them.

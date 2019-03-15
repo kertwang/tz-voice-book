@@ -9,7 +9,7 @@ import * as morganBody from 'morgan-body';
 import TwilioRouter from '../apis/TwilioRouter';
 import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
-import { pathToBlock, logTwilioResponse, saftelyGetPageParamsOrDefaults, getBotId, sleep, formatMobile, saftelyGetDynamicParamsOrEmpty } from '../utils';
+import { pathToBlock, logTwilioResponse, saftelyGetPageParamsOrDefaults, getBotId, sleep, formatMobile, saftelyGetDynamicParamsOrEmpty, getUserMobile } from '../utils';
 import { CallContext, DigitResult, BotConfig } from '../types_rn/TwilioTypes';
 import UserApi, { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
@@ -174,8 +174,9 @@ module.exports = (functions: any) => {
     const blockName = pathToBlock(req.path);
 
     console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
-
-    const user = await firebaseApi.getUserFromMobile(req.body.From, botId);
+    
+    const mobile = getUserMobile(req.body);
+    const user = await firebaseApi.getUserFromMobile(mobile, botId);
     const pageParams = saftelyGetPageParamsOrDefaults(req.query);
     const dynamicParams = saftelyGetDynamicParamsOrEmpty(req.query);
     
@@ -189,7 +190,7 @@ module.exports = (functions: any) => {
     
     const ctx: CallContext = {
       callSid: req.body.CallSid,
-      mobile: req.body.From,
+      mobile,
       toMobile: req.body.To,
       userId: user.id,
       firebaseApi,
@@ -222,8 +223,11 @@ module.exports = (functions: any) => {
   app.post('/:botId/*', async (req, res) => {
     const botId = getBotId(req.params.botId);
     const blockName = pathToBlock(req.path);
+    
+    //Get the user object.
+    const mobile = getUserMobile(req.body);
+    const user = await firebaseApi.getUserFromMobile(mobile, botId);
 
-    const user = await firebaseApi.getUserFromMobile(req.body.From, botId);
     const pageParams = saftelyGetPageParamsOrDefaults(req.query);
     const dynamicParams = saftelyGetDynamicParamsOrEmpty(req.query);
 
@@ -240,7 +244,7 @@ module.exports = (functions: any) => {
 
     const ctx: CallContext = {
       callSid: req.body.CallSid,
-      mobile: req.body.From,
+      mobile,
       toMobile: req.body.To,
       userId: user.id,
       versionOverride: req.query.versionOverride || null,

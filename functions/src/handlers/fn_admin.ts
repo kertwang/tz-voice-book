@@ -62,8 +62,6 @@ module.exports = (functions: any) => {
   app.post('/triggerCallFromRelay', (req, res) => {
     console.log("req.body is", JSON.stringify(req.body, null, 2));
 
-
-
     //TODO: get the user's phone number, check that its in a whitelist.
 
     let { wait } = req.body;
@@ -102,13 +100,6 @@ module.exports = (functions: any) => {
       .then(() => twilioApi.startCall(botId, mobile, url))
       .then(response => res.json(response));
   });
-
-
-
-
-
-
-
 
   /*Error Handling - must be at bottom!*/
   app.use(ErrorHandler);

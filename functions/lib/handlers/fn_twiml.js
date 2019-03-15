@@ -148,7 +148,8 @@ module.exports = (functions) => {
         const botId = utils_1.getBotId(req.params.botId);
         const blockName = utils_1.pathToBlock(req.path);
         console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
-        const user = yield firebaseApi.getUserFromMobile(req.body.From, botId);
+        const mobile = utils_1.getUserMobile(req.body);
+        const user = yield firebaseApi.getUserFromMobile(mobile, botId);
         const pageParams = utils_1.saftelyGetPageParamsOrDefaults(req.query);
         const dynamicParams = utils_1.saftelyGetDynamicParamsOrEmpty(req.query);
         /* Configure the version using a versionOverride query param */
@@ -159,7 +160,7 @@ module.exports = (functions) => {
         else {
             botConfig = yield firebaseApi.getBotConfig(user.id, botId);
         }
-        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, toMobile: req.body.To, userId: user.id, firebaseApi,
+        const ctx = Object.assign({ callSid: req.body.CallSid, mobile, toMobile: req.body.To, userId: user.id, firebaseApi,
             dynamicParams }, pageParams);
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
@@ -183,7 +184,9 @@ module.exports = (functions) => {
     app.post('/:botId/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
         const botId = utils_1.getBotId(req.params.botId);
         const blockName = utils_1.pathToBlock(req.path);
-        const user = yield firebaseApi.getUserFromMobile(req.body.From, botId);
+        //Get the user object.
+        const mobile = utils_1.getUserMobile(req.body);
+        const user = yield firebaseApi.getUserFromMobile(mobile, botId);
         const pageParams = utils_1.saftelyGetPageParamsOrDefaults(req.query);
         const dynamicParams = utils_1.saftelyGetDynamicParamsOrEmpty(req.query);
         /* Configure the version using a versionOverride query param */
@@ -196,7 +199,7 @@ module.exports = (functions) => {
             botConfig = yield firebaseApi.getBotConfig(user.id, botId);
         }
         console.log("POST /:botId/ bot config is:", botConfig);
-        const ctx = Object.assign({ callSid: req.body.CallSid, mobile: req.body.From, toMobile: req.body.To, userId: user.id, versionOverride: req.query.versionOverride || null, firebaseApi,
+        const ctx = Object.assign({ callSid: req.body.CallSid, mobile, toMobile: req.body.To, userId: user.id, versionOverride: req.query.versionOverride || null, firebaseApi,
             dynamicParams }, pageParams);
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,

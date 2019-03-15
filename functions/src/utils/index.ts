@@ -104,13 +104,34 @@ export const saftelyGetPageParamsOrDefaults = (params): PageParams => {
     versionOverride = params['amp;versionOverride'];
   }
 
-
   return {
     page,
     pageSize,
     maxMessages,
     versionOverride,
   };
+}
+
+
+/**
+ * Get the user's mobile from the twilio request object
+ * 
+ * Throws if the necessary params aren't found
+ */
+export const getUserMobile = (body): string => {
+  const from = body.From;
+  const to = body.To;
+  const direction = body.Direction;
+
+  if (!from || !to || !direction) {
+    throw new Error("Invalid Twilio request body. from, to and direction is required");
+  }
+
+  if (direction === 'outbound-api') {
+    return to;
+  }
+
+  return from;
 }
 
 /**

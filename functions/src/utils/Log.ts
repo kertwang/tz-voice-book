@@ -9,7 +9,7 @@ export function log(logObj: AnyLog)  {
     time: moment().toISOString(),
     ...logObj
   }
-  console.log(JSON.stringify(anonymous));
+  console.log(JSON.stringify(anonymous, null, 2));
 }
 
 export function maybeLog(...params: string[]) {

@@ -5,7 +5,7 @@ const Env_1 = require("./Env");
 //TODO: make more explicit
 function log(logObj) {
     const anonymous = Object.assign({ time: moment().toISOString() }, logObj);
-    console.log(JSON.stringify(anonymous));
+    console.log(JSON.stringify(anonymous, null, 2));
 }
 exports.log = log;
 function maybeLog(...params) {
