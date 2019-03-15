@@ -40,6 +40,7 @@ switch:
 	@echo switching to stage: ${stage}
 	@echo 'export stage=${stage}\n' > .tz_config
 	@make env
+	@firebase use ${stage}
 
 switch-dev:
 	make switch stage="development"

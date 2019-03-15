@@ -266,6 +266,26 @@ class FirebaseApi {
             };
         });
     }
+    //
+    // VB Relay API
+    //------------------------------
+    getRelayUser(botId, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.fs.collection('relay').doc(botId).collection('user').doc(userId).get()
+                .then((doc) => {
+                const data = doc.data();
+                if (!data) {
+                    return AppProviderTypes_1.makeError(`No data found for userId: ${userId}`);
+                }
+                const user = {
+                    callCount: data.callCount,
+                    countryCode: data.countryCode,
+                };
+                return AppProviderTypes_1.makeSuccess(user);
+            })
+                .catch((err) => AppProviderTypes_1.makeError(err.message));
+        });
+    }
 }
 exports.default = FirebaseApi;
 //# sourceMappingURL=FirebaseApi.js.map

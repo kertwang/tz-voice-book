@@ -13,6 +13,7 @@ const TwilioApi_1 = require("../apis/TwilioApi");
 const Env_1 = require("../utils/Env");
 const FirebaseAuth_1 = require("../middlewares/FirebaseAuth");
 const utils_1 = require("../utils");
+const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 const twilioApi = new TwilioApi_1.TwilioApi();
@@ -57,17 +58,31 @@ module.exports = (functions) => {
         console.log("req.body is", JSON.stringify(req.body, null, 2));
         //TODO: get the user's phone number, check that its in a whitelist.
         let { wait } = req.body;
-        const { unformattedMobile, url, botId } = req.body;
-        if (!botId || !unformattedMobile || !url) {
-            return res.status(400).send('botId is required. unformattedMobile is required. url is required');
+        const { unformattedMobile, url, botId, userId } = req.body;
+        if (!botId || !unformattedMobile || !url || !userId) {
+            return res.status(400).send('botId is required. unformattedMobile is required. url is required. userId is required.');
         }
         if (!wait) {
             wait = 10; //wait 10 seconds by default
         }
+        //Get the country code for the userId
         //TODO: load in the desired format for tz
-        const mobile = utils_1.formatMobile(unformattedMobile, Env_1.relayDefaultCountrycode);
+        // const mobile = formatMobile(unformattedMobile, relayDefaultCountrycode);
+        let mobile;
         //Wait to make sure the user has sufficent time to hang up.
-        return utils_1.sleep(wait * 1000)
+        return firebaseApi.getRelayUser(botId, userId)
+            .then(userResult => {
+            if (userResult.type === AppProviderTypes_1.ResultType.ERROR) {
+                throw new Error(userResult.message);
+            }
+            let countryCode = userResult.result.countryCode;
+            if (!countryCode) {
+                console.warn(`No user country code found. Defaulting to: ${Env_1.relayDefaultCountrycode}`);
+                countryCode = Env_1.relayDefaultCountrycode;
+            }
+            mobile = utils_1.formatMobile(unformattedMobile, countryCode);
+            return utils_1.sleep(wait * 1000);
+        })
             .then(() => twilioApi.startCall(botId, mobile, url))
             .then(response => res.json(response));
     });

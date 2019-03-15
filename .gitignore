@@ -1,4 +1,4 @@
 node_modules
 .env*
-.runtimeconfig.json
-.serviceAccountKey*
+*/.runtimeconfig.json
+*.serviceAccountKey*

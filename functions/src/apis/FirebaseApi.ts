@@ -2,7 +2,12 @@ import { User, Recording } from "./UserApi";
 import { sleep, getDefaultVersionForBot, functionReplacer, functionReviver } from "../utils";
 import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage, MessageType, DynamicSayMessage, AnyMessageType } from "../types_rn/TwilioTypes";
 import { DFUser } from "../handlers/fn_dialogflow";
-import { SomeResult, ResultType } from "../types_rn/AppProviderTypes";
+import { SomeResult, ResultType, makeError, makeSuccess } from "../types_rn/AppProviderTypes";
+
+export type RelayUser = {
+  callCount: number,
+  countryCode: string,
+}
 
 export default class FirebaseApi {
   fs: any;
@@ -277,5 +282,27 @@ export default class FirebaseApi {
         message: err,
       };
     })
+  }
+
+
+  //
+  // VB Relay API
+  //------------------------------
+
+  public async getRelayUser(botId: string, userId: string): Promise<SomeResult<RelayUser>> {
+    return this.fs.collection('relay').doc(botId).collection('user').doc(userId).get()
+    .then((doc: FirebaseFirestore.DocumentSnapshot) => {
+      const data = doc.data();
+      if (!data) {
+        return makeError(`No data found for userId: ${userId}`);
+      }
+
+      const user: RelayUser = {
+        callCount: data.callCount,
+        countryCode: data.countryCode,
+      };
+      return makeSuccess(user);
+    })
+    .catch((err: Error) => makeError(err.message));
   }
 }
