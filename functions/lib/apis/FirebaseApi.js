@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
+const util_1 = require("util");
 class FirebaseApi {
     constructor(fs) {
         this.fs = fs;
@@ -174,7 +175,7 @@ class FirebaseApi {
                 .then(doc => doc.data())
                 .then((rawConfig) => {
                 if (!rawConfig) {
-                    throw new Error(`Couldn't getBotConfig for version and botId: ${version}, ${botId}`);
+                    throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
                 }
                 //RW-TODO: inject a dynamic level of bot config here?
                 //we need to deserialize the functions that we saved for dynamic requests
@@ -187,6 +188,10 @@ class FirebaseApi {
                 // }
                 // console.log("getBotConfigForVersion, Bot config is", );
                 return config;
+            })
+                .catch(err => {
+                console.warn(err.message);
+                throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
             });
         });
     }
@@ -194,7 +199,8 @@ class FirebaseApi {
     //This makes it backwards compatible with storing vars in the users object, or specifying them dynamically at runtime
     getVersionForUser(userId, botId, override) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (override) {
+            //@ts-ignore
+            if (!util_1.isNullOrUndefined(override) && override !== "undefined") {
                 return override;
             }
             const user = yield this.getUser(userId, botId);
@@ -202,8 +208,10 @@ class FirebaseApi {
                 //TODO: should also make sure the version code is correct
                 return user.version;
             }
+            const defaultVersion = TwilioTypes_1.VersionId.tz_audio;
+            console.warn(`No version found for userId: ${userId}, botId: ${botId}. Defaulting to: ${defaultVersion}`);
             //TODO: default to tz_audio version!
-            return Promise.resolve(TwilioTypes_1.VersionId.en_us);
+            return Promise.resolve(defaultVersion);
         });
     }
     //

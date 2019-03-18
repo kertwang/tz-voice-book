@@ -37,8 +37,6 @@ export default class TwilioRouter {
 
     let response = new VoiceResponse();
 
-
-    //TODO: flow is undefined here for rungwe
     switch (flow.type) {
       case FlowType.DEFAULT: {
         switch (block.type) {

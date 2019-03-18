@@ -41,7 +41,6 @@ class TwilioRouter {
             const block = config.blocks[blockName];
             const messages = messageBlocks[blockName];
             let response = new VoiceResponse();
-            //TODO: flow is undefined here for rungwe
             switch (flow.type) {
                 case TwilioTypes_1.FlowType.DEFAULT: {
                     switch (block.type) {

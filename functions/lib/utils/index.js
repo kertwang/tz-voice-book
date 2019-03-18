@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const format = require("xml-formatter");
+const util_1 = require("util");
 var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 function getBotId(maybeBotId) {
     const botId = TwilioTypes_1.BotId[maybeBotId];
@@ -80,7 +81,7 @@ exports.saftelyGetPageParamsOrDefaults = (params) => {
     const page = params.page ? parseInt(params.page) : 0;
     let pageSize = params.pageSize ? parseInt(params.pageSize) : 1;
     let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
-    let versionOverride = params.versionOverride ? (params.versionOverride) : null;
+    let versionOverride = params.versionOverride;
     //Also handle shitty twilio url encoded params :(
     if (params['amp;pageSize']) {
         pageSize = parseInt(params['amp;pageSize']);
@@ -174,7 +175,11 @@ const buildRecordingCallbackUrl = (b) => {
 };
 const buildGatherCallbackUrl = (b) => {
     //eg: `${baseUrl}/twiml/${config.botId}/gather/${blockName}`,
-    return `${b.baseUrl}/twiml/${b.botId}/gather/${b.blockName}?versionOverride=${b.versionOverride}`;
+    let url = `${b.baseUrl}/twiml/${b.botId}/gather/${b.blockName}`;
+    if (!util_1.isNullOrUndefined(b.versionOverride)) {
+        url += `?versionOverride=${b.versionOverride}`;
+    }
+    return url;
 };
 const buildPaginatedGatherCallbackUrl = (b) => {
     //eg: `${baseUrl}/twiml/${config.botId}/gather/${blockName}`,

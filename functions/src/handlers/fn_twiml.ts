@@ -26,7 +26,6 @@ import * as mustache from 'mustache';
 
 require('express-async-errors');
 
-
 const twilioApi = new TwilioApi();
 
 //TODO: make newer import format

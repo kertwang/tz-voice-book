@@ -3,6 +3,7 @@ import { sleep, getDefaultVersionForBot, functionReplacer, functionReviver } fro
 import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage, MessageType, DynamicSayMessage, AnyMessageType } from "../types_rn/TwilioTypes";
 import { DFUser } from "../handlers/fn_dialogflow";
 import { SomeResult, ResultType, makeError, makeSuccess } from "../types_rn/AppProviderTypes";
+import { isNullOrUndefined } from "util";
 
 export type RelayUser = {
   callCount: number,
@@ -179,7 +180,7 @@ export default class FirebaseApi {
       .then(doc => doc.data())
       .then((rawConfig: any) => {
         if (!rawConfig) {
-          throw new Error(`Couldn't getBotConfig for version and botId: ${version}, ${botId}`);
+          throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
         }
 
         //RW-TODO: inject a dynamic level of bot config here?
@@ -195,13 +196,18 @@ export default class FirebaseApi {
         // console.log("getBotConfigForVersion, Bot config is", );
 
         return config;
+      })
+      .catch(err => {
+        console.warn(err.message);
+        throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
       });
   }
 
   //RW-TODO: specify other params here that can be overriden?
   //This makes it backwards compatible with storing vars in the users object, or specifying them dynamically at runtime
   public async getVersionForUser(userId: string, botId: string, override?: VersionId): Promise<VersionId> {
-    if (override) {
+    //@ts-ignore
+    if (!isNullOrUndefined(override) && override !== "undefined") {
       return override;
     }
 
@@ -212,8 +218,11 @@ export default class FirebaseApi {
       return user.version;
     } 
 
+    const defaultVersion = VersionId.tz_audio;
+    console.warn(`No version found for userId: ${userId}, botId: ${botId}. Defaulting to: ${defaultVersion}`)
+
     //TODO: default to tz_audio version!
-    return Promise.resolve(VersionId.en_us);
+    return Promise.resolve(defaultVersion);
   }
 
   //
