@@ -34,6 +34,7 @@ var TwilioFlows = {
         // TODO: define new block type?
         type: TwilioTypes_1.FlowType.DEFAULT,
         // error: null, //ew gross
+        //gets triggered after custom loop on listen_playback
         next: TwilioTypes_1.BlockId.listen_end
     },
     'listen_end': {

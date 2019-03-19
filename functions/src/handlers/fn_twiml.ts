@@ -189,6 +189,7 @@ module.exports = (functions: any) => {
       firebaseApi,
       dynamicParams,
       ...pageParams,
+      enableDemoMessages: false,
     };
 
     log({
@@ -244,6 +245,7 @@ module.exports = (functions: any) => {
       firebaseApi,
       dynamicParams,
       ...pageParams,
+      enableDemoMessages: false,
     };
 
     log({
@@ -256,6 +258,8 @@ module.exports = (functions: any) => {
     });
 
     const result = await TwilioRouter.nextMessage(ctx, botConfig, blockName);
+    logTwilioResponse(result);
+    
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(result);
   });

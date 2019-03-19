@@ -34,6 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -41,14 +44,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 var _this = this;
 exports.__esModule = true;
-var gulp = __importStar(require("gulp"));
+var gulp_1 = __importDefault(require("gulp"));
 var Firestore_1 = __importStar(require("../apis/Firestore"));
-var fs = __importStar(require("async-file"));
+var async_file_1 = __importDefault(require("async-file"));
 var FirebaseApi_1 = __importDefault(require("../apis/FirebaseApi"));
 var TwilioTypes_1 = require("../types_rn/TwilioTypes");
 /* import your bot configs here */
@@ -60,7 +60,7 @@ var index_5 = __importDefault(require("./content/rungweDeposit/index"));
 var index_6 = __importDefault(require("./content/rungwePaymentDate/index"));
 var index_7 = __importDefault(require("./content/rungwePaymentNotification/index"));
 var fbApi = new FirebaseApi_1["default"](Firestore_1["default"]);
-gulp.task('deploy_config', function () { return __awaiter(_this, void 0, void 0, function () {
+gulp_1["default"].task('deploy_config', function () { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -134,17 +134,17 @@ gulp.task('deploy_config', function () { return __awaiter(_this, void 0, void 0,
         }
     });
 }); });
-gulp.task('deploy_audio', function () { return __awaiter(_this, void 0, void 0, function () {
+gulp_1["default"].task('deploy_audio', function () { return __awaiter(_this, void 0, void 0, function () {
     var audioDir, versionDirs, audioFiles, flatAudioFiles;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 audioDir = "../../../audio_processing/audio_new/";
-                return [4 /*yield*/, fs.readdir(audioDir)];
+                return [4 /*yield*/, async_file_1["default"].readdir(audioDir)];
             case 1:
                 versionDirs = _a.sent();
                 return [4 /*yield*/, Promise.all(versionDirs.map(function (dir) {
-                        return fs.readdir("" + audioDir + dir + "/")
+                        return async_file_1["default"].readdir("" + audioDir + dir + "/")
                             .then(function (childs) { return childs.map(function (child) { return dir + "/" + child; }); });
                     }))];
             case 2:

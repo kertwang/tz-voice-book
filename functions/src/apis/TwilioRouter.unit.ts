@@ -4,14 +4,17 @@ import TwilioRouter from './TwilioRouter';
 import {describe} from 'mocha';
 import FirebaseApi from './FirebaseApi';
 import { CallContext, DigitResult, BlockId } from '../types_rn/TwilioTypes';
+//@ts-ignore
+import format from 'xml-formatter';
+import fs from './Firestore';
 
-const admin = require('firebase-admin');
-admin.initializeApp();
-const fs = admin.firestore();
+import configs  from '../admin/content/voicebook/index';
+const botConfig = configs.en_us;
 
-const botConfig: any = {
+const cleanXML = (xml: string): string => {
+  return xml.replace(/<Play>(.*?)<\/Play>/g, "<Play></Play>");
+}
 
-};
 const ctx: CallContext = {
   callSid: '12345',
   mobile: '+61410233233',
@@ -22,68 +25,107 @@ const ctx: CallContext = {
   dynamicParams: [],
   page: 1,
   pageSize: 1,
-  maxMessages: 1,
+  maxMessages: 3,
+  enableDemoMessages: false,
 };
 
-
-
-describe.skip('TwilioRouter', function() {
+describe('TwilioRouter', function() {
 
   describe('/entrypoint', () => {
-    it('gets the default next message', () => {
+    it('gets the default next message', async () => {
       //Arrange
       //Act 
-      const result = TwilioRouter.nextMessage(ctx, botConfig, BlockId.entrypoint);
+      const result = await TwilioRouter.nextMessage(ctx, botConfig, BlockId.entrypoint);
 
       //Assert
-      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Say>Hello, and welcome to voicebook</Say><Redirect method="POST">./intro_0</Redirect></Response>'
-      assert.equal(expected, result);
+      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Say language="en-US">Hello, and welcome to voicebook</Say><Redirect method="POST">https://us-central1-tz-phone-book.cloudfunctions.net/twiml/voicebook/intro_0</Redirect></Response>'
+      assert.strictEqual(result, expected);
     });
   });
 
 
-  describe('/intro_0', () => {
-    it('gets the default next message', () => {
+  describe.skip('/intro_0', () => {
+    it('gets the default next message', async () => {
       //Arrange
       //Act 
-      const result = TwilioRouter.nextMessage(ctx, botConfig, BlockId.intro_0);
+      const result = await TwilioRouter.nextMessage(ctx, botConfig, BlockId.intro_0);
 
       //Assert
       const expected = `<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="./gather/intro_0" method="POST" language="sw-TZ" input="speech" hints="sikiliza,tuma,msaada,kurudia"><Say>To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.</Say></Gather><Say>We didn't receive any input. Hrrmm.</Say></Response>`;
-      assert.equal(expected, result);
+      // console.log("result", format(result));
+      // console.log("expected", format(expected));
+
+      assert.strictEqual(format(result), format(expected));
     });
 
   });
     
 
-  describe('gather intro_0', function() {
-    it('handles error case', () => {
+  describe('Handles User Input', function() {
+    this.timeout(5000);
+
+    it('handles error case', async () => {
       //Arrange
       const gatherResult: DigitResult = {
         digits: '10',
       };
 
       //Act
-      const result = TwilioRouter.gatherNextMessage(ctx, botConfig, BlockId.entrypoint, gatherResult);
+      const result = await TwilioRouter.gatherNextMessage(ctx, botConfig, BlockId.intro_0, gatherResult);
 
       //Assert
-      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Say>Sorry, something went wrong</Say></Response>';
-      assert.equal(expected, result);
+      //If no digit match, default to first option
+      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect method="POST">https://us-central1-tz-phone-book.cloudfunctions.net/twiml/voicebook/listen_0</Redirect></Response>';
+      assert.strictEqual(expected, result);
     });
 
-    it('handles a success case', () => {
+    it('handles a success case', async () => {
       //Arrange
       const gatherResult: DigitResult = {
         digits: '1',
       };
 
       //Act
-      const result = TwilioRouter.gatherNextMessage(ctx, botConfig, BlockId.entrypoint, gatherResult);
+      const result = await TwilioRouter.gatherNextMessage(ctx, botConfig, BlockId.intro_0, gatherResult);
 
 
       //Assert
-      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect method="POST">../listen_0</Redirect></Response>';
-      assert.equal(expected, result);
+      const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect method="POST">https://us-central1-tz-phone-book.cloudfunctions.net/twiml/voicebook/listen_0</Redirect></Response>';
+      assert.strictEqual(expected, result);
     });
+    
+    it('gets the listen_playback block', async () => {
+      //Arrange  
+      const expected = cleanXML(`<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="https://us-central1-tz-phone-book.cloudfunctions.net/twiml/voicebook/gather/listen_playback?page=1&amp;pageSize=1&amp;maxMessages=3" method="POST" input="dtmf" numDigits="1"><Play>123123asdafas</Play></Gather><Redirect method="POST">https://us-central1-tz-phone-book.cloudfunctions.net/twiml/voicebook/listen_end?page=2&amp;pageSize=1&amp;maxMessages=3</Redirect></Response>`);
+
+      //Act
+      const result = await TwilioRouter.nextMessage(ctx, botConfig, BlockId.listen_playback);
+
+      //Assert
+      assert.strictEqual(format(cleanXML(result)), format(expected));
+    });
+
+    it('skips a message correctly', async () => {
+      //Arrange  
+      const expected = `<?xml version="1.0" encoding="UTF-8"?><Response><Redirect method="POST">https://us-central1-tz-phone-book.cloudfunctions.net/twiml/voicebook/listen_playback?page=2&amp;pageSize=1&amp;maxMessages=3</Redirect></Response>`;
+
+      //Act
+      const result = await TwilioRouter.gatherNextMessage(ctx, botConfig, BlockId.listen_playback, { digits: "1"});
+
+      //Assert
+      assert.strictEqual(format(result), format(expected));
+    });
+
+    it('repeats a message correctly', async () => {
+      //Arrange  
+      const expected = `<?xml version="1.0" encoding="UTF-8"?><Response><Redirect method="POST">https://us-central1-tz-phone-book.cloudfunctions.net/twiml/voicebook/listen_playback?page=1&amp;pageSize=1&amp;maxMessages=3</Redirect></Response>`;
+
+      //Act
+      const result = await TwilioRouter.gatherNextMessage(ctx, botConfig, BlockId.listen_playback, { digits: "2"});
+
+      //Assert
+      assert.strictEqual(format(result), format(expected));
+    });
+
   });
 });

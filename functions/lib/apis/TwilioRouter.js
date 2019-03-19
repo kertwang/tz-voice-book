@@ -61,7 +61,6 @@ var TwilioRouter = /** @class */ (function () {
                     case 0: return [4 /*yield*/, TwilioRouter.getBlock(ctx, config, currentBlock)];
                     case 1:
                         response = _a.sent();
-                        utils_1.logTwilioResponse(response.toString());
                         return [2 /*return*/, response.toString()];
                 }
             });
@@ -203,14 +202,15 @@ var TwilioRouter = /** @class */ (function () {
                         }
                         return [3 /*break*/, 5];
                     case 1:
-                        console.log("handlePlaybackBlock, listen_playback");
                         gather_1 = response.gather({
                             // action: `${baseUrl}/twiml/${botId}/gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
                             action: utils_1.buildRedirectUrl({
                                 type: utils_1.NextUrlType.PaginatedGatherUrl,
                                 baseUrl: Env_1.baseUrl,
                                 botId: botId,
-                                blockName: nextBlock,
+                                //I think this should be this block, so that it loops
+                                blockName: TwilioTypes_1.BlockId.listen_playback,
+                                // blockName: nextBlock,
                                 nextPageNo: ctx.page,
                                 pageSize: ctx.pageSize,
                                 maxMessages: ctx.maxMessages,
@@ -223,10 +223,15 @@ var TwilioRouter = /** @class */ (function () {
                         return [4 /*yield*/, ctx.firebaseApi.getRecordings(ctx.maxMessages, botId)];
                     case 2:
                         recordings = _b.sent();
-                        console.log("Recordings are", recordings);
-                        totalCount = messages.length + recordings.length;
+                        totalCount = recordings.length;
+                        if (ctx.enableDemoMessages) {
+                            totalCount += messages.length;
+                        }
                         page = ctx.page, pageSize = ctx.pageSize;
-                        allToPlay_1 = messages;
+                        allToPlay_1 = [];
+                        if (ctx.enableDemoMessages) {
+                            messages.forEach(function (m) { return allToPlay_1.push(m); });
+                        }
                         recordings.forEach(function (r) { return allToPlay_1.push(r); });
                         toPlay = allToPlay_1.slice(page, page + pageSize);
                         toPlay.forEach(function (message) {
@@ -242,6 +247,7 @@ var TwilioRouter = /** @class */ (function () {
                         });
                         urlBuilder = void 0;
                         if ((page * pageSize) > totalCount) {
+                            //Finished listening to messages
                             urlBuilder = {
                                 type: utils_1.NextUrlType.DefaultUrl,
                                 baseUrl: Env_1.baseUrl,
@@ -251,6 +257,7 @@ var TwilioRouter = /** @class */ (function () {
                             };
                         }
                         else {
+                            //Get the next page of messages
                             urlBuilder = {
                                 type: utils_1.NextUrlType.PaginatedUrl,
                                 baseUrl: Env_1.baseUrl,
@@ -344,6 +351,7 @@ var TwilioRouter = /** @class */ (function () {
                     case 0:
                         //TODO: parse out the twilio response, and redirect to the appropriate block
                         //TODO: make more generic - this isn't technically a GATHER block, so we shouldn't do this really.
+                        /* Handle listen_playback specially */
                         console.log("currentBlock", currentBlock);
                         if (currentBlock === TwilioTypes_1.BlockId.listen_playback) {
                             response = new VoiceResponse_1["default"]();
@@ -424,16 +432,12 @@ var TwilioRouter = /** @class */ (function () {
                         }
                         _b.label = 5;
                     case 5:
-                        //TODO: handle the digits as well!
                         {
                             validDigits = flow.digitMatches.map(function (d) { return d.digits; });
                             idx = validDigits.indexOf(gatherResult.digits.trim());
                             //No match found :(
                             if (idx === -1) {
                                 idx = 0; //default to first option if someone presses the wrong number
-                                //TODO: should this redirect instead?
-                                // const errorResponse = await TwilioRouter.getBlock(ctx, config, flow.error);
-                                // return errorResponse.toString();
                             }
                             nextBlock = flow.digitMatches[idx].nextBlock;
                             response = new VoiceResponse_1["default"]();

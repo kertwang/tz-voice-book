@@ -1,5 +1,5 @@
 import VoiceResponse from 'twilio/lib/twiml/VoiceResponse';
-import { logTwilioResponse, NextUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder, generateUrl } from '../utils';
+import { NextUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder, generateUrl } from '../utils';
 import { BlockId, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, BotId, AnyBlock, AnyMessageType } from '../types_rn/TwilioTypes';
 import { baseUrl, firebaseToken, urlPrefix } from '../utils/Env';
 import { Recording } from './UserApi';
@@ -16,7 +16,6 @@ export default class TwilioRouter {
 
   public static async nextMessage(ctx: CallContext, config: BotConfig, currentBlock: BlockId): Promise<string> {
     const response = await TwilioRouter.getBlock(ctx, config, currentBlock);
-    logTwilioResponse(response.toString());
 
     return response.toString();
   }
@@ -132,15 +131,15 @@ export default class TwilioRouter {
     switch(blockName) {
       //this has a flow type of gather- breaking some weird stuff
       case(BlockId.listen_playback): {
-        console.log("handlePlaybackBlock, listen_playback");
-
         const gather = response.gather({
           // action: `${baseUrl}/twiml/${botId}/gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
           action: buildRedirectUrl({
             type: NextUrlType.PaginatedGatherUrl,
             baseUrl,
             botId,
-            blockName: nextBlock,
+            //I think this should be this block, so that it loops
+            blockName: BlockId.listen_playback,
+            // blockName: nextBlock,
             nextPageNo: ctx.page,
             pageSize: ctx.pageSize,
             maxMessages: ctx.maxMessages,
@@ -154,12 +153,17 @@ export default class TwilioRouter {
         //TODO: fixme this repeats messages when page size > 1
         //Play all of the pre-recorded messages, then load all of the messages from firestore and play them.
         const recordings = await ctx.firebaseApi.getRecordings(ctx.maxMessages, botId);
-        console.log("Recordings are", recordings);
-        
-        const totalCount = messages.length + recordings.length;
+      
+        let totalCount = recordings.length;
+        if (ctx.enableDemoMessages) {
+          totalCount += messages.length;
+        }
         const { page, pageSize } = ctx;
 
-        const allToPlay: any[] = messages;
+        const allToPlay: any[] = [];
+        if (ctx.enableDemoMessages) {
+          messages.forEach(m => allToPlay.push(m));
+        }
         recordings.forEach(r => allToPlay.push(r));
         const toPlay = allToPlay.slice(page, page + pageSize);
         toPlay.forEach(message => {
@@ -178,6 +182,7 @@ export default class TwilioRouter {
 
         let urlBuilder: NextUrlBuilder;
         if ((page * pageSize) > totalCount) {
+          //Finished listening to messages
           urlBuilder = {
             type: NextUrlType.DefaultUrl,
             baseUrl,
@@ -186,6 +191,7 @@ export default class TwilioRouter {
             versionOverride: ctx.versionOverride,
           }
         } else {
+          //Get the next page of messages
           urlBuilder = {
             type: NextUrlType.PaginatedUrl,
             baseUrl,
@@ -292,6 +298,7 @@ export default class TwilioRouter {
     //TODO: parse out the twilio response, and redirect to the appropriate block
     
     //TODO: make more generic - this isn't technically a GATHER block, so we shouldn't do this really.
+    /* Handle listen_playback specially */
     console.log("currentBlock", currentBlock);
     if (currentBlock === BlockId.listen_playback) {
       const response = new VoiceResponse();
@@ -379,22 +386,18 @@ export default class TwilioRouter {
        
         //Don't break at the end, since we want this to continue.
       }
-      // Default implementation
+
+      /* Default implementation */
       case BlockId.intro_0:
       case BlockId.listen_end:
       default:
-      //TODO: handle the digits as well!
         {
           const validDigits = flow.digitMatches.map(d => d.digits);
           let idx = validDigits.indexOf(gatherResult.digits.trim());
 
-
           //No match found :(
           if (idx === -1) {
             idx = 0; //default to first option if someone presses the wrong number
-            //TODO: should this redirect instead?
-            // const errorResponse = await TwilioRouter.getBlock(ctx, config, flow.error);
-            // return errorResponse.toString();
           }
 
           const nextBlock = flow.digitMatches[idx].nextBlock;

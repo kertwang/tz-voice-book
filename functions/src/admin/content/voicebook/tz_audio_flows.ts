@@ -33,6 +33,7 @@ const TwilioFlows: FlowMap = {
     // TODO: define new block type?
     type: FlowType.DEFAULT,
     // error: null, //ew gross
+    //gets triggered after custom loop on listen_playback
     next: BlockId.listen_end,
     // digitMatches: [
     //   // Both triggers the same, with different params

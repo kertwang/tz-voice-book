@@ -48,13 +48,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 var _this = this;
 exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
@@ -74,7 +67,7 @@ var Env_1 = require("../utils/Env");
 var LogTypes_1 = require("../types_rn/LogTypes");
 var AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
 var responses2_template_1 = __importDefault(require("./responses2.template"));
-var mustache = __importStar(require("mustache"));
+var mustache_1 = __importDefault(require("mustache"));
 //TODO: make newer import format
 require('express-async-errors');
 var bodyParser = require('body-parser');
@@ -126,7 +119,7 @@ module.exports = function (functions) {
                         //@ts-ignore
                         intents[idx].responses = result.result;
                     });
-                    res.status(200).send(mustache.render(responses2_template_1["default"], { intents: intents }));
+                    res.status(200).send(mustache_1["default"].render(responses2_template_1["default"], { intents: intents }));
                     return [2 /*return*/];
             }
         });
@@ -241,7 +234,7 @@ module.exports = function (functions) {
                     _a.label = 5;
                 case 5:
                     ctx = __assign({ callSid: req.body.CallSid, mobile: mobile, toMobile: req.body.To, userId: user.id, firebaseApi: firebaseApi,
-                        dynamicParams: dynamicParams }, pageParams);
+                        dynamicParams: dynamicParams }, pageParams, { enableDemoMessages: false });
                     Log_1.log({
                         type: LogTypes_1.LogType.BLOCK,
                         botId: botId,
@@ -292,7 +285,7 @@ module.exports = function (functions) {
                 case 5:
                     console.log("POST /:botId/ bot config is:", botConfig);
                     ctx = __assign({ callSid: req.body.CallSid, mobile: mobile, toMobile: req.body.To, userId: user.id, versionOverride: req.query.versionOverride || null, firebaseApi: firebaseApi,
-                        dynamicParams: dynamicParams }, pageParams);
+                        dynamicParams: dynamicParams }, pageParams, { enableDemoMessages: false });
                     Log_1.log({
                         type: LogTypes_1.LogType.BLOCK,
                         botId: botId,
@@ -304,6 +297,7 @@ module.exports = function (functions) {
                     return [4 /*yield*/, TwilioRouter_1["default"].nextMessage(ctx, botConfig, blockName)];
                 case 6:
                     result = _a.sent();
+                    utils_1.logTwilioResponse(result);
                     res.writeHead(200, { 'Content-Type': 'text/xml' });
                     res.end(result);
                     return [2 /*return*/];

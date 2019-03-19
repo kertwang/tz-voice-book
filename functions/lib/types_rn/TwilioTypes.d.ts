@@ -338,6 +338,7 @@ export declare type CallContext = {
     page: number;
     pageSize: number;
     maxMessages: number;
+    enableDemoMessages: boolean;
 };
 export declare type DigitResult = {
     digits: string;

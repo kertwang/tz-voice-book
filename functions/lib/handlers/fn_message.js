@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-// import * as validate from 'express-validation';
 var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
 var moment_1 = __importDefault(require("moment"));

@@ -418,9 +418,12 @@ export type CallContext = {
   dynamicParams: string[],
 
   //For pagination
-  page: number,
+  page: number, //starts at 1
   pageSize: number,
   maxMessages: number, //total number of messages to load from FB
+
+  //For enabling demo messages
+  enableDemoMessages: boolean,
 }
 
 export type DigitResult = {

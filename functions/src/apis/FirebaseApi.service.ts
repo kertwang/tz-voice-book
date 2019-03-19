@@ -1,105 +1,124 @@
-// import * as assert from 'assert';
-// import fs from './Firestore';
+import assert from 'assert';
+import fs from './Firestore';
 // import { describe } from 'mocha';
-// import FirebaseApi from './FirebaseApi';
+import FirebaseApi from './FirebaseApi';
+import { CallContext } from '../types_rn/TwilioTypes';
 // import { Recording } from './UserApi';
 // import * as moment from 'moment';
 // import { BotId, VersionId, CallContext } from '../types_rn/TwilioTypes';
 
 
-// /**
-//  * FirebaseApi Service Test
-//  * 
-//  * These require the service to be working etc.
-//  */
-// describe('FirebaseApi', function() {
-//   this.timeout(5000);
+/**
+ * FirebaseApi Service Test
+ * 
+ * These require the service to be working etc.
+ */
+describe('FirebaseApi', function() {
+  this.timeout(5000);
 
-//   const firebaseApi = new FirebaseApi(fs);
+  const firebaseApi = new FirebaseApi(fs);
 
-//   const ctx: CallContext = {
-//     callSid: '12345',
-//     mobile: '+61410233233',
-//     toMobile: '+61410233233',
-//     firebaseApi: new FirebaseApi(fs)
-//   };
+  const ctx: CallContext = {
+    callSid: '12345',
+    mobile: '+61410233233',
+    toMobile: '+61410233233',
+    firebaseApi: new FirebaseApi(fs),
+    userId: 'user_12345',
+    versionOverride: null,
+    dynamicParams: [],
+    page: 1,
+    pageSize: 1,
+    maxMessages: 1,
+    enableDemoMessages: true,
+  };
 
-//   //TODO:this still saves to the wrong firebase account o
-//   describe('getPendingRecordings', () => {
-//     let pendingId: string;
+  describe('getRecordings', function () {
+    it('gets recordings for voicebook', async () => {
+      //Arrange
+      //Act
+      const recordings = await firebaseApi.getRecordings(ctx.maxMessages, 'voicebook');
 
-//     //Save a new recording
-//     this.beforeAll(async() => {
-//       const recording: Recording = {
-//         url: 'example.com',
-//         createdAt: moment().toISOString(),
-//         callSid: '12345',
-//       };
+      //Assert
+      assert.strictEqual(recordings.length, 1);
+    });
+  }); 
 
-//       pendingId = await firebaseApi.savePendingRecording(recording);
-//     });
+  //TODO:this still saves to the wrong firebase account o
+  // describe('getPendingRecordings', () => {
+  //   let pendingId: string;
 
-//     it('gets the pending recordings', async () => {
-//       //Arrange
-//       const callSid = "12345";
+  //   //Save a new recording
+  //   this.beforeAll(async() => {
+  //     const recording: Recording = {
+  //       url: 'example.com',
+  //       createdAt: moment().toISOString(),
+  //       callSid: '12345',
+  //     };
 
-//       //Act
-//       const recordings: Recording[] = await firebaseApi.getPendingRecordings(callSid, 1);
-//       console.log("recordings:", recordings);
+  //     pendingId = await firebaseApi.savePendingRecording(recording);
+  //   });
 
-//       //Assert
-//       assert.equal(recordings.length, 1);
-//     })
+  //   it('gets the pending recordings', async () => {
+  //     //Arrange
+  //     const callSid = "12345";
 
-//     this.afterAll(async() => {
-//       await fs.collection('pendingRecordings').doc(pendingId).delete();
-//     });
+  //     //Act
+  //     const recordings: Recording[] = await firebaseApi.getPendingRecordings(callSid, 1);
+  //     console.log("recordings:", recordings);
 
-//     //TODO: cleanup
-//   });
+  //     //Assert
+  //     assert.equal(recordings.length, 1);
+  //   })
 
-//   describe('getPendingRecordingsWithRetries', () => {
-//     it('tries all the times', async () => {
-//       //Arrange
+  //   this.afterAll(async() => {
+  //     await fs.collection('pendingRecordings').doc(pendingId).delete();
+  //   });
 
-//       //Act
-//       const result = await firebaseApi.getPendingRecordingsWithRetries('not_a_real_call', 1, 5);
+  //   //TODO: cleanup
+  // });
 
-//       //Assert
-//       console.log("result", result);
-//     });
-//   });
+  // describe('getPendingRecordingsWithRetries', () => {
+  //   it('tries all the times', async () => {
+  //     //Arrange
 
-//   describe('getContent', function() {
-//     it('gets the content', async () => {
-//       //Arrange
+  //     //Act
+  //     const result = await firebaseApi.getPendingRecordingsWithRetries('not_a_real_call', 1, 5);
 
-//       //Act 
-//       const content = await firebaseApi.getBlockContent('123', '123');
+  //     //Assert
+  //     console.log("result", result);
+  //   });
+  // });
 
-//       //Assert
-//       //We can at least make sure the content is the right size.
-//       assert.equal(16, Object.keys(content).length);
-//     });
-//   });
+  // describe('getContent', function() {
+  //   it('gets the content', async () => {
+  //     //Arrange
 
-//   /**
-//    * Don't use this. Use gulp instead
-//    */
-//   describe.skip('saveBlockConfigToFirebase', function() {
+  //     //Act 
+  //     const content = await firebaseApi.getBlockContent('123', '123');
 
-//     it('saves the block config', async () => {
-//       const en_us_flows = require('../admin/content/en_us_flows');
-//       const en_us_blocks = require('../admin/content/en_us_blocks');
-//       const en_us_messages = require('../admin/content/en_us_messages');
+  //     //Assert
+  //     //We can at least make sure the content is the right size.
+  //     assert.equal(16, Object.keys(content).length);
+  //   });
+  // });
 
-//       await firebaseApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_us, {
-//         messages: en_us_messages,
-//         blocks: en_us_blocks,
-//         flows: en_us_flows,
-//       });
+  // /**
+  //  * Don't use this. Use gulp instead
+  //  */
+  // describe.skip('saveBlockConfigToFirebase', function() {
+
+  //   it('saves the block config', async () => {
+  //     const en_us_flows = require('../admin/content/en_us_flows');
+  //     const en_us_blocks = require('../admin/content/en_us_blocks');
+  //     const en_us_messages = require('../admin/content/en_us_messages');
+
+  //     await firebaseApi.deployConfigForBotAndVersion(BotId.voicebook, VersionId.en_us, {
+  //       messages: en_us_messages,
+  //       blocks: en_us_blocks,
+  //       flows: en_us_flows,
+  //     });
       
-//     });
-//   });
+  //   });
+  // });
 
-// });
+});

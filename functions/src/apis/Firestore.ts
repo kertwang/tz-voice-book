@@ -1,4 +1,4 @@
-import admin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 import { serviceAccountKeyFileName, databaseUrl, storageBucket } from "../utils/Env";
 
 /* Not in git. Download from FB console*/

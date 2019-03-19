@@ -1,18 +1,20 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
 var mocha_1 = require("mocha");
-var assert = __importStar(require("assert"));
+var assert_1 = __importDefault(require("assert"));
 var _1 = require(".");
 var TwilioTypes_1 = require("../types_rn/TwilioTypes");
 mocha_1.describe('Utils Tests', function () {
     var baseUrl = "https://us-central1-tz-phone-book-dev.cloudfunctions.net";
+    mocha_1.describe('logTwilioResponse', function () {
+        it('prints the xml string correctly', function () {
+            var input = "<div><h1>Hello world</h1></div>";
+            _1.logTwilioResponse(input);
+        });
+    });
     mocha_1.describe("buildRedirectUrl()", function () {
         it('builds a paginated redirect url', function () {
             //Arrange
@@ -30,7 +32,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var result = _1.buildRedirectUrl(builder);
             //Assert
-            assert.strictEqual(result, expected);
+            assert_1["default"].strictEqual(result, expected);
         });
         it('builds a paginated redirect url with version override', function () {
             //Arrange
@@ -48,7 +50,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var result = _1.buildRedirectUrl(builder);
             //Assert
-            assert.strictEqual(result, expected);
+            assert_1["default"].strictEqual(result, expected);
         });
         it('builds the default url', function () {
             //Arrange
@@ -63,7 +65,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var result = _1.buildRedirectUrl(builder);
             //Assert
-            assert.strictEqual(result, expected);
+            assert_1["default"].strictEqual(result, expected);
         });
         it('builds the default url with version override', function () {
             //Arrange
@@ -78,7 +80,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var result = _1.buildRedirectUrl(builder);
             //Assert
-            assert.strictEqual(result, expected);
+            assert_1["default"].strictEqual(result, expected);
         });
         it('builds the recording callback url', function () {
             //Arrange
@@ -92,7 +94,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var result = _1.buildRedirectUrl(builder);
             //Assert
-            assert.strictEqual(result, expected);
+            assert_1["default"].strictEqual(result, expected);
         });
         it('builds the gather url', function () {
             //Arrange
@@ -107,7 +109,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var result = _1.buildRedirectUrl(builder);
             //Assert
-            assert.strictEqual(result, expected);
+            assert_1["default"].strictEqual(result, expected);
         });
         it('builds the gather url with version override', function () {
             //Arrange
@@ -122,7 +124,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var result = _1.buildRedirectUrl(builder);
             //Assert
-            assert.strictEqual(result, expected);
+            assert_1["default"].strictEqual(result, expected);
         });
         it('builds the paginated gather url', function () {
             //Arrange
@@ -140,7 +142,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var result = _1.buildRedirectUrl(builder);
             //Assert
-            assert.strictEqual(result, expected);
+            assert_1["default"].strictEqual(result, expected);
         });
         it('builds the paginated gather url with version override', function () {
             //Arrange
@@ -158,7 +160,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var result = _1.buildRedirectUrl(builder);
             //Assert
-            assert.strictEqual(result, expected);
+            assert_1["default"].strictEqual(result, expected);
         });
     });
     mocha_1.describe('formatMobile()', function () {
@@ -169,7 +171,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var formatted = _1.formatMobile(unformatted, country);
             //Assert
-            assert.strictEqual(unformatted, formatted);
+            assert_1["default"].strictEqual(unformatted, formatted);
         });
         it('Formats a local number correctly', function () {
             //Arrange
@@ -178,7 +180,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var formatted = _1.formatMobile(unformatted, country);
             //Assert
-            assert.strictEqual('+2559566512295', formatted);
+            assert_1["default"].strictEqual('+2559566512295', formatted);
         });
         it('Formats an international number without + correctly', function () {
             //Arrange
@@ -187,7 +189,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             var formatted = _1.formatMobile(unformatted, country);
             //Assert
-            assert.strictEqual('+25516501111234', formatted);
+            assert_1["default"].strictEqual('+25516501111234', formatted);
         });
     });
 });

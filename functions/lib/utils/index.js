@@ -1,15 +1,11 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
 var TwilioTypes_1 = require("../types_rn/TwilioTypes");
 //@ts-ignore
-var format = __importStar(require("xml-formatter"));
+var xml_formatter_1 = __importDefault(require("xml-formatter"));
 var util_1 = require("util");
 var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 function getBotId(maybeBotId) {
@@ -72,7 +68,7 @@ function logTwilioResponse(xmlString) {
     // if (process.env.LOG_TWILIO_RESPONSE !== 'true') {
     //   return;
     // }
-    console.log("TWILIO Response: \n " + format(xmlString));
+    console.log("TWILIO Response: \n " + xml_formatter_1["default"](xmlString));
 }
 exports.logTwilioResponse = logTwilioResponse;
 function sleep(ms) {
