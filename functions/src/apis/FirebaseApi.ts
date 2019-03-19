@@ -63,7 +63,7 @@ export default class FirebaseApi {
   }
 
   public getRecordings(limit: number, botId: string): Promise<PlayMessage[]> {
-    return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'asc').limit(limit).get()
+    return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'desc').limit(limit).get()
     .then((sn: QuerySnapshot) => {
       const messages: PlayMessage[] = [];
       sn.forEach(doc => {

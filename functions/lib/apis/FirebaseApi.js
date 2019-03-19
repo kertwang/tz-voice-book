@@ -91,7 +91,7 @@ var FirebaseApi = /** @class */ (function () {
         });
     };
     FirebaseApi.prototype.getRecordings = function (limit, botId) {
-        return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'asc').limit(limit).get()
+        return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'desc').limit(limit).get()
             .then(function (sn) {
             var messages = [];
             sn.forEach(function (doc) {

@@ -40,8 +40,9 @@ module.exports = (functions: any) => {
     app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
   } else {
     console.log('Using verbose log');
-    morganBody(app);
-
+    app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+    //For some reason morgan body doesn't work.
+    // morganBody(app);
   }
 
   /* CORS Configuration */
@@ -189,7 +190,7 @@ module.exports = (functions: any) => {
       firebaseApi,
       dynamicParams,
       ...pageParams,
-      enableDemoMessages: false,
+      enableDemoMessages: false, //TODO: make remote config for this
     };
 
     log({
@@ -245,7 +246,7 @@ module.exports = (functions: any) => {
       firebaseApi,
       dynamicParams,
       ...pageParams,
-      enableDemoMessages: false,
+      enableDemoMessages: false, //TODO: make remote config for this
     };
 
     log({

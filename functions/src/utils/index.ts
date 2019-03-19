@@ -89,9 +89,9 @@ export const generateUrl = (urlPrefix: string, path: string, firebaseToken: stri
  * This is really less than ideal, and we need to find a better way.
  */
 export const saftelyGetPageParamsOrDefaults = (params: any): PageParams => {
-  const page = params.page ? parseInt(params.page) : 0;
-  let pageSize = params.pageSize ? parseInt(params.pageSize) : 3;
-  let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
+  const page = params.page ? parseInt(params.page) : 1;
+  let pageSize = params.pageSize ? parseInt(params.pageSize) : 1;
+  let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 3;
   let versionOverride = params.versionOverride;
 
   //Also handle shitty twilio url encoded params :(

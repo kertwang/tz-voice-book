@@ -84,9 +84,9 @@ exports.generateUrl = function (urlPrefix, path, firebaseToken) {
  * This is really less than ideal, and we need to find a better way.
  */
 exports.saftelyGetPageParamsOrDefaults = function (params) {
-    var page = params.page ? parseInt(params.page) : 0;
-    var pageSize = params.pageSize ? parseInt(params.pageSize) : 3;
-    var maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
+    var page = params.page ? parseInt(params.page) : 1;
+    var pageSize = params.pageSize ? parseInt(params.pageSize) : 1;
+    var maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 3;
     var versionOverride = params.versionOverride;
     //Also handle shitty twilio url encoded params :(
     if (params['amp;pageSize']) {

@@ -54,8 +54,6 @@ var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
 var moment_1 = __importDefault(require("moment"));
 var morgan_1 = __importDefault(require("morgan"));
-//@ts-ignore
-var morgan_body_1 = __importDefault(require("morgan-body"));
 var TwilioRouter_1 = __importDefault(require("../apis/TwilioRouter"));
 var ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
 var utils_1 = require("../utils");
@@ -82,7 +80,9 @@ module.exports = function (functions) {
     }
     else {
         console.log('Using verbose log');
-        morgan_body_1["default"](app);
+        app.use(morgan_1["default"](':method :url :status :res[content-length] - :response-time ms'));
+        //For some reason morgan body doesn't work.
+        // morganBody(app);
     }
     /* CORS Configuration */
     var openCors = cors_1["default"]({ origin: '*' });
