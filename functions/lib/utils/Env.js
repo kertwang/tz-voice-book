@@ -1,6 +1,13 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const functions = require("firebase-functions");
+const functions = __importStar(require("firebase-functions"));
 const _1 = require(".");
 const envConfig = functions.config();
 exports.twilioAccountSid = envConfig.config.twilio_account_sid;
@@ -21,4 +28,3 @@ exports.relayDefaultCountrycode = envConfig.config.relay_default_country_code;
 exports.urlPrefix = envConfig.config.url_prefix;
 exports.firebaseToken = envConfig.config.firebase_token;
 exports.optOutWebookUrl = envConfig.config.opt_out_webhook_url;
-//# sourceMappingURL=Env.js.map

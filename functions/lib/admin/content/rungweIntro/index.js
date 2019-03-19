@@ -1,9 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const blocks_1 = require("./blocks");
-const flows_1 = require("./flows");
-const en_text_messages_1 = require("./en_text_messages");
-const tz_audio_messages_1 = require("./tz_audio_messages");
+const blocks_1 = __importDefault(require("./blocks"));
+const flows_1 = __importDefault(require("./flows"));
+const en_text_messages_1 = __importDefault(require("./en_text_messages"));
+const tz_audio_messages_1 = __importDefault(require("./tz_audio_messages"));
 const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
 const en_text = {
     botId: TwilioTypes_1.BotId.rungweIntro,
@@ -22,4 +25,3 @@ const configs = {
     tz_audio,
 };
 exports.default = configs;
-//# sourceMappingURL=index.js.map

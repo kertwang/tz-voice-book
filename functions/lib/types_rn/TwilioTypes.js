@@ -117,4 +117,3 @@ var VersionId;
     VersionId["wl_audio"] = "wl_audio";
     VersionId["en_audio"] = "en_audio";
 })(VersionId = exports.VersionId || (exports.VersionId = {}));
-//# sourceMappingURL=TwilioTypes.js.map

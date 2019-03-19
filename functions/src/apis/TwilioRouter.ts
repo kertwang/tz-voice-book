@@ -134,6 +134,8 @@ export default class TwilioRouter {
     switch(blockName) {
       //this has a flow type of gather- breaking some weird stuff
       case(BlockId.listen_playback): {
+        console.log("handlePlaybackBlock, listen_playback");
+
         const gather = response.gather({
           // action: `${baseUrl}/twiml/${botId}/gather/${blockName}?page=${ctx.page}\&pageSize=${ctx.pageSize}\&maxMessages=${ctx.maxMessages}`,
           action: buildRedirectUrl({
@@ -154,8 +156,10 @@ export default class TwilioRouter {
         //TODO: fixme this repeats messages when page size > 1
         //Play all of the pre-recorded messages, then load all of the messages from firestore and play them.
         const recordings = await ctx.firebaseApi.getRecordings(ctx.maxMessages, botId);
+        console.log("Recordings are", recordings);
+        
         const totalCount = messages.length + recordings.length;
-        const {page, pageSize} = ctx
+        const { page, pageSize } = ctx;
 
         const allToPlay: any[] = messages;
         recordings.forEach(r => allToPlay.push(r));

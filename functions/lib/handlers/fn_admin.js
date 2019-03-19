@@ -1,17 +1,27 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const cors = require("cors");
+const express = __importStar(require("express"));
+const cors = __importStar(require("cors"));
 //@ts-ignore
-const morgan = require("morgan");
+const morgan = __importStar(require("morgan"));
 //@ts-ignore
-const morganBody = require("morgan-body");
-const ErrorHandler_1 = require("../utils/ErrorHandler");
-const FirebaseApi_1 = require("../apis/FirebaseApi");
-const Firestore_1 = require("../apis/Firestore");
+const morganBody = __importStar(require("morgan-body"));
+const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
+const FirebaseApi_1 = __importDefault(require("../apis/FirebaseApi"));
+const Firestore_1 = __importDefault(require("../apis/Firestore"));
 const TwilioApi_1 = require("../apis/TwilioApi");
 const Env_1 = require("../utils/Env");
-const FirebaseAuth_1 = require("../middlewares/FirebaseAuth");
+const FirebaseAuth_1 = __importDefault(require("../middlewares/FirebaseAuth"));
 const utils_1 = require("../utils");
 const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
 const bodyParser = require('body-parser');
@@ -90,4 +100,3 @@ module.exports = (functions) => {
     app.use(ErrorHandler_1.default);
     return functions.https.onRequest(app);
 };
-//# sourceMappingURL=fn_admin.js.map

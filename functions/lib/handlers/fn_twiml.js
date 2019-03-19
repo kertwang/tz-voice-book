@@ -1,32 +1,34 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const cors = require("cors");
-const moment = require("moment");
+const express = __importStar(require("express"));
+const cors = __importStar(require("cors"));
+const moment = __importStar(require("moment"));
 //@ts-ignore
-const morgan = require("morgan");
+const morgan = __importStar(require("morgan"));
 //@ts-ignore
-const morganBody = require("morgan-body");
-const TwilioRouter_1 = require("../apis/TwilioRouter");
-const ErrorHandler_1 = require("../utils/ErrorHandler");
+const morganBody = __importStar(require("morgan-body"));
+const TwilioRouter_1 = __importDefault(require("../apis/TwilioRouter"));
+const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
 const utils_1 = require("../utils");
-const FirebaseApi_1 = require("../apis/FirebaseApi");
-const Firestore_1 = require("../apis/Firestore");
+const FirebaseApi_1 = __importDefault(require("../apis/FirebaseApi"));
+const Firestore_1 = __importDefault(require("../apis/Firestore"));
 const Log_1 = require("../utils/Log");
 const TwilioApi_1 = require("../apis/TwilioApi");
 const Env_1 = require("../utils/Env");
 const LogTypes_1 = require("../types_rn/LogTypes");
 const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
-const responses2_template_1 = require("./responses2.template");
-const mustache = require("mustache");
+const responses2_template_1 = __importDefault(require("./responses2.template"));
+const mustache = __importStar(require("mustache"));
 require('express-async-errors');
 const twilioApi = new TwilioApi_1.TwilioApi();
 //TODO: make newer import format
@@ -59,7 +61,7 @@ module.exports = (functions) => {
     /**
      * Get the responses from the chatbot in a simple text format
      */
-    app.get('/:botId/responses', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.get('/:botId/responses', async (req, res) => {
         const { botId, intent } = req.params;
         // const responsesResult = await firebaseApi.getResponses(botId, intent);
         const intents = [
@@ -68,7 +70,7 @@ module.exports = (functions) => {
             { intent: 'conclusionOneThingCapture', question: 'One quick question: What would you most like to get out of the exercise today?', responses: [] },
             { intent: 'tripSummaryStruggleCapture', question: 'In one word, what do you now think is the most important key to using automated digital tools with low-income clients?', responses: [] },
         ];
-        const responsesResult = yield Promise.all(intents.map((i) => firebaseApi.getResponses(botId, i.intent)));
+        const responsesResult = await Promise.all(intents.map((i) => firebaseApi.getResponses(botId, i.intent)));
         responsesResult.forEach((result, idx) => {
             if (result.type === AppProviderTypes_1.ResultType.ERROR) {
                 return;
@@ -76,18 +78,18 @@ module.exports = (functions) => {
             intents[idx].responses = result.result;
         });
         res.status(200).send(mustache.render(responses2_template_1.default, { intents }));
-    }));
+    });
     /**
      * Callback triggered once feedback recording is finished
      */
-    app.post('/:botId/recordingCallback/feedback', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.post('/:botId/recordingCallback/feedback', async (req, res) => {
         const botId = utils_1.getBotId(req.params.botId);
         const recording = {
             url: req.body.RecordingUrl,
             createdAt: moment().toISOString(),
             callSid: req.body.CallSid,
         };
-        const pendingId = yield firebaseApi.saveFeedbackRecording(recording, botId);
+        const pendingId = await firebaseApi.saveFeedbackRecording(recording, botId);
         Log_1.log({
             type: LogTypes_1.LogType.PENDING_MESSAGE,
             botId,
@@ -96,7 +98,7 @@ module.exports = (functions) => {
             url: recording.url,
         });
         res.json(pendingId);
-    }));
+    });
     /**
      * triggerCall
      *
@@ -124,14 +126,14 @@ module.exports = (functions) => {
     /**
      * Handle Twilio Callback to save the recording for pending submission.
      */
-    app.post('/:botId/recordingCallback/message', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.post('/:botId/recordingCallback/message', async (req, res) => {
         const botId = utils_1.getBotId(req.params.botId);
         const recording = {
             url: req.body.RecordingUrl,
             createdAt: moment().toISOString(),
             callSid: req.body.CallSid,
         };
-        const pendingId = yield firebaseApi.savePendingRecording(recording, botId);
+        const pendingId = await firebaseApi.savePendingRecording(recording, botId);
         Log_1.log({
             type: LogTypes_1.LogType.PENDING_MESSAGE,
             botId,
@@ -140,28 +142,35 @@ module.exports = (functions) => {
             url: recording.url,
         });
         res.json(pendingId);
-    }));
+    });
     /**
      * Action callback handlers.
      */
-    app.post('/:botId/gather/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.post('/:botId/gather/*', async (req, res) => {
         const botId = utils_1.getBotId(req.params.botId);
         const blockName = utils_1.pathToBlock(req.path);
         console.log(`Block Name: ${blockName}. Query Params: ${JSON.stringify(req.query)}`);
         const mobile = utils_1.getUserMobile(req.body);
-        const user = yield firebaseApi.getUserFromMobile(mobile, botId);
+        const user = await firebaseApi.getUserFromMobile(mobile, botId);
         const pageParams = utils_1.saftelyGetPageParamsOrDefaults(req.query);
         const dynamicParams = utils_1.saftelyGetDynamicParamsOrEmpty(req.query);
         /* Configure the version using a versionOverride query param */
         let botConfig;
         if (pageParams.versionOverride) {
-            botConfig = yield firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
+            botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
         }
         else {
-            botConfig = yield firebaseApi.getBotConfig(user.id, botId);
+            botConfig = await firebaseApi.getBotConfig(user.id, botId);
         }
-        const ctx = Object.assign({ callSid: req.body.CallSid, mobile, toMobile: req.body.To, userId: user.id, firebaseApi,
-            dynamicParams }, pageParams);
+        const ctx = {
+            callSid: req.body.CallSid,
+            mobile,
+            toMobile: req.body.To,
+            userId: user.id,
+            firebaseApi,
+            dynamicParams,
+            ...pageParams,
+        };
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
             botId,
@@ -173,34 +182,42 @@ module.exports = (functions) => {
         const gatherResult = {
             digits: req.body.Digits,
         };
-        const result = yield TwilioRouter_1.default.gatherNextMessage(ctx, botConfig, blockName, gatherResult);
+        const result = await TwilioRouter_1.default.gatherNextMessage(ctx, botConfig, blockName, gatherResult);
         utils_1.logTwilioResponse(result);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);
-    }));
+    });
     /**
      * Handle all normal routes
      */
-    app.post('/:botId/*', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    app.post('/:botId/*', async (req, res) => {
         const botId = utils_1.getBotId(req.params.botId);
         const blockName = utils_1.pathToBlock(req.path);
         //Get the user object.
         const mobile = utils_1.getUserMobile(req.body);
-        const user = yield firebaseApi.getUserFromMobile(mobile, botId);
+        const user = await firebaseApi.getUserFromMobile(mobile, botId);
         const pageParams = utils_1.saftelyGetPageParamsOrDefaults(req.query);
         const dynamicParams = utils_1.saftelyGetDynamicParamsOrEmpty(req.query);
         /* Configure the version using a versionOverride query param */
         let botConfig;
         if (pageParams.versionOverride) {
             //RW-TODO: change this to getBotConfig with params
-            botConfig = yield firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
+            botConfig = await firebaseApi.getBotConfigOverride(user.id, botId, pageParams.versionOverride);
         }
         else {
-            botConfig = yield firebaseApi.getBotConfig(user.id, botId);
+            botConfig = await firebaseApi.getBotConfig(user.id, botId);
         }
         console.log("POST /:botId/ bot config is:", botConfig);
-        const ctx = Object.assign({ callSid: req.body.CallSid, mobile, toMobile: req.body.To, userId: user.id, versionOverride: req.query.versionOverride || null, firebaseApi,
-            dynamicParams }, pageParams);
+        const ctx = {
+            callSid: req.body.CallSid,
+            mobile,
+            toMobile: req.body.To,
+            userId: user.id,
+            versionOverride: req.query.versionOverride || null,
+            firebaseApi,
+            dynamicParams,
+            ...pageParams,
+        };
         Log_1.log({
             type: LogTypes_1.LogType.BLOCK,
             botId,
@@ -209,12 +226,11 @@ module.exports = (functions) => {
             mobile: ctx.mobile,
             pageParams,
         });
-        const result = yield TwilioRouter_1.default.nextMessage(ctx, botConfig, blockName);
+        const result = await TwilioRouter_1.default.nextMessage(ctx, botConfig, blockName);
         res.writeHead(200, { 'Content-Type': 'text/xml' });
         res.end(result);
-    }));
+    });
     /*Error Handling - must be at bottom!*/
     app.use(ErrorHandler_1.default);
     return functions.https.onRequest(app);
 };
-//# sourceMappingURL=fn_twiml.js.map

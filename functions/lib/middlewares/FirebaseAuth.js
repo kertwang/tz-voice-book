@@ -46,4 +46,3 @@ function FirebaseAuth(req, res, next) {
 }
 exports.default = FirebaseAuth;
 ;
-//# sourceMappingURL=FirebaseAuth.js.map

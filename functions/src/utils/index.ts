@@ -87,7 +87,7 @@ export const generateUrl = (urlPrefix: string, path: string, firebaseToken: stri
  */
 export const saftelyGetPageParamsOrDefaults = (params): PageParams => {
   const page = params.page ? parseInt(params.page) : 0;
-  let pageSize = params.pageSize ? parseInt(params.pageSize) : 1;
+  let pageSize = params.pageSize ? parseInt(params.pageSize) : 3;
   let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
   let versionOverride = params.versionOverride;
 
@@ -255,7 +255,7 @@ const buildVersionOverrideUrl = (b: DefaultUrlBuilder): string => {
 }
 
 const buildRecordingCallbackUrl = (b: RecordingCallbackUrlBuilder): string => {
-  // return `${b.baseUrl}/twiml/${b.botId}/recordingCallback/${b.recordingCallback}`;
+  //eg. https://us-central1-tz-phone-book.cloudfunctions.net/twiml/voicebook/recordingCallback/message
   return `${b.baseUrl}${b.recordingCallback}`;
 }
 

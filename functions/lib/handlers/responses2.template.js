@@ -56,4 +56,3 @@ const template = `<!doctype html>
   </body>
 </html>`;
 exports.default = template;
-//# sourceMappingURL=responses2.template.js.map

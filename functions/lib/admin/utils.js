@@ -15,4 +15,3 @@ function generatePlay(prefix, messageId) {
     return { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, `${prefix}/${messageId}.mp3`, firebaseToken) };
 }
 exports.generatePlay = generatePlay;
-//# sourceMappingURL=utils.js.map

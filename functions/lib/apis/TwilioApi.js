@@ -1,6 +1,13 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const twilio = require("twilio");
+const twilio = __importStar(require("twilio"));
 const Env_1 = require("../utils/Env");
 const Log_1 = require("../utils/Log");
 const LogTypes_1 = require("../types_rn/LogTypes");
@@ -44,4 +51,3 @@ class TwilioApi {
     }
 }
 exports.TwilioApi = TwilioApi;
-//# sourceMappingURL=TwilioApi.js.map

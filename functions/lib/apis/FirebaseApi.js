@@ -1,12 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
@@ -70,14 +62,12 @@ class FirebaseApi {
     /**
      * Save a feedback recording
      */
-    saveFeedbackRecording(recording, botId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.fs.collection('bot').doc(botId).collection('feedback').add(recording)
-                .then(ref => ref.id)
-                .catch(err => {
-                console.log("Error in savePendingRecording", err);
-                return Promise.reject(err);
-            });
+    async saveFeedbackRecording(recording, botId) {
+        return this.fs.collection('bot').doc(botId).collection('feedback').add(recording)
+            .then(ref => ref.id)
+            .catch(err => {
+            console.log("Error in savePendingRecording", err);
+            return Promise.reject(err);
         });
     }
     /**
@@ -85,32 +75,28 @@ class FirebaseApi {
      *
      * Returns the id of the pending reading
      */
-    savePendingRecording(recording, botId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.fs.collection('bot').doc(botId).collection('pendingRecordings').add(recording)
-                .then(ref => ref.id)
-                .catch(err => {
-                console.log("Error in savePendingRecording", err);
-                return Promise.reject(err);
-            });
+    async savePendingRecording(recording, botId) {
+        return this.fs.collection('bot').doc(botId).collection('pendingRecordings').add(recording)
+            .then(ref => ref.id)
+            .catch(err => {
+            console.log("Error in savePendingRecording", err);
+            return Promise.reject(err);
         });
     }
     /**
      * Get all pending recordings for a given callSid, newest first
      */
-    getPendingRecordings(callSid, limit, botId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.fs.collection('bot').doc(botId).collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
-                .then((sn) => {
-                const recordings = [];
-                sn.forEach(doc => {
-                    //Get each document, put in the id
-                    const data = doc.data();
-                    data.id = doc.id;
-                    recordings.push(data);
-                });
-                return recordings;
+    async getPendingRecordings(callSid, limit, botId) {
+        return this.fs.collection('bot').doc(botId).collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
+            .then((sn) => {
+            const recordings = [];
+            sn.forEach(doc => {
+                //Get each document, put in the id
+                const data = doc.data();
+                data.id = doc.id;
+                recordings.push(data);
             });
+            return recordings;
         });
     }
     /**
@@ -118,25 +104,22 @@ class FirebaseApi {
      * This is because the callback to save the pending recording sometimes takes
      * too long, and causes the call to die
      */
-    getPendingRecordingsWithRetries(botId, callSid, limit, retries, timeoutMs = 10) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = yield this.getPendingRecordings(callSid, limit, botId);
-            if (result.length > 0) {
-                return result;
-            }
-            if (retries === 0) {
-                console.log('Out of retries. Returning a bad result.');
-                return result;
-            }
-            yield utils_1.sleep(timeoutMs);
-            return this.getPendingRecordingsWithRetries(botId, callSid, limit, retries - 1, timeoutMs * 2);
-        });
+    async getPendingRecordingsWithRetries(botId, callSid, limit, retries, timeoutMs = 10) {
+        const result = await this.getPendingRecordings(callSid, limit, botId);
+        if (result.length > 0) {
+            return result;
+        }
+        if (retries === 0) {
+            console.log('Out of retries.');
+            console.warn(`No pendingRecording found for botId: ${botId}, callSid: ${callSid}`);
+            return result;
+        }
+        await utils_1.sleep(timeoutMs);
+        return this.getPendingRecordingsWithRetries(botId, callSid, limit, retries - 1, timeoutMs * 2);
     }
-    deletePendingRecordingsForCall(callSid) {
-        return __awaiter(this, void 0, void 0, function* () {
-            //TODO: implement this
-            return Promise.resolve(true);
-        });
+    async deletePendingRecordingsForCall(callSid) {
+        //TODO: implement this
+        return Promise.resolve(true);
     }
     /**
      * Publish a recording for everyone else to listen to.
@@ -151,11 +134,9 @@ class FirebaseApi {
      *
      * This will be stored in firebase, parsed, and filled into the context object
      */
-    getBotConfig(userId, botId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const version = yield this.getVersionForUser(userId, botId);
-            return this.getBotConfigForVersion(userId, botId, version);
-        });
+    async getBotConfig(userId, botId) {
+        const version = await this.getVersionForUser(userId, botId);
+        return this.getBotConfigForVersion(userId, botId, version);
     }
     /**
      * getBotConfigOverride
@@ -163,67 +144,59 @@ class FirebaseApi {
      * Get the bot config, but override the user's version. This is useful for testing
      * different versions when the user can't configure the version for themselves
      */
-    getBotConfigOverride(userId, botId, versionOverride) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const version = yield this.getVersionForUser(userId, botId, versionOverride);
-            return this.getBotConfigForVersion(userId, botId, version);
-        });
+    async getBotConfigOverride(userId, botId, versionOverride) {
+        const version = await this.getVersionForUser(userId, botId, versionOverride);
+        return this.getBotConfigForVersion(userId, botId, version);
     }
-    getBotConfigForVersion(userId, botId, version) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
-                .then(doc => doc.data())
-                .then((rawConfig) => {
-                if (!rawConfig) {
-                    throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
-                }
-                //RW-TODO: inject a dynamic level of bot config here?
-                //we need to deserialize the functions that we saved for dynamic requests
-                const configString = JSON.stringify(rawConfig, null, 2);
-                const config = JSON.parse(configString, utils_1.functionReviver);
-                // const anyMessage: AnyMessageType = config.messages.entrypoint[0];
-                // if (anyMessage.type === MessageType.DYNAMIC_SAY) {
-                //   console.log("message is", anyMessage);
-                //   console.log("saying message,",  anyMessage.func(['HELLO WORLD']));
-                // }
-                // console.log("getBotConfigForVersion, Bot config is", );
-                return config;
-            })
-                .catch(err => {
-                console.warn(err.message);
+    async getBotConfigForVersion(userId, botId, version) {
+        return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
+            .then(doc => doc.data())
+            .then((rawConfig) => {
+            if (!rawConfig) {
                 throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
-            });
+            }
+            //RW-TODO: inject a dynamic level of bot config here?
+            //we need to deserialize the functions that we saved for dynamic requests
+            const configString = JSON.stringify(rawConfig, null, 2);
+            const config = JSON.parse(configString, utils_1.functionReviver);
+            // const anyMessage: AnyMessageType = config.messages.entrypoint[0];
+            // if (anyMessage.type === MessageType.DYNAMIC_SAY) {
+            //   console.log("message is", anyMessage);
+            //   console.log("saying message,",  anyMessage.func(['HELLO WORLD']));
+            // }
+            // console.log("getBotConfigForVersion, Bot config is", );
+            return config;
+        })
+            .catch(err => {
+            console.warn(err.message);
+            throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
         });
     }
     //RW-TODO: specify other params here that can be overriden?
     //This makes it backwards compatible with storing vars in the users object, or specifying them dynamically at runtime
-    getVersionForUser(userId, botId, override) {
-        return __awaiter(this, void 0, void 0, function* () {
-            //@ts-ignore
-            if (!util_1.isNullOrUndefined(override) && override !== "undefined") {
-                return override;
-            }
-            const user = yield this.getUser(userId, botId);
-            if (user.version) {
-                //TODO: should also make sure the version code is correct
-                return user.version;
-            }
-            const defaultVersion = TwilioTypes_1.VersionId.tz_audio;
-            console.warn(`No version found for userId: ${userId}, botId: ${botId}. Defaulting to: ${defaultVersion}`);
-            //TODO: default to tz_audio version!
-            return Promise.resolve(defaultVersion);
-        });
+    async getVersionForUser(userId, botId, override) {
+        //@ts-ignore
+        if (!util_1.isNullOrUndefined(override) && override !== "undefined") {
+            return override;
+        }
+        const user = await this.getUser(userId, botId);
+        if (user.version) {
+            //TODO: should also make sure the version code is correct
+            return user.version;
+        }
+        const defaultVersion = TwilioTypes_1.VersionId.tz_audio;
+        console.warn(`No version found for userId: ${userId}, botId: ${botId}. Defaulting to: ${defaultVersion}`);
+        //TODO: default to tz_audio version!
+        return Promise.resolve(defaultVersion);
     }
     //
     // Admin Functions
     // ----------------------------
-    deployConfigForBotAndVersion(new_botId, versionId, config) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log(`Saving config to bot/${new_botId}/version/${versionId}/`);
-            //Serialize the functions in BotConfig so they can be saved in firebase
-            const serialized = JSON.parse(JSON.stringify(config, utils_1.functionReplacer, 2));
-            return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(serialized);
-        });
+    async deployConfigForBotAndVersion(new_botId, versionId, config) {
+        console.log(`Saving config to bot/${new_botId}/version/${versionId}/`);
+        //Serialize the functions in BotConfig so they can be saved in firebase
+        const serialized = JSON.parse(JSON.stringify(config, utils_1.functionReplacer, 2));
+        return this.fs.collection('bot').doc(new_botId).collection('version').doc(versionId).set(serialized);
     }
     //
     // DialogFlow API
@@ -277,23 +250,20 @@ class FirebaseApi {
     //
     // VB Relay API
     //------------------------------
-    getRelayUser(botId, userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.fs.collection('relay').doc(botId).collection('user').doc(userId).get()
-                .then((doc) => {
-                const data = doc.data();
-                if (!data) {
-                    return AppProviderTypes_1.makeError(`No data found for userId: ${userId}`);
-                }
-                const user = {
-                    callCount: data.callCount,
-                    countryCode: data.countryCode,
-                };
-                return AppProviderTypes_1.makeSuccess(user);
-            })
-                .catch((err) => AppProviderTypes_1.makeError(err.message));
-        });
+    async getRelayUser(botId, userId) {
+        return this.fs.collection('relay').doc(botId).collection('user').doc(userId).get()
+            .then((doc) => {
+            const data = doc.data();
+            if (!data) {
+                return AppProviderTypes_1.makeError(`No data found for userId: ${userId}`);
+            }
+            const user = {
+                callCount: data.callCount,
+                countryCode: data.countryCode,
+            };
+            return AppProviderTypes_1.makeSuccess(user);
+        })
+            .catch((err) => AppProviderTypes_1.makeError(err.message));
     }
 }
 exports.default = FirebaseApi;
-//# sourceMappingURL=FirebaseApi.js.map

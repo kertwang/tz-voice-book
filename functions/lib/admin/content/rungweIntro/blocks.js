@@ -8,4 +8,3 @@ const TwilioBlocks = {
     'end': { type: TwilioTypes_1.BlockType.END },
 };
 exports.default = TwilioBlocks;
-//# sourceMappingURL=blocks.js.map

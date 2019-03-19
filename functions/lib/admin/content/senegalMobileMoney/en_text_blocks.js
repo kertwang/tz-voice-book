@@ -38,4 +38,3 @@ const TwilioBlocks = {
     'error_0': { type: TwilioTypes_1.BlockType.END },
 };
 exports.default = TwilioBlocks;
-//# sourceMappingURL=en_text_blocks.js.map

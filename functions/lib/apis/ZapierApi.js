@@ -1,6 +1,13 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const request = require("request-promise-native");
+const request = __importStar(require("request-promise-native"));
 const Env_1 = require("../utils/Env");
 class ZapierApi {
     /**
@@ -27,4 +34,3 @@ class ZapierApi {
     }
 }
 exports.default = ZapierApi;
-//# sourceMappingURL=ZapierApi.js.map

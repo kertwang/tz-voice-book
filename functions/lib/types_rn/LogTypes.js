@@ -10,4 +10,3 @@ var LogType;
     LogType["TWILIO_API_RESPONSE"] = "TWILIO_API_RESPONSE";
     LogType["DIALOG_FLOW_INTENT"] = "DIALOG_FLOW_INTENT";
 })(LogType = exports.LogType || (exports.LogType = {}));
-//# sourceMappingURL=LogTypes.js.map

@@ -68,4 +68,3 @@ function summarizeResults(results) {
     return makeSuccess(undefined);
 }
 exports.summarizeResults = summarizeResults;
-//# sourceMappingURL=AppProviderTypes.js.map

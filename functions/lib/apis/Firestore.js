@@ -19,4 +19,3 @@ firestore.settings(settings);
 exports.default = firestore;
 const storage = admin.storage().bucket();
 exports.storage = storage;
-//# sourceMappingURL=Firestore.js.map

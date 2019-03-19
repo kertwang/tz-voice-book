@@ -4,6 +4,11 @@ import { formatMobile } from '.';
 
 
 describe('Utils Tests', function() {
+
+  describe("buildRedirectUrl()", function () {
+
+  });
+  
   describe('formatMobile()', function() {
     it('Doesn\'t format an existing international number', () => {
       //Arrange

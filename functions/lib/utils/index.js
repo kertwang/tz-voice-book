@@ -1,7 +1,14 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
-const format = require("xml-formatter");
+const format = __importStar(require("xml-formatter"));
 const util_1 = require("util");
 var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 function getBotId(maybeBotId) {
@@ -79,7 +86,7 @@ exports.generateUrl = (urlPrefix, path, firebaseToken) => {
  */
 exports.saftelyGetPageParamsOrDefaults = (params) => {
     const page = params.page ? parseInt(params.page) : 0;
-    let pageSize = params.pageSize ? parseInt(params.pageSize) : 1;
+    let pageSize = params.pageSize ? parseInt(params.pageSize) : 3;
     let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
     let versionOverride = params.versionOverride;
     //Also handle shitty twilio url encoded params :(
@@ -171,7 +178,8 @@ const buildVersionOverrideUrl = (b) => {
     return `${b.baseUrl}/twiml/${b.botId}/${b.blockName}?versionOverride=${b.versionOverride}`;
 };
 const buildRecordingCallbackUrl = (b) => {
-    return `${b.baseUrl}/twiml/${b.botId}/recordingCallback/${b.recordingCallback}`;
+    //eg. https://us-central1-tz-phone-book.cloudfunctions.net/twiml/voicebook/recordingCallback/message
+    return `${b.baseUrl}${b.recordingCallback}`;
 };
 const buildGatherCallbackUrl = (b) => {
     //eg: `${baseUrl}/twiml/${config.botId}/gather/${blockName}`,
@@ -273,4 +281,3 @@ exports.functionReviver = (name, val) => {
     }
     return val;
 };
-//# sourceMappingURL=index.js.map

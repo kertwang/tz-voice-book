@@ -22,4 +22,3 @@ var BlockId;
     BlockId["test_3_prefix_only"] = "test_3_prefix_only";
     BlockId["end"] = "end";
 })(BlockId = exports.BlockId || (exports.BlockId = {}));
-//# sourceMappingURL=BenchmarkRouter.js.map

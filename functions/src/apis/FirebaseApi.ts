@@ -132,7 +132,8 @@ export default class FirebaseApi {
     }
 
     if (retries === 0) {
-      console.log('Out of retries. Returning a bad result.');
+      console.log('Out of retries.');
+      console.warn(`No pendingRecording found for botId: ${botId}, callSid: ${callSid}`);
       return result;
     }
 

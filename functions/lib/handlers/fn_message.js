@@ -1,10 +1,17 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const cors = require("cors");
-const moment = require("moment");
-const morgan = require("morgan");
-const morganBody = require("morgan-body");
+const express = __importStar(require("express"));
+const cors = __importStar(require("cors"));
+const moment = __importStar(require("moment"));
+const morgan = __importStar(require("morgan"));
+const morganBody = __importStar(require("morgan-body"));
 const bodyParser = require('body-parser');
 module.exports = (functions, admin) => {
     const app = express();
@@ -74,4 +81,3 @@ module.exports = (functions, admin) => {
     });
     return functions.https.onRequest(app);
 };
-//# sourceMappingURL=fn_message.js.map

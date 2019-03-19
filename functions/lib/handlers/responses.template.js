@@ -25,4 +25,3 @@ const template = `
 </html>
 `;
 exports.default = template;
-//# sourceMappingURL=responses.template.js.map

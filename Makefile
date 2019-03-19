@@ -53,6 +53,9 @@ switch-prod:
 # Local Development
 ##
 
+build:
+	cd $(dir)/functions; yarn run build
+
 run-lt: 
 	@make env
 	@lt --subdomain ${LT_SUBDOMAIN} --port 5000
