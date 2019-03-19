@@ -3,7 +3,7 @@ import { LogType } from '../types_rn/LogTypes';
 import { log } from './Log';
 
 
-describe('Utils Tests', function () {
+describe('Logger Tests', function () {
   it('logs correctly', () => {
 
     log({

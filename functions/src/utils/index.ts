@@ -285,7 +285,6 @@ const buildPaginatedGatherCallbackUrl = (b: PaginatedGatherUrlBuilder): string =
 
 
 export function buildRedirectUrl(builder: NextUrlBuilder): string {
-  console.log("buildingUrl", builder);
   switch(builder.type) {
     case NextUrlType.PaginatedUrl: return buildPaginatedUrl(builder)
     case NextUrlType.DefaultUrl: return buildVersionOverrideUrl(builder)

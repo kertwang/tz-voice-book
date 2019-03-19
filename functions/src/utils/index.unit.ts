@@ -1,12 +1,188 @@
 import  {describe} from 'mocha';
 import * as assert from 'assert';
-import { formatMobile } from '.';
+import { formatMobile, PaginatedUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder, RecordingCallbackUrlBuilder, GatherUrlBuilder, PaginatedGatherUrlBuilder, } from '.';
+import { BotId, BlockId, VersionId } from '../types_rn/TwilioTypes';
 
 
 describe('Utils Tests', function() {
 
-  describe("buildRedirectUrl()", function () {
+  const baseUrl = "https://us-central1-tz-phone-book-dev.cloudfunctions.net";
 
+  describe("buildRedirectUrl()", function () {
+    it('builds a paginated redirect url', () => {
+      //Arrange
+      const builder: PaginatedUrlBuilder = {
+        type: NextUrlType.PaginatedUrl,
+        baseUrl,
+        botId: BotId.voicebook,
+        blockName: BlockId.listen_0,
+        nextPageNo: 0,
+        pageSize: 1,
+        maxMessages: 3,
+        versionOverride: null,
+      };
+      const expected = `${baseUrl}/twiml/voicebook/listen_0?page=0&pageSize=1&maxMessages=3`
+
+      //Act
+      const result = buildRedirectUrl(builder);
+
+      //Assert
+      assert.strictEqual(result, expected);
+    });
+
+    it('builds a paginated redirect url with version override', () => {
+      //Arrange
+      const builder: PaginatedUrlBuilder = {
+        type: NextUrlType.PaginatedUrl,
+        baseUrl,
+        botId: BotId.voicebook,
+        blockName: BlockId.listen_0,
+        nextPageNo: 0,
+        pageSize: 1,
+        maxMessages: 3,
+        versionOverride: VersionId.en_au,
+      };
+      const expected = `${baseUrl}/twiml/voicebook/listen_0?page=0&pageSize=1&maxMessages=3&versionOverride=en_au`;
+
+      //Act
+      const result = buildRedirectUrl(builder);
+
+      //Assert
+      assert.strictEqual(result, expected);
+    });
+
+
+    it('builds the default url', () => {
+      //Arrange
+      const builder: DefaultUrlBuilder = {
+        type: NextUrlType.DefaultUrl,
+        baseUrl,
+        botId: BotId.voicebook,
+        blockName: BlockId.listen_0,
+        versionOverride: null,
+      };
+      const expected = `${baseUrl}/twiml/voicebook/listen_0`;
+
+      //Act
+      const result = buildRedirectUrl(builder);
+
+      //Assert
+      assert.strictEqual(result, expected);
+    });
+
+    it('builds the default url with version override', () => {
+      //Arrange
+      const builder: DefaultUrlBuilder = {
+        type: NextUrlType.DefaultUrl,
+        baseUrl,
+        botId: BotId.voicebook,
+        blockName: BlockId.listen_0,
+        versionOverride: VersionId.en_au,
+      };
+      const expected = `${baseUrl}/twiml/voicebook/listen_0?versionOverride=en_au`;
+
+      //Act
+      const result = buildRedirectUrl(builder);
+
+      //Assert
+      assert.strictEqual(result, expected);
+    });
+
+    it('builds the recording callback url', () => {
+      //Arrange
+      const builder: RecordingCallbackUrlBuilder = {
+        type: NextUrlType.RecordingCallbackUrl,
+        baseUrl,
+        botId: BotId.voicebook,
+        recordingCallback: "/twiml/voicebook/recordingCallback/message",
+      };
+      const expected = `${baseUrl}/twiml/voicebook/recordingCallback/message`;
+
+      //Act
+      const result = buildRedirectUrl(builder);
+
+      //Assert
+      assert.strictEqual(result, expected);
+    });
+
+
+    it('builds the gather url', () => {
+      //Arrange
+      const builder: GatherUrlBuilder = {
+        type: NextUrlType.GatherUrl,
+        baseUrl,
+        botId: BotId.voicebook,
+        blockName: BlockId.listen_0,
+        versionOverride: null,
+      };
+      const expected = `${baseUrl}/twiml/voicebook/gather/listen_0`;
+
+      //Act
+      const result = buildRedirectUrl(builder);
+
+      //Assert
+      assert.strictEqual(result, expected);
+    });
+
+    it('builds the gather url with version override', () => {
+      //Arrange
+      const builder: GatherUrlBuilder = {
+        type: NextUrlType.GatherUrl,
+        baseUrl,
+        botId: BotId.voicebook,
+        blockName: BlockId.listen_0,
+        versionOverride: VersionId.en_au,
+      };
+      const expected = `${baseUrl}/twiml/voicebook/gather/listen_0?versionOverride=en_au`;
+
+      //Act
+      const result = buildRedirectUrl(builder);
+
+      //Assert
+      assert.strictEqual(result, expected);
+    });
+
+    it('builds the paginated gather url', () => {
+      //Arrange
+      const builder: PaginatedGatherUrlBuilder = {
+        type: NextUrlType.PaginatedGatherUrl,
+        baseUrl,
+        botId: BotId.voicebook,
+        blockName: BlockId.listen_0,
+        nextPageNo: 0,
+        pageSize: 1,
+        maxMessages: 3,
+        versionOverride: null,
+      };
+      const expected = `${baseUrl}/twiml/voicebook/gather/listen_0?page=0&pageSize=1&maxMessages=3`;
+
+      //Act
+      const result = buildRedirectUrl(builder);
+
+      //Assert
+      assert.strictEqual(result, expected);
+    });
+
+    it('builds the paginated gather url with version override', () => {
+      //Arrange
+      const builder: PaginatedGatherUrlBuilder = {
+        type: NextUrlType.PaginatedGatherUrl,
+        baseUrl,
+        botId: BotId.voicebook,
+        blockName: BlockId.listen_0,
+        nextPageNo: 0,
+        pageSize: 1,
+        maxMessages: 3,
+        versionOverride: VersionId.en_au,
+      };
+      const expected = `${baseUrl}/twiml/voicebook/gather/listen_0?page=0&pageSize=1&maxMessages=3&versionOverride=en_au`;
+
+      //Act
+      const result = buildRedirectUrl(builder);
+
+      //Assert
+      assert.strictEqual(result, expected);
+    });
   });
   
   describe('formatMobile()', function() {
