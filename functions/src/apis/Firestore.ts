@@ -14,7 +14,7 @@ if (admin.apps.length === 0) {
 }
 
 const firestore = admin.firestore();
-const settings = {/* your settings... */ timestampsInSnapshots: true };
+const settings = {};
 firestore.settings(settings);
 
 export default firestore;

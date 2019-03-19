@@ -1,7 +1,7 @@
-import * as gulp from 'gulp';
+import gulp from 'gulp';
 
 import firestore, { storage } from '../apis/Firestore';
-import * as fs from 'async-file';
+import fs from 'async-file';
 import FirebaseApi from '../apis/FirebaseApi';
 import { BotId, VersionId } from '../types_rn/TwilioTypes';
 

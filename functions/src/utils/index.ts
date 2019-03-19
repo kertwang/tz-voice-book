@@ -1,6 +1,6 @@
 import { BlockId, GatherResult, PageParams, BotId, VersionId } from "../types_rn/TwilioTypes";
 //@ts-ignore
-import * as format from 'xml-formatter';
+import format from 'xml-formatter';
 import { isNullOrUndefined } from "util";
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();

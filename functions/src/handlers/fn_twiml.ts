@@ -19,7 +19,7 @@ import { LogType } from '../types_rn/LogTypes';
 import { ResultType, SomeResult } from '../types_rn/AppProviderTypes';
 
 import template from './responses2.template';
-import * as mustache from 'mustache';
+import mustache from 'mustache';
 
 
 //TODO: make newer import format

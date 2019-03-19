@@ -1,12 +1,22 @@
 import  {describe} from 'mocha';
-import * as assert from 'assert';
-import { formatMobile, PaginatedUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder, RecordingCallbackUrlBuilder, GatherUrlBuilder, PaginatedGatherUrlBuilder, } from '.';
+import assert from 'assert';
+import { formatMobile, PaginatedUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder, RecordingCallbackUrlBuilder, GatherUrlBuilder, PaginatedGatherUrlBuilder, logTwilioResponse, } from '.';
 import { BotId, BlockId, VersionId } from '../types_rn/TwilioTypes';
 
 
 describe('Utils Tests', function() {
 
   const baseUrl = "https://us-central1-tz-phone-book-dev.cloudfunctions.net";
+
+
+  describe('logTwilioResponse', function() {
+
+    it('prints the xml string correctly', () => {
+      const input = `<div><h1>Hello world</h1></div>`
+      logTwilioResponse(input);
+    });
+
+  });
 
   describe("buildRedirectUrl()", function () {
     it('builds a paginated redirect url', () => {

@@ -1,4 +1,3 @@
-// import * as validate from 'express-validation';
 import express from 'express';
 import cors from 'cors';
 import moment from 'moment';
@@ -7,7 +6,7 @@ import morgan from 'morgan';
 //@ts-ignore
 import morganBody from 'morgan-body';
 
-import * as fbAdmin from "firebase-admin";
+import fbAdmin from "firebase-admin";
 import { ExpressError } from '../types_rn/ExpressTypes';
 type Firestore = fbAdmin.firestore.Firestore;
 
