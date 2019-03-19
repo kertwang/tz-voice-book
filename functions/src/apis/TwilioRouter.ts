@@ -1,12 +1,12 @@
-import * as twilio from 'twilio';
+import VoiceResponse from 'twilio/lib/twiml/VoiceResponse';
 import { logTwilioResponse, NextUrlBuilder, NextUrlType, buildRedirectUrl, DefaultUrlBuilder, generateUrl } from '../utils';
-import { BlockId, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, BotId, AnyBlock, AnyMessageMap, AnyMessageType } from '../types_rn/TwilioTypes';
+import { BlockId, CallContext, DefaultFlow, FlowType, SayMessage, PlayMessage, MessageType, BlockType, DigitResult, BotConfig, GatherFlow, BotId, AnyBlock, AnyMessageType } from '../types_rn/TwilioTypes';
 import { baseUrl, firebaseToken, urlPrefix } from '../utils/Env';
 import { Recording } from './UserApi';
 import { log } from '../utils/Log';
 import { LogType } from '../types_rn/LogTypes';
 import ZapierApi from './ZapierApi';
-const VoiceResponse = twilio.twiml.VoiceResponse;
+import twilio from 'twilio';
 
 /**
  * TwilioRouter is a stateless router for twilio requests.
@@ -28,7 +28,9 @@ export default class TwilioRouter {
    */
   public static async getBlock(ctx: CallContext, config: BotConfig, blockName: BlockId): Promise<any> {
     const messageBlocks = config.messages;
+    // @ts-ignore
     const flow: DefaultFlow | GatherFlow = config.flows[blockName];
+    // @ts-ignore
     const block: AnyBlock = config.blocks[blockName];
     const messages = messageBlocks[blockName];
 
@@ -237,7 +239,7 @@ export default class TwilioRouter {
   }
 
 
-  private static appendMessagesToResponse(response, messages: AnyMessageType[], dynamicParams: string[] = []): any {
+  private static appendMessagesToResponse(response: VoiceResponse | VoiceResponse.Gather , messages: AnyMessageType[], dynamicParams: string[] = []): any {
     messages.forEach(m => {
       console.log("appending new message", m);
 
@@ -294,8 +296,10 @@ export default class TwilioRouter {
     console.log("currentBlock", currentBlock);
     if (currentBlock === BlockId.listen_playback) {
       const response = new VoiceResponse();
-      let nextPage
+      //TODO: not sure if this will cause problems
+      let nextPage = 0;
 
+      /* Handle the user skipping or repeating the message*/
       switch (gatherResult.digits.trim()) {
         case '1': {
           //Skip
@@ -327,7 +331,8 @@ export default class TwilioRouter {
       return response.toString();
     }
 
-    const flow = config.flows[currentBlock];
+    //@ts-ignore
+    const flow: DefaultFlow | GatherFlow = config.flows[currentBlock];
 
     if (flow.type !== FlowType.GATHER) {
       console.error(`gatherNextMessage tried to handle flow with type: ${flow.type}`);
