@@ -1,22 +1,21 @@
 
-import * as express from 'express';
-import * as cors from 'cors';
-import * as moment from 'moment';
+import express from 'express';
+import cors from 'cors';
+import moment from 'moment';
 //@ts-ignore
 import * as morgan from 'morgan';
 //@ts-ignore
 import * as morganBody from 'morgan-body';
 import TwilioRouter from '../apis/TwilioRouter';
-import AppError from '../utils/AppError';
 import ErrorHandler from '../utils/ErrorHandler';
-import { pathToBlock, logTwilioResponse, saftelyGetPageParamsOrDefaults, getBotId, sleep, formatMobile, saftelyGetDynamicParamsOrEmpty, getUserMobile } from '../utils';
+import { pathToBlock, logTwilioResponse, saftelyGetPageParamsOrDefaults, getBotId, saftelyGetDynamicParamsOrEmpty, getUserMobile } from '../utils';
 import { CallContext, DigitResult, BotConfig } from '../types_rn/TwilioTypes';
-import UserApi, { Recording } from '../apis/UserApi';
+import { Recording } from '../apis/UserApi';
 import FirebaseApi from '../apis/FirebaseApi';
 import fs from '../apis/Firestore';
 import { log } from '../utils/Log';
 import { TwilioApi } from '../apis/TwilioApi';
-import { temporaryInsecureAuthKey, relayDefaultCountrycode } from '../utils/Env';
+import { temporaryInsecureAuthKey } from '../utils/Env';
 import { LogType } from '../types_rn/LogTypes';
 import { ResultType, SomeResult } from '../types_rn/AppProviderTypes';
 
@@ -24,15 +23,12 @@ import template from './responses2.template';
 import * as mustache from 'mustache';
 
 
+//TODO: make newer import format
 require('express-async-errors');
+const bodyParser = require('body-parser');
+
 
 const twilioApi = new TwilioApi();
-
-//TODO: make newer import format
-const VoiceResponse = require('twilio').twiml.VoiceResponse;
-
-const bodyParser = require('body-parser');
-const Joi = require('joi');
 
 module.exports = (functions: any) => {
   const app = express();
@@ -46,7 +42,6 @@ module.exports = (functions: any) => {
   } else {
     console.log('Using verbose log');
     morganBody(app);
-    // app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 
   }
 
@@ -67,8 +62,7 @@ module.exports = (functions: any) => {
    * Get the responses from the chatbot in a simple text format
    */
   app.get('/:botId/responses', async (req, res) => {
-    const { botId, intent } = req.params;
-    // const responsesResult = await firebaseApi.getResponses(botId, intent);
+    const { botId } = req.params;
 
     const intents = [
       { intent: 'shareQuestionCapture', question: 'Great. Would you mind sharing one of your questions with me? You can type it below:', responses:[] },
@@ -83,6 +77,7 @@ module.exports = (functions: any) => {
         return;
       }
 
+      //@ts-ignore
       intents[idx].responses = result.result;
     });
 
