@@ -21,10 +21,6 @@ if (!process.env.FUNCTION_NAME || process.env.FUNCTION_NAME === 'message') {
   exports.message = require('./handlers/fn_message')(functions, fbAdmin);
 }
 
-if (!process.env.FUNCTION_NAME || process.env.FUNCTION_NAME === 'reset_pin') {
-  exports.reset_pin = require('./handlers/fn_reset_pin')(functions, fbAdmin);
-}
-
 if (!process.env.FUNCTION_NAME || process.env.FUNCTION_NAME === 'twiml') {
   exports.twiml = require('./handlers/fn_twiml')(functions);
 }

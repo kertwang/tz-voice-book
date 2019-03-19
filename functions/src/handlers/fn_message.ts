@@ -1,16 +1,22 @@
-import * as validate from 'express-validation';
-import * as express from 'express';
-import * as cors from 'cors';
-import * as moment from 'moment';
-import * as morgan from 'morgan';
-import * as morganBody from 'morgan-body';
+// import * as validate from 'express-validation';
+import express from 'express';
+import cors from 'cors';
+import moment from 'moment';
+import morgan from 'morgan';
+
+//@ts-ignore
+import morganBody from 'morgan-body';
+
+import * as fbAdmin from "firebase-admin";
+import { ExpressError } from '../types_rn/ExpressTypes';
+type Firestore = fbAdmin.firestore.Firestore;
 
 const bodyParser = require('body-parser');
 
-module.exports = (functions, admin) => {
+module.exports = (functions: any, admin: any) => {
   const app = express();
   app.use(bodyParser.json());
-  const fs = admin.firestore();
+  const fs: Firestore = admin.firestore();
   
   if (process.env.VERBOSE_LOG === 'false') {
     console.log('Using simple log');
@@ -24,9 +30,8 @@ module.exports = (functions, admin) => {
   const openCors = cors({ origin: '*' });
   app.use(openCors);
 
-  app.use(function (err, req, res, next) {
+  app.use(function (err: ExpressError, req: express.Request, res: express.Response, next: () => void) {
     console.log("error", err);
-
     if (err.status) {
       return res.status(err.status).json(err);
     }
@@ -73,8 +78,8 @@ module.exports = (functions, admin) => {
     });
   });
 
-  app.post('/*', (req, res, next) => {
-    const { params, body, query } = req;
+  app.post('/*', (req, res) => {
+    const { body } = req;
     const { audioUrl, phone } = body;
     const createdAt = moment().toISOString();
 
@@ -83,7 +88,7 @@ module.exports = (functions, admin) => {
       phone, 
       createdAt,
     })
-    .then(ref => {
+    .then((ref: any) => {
       res.json({id: ref.id});
     });
   });

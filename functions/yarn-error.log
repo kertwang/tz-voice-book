@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/yarn add @types/xml-formatter
+  /Users/ldaly/.nvm/versions/node/v8.11.1/bin/node /Users/ldaly/.nvm/versions/node/v8.11.1/bin/yarn add @types/morgan-body
 
 PATH: 
   /usr/local/sbin:`/Users/ldaly/.nvm/versions/node/v8.11.1/bin:/Users/ldaly/.nvm/versions/node/v8.11.1/bin:/Users/ldaly/Library/Android/sdk/platform-tools:/Users/ldaly/Library/Android/sdk/tools:/Users/ldaly/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fxml-formatter: Not found
+  Error: https://registry.yarnpkg.com/@types%2fmorgan-body: Not found
       at Request.params.callback [as _callback] (/Users/ldaly/.nvm/versions/node/v8.11.1/lib/node_modules/yarn/lib/cli.js:65327:18)
       at Request.self.callback (/Users/ldaly/.nvm/versions/node/v8.11.1/lib/node_modules/yarn/lib/cli.js:133155:22)
       at emitTwo (events.js:126:13)
@@ -47,6 +47,9 @@ npm manifest:
       "@google-cloud/firestore": "^0.13.1",
       "@types/express": "^4.16.1",
       "@types/mocha": "^5.2.5",
+      "@types/moment": "^2.13.0",
+      "@types/morgan": "^1.7.35",
+      "@types/mustache": "^0.8.32",
       "@types/request-promise-native": "^1.0.14",
       "actions-on-google": "^2.2.0",
       "async-file": "^2.0.2",
@@ -441,6 +444,22 @@ Lockfile:
   "@types/mocha@^5.2.5":
     version "5.2.5"
     resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-5.2.5.tgz#8a4accfc403c124a0bafe8a9fc61a05ec1032073"
+  
+  "@types/moment@^2.13.0":
+    version "2.13.0"
+    resolved "https://registry.yarnpkg.com/@types/moment/-/moment-2.13.0.tgz#604ebd189bc3bc34a1548689404e61a2a4aac896"
+    dependencies:
+      moment "*"
+  
+  "@types/morgan@^1.7.35":
+    version "1.7.35"
+    resolved "https://registry.yarnpkg.com/@types/morgan/-/morgan-1.7.35.tgz#6358f502931cc2583d7a94248c41518baa688494"
+    dependencies:
+      "@types/express" "*"
+  
+  "@types/mustache@^0.8.32":
+    version "0.8.32"
+    resolved "https://registry.yarnpkg.com/@types/mustache/-/mustache-0.8.32.tgz#7db3b81f2bf450bd38805f596d20eca97c4ed595"
   
   "@types/node@*", "@types/node@^10.1.0":
     version "10.5.2"
@@ -3191,6 +3210,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.21.tgz#3cba247d84492174dbf71de2a9848fa13207b845"
     dependencies:
       moment ">= 2.9.0"
+  
+  moment@*:
+    version "2.24.0"
+    resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   
   moment@2.19.3:
     version "2.19.3"
