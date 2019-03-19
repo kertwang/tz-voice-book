@@ -2,16 +2,13 @@ import * as assert from 'assert';
 import TwilioRouter from './TwilioRouter';
 
 import {describe} from 'mocha';
-// import { CallContext, GatherResult } from './TwilioRouter';
 import FirebaseApi from './FirebaseApi';
-import { BlockId } from '../../lib/types/TwilioRouter';
-import { CallContext, GatherResult, BotConfig, DigitResult } from '../types_rn/TwilioTypes';
+import { CallContext, DigitResult, BlockId } from '../types_rn/TwilioTypes';
 
 const admin = require('firebase-admin');
 admin.initializeApp();
 const fs = admin.firestore();
 
-const baseUrl = 'http://localhost:5000';
 const botConfig: any = {
 
 };
