@@ -9,6 +9,7 @@ import { BotId } from '../types_rn/TwilioTypes';
 import { log, maybeLog } from '../utils/Log';
 import { LogType } from '../types_rn/LogTypes';
 import { buildExpectedToken } from '../utils';
+import express from 'express';
 
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
@@ -106,12 +107,12 @@ const translations: { en: TranslationFile, fr: TranslationFile} = {
     tripSummaryStruggleCapture_1: 'Quels aspects des robots ont poser des problèmes pour votre bénéficiaire? Avec les autres membres de votre groupe, écrivez quelques observations sur les feuillets ROUGES -- une observation par feuillet.',
     tripSummaryStruggleCapture_2: 'Appuyez sur «Continuer» quand vous avez terminé.',
     tripSummaryStruggleCapture_3: 'Continuer',
-  }
+  },
 }
 
 
 //TODO: add basic auth
-exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request: express.Request, response: express.Response) => {
   
   //Super basic auth:
   if (request.headers.authorization !== buildExpectedToken('apikey', temporaryInsecureAuthKey)) {
@@ -131,7 +132,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   const sessionId = request.body.sessionId;
 
   //Set up language, default to english
-  let lang = 'en';
+  let lang: 'en' | 'fr' = 'en';
   if (request.headers && request.headers.language && request.headers.language === 'fr') {
     lang = 'fr';
   }

@@ -1,14 +1,13 @@
-import * as express from 'express';
-import * as cors from 'cors';
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
 //@ts-ignore
-import * as morgan from 'morgan';
-//@ts-ignore
-import * as morganBody from 'morgan-body';
+import morganBody from 'morgan-body';
 import ErrorHandler from '../utils/ErrorHandler';
 import FirebaseApi from '../apis/FirebaseApi';
 import fs from '../apis/Firestore';
 import { TwilioApi } from '../apis/TwilioApi';
-import { temporaryInsecureAuthKey, relayDefaultCountrycode } from '../utils/Env';
+import { relayDefaultCountrycode } from '../utils/Env';
 import FirebaseAuth from '../middlewares/FirebaseAuth';
 import { formatMobile, sleep } from '../utils';
 import { ResultType } from '../types_rn/AppProviderTypes';
@@ -80,7 +79,7 @@ module.exports = (functions: any) => {
 
     //TODO: load in the desired format for tz
     // const mobile = formatMobile(unformattedMobile, relayDefaultCountrycode);
-    let mobile;
+    let mobile: string;
 
     //Wait to make sure the user has sufficent time to hang up.
     return firebaseApi.getRelayUser(botId, userId)
