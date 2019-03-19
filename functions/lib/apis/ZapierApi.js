@@ -2,10 +2,12 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const request_promise_native_1 = __importDefault(require("request-promise-native"));
-const Env_1 = require("../utils/Env");
-class ZapierApi {
+exports.__esModule = true;
+var request_promise_native_1 = __importDefault(require("request-promise-native"));
+var Env_1 = require("../utils/Env");
+var ZapierApi = /** @class */ (function () {
+    function ZapierApi() {
+    }
     /**
      * optOut
      *
@@ -14,19 +16,19 @@ class ZapierApi {
      *
      *
      */
-    static optOut(mobile) {
-        const options = {
+    ZapierApi.optOut = function (mobile) {
+        var options = {
             url: Env_1.optOutWebookUrl,
             body: {
-                mobile,
+                mobile: mobile
             },
-            json: true,
+            json: true
         };
-        return request_promise_native_1.default(options)
-            .then((response) => console.log(response))
-            .catch((err) => {
-            console.warn(`ZapierApi.optOut error: ${err.message}`);
+        return request_promise_native_1["default"](options)
+            .then(function (response) { return console.log(response); })["catch"](function (err) {
+            console.warn("ZapierApi.optOut error: " + err.message);
         });
-    }
-}
-exports.default = ZapierApi;
+    };
+    return ZapierApi;
+}());
+exports["default"] = ZapierApi;

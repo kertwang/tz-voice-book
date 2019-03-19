@@ -1,7 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
-const TwilioBlocks = {
+exports.__esModule = true;
+var TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
+var TwilioBlocks = {
     'entrypoint': { type: TwilioTypes_1.BlockType.DEFAULT },
     'intro_0': { type: TwilioTypes_1.BlockType.DEFAULT },
     'listen_0': { type: TwilioTypes_1.BlockType.DEFAULT },
@@ -17,6 +17,6 @@ const TwilioBlocks = {
     'record_post_or_delete': { type: TwilioTypes_1.BlockType.DEFAULT },
     'record_save': { type: TwilioTypes_1.BlockType.END },
     'record_delete': { type: TwilioTypes_1.BlockType.END },
-    'record_post_or_delete_error': { type: TwilioTypes_1.BlockType.DEFAULT },
+    'record_post_or_delete_error': { type: TwilioTypes_1.BlockType.DEFAULT }
 };
-exports.default = TwilioBlocks;
+exports["default"] = TwilioBlocks;

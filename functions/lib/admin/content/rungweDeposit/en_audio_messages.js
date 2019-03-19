@@ -1,12 +1,12 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
-const utils_1 = require("../../utils");
+exports.__esModule = true;
+var TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
+var utils_1 = require("../../utils");
 /* the deploy script will automatically fill in the urls for us */
 //TODO: how do we allow the entrypoint to have runtime variables?
 //params[0] => weight of leaf - must be an integer
 //params[1] => location name
-const en_text = {
+var en_text = {
     'entrypoint': [
         //rungwe_deposit_en/hi
         utils_1.generatePlay('rungwe_deposit_en', 'hi'),
@@ -14,12 +14,12 @@ const en_text = {
         {
             type: TwilioTypes_1.MessageType.DYNAMIC_PLAY,
             //These must be self contained
-            func: (params, urlGenerator) => {
-                const weightSplit = params[0].split('');
-                return weightSplit.map(n => {
-                    const message = {
+            func: function (params, urlGenerator) {
+                var weightSplit = params[0].split('');
+                return weightSplit.map(function (n) {
+                    var message = {
                         type: TwilioTypes_1.MessageType.PLAY,
-                        url: urlGenerator(`generic_numbers_en/${n}.mp3`),
+                        url: urlGenerator("generic_numbers_en/" + n + ".mp3")
                     };
                     return message;
                 });
@@ -30,11 +30,11 @@ const en_text = {
         //generic_locations/en/*
         {
             type: TwilioTypes_1.MessageType.DYNAMIC_PLAY,
-            func: (params, urlGenerator) => {
-                const locationName = params[1];
-                const message = {
+            func: function (params, urlGenerator) {
+                var locationName = params[1];
+                var message = {
                     type: TwilioTypes_1.MessageType.PLAY,
-                    url: urlGenerator(`generic_locations_en/${locationName}.mp3`),
+                    url: urlGenerator("generic_locations_en/" + locationName + ".mp3")
                 };
                 return [message];
             }
@@ -43,4 +43,4 @@ const en_text = {
     //This must be empty
     'end': []
 };
-exports.default = en_text;
+exports["default"] = en_text;

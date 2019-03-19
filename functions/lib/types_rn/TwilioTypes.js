@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 /**
  * A block is a request for twiml that we respond to.
  * Similar to the idea of blocks in Twilio Studio

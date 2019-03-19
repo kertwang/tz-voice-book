@@ -1,35 +1,70 @@
 'use strict';
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const Firestore_1 = __importDefault(require("../apis/Firestore"));
-const FirebaseApi_1 = __importDefault(require("../apis/FirebaseApi"));
-const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
-const TwilioApi_1 = require("../apis/TwilioApi");
-const Env_1 = require("../utils/Env");
-const TwilioTypes_1 = require("../types_rn/TwilioTypes");
-const Log_1 = require("../utils/Log");
-const LogTypes_1 = require("../types_rn/LogTypes");
-const utils_1 = require("../utils");
-const functions = require('firebase-functions');
-const { WebhookClient } = require('dialogflow-fulfillment');
-const { Card, Suggestion } = require('dialogflow-fulfillment');
+exports.__esModule = true;
+var Firestore_1 = __importDefault(require("../apis/Firestore"));
+var FirebaseApi_1 = __importDefault(require("../apis/FirebaseApi"));
+var AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
+var TwilioApi_1 = require("../apis/TwilioApi");
+var Env_1 = require("../utils/Env");
+var TwilioTypes_1 = require("../types_rn/TwilioTypes");
+var Log_1 = require("../utils/Log");
+var LogTypes_1 = require("../types_rn/LogTypes");
+var utils_1 = require("../utils");
+var functions = require('firebase-functions');
+var WebhookClient = require('dialogflow-fulfillment').WebhookClient;
+var _a = require('dialogflow-fulfillment'), Card = _a.Card, Suggestion = _a.Suggestion;
 process.env.DEBUG = 'dialogflow:production'; // enables lib debugging statements
-const translations = {
+var translations = {
     en: {
-        menuCall_1: `Who should I call? Make sure to enter the number with the country code e.g. +221 for Senegal`,
+        menuCall_1: "Who should I call? Make sure to enter the number with the country code e.g. +221 for Senegal",
         menuCall_2: 'Who should I call?',
         menuCall_3: 'Saved numbers:',
         menuCall_4: 'Or just type a new number.',
         error: "I'm Sorry. Something went wrong. Please say 'menu' to try again.",
         menuCallMobile_1: 'Thanks.',
         menuCallMobile_2: 'What type of call should they recieve?',
-        menuCallMobile_3: `Payment Notification`,
+        menuCallMobile_3: "Payment Notification",
         menuCallMobile_4: 'CALL',
-        menuCallMobile_5: `Mobile Money 101:`,
-        triggerCallError: `Something went wrong. Please try again.`,
-        triggerCallError_2: `There was a problem making the call. Please try again.`,
+        menuCallMobile_5: "Mobile Money 101:",
+        triggerCallError: "Something went wrong. Please try again.",
+        triggerCallError_2: "There was a problem making the call. Please try again.",
         handlePostCall_1: 'Making the call now.',
         handlePostCall_2: 'What would you like to do next?',
         handlePostCall_3: 'New Call',
@@ -43,21 +78,21 @@ const translations = {
         conclusionOneThingCapture_2: 'Menu',
         tripSummaryStruggleCapture_1: 'What aspects of the bots did your beneficiary struggle with? With your fellow group members, write down a few observations on the RED notes. Write one observation per note.',
         tripSummaryStruggleCapture_2: 'Press continue when you\'re done.',
-        tripSummaryStruggleCapture_3: 'Continue',
+        tripSummaryStruggleCapture_3: 'Continue'
     },
     fr: {
-        menuCall_1: `Qui dois-je appeler? Assurez-vous de saisir le numéro avec le code pays, par exemple +221 pour le Sénégal`,
+        menuCall_1: "Qui dois-je appeler? Assurez-vous de saisir le num\u00E9ro avec le code pays, par exemple +221 pour le S\u00E9n\u00E9gal",
         menuCall_2: 'Appeler qui?',
         menuCall_3: 'Numéros enregistrés',
         menuCall_4: 'Ou entrez un nouveau numéro',
         error: "Je suis désolé. Quelque chose s'est mal passé. S'il vous plaît dites «menu» pour essayer à nouveau.",
         menuCallMobile_1: 'Merci',
         menuCallMobile_2: 'Quel type d’appel?',
-        menuCallMobile_3: `Notification de paiement`,
+        menuCallMobile_3: "Notification de paiement",
         menuCallMobile_4: 'APPELER',
-        menuCallMobile_5: `Intro à Mobile Money`,
-        triggerCallError: `Something went wrong. Please try again.`,
-        triggerCallError_2: `There was a problem making the call. Please try again.`,
+        menuCallMobile_5: "Intro \u00E0 Mobile Money",
+        triggerCallError: "Something went wrong. Please try again.",
+        triggerCallError_2: "There was a problem making the call. Please try again.",
         handlePostCall_1: 'Appel en cours',
         handlePostCall_2: 'Que voulez-vous faire ensuite?',
         handlePostCall_3: 'Nouvel appel',
@@ -71,167 +106,244 @@ const translations = {
         conclusionOneThingCapture_2: 'Menu',
         tripSummaryStruggleCapture_1: 'Quels aspects des robots ont poser des problèmes pour votre bénéficiaire? Avec les autres membres de votre groupe, écrivez quelques observations sur les feuillets ROUGES -- une observation par feuillet.',
         tripSummaryStruggleCapture_2: 'Appuyez sur «Continuer» quand vous avez terminé.',
-        tripSummaryStruggleCapture_3: 'Continuer',
-    },
+        tripSummaryStruggleCapture_3: 'Continuer'
+    }
 };
 //TODO: add basic auth
-exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+exports.dialogflowFirebaseFulfillment = functions.https.onRequest(function (request, response) {
     //Super basic auth:
     if (request.headers.authorization !== utils_1.buildExpectedToken('apikey', Env_1.temporaryInsecureAuthKey)) {
         console.log("unquthorized request");
         return response.status(401).send('Not Authorized');
     }
-    const firebaseApi = new FirebaseApi_1.default(Firestore_1.default);
-    const twilioApi = new TwilioApi_1.TwilioApi();
-    const client = new WebhookClient({ request, response });
-    const requestLogStr = `Dialogflow Request headers:, ${JSON.stringify(request.headers)}`;
-    const responseLogStr = `Dialogflow Response headers:, ${JSON.stringify(request.headers)}`;
+    var firebaseApi = new FirebaseApi_1["default"](Firestore_1["default"]);
+    var twilioApi = new TwilioApi_1.TwilioApi();
+    var client = new WebhookClient({ request: request, response: response });
+    var requestLogStr = "Dialogflow Request headers:, " + JSON.stringify(request.headers);
+    var responseLogStr = "Dialogflow Response headers:, " + JSON.stringify(request.headers);
     Log_1.maybeLog(requestLogStr);
     Log_1.maybeLog(responseLogStr);
-    const botId = TwilioTypes_1.BotId.uncdfBot;
-    const sessionId = request.body.sessionId;
+    var botId = TwilioTypes_1.BotId.uncdfBot;
+    var sessionId = request.body.sessionId;
     //Set up language, default to english
-    let lang = 'en';
+    var lang = 'en';
     if (request.headers && request.headers.language && request.headers.language === 'fr') {
         lang = 'fr';
     }
-    async function menuCall(conv) {
-        Log_1.log({
-            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
-            intent: 'menu.call',
-            sessionId,
+    function menuCall(conv) {
+        return __awaiter(this, void 0, void 0, function () {
+            var userResult, mobile;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        Log_1.log({
+                            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
+                            intent: 'menu.call',
+                            sessionId: sessionId
+                        });
+                        return [4 /*yield*/, firebaseApi.getDFUser(botId, sessionId)];
+                    case 1:
+                        userResult = _a.sent();
+                        if (userResult.type === AppProviderTypes_1.ResultType.ERROR || !userResult.result.mobile) {
+                            //No existing user
+                            //TODO: Translate?
+                            conv.add(translations[lang].menuCall_1);
+                            return [2 /*return*/];
+                        }
+                        mobile = userResult.result.mobile;
+                        conv.add(translations[lang].menuCall_2);
+                        conv.add(new Card({
+                            title: translations[lang].menuCall_3,
+                            buttonText: mobile,
+                            buttonUrl: mobile,
+                            platform: "FACEBOOK"
+                        }));
+                        conv.add(translations[lang].menuCall_4);
+                        return [2 /*return*/];
+                }
+            });
         });
-        const userResult = await firebaseApi.getDFUser(botId, sessionId);
-        if (userResult.type === AppProviderTypes_1.ResultType.ERROR || !userResult.result.mobile) {
-            //No existing user
-            //TODO: Translate?
-            conv.add(translations[lang].menuCall_1);
-            return;
-        }
-        const mobile = userResult.result.mobile;
-        conv.add(translations[lang].menuCall_2);
-        conv.add(new Card({
-            title: translations[lang].menuCall_3,
-            buttonText: mobile,
-            buttonUrl: mobile,
-            platform: "FACEBOOK",
-        }));
-        conv.add(translations[lang].menuCall_4);
-        return;
     }
-    async function menuCallMobile(conv) {
-        Log_1.log({
-            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
-            intent: 'menu.call.mobile',
-            sessionId,
+    function menuCallMobile(conv) {
+        return __awaiter(this, void 0, void 0, function () {
+            var mobile, newUser, saveResult;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        Log_1.log({
+                            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
+                            intent: 'menu.call.mobile',
+                            sessionId: sessionId
+                        });
+                        mobile = request.body.result.parameters.mobile;
+                        if (!mobile) {
+                            conv.add(translations[lang].error);
+                            return [2 /*return*/];
+                        }
+                        newUser = { mobile: "" + mobile, sessionId: sessionId };
+                        return [4 /*yield*/, firebaseApi.saveDFUser(botId, sessionId, newUser)];
+                    case 1:
+                        saveResult = _a.sent();
+                        if (saveResult.type === AppProviderTypes_1.ResultType.ERROR) {
+                            console.log("ERROR:", saveResult.message);
+                            conv.add(translations[lang].error);
+                            return [2 /*return*/];
+                        }
+                        conv.add(translations[lang].menuCallMobile_1);
+                        conv.add(translations[lang].menuCallMobile_2);
+                        conv.add(new Card({
+                            title: translations[lang].menuCallMobile_3,
+                            buttonText: translations[lang].menuCallMobile_4,
+                            buttonUrl: 'informal_payment_notification',
+                            platform: "FACEBOOK"
+                        }));
+                        // conv.add(new Card({
+                        //   title: `Formal Payment Notification:`,
+                        //   buttonText: 'CALL',
+                        //   buttonUrl: 'formal_payment_notification',
+                        //   platform: "FACEBOOK",
+                        // }));
+                        conv.add(new Card({
+                            title: translations[lang].menuCallMobile_5,
+                            buttonText: translations[lang].menuCallMobile_4,
+                            buttonUrl: 'mobile_money_101',
+                            platform: "FACEBOOK"
+                        }));
+                        if (Env_1.shouldDisplayEnglishTestCall) {
+                            conv.add(new Card({
+                                title: "Test Call",
+                                buttonText: "CALL",
+                                buttonUrl: 'test_call',
+                                platform: "FACEBOOK"
+                            }));
+                        }
+                        return [2 /*return*/];
+                }
+            });
         });
-        const mobile = request.body.result.parameters.mobile;
-        if (!mobile) {
-            conv.add(translations[lang].error);
-            return;
-        }
-        /* Save the number and user */
-        const newUser = { mobile: `${mobile}`, sessionId };
-        const saveResult = await firebaseApi.saveDFUser(botId, sessionId, newUser);
-        if (saveResult.type === AppProviderTypes_1.ResultType.ERROR) {
-            console.log("ERROR:", saveResult.message);
-            conv.add(translations[lang].error);
-            return;
-        }
-        conv.add(translations[lang].menuCallMobile_1);
-        conv.add(translations[lang].menuCallMobile_2);
-        conv.add(new Card({
-            title: translations[lang].menuCallMobile_3,
-            buttonText: translations[lang].menuCallMobile_4,
-            buttonUrl: 'informal_payment_notification',
-            platform: "FACEBOOK",
-        }));
-        // conv.add(new Card({
-        //   title: `Formal Payment Notification:`,
-        //   buttonText: 'CALL',
-        //   buttonUrl: 'formal_payment_notification',
-        //   platform: "FACEBOOK",
-        // }));
-        conv.add(new Card({
-            title: translations[lang].menuCallMobile_5,
-            buttonText: translations[lang].menuCallMobile_4,
-            buttonUrl: 'mobile_money_101',
-            platform: "FACEBOOK",
-        }));
-        if (Env_1.shouldDisplayEnglishTestCall) {
-            conv.add(new Card({
-                title: `Test Call`,
-                buttonText: `CALL`,
-                buttonUrl: 'test_call',
-                platform: "FACEBOOK",
-            }));
-        }
-        return;
     }
-    async function triggerFormalCall(conv) {
-        Log_1.log({
-            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
-            intent: 'menu.call.mobile.formal',
-            sessionId,
+    function triggerFormalCall(conv) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        Log_1.log({
+                            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
+                            intent: 'menu.call.mobile.formal',
+                            sessionId: sessionId
+                        });
+                        url = Env_1.formalNotificationUrl;
+                        return [4 /*yield*/, triggerCall(conv, url)];
+                    case 1:
+                        _a.sent();
+                        handlePostCall(conv);
+                        return [2 /*return*/];
+                }
+            });
         });
-        const url = Env_1.formalNotificationUrl;
-        await triggerCall(conv, url);
-        handlePostCall(conv);
     }
-    async function triggerInformalCall(conv) {
-        Log_1.log({
-            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
-            intent: 'menu.call.mobile.informal',
-            sessionId,
+    function triggerInformalCall(conv) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        Log_1.log({
+                            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
+                            intent: 'menu.call.mobile.informal',
+                            sessionId: sessionId
+                        });
+                        url = Env_1.informalNotificationUrl;
+                        return [4 /*yield*/, triggerCall(conv, url)];
+                    case 1:
+                        _a.sent();
+                        handlePostCall(conv);
+                        return [2 /*return*/];
+                }
+            });
         });
-        const url = Env_1.informalNotificationUrl;
-        await triggerCall(conv, url);
-        handlePostCall(conv);
     }
-    async function triggerMMCall(conv) {
-        Log_1.log({
-            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
-            intent: 'menu.call.mobile.mm101',
-            sessionId,
+    function triggerMMCall(conv) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        Log_1.log({
+                            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
+                            intent: 'menu.call.mobile.mm101',
+                            sessionId: sessionId
+                        });
+                        url = Env_1.mm101CallUrl;
+                        return [4 /*yield*/, triggerCall(conv, url)];
+                    case 1:
+                        _a.sent();
+                        handlePostCall(conv);
+                        return [2 /*return*/];
+                }
+            });
         });
-        const url = Env_1.mm101CallUrl;
-        await triggerCall(conv, url);
-        handlePostCall(conv);
     }
-    async function triggerTestCall(conv) {
-        Log_1.log({
-            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
-            intent: 'menu.call.mobile.test',
-            sessionId,
+    function triggerTestCall(conv) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        Log_1.log({
+                            type: LogTypes_1.LogType.DIALOG_FLOW_INTENT,
+                            intent: 'menu.call.mobile.test',
+                            sessionId: sessionId
+                        });
+                        url = Env_1.testCallUrl;
+                        return [4 /*yield*/, triggerCall(conv, url)];
+                    case 1:
+                        _a.sent();
+                        handlePostCall(conv);
+                        return [2 /*return*/];
+                }
+            });
         });
-        const url = Env_1.testCallUrl;
-        await triggerCall(conv, url);
-        handlePostCall(conv);
     }
-    async function triggerCall(conv, url) {
-        const userResult = await firebaseApi.getDFUser(botId, sessionId);
-        if (userResult.type === AppProviderTypes_1.ResultType.ERROR || !userResult.result.mobile) {
-            //No existing user
-            //TODO: Translate?
-            // conv.add(`Something went wrong. Please try again.`);
-            conv.add(translations[lang].triggerCallError);
-            return;
-        }
-        try {
-            await twilioApi.startCall(botId, userResult.result.mobile, url);
-        }
-        catch (err) {
-            // conv.add(`There was a problem making the call. Please try again.`);
-            conv.add(translations[lang].triggerCallError_2);
-        }
-        return;
+    function triggerCall(conv, url) {
+        return __awaiter(this, void 0, void 0, function () {
+            var userResult, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, firebaseApi.getDFUser(botId, sessionId)];
+                    case 1:
+                        userResult = _a.sent();
+                        if (userResult.type === AppProviderTypes_1.ResultType.ERROR || !userResult.result.mobile) {
+                            //No existing user
+                            //TODO: Translate?
+                            // conv.add(`Something went wrong. Please try again.`);
+                            conv.add(translations[lang].triggerCallError);
+                            return [2 /*return*/];
+                        }
+                        _a.label = 2;
+                    case 2:
+                        _a.trys.push([2, 4, , 5]);
+                        return [4 /*yield*/, twilioApi.startCall(botId, userResult.result.mobile, url)];
+                    case 3:
+                        _a.sent();
+                        return [3 /*break*/, 5];
+                    case 4:
+                        err_1 = _a.sent();
+                        // conv.add(`There was a problem making the call. Please try again.`);
+                        conv.add(translations[lang].triggerCallError_2);
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
     }
     function handlePostCall(conv) {
         // conv.add('Making the call now.');
         conv.add(translations[lang].handlePostCall_1);
-        const quickReplies = new Suggestion({
+        var quickReplies = new Suggestion({
             title: translations[lang].handlePostCall_2,
-            reply: translations[lang].handlePostCall_3,
+            reply: translations[lang].handlePostCall_3
         });
         quickReplies.addReply_(translations[lang].handlePostCall_4);
         conv.add(quickReplies);
@@ -239,55 +351,101 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     //
     // Capture Words from User
     // ------------------------------------------
-    async function shareQuestionCapture(conv) {
-        const text = request.body && request.body.result && request.body.result.resolvedQuery;
-        if (text) {
-            await firebaseApi.saveResponse(botId, 'shareQuestionCapture', text);
-        }
-        //TODO: translate
-        const quickReplies = new Suggestion({
-            title: translations[lang].shareQuestionCapture_1,
-            reply: translations[lang].shareQuestionCapture_2
+    function shareQuestionCapture(conv) {
+        return __awaiter(this, void 0, void 0, function () {
+            var text, quickReplies;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        text = request.body && request.body.result && request.body.result.resolvedQuery;
+                        if (!text) return [3 /*break*/, 2];
+                        return [4 /*yield*/, firebaseApi.saveResponse(botId, 'shareQuestionCapture', text)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        quickReplies = new Suggestion({
+                            title: translations[lang].shareQuestionCapture_1,
+                            reply: translations[lang].shareQuestionCapture_2
+                        });
+                        conv.add(quickReplies);
+                        return [2 /*return*/];
+                }
+            });
         });
-        conv.add(quickReplies);
     }
-    async function improveNotificationMessageCapture(conv) {
-        const text = request.body && request.body.result && request.body.result.resolvedQuery;
-        if (text) {
-            await firebaseApi.saveResponse(botId, 'improveNotificationMessageCapture', text);
-        }
-        const quickReplies = new Suggestion({
-            title: translations[lang].improveNotificationMessageCapture_1,
-            reply: translations[lang].improveNotificationMessageCapture_2,
+    function improveNotificationMessageCapture(conv) {
+        return __awaiter(this, void 0, void 0, function () {
+            var text, quickReplies;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        text = request.body && request.body.result && request.body.result.resolvedQuery;
+                        if (!text) return [3 /*break*/, 2];
+                        return [4 /*yield*/, firebaseApi.saveResponse(botId, 'improveNotificationMessageCapture', text)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        quickReplies = new Suggestion({
+                            title: translations[lang].improveNotificationMessageCapture_1,
+                            reply: translations[lang].improveNotificationMessageCapture_2
+                        });
+                        quickReplies.addReply_(translations[lang].improveNotificationMessageCapture_3);
+                        conv.add(quickReplies);
+                        return [2 /*return*/];
+                }
+            });
         });
-        quickReplies.addReply_(translations[lang].improveNotificationMessageCapture_3);
-        conv.add(quickReplies);
     }
-    async function conclusionOneThingCapture(conv) {
-        const text = request.body && request.body.result && request.body.result.resolvedQuery;
-        if (text) {
-            await firebaseApi.saveResponse(botId, 'conclusionOneThingCapture', text);
-        }
-        const quickReplies = new Suggestion({
-            title: translations[lang].conclusionOneThingCapture_1,
-            reply: translations[lang].conclusionOneThingCapture_2,
+    function conclusionOneThingCapture(conv) {
+        return __awaiter(this, void 0, void 0, function () {
+            var text, quickReplies;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        text = request.body && request.body.result && request.body.result.resolvedQuery;
+                        if (!text) return [3 /*break*/, 2];
+                        return [4 /*yield*/, firebaseApi.saveResponse(botId, 'conclusionOneThingCapture', text)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        quickReplies = new Suggestion({
+                            title: translations[lang].conclusionOneThingCapture_1,
+                            reply: translations[lang].conclusionOneThingCapture_2
+                        });
+                        conv.add(quickReplies);
+                        return [2 /*return*/];
+                }
+            });
         });
-        conv.add(quickReplies);
     }
-    async function tripSummaryStruggleCapture(conv) {
-        const text = request.body && request.body.result && request.body.result.resolvedQuery;
-        if (text) {
-            await firebaseApi.saveResponse(botId, 'tripSummaryStruggleCapture', text);
-        }
-        conv.add(translations[lang].tripSummaryStruggleCapture_1);
-        //TODO: translate
-        const quickReplies = new Suggestion({
-            title: translations[lang].tripSummaryStruggleCapture_2,
-            reply: translations[lang].tripSummaryStruggleCapture_3,
+    function tripSummaryStruggleCapture(conv) {
+        return __awaiter(this, void 0, void 0, function () {
+            var text, quickReplies;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        text = request.body && request.body.result && request.body.result.resolvedQuery;
+                        if (!text) return [3 /*break*/, 2];
+                        return [4 /*yield*/, firebaseApi.saveResponse(botId, 'tripSummaryStruggleCapture', text)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        conv.add(translations[lang].tripSummaryStruggleCapture_1);
+                        quickReplies = new Suggestion({
+                            title: translations[lang].tripSummaryStruggleCapture_2,
+                            reply: translations[lang].tripSummaryStruggleCapture_3
+                        });
+                        conv.add(quickReplies);
+                        return [2 /*return*/];
+                }
+            });
         });
-        conv.add(quickReplies);
     }
-    const intentMap = new Map();
+    var intentMap = new Map();
     intentMap.set('menu.call', menuCall);
     intentMap.set('menu.call.mobile', menuCallMobile);
     intentMap.set('menu.call.mobile.formal', triggerFormalCall);

@@ -1,9 +1,9 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("../../utils");
+exports.__esModule = true;
+var utils_1 = require("../../utils");
 /* the deploy script will automatically fill in the urls for us */
 //TODO: how do we allow the entrypoint to have runtime variables?
-const en_text = {
+var en_text = {
     //TODO: Handle specify if farmer has debits etc.
     'entrypoint': [
         utils_1.generateText(' Your payment is now available. This month you will receive a payment of '),
@@ -19,4 +19,4 @@ const en_text = {
     //This must be empty
     'end': []
 };
-exports.default = en_text;
+exports["default"] = en_text;

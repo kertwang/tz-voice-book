@@ -1,15 +1,15 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
-const utils_1 = require("../../../utils");
-const LocalEnv_1 = require("../../../utils/LocalEnv");
-const urlPrefix = `https://www.googleapis.com/download/storage/v1/b/${LocalEnv_1.storageBucket}/o/`;
-const firebaseToken = '1536715274666696'; //This isn't too precious, our files are public anyway
+exports.__esModule = true;
+var TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
+var utils_1 = require("../../../utils");
+var LocalEnv_1 = require("../../../utils/LocalEnv");
+var urlPrefix = "https://www.googleapis.com/download/storage/v1/b/" + LocalEnv_1.storageBucket + "/o/";
+var firebaseToken = '1536715274666696'; //This isn't too precious, our files are public anyway
 function generatePlay(messageId) {
-    return { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, `wl_audio/${messageId}.mp3`, firebaseToken) };
+    return { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, "wl_audio/" + messageId + ".mp3", firebaseToken) };
 }
 /* the deploy script will automatically fill in the urls for us */
-const en_text = {
+var en_text = {
     entrypoint: [
         //W1
         //"This is a voice notification from Orange. You’ve just received your quarterly Bourse Familiale payment. The amount is twenty-five thousand francs. To get your money just go to the nearest Orange agent and tell them the amount that you'd like to withdraw."
@@ -189,4 +189,4 @@ const en_text = {
     //Don't play anything. Just hang up
     ]
 };
-exports.default = en_text;
+exports["default"] = en_text;

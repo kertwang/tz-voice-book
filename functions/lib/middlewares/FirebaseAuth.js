@@ -1,6 +1,6 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Firestore_1 = require("../apis/Firestore");
+exports.__esModule = true;
+var Firestore_1 = require("../apis/Firestore");
 /**
  * Firebase admin middleware
  * taken from: https://github.com/firebase/functions-samples/blob/master/authorized-https-endpoint/functions/index.js
@@ -18,7 +18,7 @@ function FirebaseAuth(req, res, next) {
         res.status(403).send('Unauthorized');
         return;
     }
-    let idToken;
+    var idToken;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
         console.log('Found "Authorization" header');
         // Read the ID Token from the Authorization header.
@@ -34,16 +34,16 @@ function FirebaseAuth(req, res, next) {
         res.status(403).send('Unauthorized');
         return;
     }
-    Firestore_1.admin.auth().verifyIdToken(idToken).then((decodedIdToken) => {
+    Firestore_1.admin.auth().verifyIdToken(idToken).then(function (decodedIdToken) {
         console.log('ID Token correctly decoded', decodedIdToken);
         //@ts-ignore
         req.user = decodedIdToken;
         next();
         return;
-    }).catch((error) => {
+    })["catch"](function (error) {
         console.error('Error while verifying Firebase ID token:', error);
         res.status(403).send('Unauthorized');
     });
 }
-exports.default = FirebaseAuth;
+exports["default"] = FirebaseAuth;
 ;

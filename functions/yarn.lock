@@ -60,7 +60,7 @@
     pify "^4.0.0"
     retry-request "^4.0.0"
 
-"@google-cloud/firestore@^1.0.1":
+"@google-cloud/firestore@^1.0.1", "@google-cloud/firestore@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@google-cloud/firestore/-/firestore-1.1.0.tgz#fb1ee38b5e45392358de55c85bf767adf2e30028"
   dependencies:

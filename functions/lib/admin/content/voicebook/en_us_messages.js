@@ -1,9 +1,9 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
+exports.__esModule = true;
+var TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
 /* Define each translation/variaton here */
 /* TODO: we will move these to firebase datastore eventually */
-const en_text = {
+var en_text = {
     'entrypoint': [
         { type: TwilioTypes_1.MessageType.SAY, text: "Hello, and welcome to voicebook", language: 'en-US' },
     ],
@@ -59,6 +59,6 @@ const en_text = {
     ],
     'record_delete': [
         { type: TwilioTypes_1.MessageType.SAY, text: 'Your message was erased and will not be posted.', language: 'en-US' },
-    ],
+    ]
 };
-exports.default = en_text;
+exports["default"] = en_text;

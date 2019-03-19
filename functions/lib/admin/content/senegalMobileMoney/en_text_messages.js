@@ -1,8 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("../../utils");
+exports.__esModule = true;
+var utils_1 = require("../../utils");
 /* the deploy script will automatically fill in the urls for us */
-const en_text = {
+var en_text = {
     entrypoint: [
         //W1
         utils_1.generateText("W1"),
@@ -24,9 +24,7 @@ const en_text = {
     story_option: [
         //W5
         utils_1.generateText("W5"),
-        utils_1.generateText(`To hear about when Aida forgot her code and learn what she did, press 1 on your phone keypad.
-      To listen to Souleymane tell you about how he learned to send money to his daughter, press 2
-      To listen to Yacine explain why she decided to only withdraw part of her Bourse payment money, press 3 `),
+        utils_1.generateText("To hear about when Aida forgot her code and learn what she did, press 1 on your phone keypad.\n      To listen to Souleymane tell you about how he learned to send money to his daughter, press 2\n      To listen to Yacine explain why she decided to only withdraw part of her Bourse payment money, press 3 "),
     ],
     story_1_intro: [
         //W8
@@ -177,4 +175,4 @@ const en_text = {
         utils_1.generateText("An error has occoured"),
     ]
 };
-exports.default = en_text;
+exports["default"] = en_text;

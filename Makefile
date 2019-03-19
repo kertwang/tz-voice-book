@@ -55,6 +55,10 @@ switch-prod:
 
 build:
 	cd $(dir)/functions; yarn run build
+	cp $(dir)/functions/src/index.js $(dir)/functions/lib/index.js
+
+lint: 
+	cd $(dir)/functions; yarn run lint
 
 run-lt: 
 	@make env
@@ -80,16 +84,9 @@ test-service:
 ##
 # Deployment
 ##
-
 deploy:
-	@make env
+	@make env lint build test-unit test-service
 	./_deploy.sh
-
-deploy-vars:
-	@make env
-	./_deploy_vars.sh
-
-
 
 
 .PHONY: switch switch-dev swich-prod env

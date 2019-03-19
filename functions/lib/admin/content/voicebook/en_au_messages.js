@@ -1,15 +1,15 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
-const generateText = (text) => {
+exports.__esModule = true;
+var TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
+var generateText = function (text) {
     return {
         type: TwilioTypes_1.MessageType.SAY,
-        text,
+        text: text,
         language: 'en-AU'
     };
 };
 /* the deploy script will automatically fill in the urls for us */
-const en_text = {
+var en_text = {
     'entrypoint': [
         generateText('Hello and welcome to voicebook.'),
     ],
@@ -85,6 +85,6 @@ const en_text = {
     'record_delete': [
         //'tz_audio/015a_Voicebook_Swahili.mp3'
         generateText('Your message was erased.'),
-    ],
+    ]
 };
-exports.default = en_text;
+exports["default"] = en_text;

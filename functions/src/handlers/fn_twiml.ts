@@ -2,10 +2,9 @@
 import express from 'express';
 import cors from 'cors';
 import moment from 'moment';
-//@ts-ignore
 import morgan from 'morgan';
 //@ts-ignore
-import * as morganBody from 'morgan-body';
+import morganBody from 'morgan-body';
 import TwilioRouter from '../apis/TwilioRouter';
 import ErrorHandler from '../utils/ErrorHandler';
 import { pathToBlock, logTwilioResponse, saftelyGetPageParamsOrDefaults, getBotId, saftelyGetDynamicParamsOrEmpty, getUserMobile } from '../utils';

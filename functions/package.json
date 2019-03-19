@@ -15,6 +15,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@firebase/app-types": "0.x",
+    "@google-cloud/firestore": "^1.1.0",
     "@types/express": "^4.16.1",
     "@types/mocha": "^5.2.5",
     "@types/moment": "^2.13.0",

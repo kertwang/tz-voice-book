@@ -6,10 +6,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const functions = __importStar(require("firebase-functions"));
-const _1 = require(".");
-const envConfig = functions.config();
+exports.__esModule = true;
+var functions = __importStar(require("firebase-functions"));
+var _1 = require(".");
+var envConfig = functions.config();
 exports.twilioAccountSid = envConfig.config.twilio_account_sid;
 exports.twilioAuthToken = envConfig.config.twilio_auth_token;
 exports.baseUrl = envConfig.config.base_url;

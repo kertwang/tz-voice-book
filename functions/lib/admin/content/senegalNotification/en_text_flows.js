@@ -1,15 +1,15 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
+exports.__esModule = true;
+var TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
 /**
  * Flows is a graph based data structure, with the key being the valid
  * entrypoint, and the value a dict containing possible next points based
  * on if the block is successful or errors
  */
-const TwilioFlows = {
+var TwilioFlows = {
     'entrypoint': {
         type: TwilioTypes_1.FlowType.DEFAULT,
-        next: TwilioTypes_1.BlockId.entrypoint,
-    },
+        next: TwilioTypes_1.BlockId.entrypoint
+    }
 };
-exports.default = TwilioFlows;
+exports["default"] = TwilioFlows;

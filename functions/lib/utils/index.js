@@ -6,17 +6,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioTypes_1 = require("../types_rn/TwilioTypes");
+exports.__esModule = true;
+var TwilioTypes_1 = require("../types_rn/TwilioTypes");
 //@ts-ignore
-const format = __importStar(require("xml-formatter"));
-const util_1 = require("util");
-const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+var format = __importStar(require("xml-formatter"));
+var util_1 = require("util");
+var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 function getBotId(maybeBotId) {
     //@ts-ignore
-    const botId = TwilioTypes_1.BotId[maybeBotId];
+    var botId = TwilioTypes_1.BotId[maybeBotId];
     if (!botId) {
-        throw new Error(`Could not find botId for ${maybeBotId}`);
+        throw new Error("Could not find botId for " + maybeBotId);
     }
     return botId;
 }
@@ -43,19 +43,19 @@ function getDefaultVersionForBot(botId) {
         }
         default: {
             // throw new Error(`No Default version specified for botId: ${botId}`);
-            console.log(`WARN: getDefaultVersionForBot(), No Default version specified for botId: ${botId}. Returning en_text`);
+            console.log("WARN: getDefaultVersionForBot(), No Default version specified for botId: " + botId + ". Returning en_text");
             return TwilioTypes_1.VersionId.en_text;
         }
     }
 }
 exports.getDefaultVersionForBot = getDefaultVersionForBot;
 function pathToBlock(path) {
-    const sanitized = path.replace(/\/$/, "");
-    const key = sanitized.substr(sanitized.lastIndexOf("/") + 1);
+    var sanitized = path.replace(/\/$/, "");
+    var key = sanitized.substr(sanitized.lastIndexOf("/") + 1);
     //@ts-ignore
-    const blockId = TwilioTypes_1.BlockId[key];
+    var blockId = TwilioTypes_1.BlockId[key];
     if (!blockId) {
-        throw new Error(`Could not find blockId from path: ${path}`);
+        throw new Error("Could not find blockId from path: " + path);
     }
     return blockId;
 }
@@ -64,7 +64,7 @@ function logGatherBlock(block, result) {
     if (process.env.VERBOSE_LOG !== 'true') {
         return;
     }
-    console.log(`GATHER ${block}: '${result.speechResult}' @ ${result.confidence}%`);
+    console.log("GATHER " + block + ": '" + result.speechResult + "' @ " + result.confidence + "%");
 }
 exports.logGatherBlock = logGatherBlock;
 function logTwilioResponse(xmlString) {
@@ -72,26 +72,26 @@ function logTwilioResponse(xmlString) {
     // if (process.env.LOG_TWILIO_RESPONSE !== 'true') {
     //   return;
     // }
-    console.log(`TWILIO Response: \n ${format(xmlString)}`);
+    console.log("TWILIO Response: \n " + format(xmlString));
 }
 exports.logTwilioResponse = logTwilioResponse;
 function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(function (resolve) { return setTimeout(resolve, ms); });
 }
 exports.sleep = sleep;
-exports.generateUrl = (urlPrefix, path, firebaseToken) => {
+exports.generateUrl = function (urlPrefix, path, firebaseToken) {
     //eg: https://www.googleapis.com/download/storage/v1/b/tz-phone-book.appspot.com/o/tz_audio%2F015a_Voicebook_Swahili.mp3?alt=media&token=1536715274666696
-    return `${urlPrefix}${encodeURIComponent(path)}?alt=media&token=${firebaseToken}`;
+    return "" + urlPrefix + encodeURIComponent(path) + "?alt=media&token=" + firebaseToken;
 };
 /**
  * Use this to inject pagination where we don't have it set up
  * This is really less than ideal, and we need to find a better way.
  */
-exports.saftelyGetPageParamsOrDefaults = (params) => {
-    const page = params.page ? parseInt(params.page) : 0;
-    let pageSize = params.pageSize ? parseInt(params.pageSize) : 3;
-    let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
-    let versionOverride = params.versionOverride;
+exports.saftelyGetPageParamsOrDefaults = function (params) {
+    var page = params.page ? parseInt(params.page) : 0;
+    var pageSize = params.pageSize ? parseInt(params.pageSize) : 3;
+    var maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
+    var versionOverride = params.versionOverride;
     //Also handle shitty twilio url encoded params :(
     if (params['amp;pageSize']) {
         pageSize = parseInt(params['amp;pageSize']);
@@ -104,10 +104,10 @@ exports.saftelyGetPageParamsOrDefaults = (params) => {
         versionOverride = params['amp;versionOverride'];
     }
     return {
-        page,
-        pageSize,
-        maxMessages,
-        versionOverride,
+        page: page,
+        pageSize: pageSize,
+        maxMessages: maxMessages,
+        versionOverride: versionOverride
     };
 };
 /**
@@ -115,10 +115,10 @@ exports.saftelyGetPageParamsOrDefaults = (params) => {
  *
  * Throws if the necessary params aren't found
  */
-exports.getUserMobile = (body) => {
-    const from = body.From;
-    const to = body.To;
-    const direction = body.Direction;
+exports.getUserMobile = function (body) {
+    var from = body.From;
+    var to = body.To;
+    var direction = body.Direction;
     if (!from || !to || !direction) {
         throw new Error("Invalid Twilio request body. from, to and direction is required");
     }
@@ -135,15 +135,15 @@ exports.getUserMobile = (body) => {
  *
  * @param params the raw params from the request object
  */
-exports.saftelyGetDynamicParamsOrEmpty = (params) => {
-    let safeParams = [];
-    const rawParams = params.dynamicParams;
+exports.saftelyGetDynamicParamsOrEmpty = function (params) {
+    var safeParams = [];
+    var rawParams = params.dynamicParams;
     if (!rawParams) {
         return safeParams;
     }
     //TD: TODO: this is a security risk!
     try {
-        const parsed = JSON.parse(rawParams);
+        var parsed = JSON.parse(rawParams);
         if (typeof parsed === 'object' && Array.isArray(parsed)) {
             safeParams = parsed;
         }
@@ -167,41 +167,40 @@ var NextUrlType;
 /**
  * Make a magical paginated url
  */
-const buildPaginatedUrl = (b) => {
-    const url = `${b.baseUrl}/twiml/${b.botId}/${b.blockName}?page=${b.nextPageNo}\&pageSize=${b.pageSize}\&maxMessages=${b.maxMessages}`;
+var buildPaginatedUrl = function (b) {
+    var url = b.baseUrl + "/twiml/" + b.botId + "/" + b.blockName + "?page=" + b.nextPageNo + "&pageSize=" + b.pageSize + "&maxMessages=" + b.maxMessages;
     if (!b.versionOverride) {
         return url;
     }
-    return `${url}\&versionOverride=${b.versionOverride}`;
+    return url + "&versionOverride=" + b.versionOverride;
 };
-const buildVersionOverrideUrl = (b) => {
+var buildVersionOverrideUrl = function (b) {
     if (!b.versionOverride) {
-        return `${b.baseUrl}/twiml/${b.botId}/${b.blockName}`;
+        return b.baseUrl + "/twiml/" + b.botId + "/" + b.blockName;
     }
-    return `${b.baseUrl}/twiml/${b.botId}/${b.blockName}?versionOverride=${b.versionOverride}`;
+    return b.baseUrl + "/twiml/" + b.botId + "/" + b.blockName + "?versionOverride=" + b.versionOverride;
 };
-const buildRecordingCallbackUrl = (b) => {
+var buildRecordingCallbackUrl = function (b) {
     //eg. https://us-central1-tz-phone-book.cloudfunctions.net/twiml/voicebook/recordingCallback/message
-    return `${b.baseUrl}${b.recordingCallback}`;
+    return "" + b.baseUrl + b.recordingCallback;
 };
-const buildGatherCallbackUrl = (b) => {
+var buildGatherCallbackUrl = function (b) {
     //eg: `${baseUrl}/twiml/${config.botId}/gather/${blockName}`,
-    let url = `${b.baseUrl}/twiml/${b.botId}/gather/${b.blockName}`;
+    var url = b.baseUrl + "/twiml/" + b.botId + "/gather/" + b.blockName;
     if (!util_1.isNullOrUndefined(b.versionOverride)) {
-        url += `?versionOverride=${b.versionOverride}`;
+        url += "?versionOverride=" + b.versionOverride;
     }
     return url;
 };
-const buildPaginatedGatherCallbackUrl = (b) => {
+var buildPaginatedGatherCallbackUrl = function (b) {
     //eg: `${baseUrl}/twiml/${config.botId}/gather/${blockName}`,
-    const url = `${b.baseUrl}/twiml/${b.botId}/gather/${b.blockName}?page=${b.nextPageNo}\&pageSize=${b.pageSize}\&maxMessages=${b.maxMessages}`;
+    var url = b.baseUrl + "/twiml/" + b.botId + "/gather/" + b.blockName + "?page=" + b.nextPageNo + "&pageSize=" + b.pageSize + "&maxMessages=" + b.maxMessages;
     if (!b.versionOverride) {
         return url;
     }
-    return `${url}\&versionOverride=${b.versionOverride}`;
+    return url + "&versionOverride=" + b.versionOverride;
 };
 function buildRedirectUrl(builder) {
-    console.log("buildingUrl", builder);
     switch (builder.type) {
         case NextUrlType.PaginatedUrl: return buildPaginatedUrl(builder);
         case NextUrlType.DefaultUrl: return buildVersionOverrideUrl(builder);
@@ -209,8 +208,8 @@ function buildRedirectUrl(builder) {
         case NextUrlType.GatherUrl: return buildGatherCallbackUrl(builder);
         case NextUrlType.PaginatedGatherUrl: return buildPaginatedGatherCallbackUrl(builder);
         default: {
-            const _exhaustiveMatch = builder;
-            throw new Error(`Non-exhausive match for path: ${_exhaustiveMatch}`);
+            var _exhaustiveMatch = builder;
+            throw new Error("Non-exhausive match for path: " + _exhaustiveMatch);
         }
     }
 }
@@ -230,8 +229,8 @@ function getBoolean(value) {
 }
 exports.getBoolean = getBoolean;
 function buildExpectedToken(username, password) {
-    const encoded = Buffer.from(`${username}:${password}`).toString('base64');
-    return `Basic ${encoded}`;
+    var encoded = Buffer.from(username + ":" + password).toString('base64');
+    return "Basic " + encoded;
 }
 exports.buildExpectedToken = buildExpectedToken;
 /**
@@ -246,8 +245,8 @@ exports.buildExpectedToken = buildExpectedToken;
  *
  */
 function formatMobile(unformatted, country) {
-    const parsed = phoneUtil.parse(unformatted, country);
-    return `+${parsed.getCountryCode()}${parsed.getNationalNumber()}`;
+    var parsed = phoneUtil.parse(unformatted, country);
+    return "+" + parsed.getCountryCode() + parsed.getNationalNumber();
 }
 exports.formatMobile = formatMobile;
 /**
@@ -255,11 +254,11 @@ exports.formatMobile = formatMobile;
  *
  * Serialize a function as a JSON String
  */
-exports.functionReplacer = (name, val) => {
+exports.functionReplacer = function (name, val) {
     if (typeof val === 'function') {
-        const entire = val.toString();
-        const arg = entire.slice(entire.indexOf("(") + 1, entire.indexOf(")"));
-        const body = entire
+        var entire = val.toString();
+        var arg = entire.slice(entire.indexOf("(") + 1, entire.indexOf(")"));
+        var body = entire
             .slice(entire.indexOf("{") + 1, entire.lastIndexOf("}"))
             //If we ever have another dynamic message type, this will break.
             .replace(/(type: .*.MessageType.SAY)/g, "type: 'SAY'")
@@ -267,7 +266,7 @@ exports.functionReplacer = (name, val) => {
         return {
             type: 'function',
             arguments: arg,
-            body,
+            body: body
         };
     }
     return val;
@@ -277,7 +276,7 @@ exports.functionReplacer = (name, val) => {
  *
  * Deserialize a function from JSON String to actual function
  */
-exports.functionReviver = (name, val) => {
+exports.functionReviver = function (name, val) {
     if (typeof val === 'object' && val.type === 'function') {
         console.log("Reviving function, ", val);
         return new Function(val.arguments, val.body);

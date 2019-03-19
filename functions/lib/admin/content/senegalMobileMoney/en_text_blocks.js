@@ -1,7 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
-const TwilioBlocks = {
+exports.__esModule = true;
+var TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
+var TwilioBlocks = {
     'entrypoint': { type: TwilioTypes_1.BlockType.DEFAULT },
     'entrypoint_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'amount_repeat': { type: TwilioTypes_1.BlockType.DEFAULT },
@@ -35,6 +35,6 @@ const TwilioBlocks = {
     'story_3_decision': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_3_decision_option': { type: TwilioTypes_1.BlockType.DEFAULT },
     'story_3_end': { type: TwilioTypes_1.BlockType.DEFAULT },
-    'error_0': { type: TwilioTypes_1.BlockType.END },
+    'error_0': { type: TwilioTypes_1.BlockType.END }
 };
-exports.default = TwilioBlocks;
+exports["default"] = TwilioBlocks;

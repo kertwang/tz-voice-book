@@ -1,12 +1,12 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
-const utils_1 = require("../../../utils");
-const LocalEnv_1 = require("../../../utils/LocalEnv");
-const urlPrefix = `https://www.googleapis.com/download/storage/v1/b/${LocalEnv_1.storageBucket}/o/`;
-const firebaseToken = '1536715274666696'; //This isn't too precious, our files are public anyway
+exports.__esModule = true;
+var TwilioTypes_1 = require("../../../types_rn/TwilioTypes");
+var utils_1 = require("../../../utils");
+var LocalEnv_1 = require("../../../utils/LocalEnv");
+var urlPrefix = "https://www.googleapis.com/download/storage/v1/b/" + LocalEnv_1.storageBucket + "/o/";
+var firebaseToken = '1536715274666696'; //This isn't too precious, our files are public anyway
 /* the deploy script will automatically fill in the urls for us */
-const en_text = {
+var en_text = {
     'entrypoint': [
         //"Hello, and welcome to voicebook"
         // { type: MessageType.PLAY, url: generateUrl(urlPrefix, 'tz_audio/000_Voicebook_Swahili.mp3', firebaseToken) },
@@ -76,6 +76,6 @@ const en_text = {
     'record_delete': [
         //'Your message was erased and will not be posted.'
         { type: TwilioTypes_1.MessageType.PLAY, url: utils_1.generateUrl(urlPrefix, 'tz_audio/015a_Voicebook_Swahili.mp3', firebaseToken) },
-    ],
+    ]
 };
-exports.default = en_text;
+exports["default"] = en_text;

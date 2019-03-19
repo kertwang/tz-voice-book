@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var ResultType;
 (function (ResultType) {
     ResultType["ERROR"] = "ERROR";
@@ -8,14 +8,14 @@ var ResultType;
 function makeSuccess(result) {
     return {
         type: ResultType.SUCCESS,
-        result,
+        result: result
     };
 }
 exports.makeSuccess = makeSuccess;
 function makeError(message) {
     return {
         type: ResultType.ERROR,
-        message,
+        message: message
     };
 }
 exports.makeError = makeError;
@@ -43,7 +43,7 @@ exports.unsafeUnwrap = unsafeUnwrap;
  * Reduces a list of SomeResults and returns if any of them contain an error
  */
 function resultsHasError(results) {
-    return results.reduce((acc, curr) => {
+    return results.reduce(function (acc, curr) {
         if (curr.type === ResultType.ERROR) {
             return true;
         }
@@ -56,10 +56,10 @@ exports.resultsHasError = resultsHasError;
  * Final result must have a type of void.
  */
 function summarizeResults(results) {
-    let errorMessage = '';
-    results.forEach(r => {
+    var errorMessage = '';
+    results.forEach(function (r) {
         if (r.type === ResultType.ERROR) {
-            errorMessage += `, ${r.message}`;
+            errorMessage += ", " + r.message;
         }
     });
     if (errorMessage !== '') {

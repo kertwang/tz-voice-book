@@ -1,8 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("../../utils");
+exports.__esModule = true;
+var utils_1 = require("../../utils");
 /* the deploy script will automatically fill in the urls for us */
-const en_text = {
+var en_text = {
     'entrypoint': [
         utils_1.generateText('Hi, this message is from the Rungwe Smallholders Tea Growers Association(RSTGA).This is a new service for our farmers.We will notify you from this number by phone call and text to let you know when your monthly payment is available.'),
     ],
@@ -15,4 +15,4 @@ const en_text = {
     //This must be empty
     'end': []
 };
-exports.default = en_text;
+exports["default"] = en_text;

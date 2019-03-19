@@ -2,18 +2,18 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const twilio_1 = __importDefault(require("twilio"));
-const Env_1 = require("../utils/Env");
-const Log_1 = require("../utils/Log");
-const LogTypes_1 = require("../types_rn/LogTypes");
-class TwilioApi {
-    constructor() {
-        this.client = twilio_1.default(Env_1.twilioAccountSid, Env_1.twilioAuthToken);
+exports.__esModule = true;
+var twilio_1 = __importDefault(require("twilio"));
+var Env_1 = require("../utils/Env");
+var Log_1 = require("../utils/Log");
+var LogTypes_1 = require("../types_rn/LogTypes");
+var TwilioApi = /** @class */ (function () {
+    function TwilioApi() {
+        this.client = twilio_1["default"](Env_1.twilioAccountSid, Env_1.twilioAuthToken);
     }
-    getClient() {
+    TwilioApi.prototype.getClient = function () {
         return this.client;
-    }
+    };
     /**
      * startCall
      *
@@ -22,28 +22,29 @@ class TwilioApi {
      * handle exceptions properly with Twilio.
      * We should move to the SomeResult pattern anyway
      */
-    startCall(botId, mobile, url) {
-        const options = {
-            url,
+    TwilioApi.prototype.startCall = function (botId, mobile, url) {
+        var options = {
+            url: url,
             to: mobile,
-            from: Env_1.twilioOutboundNumber,
+            from: Env_1.twilioOutboundNumber
         };
         Log_1.log({
             type: LogTypes_1.LogType.TWILIO_API_REQUEST,
-            botId,
+            botId: botId,
             method: 'client.calls.create',
-            params: options,
+            params: options
         });
         return this.client.calls.create(options)
-            .then((call) => {
+            .then(function (call) {
             Log_1.log({
                 type: LogTypes_1.LogType.TWILIO_API_RESPONSE,
-                botId,
+                botId: botId,
                 method: 'client.calls.create',
-                response: call,
+                response: call
             });
             return call.sid;
         });
-    }
-}
+    };
+    return TwilioApi;
+}());
 exports.TwilioApi = TwilioApi;

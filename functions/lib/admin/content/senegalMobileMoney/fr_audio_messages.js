@@ -1,8 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("../../utils");
+exports.__esModule = true;
+var utils_1 = require("../../utils");
 /* the deploy script will automatically fill in the urls for us */
-const en_text = {
+var en_text = {
     entrypoint: [
         //W1
         utils_1.generateText("This is a voice notification from Orange. You’ve just received your quarterly Bourse Familiale payment. The amount is twenty-five thousand francs. To get your money just go to the nearest Orange agent and tell them the amount that you'd like to withdraw."),
@@ -150,4 +150,4 @@ const en_text = {
         utils_1.generateText("An error has occoured"),
     ]
 };
-exports.default = en_text;
+exports["default"] = en_text;

@@ -4,8 +4,11 @@ import { BotId, VersionId, BotConfig, PlayMessage, MessageType } from "../types_
 import { DFUser } from "../handlers/fn_dialogflow";
 import { SomeResult, ResultType, makeError, makeSuccess } from "../types_rn/AppProviderTypes";
 import { isNullOrUndefined } from "util";
-import { QuerySnapshot, DocumentReference } from "@google-cloud/firestore";
 import { DocumentSnapshot } from "firebase-functions/lib/providers/firestore";
+import { QuerySnapshot, DocumentReference } from "@google-cloud/firestore";
+
+
+
 
 export type RelayUser = {
   callCount: number,

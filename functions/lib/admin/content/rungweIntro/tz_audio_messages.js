@@ -1,8 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("../../utils");
+exports.__esModule = true;
+var utils_1 = require("../../utils");
 /* the deploy script will automatically fill in the urls for us */
-const en_text = {
+var en_text = {
     'entrypoint': [
         //'rungwe_deposit_tz/hi'
         utils_1.generatePlay('rungwe_deposit_tz', 'intro'),
@@ -18,4 +18,4 @@ const en_text = {
     //This must be empty
     'end': []
 };
-exports.default = en_text;
+exports["default"] = en_text;

@@ -2,40 +2,40 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
-const morgan_1 = __importDefault(require("morgan"));
+exports.__esModule = true;
+var express_1 = __importDefault(require("express"));
+var cors_1 = __importDefault(require("cors"));
+var morgan_1 = __importDefault(require("morgan"));
 //@ts-ignore
-const morgan_body_1 = __importDefault(require("morgan-body"));
-const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
-const FirebaseApi_1 = __importDefault(require("../apis/FirebaseApi"));
-const Firestore_1 = __importDefault(require("../apis/Firestore"));
-const TwilioApi_1 = require("../apis/TwilioApi");
-const Env_1 = require("../utils/Env");
-const FirebaseAuth_1 = __importDefault(require("../middlewares/FirebaseAuth"));
-const utils_1 = require("../utils");
-const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
-const bodyParser = require('body-parser');
-const twilioApi = new TwilioApi_1.TwilioApi();
-module.exports = (functions) => {
-    const app = express_1.default();
+var morgan_body_1 = __importDefault(require("morgan-body"));
+var ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
+var FirebaseApi_1 = __importDefault(require("../apis/FirebaseApi"));
+var Firestore_1 = __importDefault(require("../apis/Firestore"));
+var TwilioApi_1 = require("../apis/TwilioApi");
+var Env_1 = require("../utils/Env");
+var FirebaseAuth_1 = __importDefault(require("../middlewares/FirebaseAuth"));
+var utils_1 = require("../utils");
+var AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
+var bodyParser = require('body-parser');
+var twilioApi = new TwilioApi_1.TwilioApi();
+module.exports = function (functions) {
+    var app = express_1["default"]();
     app.use(bodyParser.json());
-    const firebaseApi = new FirebaseApi_1.default(Firestore_1.default);
+    var firebaseApi = new FirebaseApi_1["default"](Firestore_1["default"]);
     if (process.env.VERBOSE_LOG === 'false') {
         console.log('Using simple log');
-        app.use(morgan_1.default(':method :url :status :res[content-length] - :response-time ms'));
+        app.use(morgan_1["default"](':method :url :status :res[content-length] - :response-time ms'));
     }
     else {
         console.log('Using verbose log');
-        morgan_body_1.default(app);
+        morgan_body_1["default"](app);
         // app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
     }
     /* CORS Configuration */
-    const openCors = cors_1.default({ origin: '*' });
+    var openCors = cors_1["default"]({ origin: '*' });
     app.use(openCors);
     /* Firebase Authentication Middleware */
-    app.use(FirebaseAuth_1.default);
+    app.use(FirebaseAuth_1["default"]);
     /**
      * triggerCallFromRelay
      *
@@ -55,11 +55,11 @@ module.exports = (functions) => {
      * }
      *
      */
-    app.post('/triggerCallFromRelay', (req, res) => {
+    app.post('/triggerCallFromRelay', function (req, res) {
         console.log("req.body is", JSON.stringify(req.body, null, 2));
         //TODO: get the user's phone number, check that its in a whitelist.
-        let { wait } = req.body;
-        const { unformattedMobile, url, botId, userId } = req.body;
+        var wait = req.body.wait;
+        var _a = req.body, unformattedMobile = _a.unformattedMobile, url = _a.url, botId = _a.botId, userId = _a.userId;
         if (!botId || !unformattedMobile || !url || !userId) {
             return res.status(400).send('botId is required. unformattedMobile is required. url is required. userId is required.');
         }
@@ -69,25 +69,25 @@ module.exports = (functions) => {
         //Get the country code for the userId
         //TODO: load in the desired format for tz
         // const mobile = formatMobile(unformattedMobile, relayDefaultCountrycode);
-        let mobile;
+        var mobile;
         //Wait to make sure the user has sufficent time to hang up.
         return firebaseApi.getRelayUser(botId, userId)
-            .then(userResult => {
+            .then(function (userResult) {
             if (userResult.type === AppProviderTypes_1.ResultType.ERROR) {
                 throw new Error(userResult.message);
             }
-            let countryCode = userResult.result.countryCode;
+            var countryCode = userResult.result.countryCode;
             if (!countryCode) {
-                console.warn(`No user country code found. Defaulting to: ${Env_1.relayDefaultCountrycode}`);
+                console.warn("No user country code found. Defaulting to: " + Env_1.relayDefaultCountrycode);
                 countryCode = Env_1.relayDefaultCountrycode;
             }
             mobile = utils_1.formatMobile(unformattedMobile, countryCode);
             return utils_1.sleep(wait * 1000);
         })
-            .then(() => twilioApi.startCall(botId, mobile, url))
-            .then(response => res.json(response));
+            .then(function () { return twilioApi.startCall(botId, mobile, url); })
+            .then(function (response) { return res.json(response); });
     });
     /*Error Handling - must be at bottom!*/
-    app.use(ErrorHandler_1.default);
+    app.use(ErrorHandler_1["default"]);
     return functions.https.onRequest(app);
 };
