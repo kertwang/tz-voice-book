@@ -46,7 +46,7 @@ export type FlowMatch = {
 }
 
 export type BlockSetting = {
-  verb: 'play', 'say',
+  verb: 'play' | 'say',
   url: string,
   text: string,
   language: string,

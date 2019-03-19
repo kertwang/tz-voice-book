@@ -1,17 +1,17 @@
 import { admin } from "../apis/Firestore";
+import * as express from 'express';
+
 
 /**
  * Firebase admin middleware
- * 
  * taken from: https://github.com/firebase/functions-samples/blob/master/authorized-https-endpoint/functions/index.js
+ * 
+ * Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
+ * The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
+ * `Authorization: Bearer <Firebase ID Token>`.
+ * when decoded successfully, the ID Token content will be added as `req.user`.
  */
-// import { admin } from './common/apis/FirebaseAdmin';
-
-// Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
-// The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
-// `Authorization: Bearer <Firebase ID Token>`.
-// when decoded successfully, the ID Token content will be added as `req.user`.
-export default function FirebaseAuth(req, res, next) {
+export default function FirebaseAuth(req: express.Request, res: express.Response, next: () => void) {
   console.log('Check if request is authorized with Firebase ID token');
 
   if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
@@ -38,11 +38,16 @@ export default function FirebaseAuth(req, res, next) {
     res.status(403).send('Unauthorized');
     return;
   }
-  admin.auth().verifyIdToken(idToken).then((decodedIdToken) => {
+
+  admin.auth().verifyIdToken(idToken).then((decodedIdToken: string) => {
     console.log('ID Token correctly decoded', decodedIdToken);
+    
+    //@ts-ignore
     req.user = decodedIdToken;
-    return next();
-  }).catch((error) => {
+    next();
+
+    return;
+  }).catch((error: Error) => {
     console.error('Error while verifying Firebase ID token:', error);
     res.status(403).send('Unauthorized');
   });

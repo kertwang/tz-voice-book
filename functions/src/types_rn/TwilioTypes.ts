@@ -1,6 +1,4 @@
 import FirebaseApi from "../apis/FirebaseApi";
-import { Gather } from "twilio/lib/twiml/VoiceResponse";
-import Version = require("twilio/lib/base/Version");
 
 /**
  * A block is a request for twiml that we respond to.

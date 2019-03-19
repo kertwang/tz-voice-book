@@ -11,7 +11,6 @@ export type ErrorResult = {
   type: ResultType.ERROR,
 }
 
-
 export enum ResultType {
   ERROR = 'ERROR',
   SUCCESS = 'SUCCESS',
