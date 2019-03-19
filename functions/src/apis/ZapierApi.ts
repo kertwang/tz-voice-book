@@ -1,5 +1,5 @@
 
-import * as request from 'request-promise-native';
+import request from 'request-promise-native';
 import { optOutWebookUrl } from '../utils/Env';
 
 export default class ZapierApi {

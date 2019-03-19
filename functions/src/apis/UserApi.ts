@@ -1,6 +1,4 @@
-import * as moment from 'moment';
 import FirebaseApi from "./FirebaseApi";
-import { fstat } from 'fs';
 import { VersionId, BotId } from '../types_rn/TwilioTypes';
 
 /**
@@ -21,17 +19,19 @@ export type Recording = {
   callSid: string,
 }
 
-
 export default class UserApi {
   private fb: FirebaseApi;
   private user: User;
 
+  constructor(fb: FirebaseApi, user: User) {
+    this.fb = fb;
+    this.user = user;
+  }
+
 
   public static async fromMobileNumber(fb: FirebaseApi, botId: BotId, mobile: string): Promise<UserApi> {
-    const api = new UserApi();  
-    api.fb = fb;
-    //Set up the user api from the mobile number
-    api.user = await fb.getUserFromMobile(mobile, botId);
+    const user = await fb.getUserFromMobile(mobile, botId);
+    const api = new UserApi(fb, user);  
 
     return api;
   }
