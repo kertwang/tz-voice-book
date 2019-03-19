@@ -1,6 +1,5 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { AnyLog } from '../types_rn/LogTypes';
-import { eventNames } from 'cluster';
 import {shouldLog} from './Env';
 
 //TODO: make more explicit

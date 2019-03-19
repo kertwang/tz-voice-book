@@ -19,7 +19,7 @@ describe('Utils Tests', function() {
       const formatted = formatMobile(unformatted, country);
 
       //Assert
-      assert.equal(unformatted, formatted);
+      assert.strictEqual(unformatted, formatted);
     });
 
     it('Formats a local number correctly', () => {
@@ -31,7 +31,7 @@ describe('Utils Tests', function() {
       const formatted = formatMobile(unformatted, country);
 
       //Assert
-      assert.equal('+2559566512295', formatted);
+      assert.strictEqual('+2559566512295', formatted);
     });
     
     it('Formats an international number without + correctly', () => {
@@ -43,7 +43,7 @@ describe('Utils Tests', function() {
       const formatted = formatMobile(unformatted, country);
 
       //Assert
-      assert.equal('+25516501111234', formatted);
+      assert.strictEqual('+25516501111234', formatted);
     });
 
   });

@@ -1,6 +1,7 @@
 import AppError from "./AppError";
+import * as express from 'express';
 
-export default function (err, req, res, next) {
+export default function (err: any, req: express.Request, res: express.Response, next: any) {
   console.log("error", err);
 
   if (typeof err === typeof AppError) {

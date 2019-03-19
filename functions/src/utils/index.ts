@@ -1,11 +1,14 @@
 import { BlockId, GatherResult, PageParams, BotId, VersionId } from "../types_rn/TwilioTypes";
+//@ts-ignore
 import * as format from 'xml-formatter';
-import { raw } from "body-parser";
 import { isNullOrUndefined } from "util";
-var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+import * as express from 'express';
+
+const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
 
 export function getBotId(maybeBotId: string): BotId {
+  //@ts-ignore
   const botId = BotId[maybeBotId];
   if (!botId) {
     throw new Error(`Could not find botId for ${maybeBotId}`);
@@ -46,7 +49,8 @@ export function getDefaultVersionForBot(botId: BotId): VersionId {
 export function pathToBlock(path: string): BlockId {
   const sanitized = path.replace(/\/$/, "");
   const key = sanitized.substr(sanitized.lastIndexOf("/") + 1)
-  
+
+  //@ts-ignore
   const blockId = BlockId[key];
   if (!blockId) {
     throw new Error(`Could not find blockId from path: ${path}`);
@@ -72,7 +76,7 @@ export function logTwilioResponse(xmlString: string) {
   console.log(`TWILIO Response: \n ${format(xmlString)}`);
 }
 
-export function sleep(ms) {
+export function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -85,7 +89,7 @@ export const generateUrl = (urlPrefix: string, path: string, firebaseToken: stri
  * Use this to inject pagination where we don't have it set up
  * This is really less than ideal, and we need to find a better way.
  */
-export const saftelyGetPageParamsOrDefaults = (params): PageParams => {
+export const saftelyGetPageParamsOrDefaults = (params: any): PageParams => {
   const page = params.page ? parseInt(params.page) : 0;
   let pageSize = params.pageSize ? parseInt(params.pageSize) : 3;
   let maxMessages = params.maxMessages ? parseInt(params.maxMessages) : 10;
@@ -119,7 +123,7 @@ export const saftelyGetPageParamsOrDefaults = (params): PageParams => {
  * 
  * Throws if the necessary params aren't found
  */
-export const getUserMobile = (body): string => {
+export const getUserMobile = (body: any): string => {
   const from = body.From;
   const to = body.To;
   const direction = body.Direction;
@@ -143,8 +147,8 @@ export const getUserMobile = (body): string => {
  * 
  * @param params the raw params from the request object
  */
-export const saftelyGetDynamicParamsOrEmpty = (params): string[] => {
-  let safeParams = [];
+export const saftelyGetDynamicParamsOrEmpty = (params: any): string[] => {
+  let safeParams: any[] = [];
   const rawParams = params.dynamicParams;
   if (!rawParams) {
     return safeParams;
