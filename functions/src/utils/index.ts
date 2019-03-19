@@ -2,7 +2,6 @@ import { BlockId, GatherResult, PageParams, BotId, VersionId } from "../types_rn
 //@ts-ignore
 import * as format from 'xml-formatter';
 import { isNullOrUndefined } from "util";
-import * as express from 'express';
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 

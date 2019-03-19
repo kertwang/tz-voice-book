@@ -1,4 +1,4 @@
-import { FlowMap, FlowType, BlockId, AnyFlowMap, SenegalNotificationFlowMap, SenegalMobileMoneyFlowMap } from "../../../types_rn/TwilioTypes";
+import { FlowType, BlockId, SenegalMobileMoneyFlowMap } from "../../../types_rn/TwilioTypes";
 
 /**
  * Flows is a graph based data structure, with the key being the valid

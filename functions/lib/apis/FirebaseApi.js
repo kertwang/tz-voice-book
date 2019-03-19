@@ -45,7 +45,7 @@ class FirebaseApi {
     }
     getRecordings(limit, botId) {
         return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'asc').limit(limit).get()
-            .then(sn => {
+            .then((sn) => {
             const messages = [];
             sn.forEach(doc => {
                 //Get each document, put in the id
@@ -64,8 +64,8 @@ class FirebaseApi {
      */
     async saveFeedbackRecording(recording, botId) {
         return this.fs.collection('bot').doc(botId).collection('feedback').add(recording)
-            .then(ref => ref.id)
-            .catch(err => {
+            .then((ref) => ref.id)
+            .catch((err) => {
             console.log("Error in savePendingRecording", err);
             return Promise.reject(err);
         });
@@ -77,8 +77,8 @@ class FirebaseApi {
      */
     async savePendingRecording(recording, botId) {
         return this.fs.collection('bot').doc(botId).collection('pendingRecordings').add(recording)
-            .then(ref => ref.id)
-            .catch(err => {
+            .then((ref) => ref.id)
+            .catch((err) => {
             console.log("Error in savePendingRecording", err);
             return Promise.reject(err);
         });
@@ -92,9 +92,12 @@ class FirebaseApi {
             const recordings = [];
             sn.forEach(doc => {
                 //Get each document, put in the id
-                const data = doc.data();
-                data.id = doc.id;
-                recordings.push(data);
+                //@ts-ignore 
+                //TODO: fix deser
+                const recording = {
+                    ...doc.data(),
+                };
+                recordings.push(recording);
             });
             return recordings;
         });
@@ -127,7 +130,7 @@ class FirebaseApi {
      */
     postRecording(recording, botId) {
         return this.fs.collection('bot').doc(botId).collection('recordings').add(recording)
-            .then(ref => ref.id);
+            .then((ref) => ref.id);
     }
     /**
      * Get the block content for the given call id and user.
@@ -150,7 +153,7 @@ class FirebaseApi {
     }
     async getBotConfigForVersion(userId, botId, version) {
         return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
-            .then(doc => doc.data())
+            .then((doc) => doc.data())
             .then((rawConfig) => {
             if (!rawConfig) {
                 throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
@@ -167,7 +170,7 @@ class FirebaseApi {
             // console.log("getBotConfigForVersion, Bot config is", );
             return config;
         })
-            .catch(err => {
+            .catch((err) => {
             console.warn(err.message);
             throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
         });
@@ -210,19 +213,19 @@ class FirebaseApi {
             }
             return { type: AppProviderTypes_1.ResultType.SUCCESS, result: user };
         })
-            .catch(err => {
+            .catch((err) => {
             return { type: AppProviderTypes_1.ResultType.ERROR, message: err.message };
         });
     }
     saveDFUser(botId, sessionId, user) {
         return this.fs.collection('df').doc(botId).collection('users').doc(sessionId).set(user)
             .then(() => ({ type: AppProviderTypes_1.ResultType.SUCCESS, result: null }))
-            .catch(err => ({ type: AppProviderTypes_1.ResultType.ERROR, message: err.message }));
+            .catch((err) => ({ type: AppProviderTypes_1.ResultType.ERROR, message: err.message }));
     }
     saveResponse(botId, intent, response) {
         return this.fs.collection('df').doc(botId).collection(intent).add({ response })
             .then(() => ({ type: AppProviderTypes_1.ResultType.SUCCESS, result: null }))
-            .catch(err => ({ type: AppProviderTypes_1.ResultType.ERROR, message: err.message }));
+            .catch((err) => ({ type: AppProviderTypes_1.ResultType.ERROR, message: err.message }));
     }
     getResponses(botId, intent) {
         return this.fs.collection('df').doc(botId).collection(intent).get()
@@ -239,7 +242,7 @@ class FirebaseApi {
                 result: responses,
             };
         })
-            .catch(err => {
+            .catch((err) => {
             console.log("getResponses error: ", err);
             return {
                 type: AppProviderTypes_1.ResultType.ERROR,

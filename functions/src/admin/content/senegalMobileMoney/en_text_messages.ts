@@ -1,4 +1,4 @@
-import { MessageType, MessageMap, SayMessage, AnyMessageMap, SenegalNotificationMessageMap, SenegalMobileMoneyMessageMap } from "../../../types_rn/TwilioTypes";
+import { SenegalMobileMoneyMessageMap } from "../../../types_rn/TwilioTypes";
 import { generateText } from "../../utils";
 
 

@@ -36,8 +36,7 @@ export declare type FlowMatch = {
     nextBlock: BlockId;
 };
 export declare type BlockSetting = {
-    verb: 'play';
-    'say': any;
+    verb: 'play' | 'say';
     url: string;
     text: string;
     language: string;

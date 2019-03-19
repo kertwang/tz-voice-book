@@ -1,32 +1,30 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = __importStar(require("express"));
-const cors = __importStar(require("cors"));
-const moment = __importStar(require("moment"));
-const morgan = __importStar(require("morgan"));
-const morganBody = __importStar(require("morgan-body"));
+// import * as validate from 'express-validation';
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const moment_1 = __importDefault(require("moment"));
+const morgan_1 = __importDefault(require("morgan"));
+//@ts-ignore
+const morgan_body_1 = __importDefault(require("morgan-body"));
 const bodyParser = require('body-parser');
 module.exports = (functions, admin) => {
-    const app = express();
+    const app = express_1.default();
     app.use(bodyParser.json());
     const fs = admin.firestore();
     if (process.env.VERBOSE_LOG === 'false') {
         console.log('Using simple log');
-        app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+        app.use(morgan_1.default(':method :url :status :res[content-length] - :response-time ms'));
     }
     else {
         console.log('Using verbose log');
-        morganBody(app);
+        morgan_body_1.default(app);
     }
     /* CORS Configuration */
-    const openCors = cors({ origin: '*' });
+    const openCors = cors_1.default({ origin: '*' });
     app.use(openCors);
     app.use(function (err, req, res, next) {
         console.log("error", err);
@@ -66,16 +64,16 @@ module.exports = (functions, admin) => {
             return res.json({ messages: urlString });
         });
     });
-    app.post('/*', (req, res, next) => {
-        const { params, body, query } = req;
+    app.post('/*', (req, res) => {
+        const { body } = req;
         const { audioUrl, phone } = body;
-        const createdAt = moment().toISOString();
+        const createdAt = moment_1.default().toISOString();
         return fs.collection('messages').add({
             audioUrl,
             phone,
             createdAt,
         })
-            .then(ref => {
+            .then((ref) => {
             res.json({ id: ref.id });
         });
     });

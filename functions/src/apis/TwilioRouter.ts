@@ -6,7 +6,6 @@ import { Recording } from './UserApi';
 import { log } from '../utils/Log';
 import { LogType } from '../types_rn/LogTypes';
 import ZapierApi from './ZapierApi';
-import twilio from 'twilio';
 
 /**
  * TwilioRouter is a stateless router for twilio requests.

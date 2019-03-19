@@ -39,7 +39,7 @@ export default function FirebaseAuth(req: express.Request, res: express.Response
     return;
   }
 
-  admin.auth().verifyIdToken(idToken).then((decodedIdToken: string) => {
+  admin.auth().verifyIdToken(idToken).then((decodedIdToken: admin.auth.DecodedIdToken) => {
     console.log('ID Token correctly decoded', decodedIdToken);
     
     //@ts-ignore

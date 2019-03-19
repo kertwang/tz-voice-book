@@ -13,13 +13,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const assert = __importStar(require("assert"));
 const TwilioRouter_1 = __importDefault(require("./TwilioRouter"));
 const mocha_1 = require("mocha");
-// import { CallContext, GatherResult } from './TwilioRouter';
 const FirebaseApi_1 = __importDefault(require("./FirebaseApi"));
-const TwilioRouter_2 = require("../../lib/types/TwilioRouter");
+const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const admin = require('firebase-admin');
 admin.initializeApp();
 const fs = admin.firestore();
-const baseUrl = 'http://localhost:5000';
 const botConfig = {};
 const ctx = {
     callSid: '12345',
@@ -38,7 +36,7 @@ mocha_1.describe.skip('TwilioRouter', function () {
         it('gets the default next message', () => {
             //Arrange
             //Act 
-            const result = TwilioRouter_1.default.nextMessage(ctx, botConfig, TwilioRouter_2.BlockId.entrypoint);
+            const result = TwilioRouter_1.default.nextMessage(ctx, botConfig, TwilioTypes_1.BlockId.entrypoint);
             //Assert
             const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Say>Hello, and welcome to voicebook</Say><Redirect method="POST">./intro_0</Redirect></Response>';
             assert.equal(expected, result);
@@ -48,7 +46,7 @@ mocha_1.describe.skip('TwilioRouter', function () {
         it('gets the default next message', () => {
             //Arrange
             //Act 
-            const result = TwilioRouter_1.default.nextMessage(ctx, botConfig, TwilioRouter_2.BlockId.intro_0);
+            const result = TwilioRouter_1.default.nextMessage(ctx, botConfig, TwilioTypes_1.BlockId.intro_0);
             //Assert
             const expected = `<?xml version="1.0" encoding="UTF-8"?><Response><Gather action="./gather/intro_0" method="POST" language="sw-TZ" input="speech" hints="sikiliza,tuma,msaada,kurudia"><Say>To learn what is new in your community say sikiliza. To record a message that people in your community can hear, say tuma. To learn more about this service say msaada. To hear these options again say kurudia.</Say></Gather><Say>We didn't receive any input. Hrrmm.</Say></Response>`;
             assert.equal(expected, result);
@@ -61,7 +59,7 @@ mocha_1.describe.skip('TwilioRouter', function () {
                 digits: '10',
             };
             //Act
-            const result = TwilioRouter_1.default.gatherNextMessage(ctx, botConfig, TwilioRouter_2.BlockId.entrypoint, gatherResult);
+            const result = TwilioRouter_1.default.gatherNextMessage(ctx, botConfig, TwilioTypes_1.BlockId.entrypoint, gatherResult);
             //Assert
             const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Say>Sorry, something went wrong</Say></Response>';
             assert.equal(expected, result);
@@ -72,7 +70,7 @@ mocha_1.describe.skip('TwilioRouter', function () {
                 digits: '1',
             };
             //Act
-            const result = TwilioRouter_1.default.gatherNextMessage(ctx, botConfig, TwilioRouter_2.BlockId.entrypoint, gatherResult);
+            const result = TwilioRouter_1.default.gatherNextMessage(ctx, botConfig, TwilioTypes_1.BlockId.entrypoint, gatherResult);
             //Assert
             const expected = '<?xml version="1.0" encoding="UTF-8"?><Response><Redirect method="POST">../listen_0</Redirect></Response>';
             assert.equal(expected, result);

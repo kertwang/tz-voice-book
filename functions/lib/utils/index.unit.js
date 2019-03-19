@@ -21,7 +21,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             const formatted = _1.formatMobile(unformatted, country);
             //Assert
-            assert.equal(unformatted, formatted);
+            assert.strictEqual(unformatted, formatted);
         });
         it('Formats a local number correctly', () => {
             //Arrange
@@ -30,7 +30,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             const formatted = _1.formatMobile(unformatted, country);
             //Assert
-            assert.equal('+2559566512295', formatted);
+            assert.strictEqual('+2559566512295', formatted);
         });
         it('Formats an international number without + correctly', () => {
             //Arrange
@@ -39,7 +39,7 @@ mocha_1.describe('Utils Tests', function () {
             //Act
             const formatted = _1.formatMobile(unformatted, country);
             //Assert
-            assert.equal('+25516501111234', formatted);
+            assert.strictEqual('+25516501111234', formatted);
         });
     });
 });

@@ -72,7 +72,7 @@ const translations = {
         tripSummaryStruggleCapture_1: 'Quels aspects des robots ont poser des problèmes pour votre bénéficiaire? Avec les autres membres de votre groupe, écrivez quelques observations sur les feuillets ROUGES -- une observation par feuillet.',
         tripSummaryStruggleCapture_2: 'Appuyez sur «Continuer» quand vous avez terminé.',
         tripSummaryStruggleCapture_3: 'Continuer',
-    }
+    },
 };
 //TODO: add basic auth
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {

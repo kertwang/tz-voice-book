@@ -1,6 +1,5 @@
-import { RungweGenericMessageMap, MessageType, PlayMessage } from "../../../types_rn/TwilioTypes";
-import { generateText, generatePlay } from "../../utils";
-import { generateUrl } from "../../../utils";
+import { RungweGenericMessageMap } from "../../../types_rn/TwilioTypes";
+import { generatePlay } from "../../utils";
 
 /* the deploy script will automatically fill in the urls for us */
 const en_text: RungweGenericMessageMap = {

@@ -1,19 +1,15 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const twilio = __importStar(require("twilio"));
+const twilio_1 = __importDefault(require("twilio"));
 const Env_1 = require("../utils/Env");
 const Log_1 = require("../utils/Log");
 const LogTypes_1 = require("../types_rn/LogTypes");
 class TwilioApi {
     constructor() {
-        this.client = twilio(Env_1.twilioAccountSid, Env_1.twilioAuthToken);
+        this.client = twilio_1.default(Env_1.twilioAccountSid, Env_1.twilioAuthToken);
     }
     getClient() {
         return this.client;

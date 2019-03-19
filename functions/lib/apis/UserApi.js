@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class UserApi {
+    constructor(fb, user) {
+        // this.fb = fb;
+        this.user = user;
+    }
     static async fromMobileNumber(fb, botId, mobile) {
-        const api = new UserApi();
-        api.fb = fb;
-        //Set up the user api from the mobile number
-        api.user = await fb.getUserFromMobile(mobile, botId);
+        const user = await fb.getUserFromMobile(mobile, botId);
+        const api = new UserApi(fb, user);
         return api;
     }
     getUser() {

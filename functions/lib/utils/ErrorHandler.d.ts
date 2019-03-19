@@ -1,1 +1,2 @@
-export default function (err: any, req: any, res: any, next: any): any;
+import * as express from 'express';
+export default function (err: any, req: express.Request, res: express.Response, next: any): import("express-serve-static-core").Response;

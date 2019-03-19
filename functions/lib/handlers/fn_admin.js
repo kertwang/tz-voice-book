@@ -1,21 +1,13 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = __importStar(require("express"));
-const cors = __importStar(require("cors"));
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const morgan_1 = __importDefault(require("morgan"));
 //@ts-ignore
-const morgan = __importStar(require("morgan"));
-//@ts-ignore
-const morganBody = __importStar(require("morgan-body"));
+const morgan_body_1 = __importDefault(require("morgan-body"));
 const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
 const FirebaseApi_1 = __importDefault(require("../apis/FirebaseApi"));
 const Firestore_1 = __importDefault(require("../apis/Firestore"));
@@ -25,23 +17,22 @@ const FirebaseAuth_1 = __importDefault(require("../middlewares/FirebaseAuth"));
 const utils_1 = require("../utils");
 const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
 const bodyParser = require('body-parser');
-const basicAuth = require('express-basic-auth');
 const twilioApi = new TwilioApi_1.TwilioApi();
 module.exports = (functions) => {
-    const app = express();
+    const app = express_1.default();
     app.use(bodyParser.json());
     const firebaseApi = new FirebaseApi_1.default(Firestore_1.default);
     if (process.env.VERBOSE_LOG === 'false') {
         console.log('Using simple log');
-        app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+        app.use(morgan_1.default(':method :url :status :res[content-length] - :response-time ms'));
     }
     else {
         console.log('Using verbose log');
-        morganBody(app);
+        morgan_body_1.default(app);
         // app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
     }
     /* CORS Configuration */
-    const openCors = cors({ origin: '*' });
+    const openCors = cors_1.default({ origin: '*' });
     app.use(openCors);
     /* Firebase Authentication Middleware */
     app.use(FirebaseAuth_1.default);

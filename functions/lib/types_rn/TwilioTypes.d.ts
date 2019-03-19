@@ -313,10 +313,11 @@ export declare type DynamicSayMessage = {
     type: MessageType.DYNAMIC_SAY;
     func: (params: string[]) => SayMessage[];
 };
+export declare type TwilioSayLanguage = 'da-DK' | 'de-DE' | 'en-AU' | 'en-CA' | 'en-GB' | 'en-IN' | 'en-US' | 'ca-ES' | 'es-ES' | 'es-MX' | 'fi-FI' | 'fr-CA' | 'fr-FR' | 'it-IT' | 'ja-JP' | 'ko-KR' | 'nb-NO' | 'nl-NL' | 'pl-PL' | 'pt-BR' | 'pt-PT' | 'ru-RU' | 'sv-SE' | 'zh-CN' | 'zh-HK' | 'zh-TW';
 export interface SayMessage {
     type: MessageType.SAY;
     text: string;
-    language: string;
+    language: TwilioSayLanguage;
 }
 export interface PlayMessage {
     type: MessageType.PLAY;

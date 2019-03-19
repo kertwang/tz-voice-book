@@ -16,8 +16,8 @@ export declare type Recording = {
     callSid: string;
 };
 export default class UserApi {
-    private fb;
     private user;
+    constructor(fb: FirebaseApi, user: User);
     static fromMobileNumber(fb: FirebaseApi, botId: BotId, mobile: string): Promise<UserApi>;
     getUser(): User;
 }

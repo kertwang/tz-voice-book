@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -6,15 +9,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = __importStar(require("express"));
-const cors = __importStar(require("cors"));
-const moment = __importStar(require("moment"));
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const moment_1 = __importDefault(require("moment"));
 //@ts-ignore
-const morgan = __importStar(require("morgan"));
+const morgan_1 = __importDefault(require("morgan"));
 //@ts-ignore
 const morganBody = __importStar(require("morgan-body"));
 const TwilioRouter_1 = __importDefault(require("../apis/TwilioRouter"));
@@ -29,27 +29,24 @@ const LogTypes_1 = require("../types_rn/LogTypes");
 const AppProviderTypes_1 = require("../types_rn/AppProviderTypes");
 const responses2_template_1 = __importDefault(require("./responses2.template"));
 const mustache = __importStar(require("mustache"));
-require('express-async-errors');
-const twilioApi = new TwilioApi_1.TwilioApi();
 //TODO: make newer import format
-const VoiceResponse = require('twilio').twiml.VoiceResponse;
+require('express-async-errors');
 const bodyParser = require('body-parser');
-const Joi = require('joi');
+const twilioApi = new TwilioApi_1.TwilioApi();
 module.exports = (functions) => {
-    const app = express();
+    const app = express_1.default();
     app.use(bodyParser.json());
     const firebaseApi = new FirebaseApi_1.default(Firestore_1.default);
     if (process.env.VERBOSE_LOG === 'false') {
         console.log('Using simple log');
-        app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+        app.use(morgan_1.default(':method :url :status :res[content-length] - :response-time ms'));
     }
     else {
         console.log('Using verbose log');
         morganBody(app);
-        // app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
     }
     /* CORS Configuration */
-    const openCors = cors({ origin: '*' });
+    const openCors = cors_1.default({ origin: '*' });
     app.use(openCors);
     /**
      * Collect partial results for debugging purposes.
@@ -62,8 +59,7 @@ module.exports = (functions) => {
      * Get the responses from the chatbot in a simple text format
      */
     app.get('/:botId/responses', async (req, res) => {
-        const { botId, intent } = req.params;
-        // const responsesResult = await firebaseApi.getResponses(botId, intent);
+        const { botId } = req.params;
         const intents = [
             { intent: 'shareQuestionCapture', question: 'Great. Would you mind sharing one of your questions with me? You can type it below:', responses: [] },
             { intent: 'improveNotificationMessageCapture', question: 'Is there anything about the notification text message that you think could be improved? Take a minute and jot down any ideas you have that might improve it. What’s one thing you jotted down?', responses: [] },
@@ -75,6 +71,7 @@ module.exports = (functions) => {
             if (result.type === AppProviderTypes_1.ResultType.ERROR) {
                 return;
             }
+            //@ts-ignore
             intents[idx].responses = result.result;
         });
         res.status(200).send(mustache.render(responses2_template_1.default, { intents }));
@@ -86,7 +83,7 @@ module.exports = (functions) => {
         const botId = utils_1.getBotId(req.params.botId);
         const recording = {
             url: req.body.RecordingUrl,
-            createdAt: moment().toISOString(),
+            createdAt: moment_1.default().toISOString(),
             callSid: req.body.CallSid,
         };
         const pendingId = await firebaseApi.saveFeedbackRecording(recording, botId);
@@ -130,7 +127,7 @@ module.exports = (functions) => {
         const botId = utils_1.getBotId(req.params.botId);
         const recording = {
             url: req.body.RecordingUrl,
-            createdAt: moment().toISOString(),
+            createdAt: moment_1.default().toISOString(),
             callSid: req.body.CallSid,
         };
         const pendingId = await firebaseApi.savePendingRecording(recording, botId);

@@ -1,24 +1,15 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// const VoiceResponse = require('twilio').twiml.VoiceResponse;
-const twilio = __importStar(require("twilio"));
+const VoiceResponse_1 = __importDefault(require("twilio/lib/twiml/VoiceResponse"));
 const utils_1 = require("../utils");
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
 const Env_1 = require("../utils/Env");
 const Log_1 = require("../utils/Log");
 const LogTypes_1 = require("../types_rn/LogTypes");
 const ZapierApi_1 = __importDefault(require("./ZapierApi"));
-const VoiceResponse = twilio.twiml.VoiceResponse;
 /**
  * TwilioRouter is a stateless router for twilio requests.
  * Given an express request, it generates the next valid
@@ -36,10 +27,12 @@ class TwilioRouter {
      */
     static async getBlock(ctx, config, blockName) {
         const messageBlocks = config.messages;
+        // @ts-ignore
         const flow = config.flows[blockName];
+        // @ts-ignore
         const block = config.blocks[blockName];
         const messages = messageBlocks[blockName];
-        let response = new VoiceResponse();
+        let response = new VoiceResponse_1.default();
         switch (flow.type) {
             case TwilioTypes_1.FlowType.DEFAULT: {
                 switch (block.type) {
@@ -273,8 +266,10 @@ class TwilioRouter {
         //TODO: make more generic - this isn't technically a GATHER block, so we shouldn't do this really.
         console.log("currentBlock", currentBlock);
         if (currentBlock === TwilioTypes_1.BlockId.listen_playback) {
-            const response = new VoiceResponse();
-            let nextPage;
+            const response = new VoiceResponse_1.default();
+            //TODO: not sure if this will cause problems
+            let nextPage = 0;
+            /* Handle the user skipping or repeating the message*/
             switch (gatherResult.digits.trim()) {
                 case '1': {
                     //Skip
@@ -302,10 +297,11 @@ class TwilioRouter {
             response.redirect({ method: 'POST' }, utils_1.buildRedirectUrl(urlBuilder));
             return response.toString();
         }
+        //@ts-ignore
         const flow = config.flows[currentBlock];
         if (flow.type !== TwilioTypes_1.FlowType.GATHER) {
             console.error(`gatherNextMessage tried to handle flow with type: ${flow.type}`);
-            const response = new VoiceResponse();
+            const response = new VoiceResponse_1.default();
             response.say({}, 'Sorry. Something went wrong. Please try again.');
             return response.toString();
         }
@@ -359,7 +355,7 @@ class TwilioRouter {
                         // return errorResponse.toString();
                     }
                     const nextBlock = flow.digitMatches[idx].nextBlock;
-                    const response = new VoiceResponse();
+                    const response = new VoiceResponse_1.default();
                     response.redirect({ method: 'POST' }, utils_1.buildRedirectUrl({
                         type: utils_1.NextUrlType.DefaultUrl,
                         baseUrl: Env_1.baseUrl,

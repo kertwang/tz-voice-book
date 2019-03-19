@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import moment from 'moment';
 //@ts-ignore
-import * as morgan from 'morgan';
+import morgan from 'morgan';
 //@ts-ignore
 import * as morganBody from 'morgan-body';
 import TwilioRouter from '../apis/TwilioRouter';

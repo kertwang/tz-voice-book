@@ -8,10 +8,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const TwilioTypes_1 = require("../types_rn/TwilioTypes");
+//@ts-ignore
 const format = __importStar(require("xml-formatter"));
 const util_1 = require("util");
-var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 function getBotId(maybeBotId) {
+    //@ts-ignore
     const botId = TwilioTypes_1.BotId[maybeBotId];
     if (!botId) {
         throw new Error(`Could not find botId for ${maybeBotId}`);
@@ -50,6 +52,7 @@ exports.getDefaultVersionForBot = getDefaultVersionForBot;
 function pathToBlock(path) {
     const sanitized = path.replace(/\/$/, "");
     const key = sanitized.substr(sanitized.lastIndexOf("/") + 1);
+    //@ts-ignore
     const blockId = TwilioTypes_1.BlockId[key];
     if (!blockId) {
         throw new Error(`Could not find blockId from path: ${path}`);

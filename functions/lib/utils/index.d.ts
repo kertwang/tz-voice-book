@@ -4,7 +4,7 @@ export declare function getDefaultVersionForBot(botId: BotId): VersionId;
 export declare function pathToBlock(path: string): BlockId;
 export declare function logGatherBlock(block: any, result: GatherResult): void;
 export declare function logTwilioResponse(xmlString: string): void;
-export declare function sleep(ms: any): Promise<{}>;
+export declare function sleep(ms: number): Promise<{}>;
 export declare const generateUrl: (urlPrefix: string, path: string, firebaseToken: string) => string;
 /**
  * Use this to inject pagination where we don't have it set up

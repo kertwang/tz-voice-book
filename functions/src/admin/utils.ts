@@ -1,7 +1,8 @@
 import { SayMessage, MessageType, PlayMessage } from "../types_rn/TwilioTypes";
 import { generateUrl } from "../utils";
+import { storageBucket } from "../utils/LocalEnv";
 
-export const generateText = (text): SayMessage => {
+export const generateText = (text: string): SayMessage => {
   return {
     type: MessageType.SAY,
     text,
@@ -10,7 +11,8 @@ export const generateText = (text): SayMessage => {
 }
 
 
-const urlPrefix = `https://www.googleapis.com/download/storage/v1/b/${process.env.storageBucket.replace("\"", '')}/o/`;
+
+const urlPrefix = `https://www.googleapis.com/download/storage/v1/b/${storageBucket}/o/`;
 const firebaseToken = '1536715274666696'; //This isn't too precious, our files are public anyway
 
 

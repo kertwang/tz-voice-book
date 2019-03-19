@@ -12,8 +12,6 @@ import FirebaseAuth from '../middlewares/FirebaseAuth';
 import { formatMobile, sleep } from '../utils';
 import { ResultType } from '../types_rn/AppProviderTypes';
 const bodyParser = require('body-parser');
-const basicAuth = require('express-basic-auth')
-
 
 const twilioApi = new TwilioApi();
 

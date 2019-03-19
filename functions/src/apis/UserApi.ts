@@ -20,11 +20,11 @@ export type Recording = {
 }
 
 export default class UserApi {
-  private fb: FirebaseApi;
+  // private fb: FirebaseApi;
   private user: User;
 
   constructor(fb: FirebaseApi, user: User) {
-    this.fb = fb;
+    // this.fb = fb;
     this.user = user;
   }
 

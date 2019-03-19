@@ -1,9 +1,9 @@
 import { SenegalMobileMoneyMessageMap, MessageType, PlayMessage } from "../../../types_rn/TwilioTypes";
-import { generateText } from "../../utils";
 import { generateUrl } from "../../../utils";
+import { storageBucket } from "../../../utils/LocalEnv";
 
 
-const urlPrefix = `https://www.googleapis.com/download/storage/v1/b/${process.env.storageBucket.replace("\"", '')}/o/`;
+const urlPrefix = `https://www.googleapis.com/download/storage/v1/b/${storageBucket}/o/`;
 const firebaseToken = '1536715274666696'; //This isn't too precious, our files are public anyway
 
 
