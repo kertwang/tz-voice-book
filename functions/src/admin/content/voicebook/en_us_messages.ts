@@ -20,12 +20,12 @@ const en_text: MessageMap = {
     { type: MessageType.SAY, text: 'Sorry, I didn\'t catch that. Please try again.', language: 'en-US' },
   ],
   'listen_0': [
-      { type: MessageType.SAY, language:'en_AU', text: 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.'},
+      { type: MessageType.SAY, language:'en-AU' , text: 'Here are messages posted to VOICEBOOK in your COMMUNITY. You can say ujumbe ujao at any time to skip a message. You can say kurudia at any time, to play a message again. Or, you can hang up at any time.'},
   ],
   'listen_playback': [
-    { type: MessageType.SAY, language: 'en_AU', text: 'Message 1: Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.' },
-    { type: MessageType.SAY, language: 'en_AU', text: 'Message 2: Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.' },
-    { type: MessageType.SAY, language: 'en_AU', text: 'Message 3: Hi this is a message from ORGANIZATION. We want to inform you that we are expecting WEATHER this week. Please be advised and take precautions. If you have a question, you can ask a local representative.' },
+    { type: MessageType.SAY, language: 'en-AU', text: 'Message 1: Hi this is NAME. Please be aware that you can visit my store located at LOCATION. If you buy 4 tomatoes, the 5th one is free.' },
+    { type: MessageType.SAY, language: 'en-AU', text: 'Message 2: Hi this is NAME. The next community meeting will be held in five days on Wednesday, at 13:00.' },
+    { type: MessageType.SAY, language: 'en-AU', text: 'Message 3: Hi this is a message from ORGANIZATION. We want to inform you that we are expecting WEATHER this week. Please be advised and take precautions. If you have a question, you can ask a local representative.' },
   ],
   'listen_end': [
     { type: MessageType.SAY, language: 'en-US', text: 'There are no other recent messages for your community.'},

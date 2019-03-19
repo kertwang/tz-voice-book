@@ -1,7 +1,6 @@
-import { MessageType, MessageMap, SayMessage, AnyMessageMap } from "../../../types_rn/TwilioTypes";
-import { generateUrl } from "../../../utils";
+import { MessageType, SayMessage, AnyMessageMap } from "../../../types_rn/TwilioTypes";
 
-const generateText = (text): SayMessage => {
+const generateText = (text: string): SayMessage => {
   return {
     type: MessageType.SAY,
     text,
