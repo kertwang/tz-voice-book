@@ -1,6 +1,5 @@
+import admin from 'firebase-admin';
 import { serviceAccountKeyFileName, databaseUrl, storageBucket } from "../utils/Env";
-
-const admin = require('firebase-admin');
 
 /* Not in git. Download from FB console*/
 // const serviceAccount = require('../../.serviceAccountKey.json');

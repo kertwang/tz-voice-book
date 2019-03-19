@@ -1,9 +1,11 @@
 import { User, Recording } from "./UserApi";
 import { sleep, getDefaultVersionForBot, functionReplacer, functionReviver } from "../utils";
-import { MessageMap, BlockMap, FlowMap, BotId, VersionId, BotConfig, PlayMessage, MessageType, DynamicSayMessage, AnyMessageType } from "../types_rn/TwilioTypes";
+import { BotId, VersionId, BotConfig, PlayMessage, MessageType } from "../types_rn/TwilioTypes";
 import { DFUser } from "../handlers/fn_dialogflow";
 import { SomeResult, ResultType, makeError, makeSuccess } from "../types_rn/AppProviderTypes";
 import { isNullOrUndefined } from "util";
+import { QuerySnapshot, DocumentReference } from "@google-cloud/firestore";
+import { DocumentSnapshot } from "firebase-functions/lib/providers/firestore";
 
 export type RelayUser = {
   callCount: number,
@@ -59,7 +61,7 @@ export default class FirebaseApi {
 
   public getRecordings(limit: number, botId: string): Promise<PlayMessage[]> {
     return this.fs.collection('bot').doc(botId).collection('recordings').orderBy('createdAt', 'asc').limit(limit).get()
-    .then(sn => {
+    .then((sn: QuerySnapshot) => {
       const messages: PlayMessage[] = [];
       sn.forEach(doc => {
         //Get each document, put in the id
@@ -80,11 +82,11 @@ export default class FirebaseApi {
    */
   public async saveFeedbackRecording(recording: Recording, botId: string): Promise<string> {
     return this.fs.collection('bot').doc(botId).collection('feedback').add(recording)
-      .then(ref => ref.id)
-      .catch(err => {
-        console.log("Error in savePendingRecording", err);
-        return Promise.reject(err);
-      });
+    .then((ref: DocumentReference) => ref.id)
+    .catch((err: Error) => {
+      console.log("Error in savePendingRecording", err);
+      return Promise.reject(err);
+    });
   }
 
   /**
@@ -94,8 +96,8 @@ export default class FirebaseApi {
    */
   public async savePendingRecording(recording: Recording, botId: string): Promise<string> {
     return this.fs.collection('bot').doc(botId).collection('pendingRecordings').add(recording)
-    .then(ref => ref.id)
-    .catch(err => {
+    .then((ref: DocumentReference) => ref.id)
+    .catch((err: Error) => {
       console.log("Error in savePendingRecording", err);
       return Promise.reject(err);
     });
@@ -106,13 +108,16 @@ export default class FirebaseApi {
    */
   public async getPendingRecordings(callSid: string, limit: number, botId: string): Promise<Recording[]> {
     return this.fs.collection('bot').doc(botId).collection('pendingRecordings').where('callSid', '==', callSid).limit(limit).get()
-    .then((sn: any) => {
+    .then((sn: QuerySnapshot) => {
       const recordings: Recording[] = [];
       sn.forEach(doc => {
         //Get each document, put in the id
-        const data = doc.data();
-        data.id = doc.id;
-        recordings.push(data);
+        //@ts-ignore 
+        //TODO: fix deser
+        const recording: Recording = {
+          ...doc.data(),
+        };
+        recordings.push(recording);
       });
 
       return recordings;
@@ -152,7 +157,7 @@ export default class FirebaseApi {
    */
   public postRecording(recording: Recording, botId: string): Promise<string> {
     return this.fs.collection('bot').doc(botId).collection('recordings').add(recording)
-    .then(ref => ref.id);
+    .then((ref: DocumentSnapshot) => ref.id);
   }
 
   /**
@@ -178,7 +183,7 @@ export default class FirebaseApi {
 
   public async getBotConfigForVersion(userId: string, botId: BotId, version: VersionId): Promise<BotConfig> {
     return this.fs.collection('bot').doc(botId).collection('version').doc(version).get()
-      .then(doc => doc.data())
+      .then((doc: DocumentSnapshot) => doc.data())
       .then((rawConfig: any) => {
         if (!rawConfig) {
           throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
@@ -198,7 +203,7 @@ export default class FirebaseApi {
 
         return config;
       })
-      .catch(err => {
+      .catch((err: Error) => {
         console.warn(err.message);
         throw new Error(`Couldn't getBotConfig for version: ${version} and botId: ${botId}`);
       });
@@ -252,7 +257,7 @@ export default class FirebaseApi {
 
         return { type: ResultType.SUCCESS, result: user }
       })
-      .catch(err => {
+      .catch((err: Error) => {
         return { type: ResultType.ERROR, message: err.message}
       });
   }
@@ -260,18 +265,18 @@ export default class FirebaseApi {
   public saveDFUser(botId: string, sessionId: string, user: DFUser): Promise<SomeResult<void>> {
     return this.fs.collection('df').doc(botId).collection('users').doc(sessionId).set(user)
     .then(() => ({ type: ResultType.SUCCESS, result: null }))
-    .catch(err => ({ type: ResultType.ERROR, message: err.message }))
+    .catch((err: Error) => ({ type: ResultType.ERROR, message: err.message }))
   }
 
   public saveResponse(botId: string, intent: string, response: string): Promise<SomeResult<void>> {
     return this.fs.collection('df').doc(botId).collection(intent).add({response})
     .then(() => ({ type: ResultType.SUCCESS, result: null }))
-    .catch(err => ({ type: ResultType.ERROR, message: err.message }))
+    .catch((err: Error) => ({ type: ResultType.ERROR, message: err.message }))
   }
 
   public getResponses(botId: string, intent: string): Promise<SomeResult<string[]>> {
     return this.fs.collection('df').doc(botId).collection(intent).get()
-    .then((sn: any) => {
+    .then((sn: QuerySnapshot) => {
       console.log()
       const responses: string[] = [];
       sn.forEach(doc => {
@@ -285,7 +290,7 @@ export default class FirebaseApi {
         result: responses,
       };
     })
-    .catch(err => {
+    .catch((err: Error) => {
       console.log("getResponses error: ", err);
       return {
         type: ResultType.ERROR,
