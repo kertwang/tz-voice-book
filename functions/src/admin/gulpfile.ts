@@ -54,6 +54,7 @@ gulp.task('deploy_config', async () => {
 
   /* Rungwe PaymentNotification Bot */
   await fbApi.deployConfigForBotAndVersion(BotId.rungwePaymentNotification, VersionId.en_text, rungwePaymentNotification.en_text);
+  await fbApi.deployConfigForBotAndVersion(BotId.rungwePaymentNotification, VersionId.tz_audio, rungwePaymentNotification.tz_audio);
 
   
 

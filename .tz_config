@@ -1,2 +1,2 @@
-export stage=production
+export stage=development
 
