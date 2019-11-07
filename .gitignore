@@ -1,4 +1,6 @@
 node_modules
 .env*
+.compiled
 */.runtimeconfig.json
 *.serviceAccountKey*
+.serviceAccountKey.json

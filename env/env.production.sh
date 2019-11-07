@@ -3,6 +3,7 @@
 #Put public env vars here
 
 export stage="production"
+export HEROKU_APP_NAME='vb-server-production'
 
 export VERBOSE_LOG=true
 export LOG_TWILIO_RESPONSE=true

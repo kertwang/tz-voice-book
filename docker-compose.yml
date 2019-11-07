@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:11.4-alpine
+    container_name: s4_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: s4
+
+  vb-server:
+    image: ldaly/vb-server:${version}
+    build:
+      context: .
+    container_name: vb-server
+    ports:
+      - "3000:3000"
+    # TODO: we shouldn't need these here... but we do
+    environment:
+      - VB_twilio_account_sid
+      - VB_twilio_auth_token
+      - VB_twilio_outbound_number
+      - VB_test_mobile

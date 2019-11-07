@@ -1,8 +1,12 @@
 
 
 #Put public env vars here
-
 export stage="development"
+export HEROKU_APP_NAME='vb-server-development'
+export DATABASE_URL_SSL='?ssl=true'
+
+#Override values in default.js
+export VB_base_url=https://vb-server-development.herokuapp.com
 
 export VERBOSE_LOG=true
 export LOG_TWILIO_RESPONSE=true
@@ -11,10 +15,7 @@ export serviceAccountKeyFileName=".serviceAccountKey.development.json"
 export databaseUrl="https://tz-phone-book-dev.firebaseio.com"
 export storageBucket=tz-phone-book-dev.appspot.com
 
-# export BASE_URL="https://$LT_SUBDOMAIN.localtunnel.me/tz-phone-book/us-central1"
-
 # Public
-export BASE_URL="https://us-central1-tz-phone-book-dev.cloudfunctions.net"
 export relay_default_country_code="TZ"
 
 # config for DialogFlow
